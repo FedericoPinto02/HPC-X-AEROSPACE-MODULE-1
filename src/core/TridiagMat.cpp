@@ -62,4 +62,18 @@ class TridiagMat {
         return 0.0; // elements outside the tridiago are zero
     }
 
+    /**
+     * @brief Get the whole diagonal, subdiagonal or supdiagonal
+     * @param w number indicating sub (-1), diag (0) or sup (1)
+     */
+    std::vector<double> getDiags( int w ) const 
+    {
+      if (w == -1) return subdiag;
+      else if (w == 0) return diag;
+      else if (w == 1) return supdiag;
+      else 
+      {
+        throw std::invalid_argument(" Give as input -1, 0 or 1");
+      }
+    }
 };

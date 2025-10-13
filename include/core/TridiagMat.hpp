@@ -33,4 +33,10 @@ class TridiagMat {
      * @brief Get the (i,j) element of the matrix
      */
     double get(int i, int j) const;
+
+    /**
+     * @brief Get the whole diagonal, subdiagonal or supdiagonal
+     * @param w number indicating sub (-1), diag (0) or sup (1)
+     */
+    std::vector<double> getDiags( int w ) const;
 };
