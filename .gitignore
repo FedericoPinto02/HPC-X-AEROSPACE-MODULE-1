@@ -1,0 +1,8 @@
+build/
+
+# Ignora i file di configurazione dell'editor
+.vscode/
+
+# Ignora i file del sistema operativo
+.DS_Store
+Thumbs.db
