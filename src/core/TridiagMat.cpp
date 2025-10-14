@@ -1,20 +1,10 @@
 #include <cmath>
 #include <stdexcept>
 #include <vector>
+#include "core/TridiagMat.hpp"
 
-class TridiagMat {
-private:
-  std::vector<double> diag;
-  std::vector<double> subdiag;
-  std::vector<double> supdiag;
-  const unsigned int size;
 
-public:
-  /**
-   * @brief Constructor
-   * @param n Size of the matrix (n x n)
-   */
-  TridiagMat(int n) : size(n) {
+  TridiagMat::TridiagMat(int n) : size(n) {
     if (n < 2)
       throw std::invalid_argument("Matrix size must be at least 2");
     diag.resize(n, 0.0);
@@ -22,13 +12,8 @@ public:
     supdiag.resize(n - 1, 0.0);
   }
 
-  /**
-   * @brief Fill the matrix
-   * @param diag matrix diagonal
-   * @param subdiag matrix subdiagonal
-   * @param supdiag matrix upper diagonal
-   */
-  void fillMat(std::vector<double> diag_, std::vector<double> subdiag_,
+
+  void TridiagMat::fillMat(std::vector<double> diag_, std::vector<double> subdiag_,
                std::vector<double> supdiag_) {
     // size checks
     if (diag_.size() != size || subdiag_.size() != (size - 1) ||
@@ -42,15 +27,11 @@ public:
     supdiag = std::move(supdiag_);
   }
 
-  /**
-   * @brief Get the matrix size
-   */
-  const unsigned int getSize() const { return size; }
+  
+  const unsigned int TridiagMat::getSize() const { return size; }
 
-  /**
-   * @brief Get the (i,j) element of the matrix
-   */
-  double getElement(int i, int j) const {
+ 
+  double TridiagMat::getElement(int i, int j) const {
     if (i < 0 || j < 0 || i >= size || j >= size)
       throw std::out_of_range("Index out of range");
 
@@ -63,11 +44,8 @@ public:
     return 0.0; // elements outside the tridiago are zero
   }
 
-  /**
-   * @brief Get the whole diagonal, subdiagonal or supdiagonal
-   * @param w number indicating sub (-1), diag (0) or sup (1)
-   */
-  std::vector<double> getDiags(int w) const {
+  
+  std::vector<double> TridiagMat::getDiags(int w) const {
     if (w == -1)
       return subdiag;
     else if (w == 0)
@@ -79,11 +57,8 @@ public:
     }
   }
 
-  /**
-   * @brief Get the first element from the diagonal w
-   * @param w number indicating sub (-1), main (0) or sup (1) diagonal
-   */
-  double getFirstElementFromDiag(int w) const {
+  
+  double TridiagMat::getFirstElementFromDiag(int w) const {
     if (w == -1)
       return subdiag.at(0);
     else if (w == 0)
@@ -94,11 +69,8 @@ public:
       throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
   }
 
-  /**
-   * @brief Get the last element from the diagonal w
-   * @param w number indicating sub (-1), main (0) or sup (1) diagonal
-   */
-  double getLastElementFromDiag(int w) const {
+  
+  double TridiagMat::getLastElementFromDiag(int w) const {
     if (w == -1)
       return subdiag.at(size - 2);
     else if (w == 0)
@@ -108,4 +80,3 @@ public:
     else
       throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
   }
-};
