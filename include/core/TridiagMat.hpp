@@ -7,7 +7,7 @@ class TridiagMat {
     std::vector<double> diag;
     std::vector<double> subdiag;
     std::vector<double> supdiag;
-    const unsigned int size = 0;
+    const unsigned int size;
 
   public:
     /**
