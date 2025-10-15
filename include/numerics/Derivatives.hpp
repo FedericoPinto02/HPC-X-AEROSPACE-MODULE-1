@@ -4,18 +4,18 @@
 class Derivatives {
 private:
     double dx, dy, dz;
+    double nx,ny,nz;
     /**
      * @brief Compute the derivative
      * @param v vector on which derivative is computed
-     * @param ds step
      */
-    std::vector<double> derive( std::vector<double>& v, double ds ) const;
+    std::vector<double> derive_x( std::vector<double>& v) const;
 public: 
 
     /**
      * @brief Constructor.
      */
-    Derivatives( double dx_, double dy_, double dz_ );
+    Derivatives( double dx_, double dy_, double dz_ , double nx_, double ny_, double nz_);
 
     /**
      * @brief Compute gradient of an input
