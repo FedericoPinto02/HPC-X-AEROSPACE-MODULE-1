@@ -1,5 +1,5 @@
-#ifndef SIMULATIONCONTEXT_HPP
-#define SIMULATIONCONTEXT_HPP
+#ifndef NSBSOLVER_SIMULATIONCONTEXT_HPP
+#define NSBSOLVER_SIMULATIONCONTEXT_HPP
 
 #include <cstddef>
 #include <string>
@@ -95,4 +95,4 @@ struct SimulationContext {
     SimulationState state; // mutable state of the simulation
 };
 
-#endif // SIMULATIONCONTEXT_HPP
+#endif // NSBSOLVER_SIMULATIONCONTEXT_HPP

@@ -1,5 +1,5 @@
-#ifndef FIELDS_HPP
-#define FIELDS_HPP
+#ifndef NSBSOLVER_FIELDS_HPP
+#define NSBSOLVER_FIELDS_HPP
 
 #include <algorithm>
 #include <cstddef>
@@ -222,4 +222,4 @@ private:
     Field<Scalar> m_z;
 };
 
-#endif // FIELDS_HPP
+#endif // NSBSOLVER_FIELDS_HPP

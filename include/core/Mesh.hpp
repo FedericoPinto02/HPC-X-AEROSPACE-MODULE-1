@@ -1,5 +1,5 @@
-#ifndef MESH_HPP
-#define MESH_HPP
+#ifndef NSBSOLVER_MESH_HPP
+#define NSBSOLVER_MESH_HPP
 
 #include <cstddef>
 
@@ -17,4 +17,4 @@ struct Grid {
 
 // todo - TBD: Mesh class ?? methods for grid generation ??
 
-#endif // MESH_HPP
+#endif // NSBSOLVER_MESH_HPP
