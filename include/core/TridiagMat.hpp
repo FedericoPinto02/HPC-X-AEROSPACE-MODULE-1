@@ -27,7 +27,7 @@ public:
   /**
    * @brief Get the matrix size
    */
-  const unsigned int getSize() const;
+  const unsigned int getSize() const { return size; };
 
   /**
    * @brief Get the (i,j) element of the matrix

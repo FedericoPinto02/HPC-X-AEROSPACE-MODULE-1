@@ -2,6 +2,20 @@
 #include <cmath>
 #include <gtest/gtest.h>
 
+// === Constructor tests ===
+
+TEST(TridiagMatTest, Constructor_invalidArgument) {
+  EXPECT_THROW(TridiagMat matrix{1}, std::invalid_argument);
+}
+
+TEST(TridiagMatTest, Constructor_correctCreation) {
+  TridiagMat matrix(5);
+
+  EXPECT_EQ(matrix.getDiag(0).size(), 5);
+  EXPECT_EQ(matrix.getDiag(-1).size(), 4);
+  EXPECT_EQ(matrix.getDiag(1).size(), 4);
+}
+
 // === fillMat tests ===
 
 TEST(TridiagMatTest, FillMat_incorrectSizeDiag) {
