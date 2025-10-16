@@ -47,16 +47,16 @@ struct LoggingSettings {
 
 struct Constants {
     // Kinematic viscosity of the fluid (solid: very high; fluid: low)
-    Field<> nu;
+    Field nu;
 
     // Density of the medium (solid: very high; fluid: low)
-    Field<> rho;
+    Field rho;
 
     // Permeability of the (porous) medium (solid: very low; fluid: very high)
-    Field<> k;
+    Field k;
 
     // Body force acting on the medium (e.g. gravity)
-    VectorField<> f;
+    VectorField f;
 };
 
 struct InitialConditionsSettings {

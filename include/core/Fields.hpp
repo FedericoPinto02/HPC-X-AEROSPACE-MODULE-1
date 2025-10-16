@@ -12,20 +12,10 @@
 
 /**
  * @brief Class representing a scalar field defined on a 3D grid.
- * @tparam Scalar a floating point type
  */
-template<typename Scalar = double>
 class Field {
-    // todo - use <concepts> if we can bump to C++20 (CMake)
-    static_assert(std::is_floating_point<Scalar>::value, "Field values must be floating point types.");
-
 public:
-    Field(std::shared_ptr<Grid> gridPtr, std::vector<Scalar> initialValues)
-            : p_grid(std::move(gridPtr)), m_v(std::move(initialValues)) {
-        if (m_v.size() != p_grid->Nx * p_grid->Ny * p_grid->Nz) {
-            throw std::invalid_argument("Initial values size does not match field dimensions.");
-        }
-    }
+    using Scalar = double;
 
     /**
      * @brief Getter for the pointer to the grid information.
@@ -61,74 +51,47 @@ public:
     }
 
     /**
+     * @brief Setup the field with initial values matching a given grid.
+     * @param gridPtr the pointer to the grid information
+     * @param initialValues the initial values to populate the field with
+     */
+    void setup(std::shared_ptr<Grid> gridPtr, std::vector<Scalar> initialValues);
+
+    /**
      * @brief Reset the field values to a specified value (default is zero).
      * @param value the value to reset the field to (default is zero)
      */
-    void reset(Scalar value = Scalar(0)) {
-        std::fill(m_v.begin(), m_v.end(), value);
-    }
+    void reset(Scalar value = Scalar(0));
 
     /**
      * @brief Update the field with a new vector of values.
      * @param newV new values to update the field with
      */
-    void update(std::vector<Scalar> newV) {
-        if (newV.size() != m_v.size()) {
-            throw std::invalid_argument("New vector size does not match field size.");
-        }
-        m_v = std::move(newV);
-    }
+    void update(std::vector<Scalar> newV);
 
     /**
      * @brief Add a scalar value to all elements in the field.
      * @param value the scalar value to add
      */
-    void add(Scalar value) {
-        for (auto &elem: m_v) {
-            elem += value;
-        }
-        // todo - workaround ??: std::execution::par_unseq not available for clang 15 (libc++ 15)
-        /*std::for_each(std::execution::par_unseq, m_v.begin(), m_v.end(),
-                      [value](Scalar &elem) { elem += value; });*/
-    }
+    void add(Scalar value);
 
     /**
      * @brief Add another field to this field element-wise.
      * @param other the other field to add
      */
-    void add(Field<Scalar> &other) {
-        if (other.getGrid()->Nx != p_grid->Nx
-            || other.getGrid()->Ny != p_grid->Ny
-            || other.getGrid()->Nz != p_grid->Nz) {
-            throw std::invalid_argument("Fields sizes do not match.");
-        }
-        for (size_t i = 0; i < m_v.size(); ++i) {
-            m_v[i] += other.m_v[i];
-        }
-        // todo - workaround ??: std::execution::par_unseq not available for clang 15 (libc++ 15)
-        /*std::for_each(std::execution::par_unseq, m_v.begin(), m_v.end(),
-                      [&other, this, n = size_t(0)](Scalar &elem) mutable { elem += other.m_v[n++]; });*/
-
-    }
+    void add(Field &other);
 
     /**
      * @brief Multiply all elements in the field by a scalar value.
      * @param value the scalar value to multiply by
      */
-    void multiply(Scalar value) {
-        for (auto &elem: m_v) {
-            elem *= value;
-        }
-        // todo - workaround ??: std::execution::par_unseq not available for clang 15 (libc++ 15)
-        /*std::for_each(std::execution::par_unseq, m_v.begin(), m_v.end(),
-                      [value](Scalar &elem) { elem *= value; });*/
-    }
+    void multiply(Scalar value);
 
 private:
     /**
      * @brief Pointer to the grid information (dimensions and spacing).
      */
-    const std::shared_ptr<const Grid> p_grid;
+    std::shared_ptr<const Grid> p_grid;
 
     /**
      * @brief Vector storing the field values in a flattened, row-major indexed 1D array.
@@ -139,38 +102,48 @@ private:
 
 /**
  * @brief Class representing a 3D vector field defined on a 3D grid.
- * @tparam Scalar a floating point type
  */
-template<typename Scalar = double>
 class VectorField {
-    // todo - use <concepts> if we can bump to C++20 (CMake)
-    static_assert(std::is_floating_point<Scalar>::value, "Field values must be floating point types.");
 public:
-    VectorField(std::shared_ptr<Grid> gridPtr,
-                std::vector<Scalar> initialX, std::vector<Scalar> initialY, std::vector<Scalar> initialZ
-    ) : m_x(gridPtr, std::move(initialX)), m_y(gridPtr, std::move(initialY)), m_z(gridPtr, std::move(initialZ)) {
-        if (!p_grid) {
-            throw std::invalid_argument("Grid pointer cannot be null.");
-        }
-    }
+    /**
+     * @brief Getter for the pointer to the grid information.
+     * @return the pointer to the grid information
+     */
+    std::shared_ptr<const Grid> getGrid() { return p_grid; }
+
+    /**
+     * @overload
+     */
+    std::shared_ptr<const Grid> getGrid() const { return p_grid; }
 
     /**
      * @brief Access the x-component of the vector field.
      * @return the x-component of the vector field
      */
-    Field<Scalar> &x() { return m_x; }
+    Field &x() { return m_x; }
 
     /**
      * @brief Access the y-component of the vector field.
      * @return the y-component of the vector field
      */
-    Field<Scalar> &y() { return m_y; }
+    Field &y() { return m_y; }
 
     /**
      * @brief Access the z-component of the vector field.
      * @return the z-component of the vector field
      */
-    Field<Scalar> &z() { return m_z; }
+    Field &z() { return m_z; }
+
+    /**
+     * @brief Setup the vector field with initial values for each component matching a given grid.
+     * @param gridPtr the pointer to the grid information
+     * @param initialX the initial values to populate the x-component with
+     * @param initialY the initial values to populate the y-component with
+     * @param initialZ the initial values to populate the z-component with
+     */
+    void setup(std::shared_ptr<Grid> gridPtr,
+               std::vector<Field::Scalar> initialX, std::vector<Field::Scalar> initialY,
+               std::vector<Field::Scalar> initialZ);
 
     /**
      * @brief Update the vector field with new vectors for each component.
@@ -178,48 +151,31 @@ public:
      * @param newY new values to update the vector field with in the y-direction
      * @param newZ new values to update the vector field with in the z-direction
      */
-    void update(std::vector<Scalar> newX, std::vector<Scalar> newY, std::vector<Scalar> newZ) {
-        m_x.update(std::move(newX));
-        m_y.update(std::move(newY));
-        m_z.update(std::move(newZ));
-    }
-
+    void update(std::vector<Field::Scalar> newX, std::vector<Field::Scalar> newY, std::vector<Field::Scalar> newZ);
 
     /**
      * @brief Add a scalar value to all components of the vector field.
      * @param value the scalar value to add
      */
-    void add(Scalar value) {
-        m_x.add(value);
-        m_y.add(value);
-        m_z.add(value);
-    }
+    void add(Field::Scalar value);
 
     /**
      * @brief Add another vector field to this vector field element-wise.
      * @param other the other vector field to add
      */
-    void add(VectorField &other) {
-        m_x.add(other.x());
-        m_y.add(other.y());
-        m_z.add(other.z());
-    }
+    void add(VectorField &other);
 
     /**
      * @brief Multiply all components of the vector field by a scalar value.
      * @param value the scalar value to multiply by
      */
-    void multiply(Scalar value) {
-        m_x.multiply(value);
-        m_y.multiply(value);
-        m_z.multiply(value);
-    }
+    void multiply(Field::Scalar value);
 
 private:
     std::shared_ptr<const Grid> p_grid;
-    Field<Scalar> m_x;
-    Field<Scalar> m_y;
-    Field<Scalar> m_z;
+    Field m_x;
+    Field m_y;
+    Field m_z;
 };
 
 #endif // NSBSOLVER_FIELDS_HPP
