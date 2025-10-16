@@ -11,9 +11,23 @@
 struct TimeIntegrationSettings {
     double dt;
     double currTime;
-    double totalTime;
+    double totalSimTime;
     size_t currStep;
     size_t totalSteps;
+
+    TimeIntegrationSettings(double dt_, double totalSimTime_)
+            : dt(dt_),
+              currTime(0.0),
+              totalSimTime(totalSimTime_),
+              currStep(0),
+              totalSteps(static_cast<size_t>(totalSimTime / dt)) {
+        if (dt <= 0.0) {
+            throw std::invalid_argument("Time step must be positive.");
+        }
+        if (totalSimTime <= 0.0) {
+            throw std::invalid_argument("Total simulation time must be positive.");
+        }
+    }
 };
 
 struct OutputSettings {
