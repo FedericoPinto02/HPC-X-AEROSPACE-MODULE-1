@@ -14,7 +14,7 @@
  * @brief Class representing a scalar field defined on a 3D grid.
  * @tparam Scalar a floating point type
  */
-template<typename Scalar>
+template<typename Scalar = double>
 class Field {
     // todo - use <concepts> if we can bump to C++20 (CMake)
     static_assert(std::is_floating_point<Scalar>::value, "Field values must be floating point types.");
@@ -141,7 +141,7 @@ private:
  * @brief Class representing a 3D vector field defined on a 3D grid.
  * @tparam Scalar a floating point type
  */
-template<typename Scalar>
+template<typename Scalar = double>
 class VectorField {
     // todo - use <concepts> if we can bump to C++20 (CMake)
     static_assert(std::is_floating_point<Scalar>::value, "Field values must be floating point types.");
