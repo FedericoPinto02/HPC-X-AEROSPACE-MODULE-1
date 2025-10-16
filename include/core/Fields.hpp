@@ -55,7 +55,7 @@ public:
      * @param gridPtr the pointer to the grid information
      * @param initialValues the initial values to populate the field with
      */
-    void setup(std::shared_ptr<Grid> gridPtr, std::vector<Scalar> initialValues);
+    void setup(std::shared_ptr<const Grid> gridPtr, std::vector<Scalar> initialValues);
 
     /**
      * @brief Reset the field values to a specified value (default is zero).

@@ -4,7 +4,7 @@
 // Field class methods
 // ----------------------------------------------------------------
 void
-Field::setup(std::shared_ptr<Grid> gridPtr, std::vector<Field::Scalar> initialValues) {
+Field::setup(std::shared_ptr<const Grid> gridPtr, std::vector<Field::Scalar> initialValues) {
     if (!p_grid) {
         throw std::invalid_argument("Grid pointer cannot be null.");
     }
