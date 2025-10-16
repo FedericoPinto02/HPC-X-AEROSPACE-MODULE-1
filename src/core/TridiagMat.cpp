@@ -25,7 +25,6 @@ void TridiagMat::fillMat(std::vector<double> diag_,
   supdiag = std::move(supdiag_);
 }
 
-const unsigned int TridiagMat::getSize() const { return size; }
 
 double TridiagMat::getElement(int i, int j) const {
   if (i < 0 || j < 0 || i >= size || j >= size)
