@@ -9,173 +9,187 @@
 
 #include "core/Mesh.hpp"
 
-
 /**
  * @brief Class representing a scalar field defined on a 3D grid.
  */
 class Field {
 public:
-    using Scalar = double;
+  using Scalar = double;
 
-    /**
-     * @brief Getter for the pointer to the grid information.
-     * @return the pointer to the grid information
-     */
-    std::shared_ptr<const Grid> getGrid() { return p_grid; }
+  /**
+   * @brief Default constructor.
+   */
+  Field() = default;
 
-    /**
-     * @overload
-     */
-    std::shared_ptr<const Grid> getGrid() const { return p_grid; }
+  /**
+   * @brief Constructor with a provided Grid.
+   * @param gridPtr the pointer to the Grid
+   */
+  Field(std::shared_ptr<const Grid> gridPtr) : p_grid(std::move(gridPtr)) {}
 
-    /**
-    * @brief Read the value in the field at given position.
-    * @param i x-index
-    * @param j y-index
-    * @param k z-index
-    * @return the value in the field at position (i,j,k)
-    */
-    Scalar &operator()(const size_t i, const size_t j, const size_t k) {
-        // Assuming row-major order
-        const size_t index = i + p_grid->Nx * (j + p_grid->Ny * k);
-        return m_v.at(index);
-    }
+  /**
+   * @brief Getter for the pointer to the grid information.
+   * @return the pointer to the grid information
+   */
+  std::shared_ptr<const Grid> getGrid() { return p_grid; }
 
-    /**
-     * @overload
-     */
-    const Scalar &operator()(const size_t i, const size_t j, const size_t k) const {
-        // Assuming row-major order
-        const size_t index = i + p_grid->Nx * (j + p_grid->Ny * k);
-        return m_v.at(index);
-    }
+  /**
+   * @overload
+   */
+  std::shared_ptr<const Grid> getGrid() const { return p_grid; }
 
-    /**
-     * @brief Setup the field with initial values matching a given grid.
-     * @param gridPtr the pointer to the grid information
-     * @param initialValues the initial values to populate the field with
-     */
-    void setup(std::shared_ptr<const Grid> gridPtr, std::vector<Scalar> initialValues);
+  /**
+   * @brief Read the value in the field at given position.
+   * @param i x-index
+   * @param j y-index
+   * @param k z-index
+   * @return the value in the field at position (i,j,k)
+   */
+  Scalar &operator()(const size_t i, const size_t j, const size_t k) {
+    // Assuming row-major order
+    const size_t index = i + p_grid->Nx * (j + p_grid->Ny * k);
+    return m_v.at(index);
+  }
 
-    /**
-     * @brief Reset the field values to a specified value (default is zero).
-     * @param value the value to reset the field to (default is zero)
-     */
-    void reset(Scalar value = Scalar(0));
+  /**
+   * @overload
+   */
+  const Scalar &operator()(const size_t i, const size_t j,
+                           const size_t k) const {
+    // Assuming row-major order
+    const size_t index = i + p_grid->Nx * (j + p_grid->Ny * k);
+    return m_v.at(index);
+  }
 
-    /**
-     * @brief Update the field with a new vector of values.
-     * @param newV new values to update the field with
-     */
-    void update(std::vector<Scalar> newV);
+  /**
+   * @brief Setup the field with initial values matching a given grid.
+   * @param gridPtr the pointer to the grid information
+   * @param initialValues the initial values to populate the field with
+   */
+  void setup(std::shared_ptr<const Grid> gridPtr,
+             std::vector<Scalar> initialValues);
 
-    /**
-     * @brief Add a scalar value to all elements in the field.
-     * @param value the scalar value to add
-     */
-    void add(Scalar value);
+  /**
+   * @brief Reset the field values to a specified value (default is zero).
+   * @param value the value to reset the field to (default is zero)
+   */
+  void reset(Scalar value = Scalar(0));
 
-    /**
-     * @brief Add another field to this field element-wise.
-     * @param other the other field to add
-     */
-    void add(Field &other);
+  /**
+   * @brief Update the field with a new vector of values.
+   * @param newV new values to update the field with
+   */
+  void update(std::vector<Scalar> newV);
 
-    /**
-     * @brief Multiply all elements in the field by a scalar value.
-     * @param value the scalar value to multiply by
-     */
-    void multiply(Scalar value);
+  /**
+   * @brief Add a scalar value to all elements in the field.
+   * @param value the scalar value to add
+   */
+  void add(Scalar value);
+
+  /**
+   * @brief Add another field to this field element-wise.
+   * @param other the other field to add
+   */
+  void add(Field &other);
+
+  /**
+   * @brief Multiply all elements in the field by a scalar value.
+   * @param value the scalar value to multiply by
+   */
+  void multiply(Scalar value);
 
 private:
-    /**
-     * @brief Pointer to the grid information (dimensions and spacing).
-     */
-    std::shared_ptr<const Grid> p_grid;
+  /**
+   * @brief Pointer to the grid information (dimensions and spacing).
+   */
+  std::shared_ptr<const Grid> p_grid;
 
-    /**
-     * @brief Vector storing the field values in a flattened, row-major indexed 1D array.
-     */
-    std::vector<Scalar> m_v;
+  /**
+   * @brief Vector storing the field values in a flattened, row-major indexed 1D
+   * array.
+   */
+  std::vector<Scalar> m_v;
 };
-
 
 /**
  * @brief Class representing a 3D vector field defined on a 3D grid.
  */
 class VectorField {
 public:
-    /**
-     * @brief Getter for the pointer to the grid information.
-     * @return the pointer to the grid information
-     */
-    std::shared_ptr<const Grid> getGrid() { return p_grid; }
+  /**
+   * @brief Getter for the pointer to the grid information.
+   * @return the pointer to the grid information
+   */
+  std::shared_ptr<const Grid> getGrid() { return p_grid; }
 
-    /**
-     * @overload
-     */
-    std::shared_ptr<const Grid> getGrid() const { return p_grid; }
+  /**
+   * @overload
+   */
+  std::shared_ptr<const Grid> getGrid() const { return p_grid; }
 
-    /**
-     * @brief Access the x-component of the vector field.
-     * @return the x-component of the vector field
-     */
-    Field &x() { return m_x; }
+  /**
+   * @brief Access the x-component of the vector field.
+   * @return the x-component of the vector field
+   */
+  Field &x() { return m_x; }
 
-    /**
-     * @brief Access the y-component of the vector field.
-     * @return the y-component of the vector field
-     */
-    Field &y() { return m_y; }
+  /**
+   * @brief Access the y-component of the vector field.
+   * @return the y-component of the vector field
+   */
+  Field &y() { return m_y; }
 
-    /**
-     * @brief Access the z-component of the vector field.
-     * @return the z-component of the vector field
-     */
-    Field &z() { return m_z; }
+  /**
+   * @brief Access the z-component of the vector field.
+   * @return the z-component of the vector field
+   */
+  Field &z() { return m_z; }
 
-    /**
-     * @brief Setup the vector field with initial values for each component matching a given grid.
-     * @param gridPtr the pointer to the grid information
-     * @param initialX the initial values to populate the x-component with
-     * @param initialY the initial values to populate the y-component with
-     * @param initialZ the initial values to populate the z-component with
-     */
-    void setup(std::shared_ptr<Grid> gridPtr,
-               std::vector<Field::Scalar> initialX, std::vector<Field::Scalar> initialY,
-               std::vector<Field::Scalar> initialZ);
+  /**
+   * @brief Setup the vector field with initial values for each component
+   * matching a given grid.
+   * @param gridPtr the pointer to the grid information
+   * @param initialX the initial values to populate the x-component with
+   * @param initialY the initial values to populate the y-component with
+   * @param initialZ the initial values to populate the z-component with
+   */
+  void setup(std::shared_ptr<Grid> gridPtr, std::vector<Field::Scalar> initialX,
+             std::vector<Field::Scalar> initialY,
+             std::vector<Field::Scalar> initialZ);
 
-    /**
-     * @brief Update the vector field with new vectors for each component.
-     * @param newX new values to update the vector field with in the x-direction
-     * @param newY new values to update the vector field with in the y-direction
-     * @param newZ new values to update the vector field with in the z-direction
-     */
-    void update(std::vector<Field::Scalar> newX, std::vector<Field::Scalar> newY, std::vector<Field::Scalar> newZ);
+  /**
+   * @brief Update the vector field with new vectors for each component.
+   * @param newX new values to update the vector field with in the x-direction
+   * @param newY new values to update the vector field with in the y-direction
+   * @param newZ new values to update the vector field with in the z-direction
+   */
+  void update(std::vector<Field::Scalar> newX, std::vector<Field::Scalar> newY,
+              std::vector<Field::Scalar> newZ);
 
-    /**
-     * @brief Add a scalar value to all components of the vector field.
-     * @param value the scalar value to add
-     */
-    void add(Field::Scalar value);
+  /**
+   * @brief Add a scalar value to all components of the vector field.
+   * @param value the scalar value to add
+   */
+  void add(Field::Scalar value);
 
-    /**
-     * @brief Add another vector field to this vector field element-wise.
-     * @param other the other vector field to add
-     */
-    void add(VectorField &other);
+  /**
+   * @brief Add another vector field to this vector field element-wise.
+   * @param other the other vector field to add
+   */
+  void add(VectorField &other);
 
-    /**
-     * @brief Multiply all components of the vector field by a scalar value.
-     * @param value the scalar value to multiply by
-     */
-    void multiply(Field::Scalar value);
+  /**
+   * @brief Multiply all components of the vector field by a scalar value.
+   * @param value the scalar value to multiply by
+   */
+  void multiply(Field::Scalar value);
 
 private:
-    std::shared_ptr<const Grid> p_grid;
-    Field m_x;
-    Field m_y;
-    Field m_z;
+  std::shared_ptr<const Grid> p_grid;
+  Field m_x;
+  Field m_y;
+  Field m_z;
 };
 
 #endif // NSBSOLVER_FIELDS_HPP
