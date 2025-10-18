@@ -20,7 +20,6 @@
 class Field {
 public:
     using Scalar = double;
-
     /**
      * @brief Getter for the pointer to the grid information.
      * @return the pointer to the grid information
