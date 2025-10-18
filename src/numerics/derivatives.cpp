@@ -79,3 +79,42 @@ void Derivatives::computeDy(const Field &field, Field &dy) {
                     dy(i,j,k) = dfdy;
                 }
 }
+
+void Derivatives::computeDz(const Field &field, Field &dz) {
+    
+    // safety checks
+    if (!field.getGrid()) {
+        throw std::runtime_error("input field has null grid.");
+    }
+    if (!dz.getGrid()) {
+        throw std::runtime_error("output field (dy) has null grid.");
+    }
+    if (field.getGrid() != dz.getGrid()) {
+        throw std::runtime_error("field and dx must share the same grid.");
+    }
+    
+    std::shared_ptr<const Grid> grid = field.getGrid();
+    const size_t Nx = grid->Nx;
+    const size_t Ny = grid->Ny;
+    const size_t Nz = grid->Nz;
+    const double mul = 0.5/grid->dz;
+
+    if (Nz < 3) {
+        throw std::runtime_error("grid size Ny must be at least 3 to compute central derivative.");
+    }
+    if (grid->dz <= 0.0) {
+        throw std::runtime_error("grid spacing dx must be positive.");
+    }
+    if (Nx == 0 || Ny == 0 || Nz == 0) {
+        throw std::runtime_error("grid dimensions must be > 0.");
+    }
+
+    for (size_t i=0 ; i<Nx ; i++)
+        for (size_t j=0 ; j<Ny ; j++)
+            for (size_t k=1 ; k<(Nz-1) ; k++)
+                {
+                    double dfdz = 0.0;
+                    dfdz = (field(i, j, k+1) - field(i, j, k-1)) * mul;
+                    dz(i,j,k) = dfdz;
+                }
+}
