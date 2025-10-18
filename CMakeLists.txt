@@ -12,35 +12,29 @@ add_subdirectory(extern/googletest)
 enable_testing()
 
 # lib
-add_library(TridiagMatrix src/core/TridiagMat.cpp)
-add_library(Fields src/core/Fields.cpp)
-add_library(Derivatives
-    src/numerics/derivatives.cpp
-    src/core/Fields.cpp
+add_library(allib src/core/TridiagMat.cpp 
+                  src/core/Fields.cpp
+                  src/numerics/derivatives.cpp
 )
 
-target_include_directories(TridiagMatrix PUBLIC 
+target_include_directories(allib PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-target_include_directories(Fields PUBLIC 
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-target_include_directories(Derivatives PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
+
 
 # executable
-add_executable(testTridiag tests/test_tridiag.cpp)
-target_link_libraries(testTridiag PRIVATE TridiagMatrix gtest_main)
+add_executable(alltests tests/test_tridiag.cpp
+                        tests/test_fields.cpp
+                        tests/test_derivatives.cpp
+)
 
-add_executable(testFields tests/test_fields.cpp)
-add_executable(test_derivatives tests/test_derivatives.cpp)
-target_link_libraries(testFields PRIVATE Fields gtest_main)
-target_link_libraries(test_derivatives PRIVATE Derivatives gtest_main)
+
+target_link_libraries(alltests PRIVATE allib gtest_main)
+
+
 
 
 # Add tests
 include(GoogleTest)
-gtest_discover_tests(testTridiag)
-gtest_discover_tests(testFields)
-gtest_discover_tests(test_derivatives)
+gtest_discover_tests(alltests)
+
