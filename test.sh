@@ -9,6 +9,4 @@ cmake .. ${CMAKE_FLAGS}
 make -j"$(nproc)"
 popd > /dev/null
 
- "${BUILD_DIR}/testTridiag"
- "${BUILD_DIR}/test_derivatives"
- "${BUILD_DIR}/testFields"
+ "${BUILD_DIR}/alltests"
