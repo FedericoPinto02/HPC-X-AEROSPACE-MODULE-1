@@ -14,11 +14,18 @@ enable_testing()
 # lib
 add_library(TridiagMatrix src/core/TridiagMat.cpp)
 add_library(Fields src/core/Fields.cpp)
+add_library(Derivatives
+    src/numerics/derivatives.cpp
+    src/core/Fields.cpp
+)
 
 target_include_directories(TridiagMatrix PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 target_include_directories(Fields PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_include_directories(Derivatives PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -27,34 +34,13 @@ add_executable(testTridiag tests/test_tridiag.cpp)
 target_link_libraries(testTridiag PRIVATE TridiagMatrix gtest_main)
 
 add_executable(testFields tests/test_fields.cpp)
+add_executable(test_derivatives tests/test_derivatives.cpp)
 target_link_libraries(testFields PRIVATE Fields gtest_main)
+target_link_libraries(test_derivatives PRIVATE Derivatives gtest_main)
+
 
 # Add tests
 include(GoogleTest)
 gtest_discover_tests(testTridiag)
-<<<<<<< HEAD
-
-# === Derivatives library ===
-add_library(Derivatives
-    src/numerics/derivatives.cpp
-    src/core/Fields.cpp   # <-- aggiungi anche questa se contiene Field::setup
-)
-
-target_include_directories(Derivatives PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-# === Test for Derivatives ===
-add_executable(test_derivatives tests/test_derivatives.cpp)
-
-target_link_libraries(test_derivatives
-    PRIVATE
-        Derivatives
-        gtest_main
-)
-
-# Register the test
-gtest_discover_tests(test_derivatives)
-=======
 gtest_discover_tests(testFields)
->>>>>>> main
+gtest_discover_tests(test_derivatives)
