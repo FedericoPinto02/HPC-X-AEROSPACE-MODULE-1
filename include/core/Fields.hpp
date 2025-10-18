@@ -15,17 +15,6 @@ public:
   using Scalar = double;
 
   /**
-   * @brief Default constructor.
-   */
-  Field() = default;
-
-  /**
-   * @brief Constructor with a provided Grid.
-   * @param gridPtr the pointer to the Grid
-   */
-  Field(std::shared_ptr<const Grid> gridPtr) : p_grid(std::move(gridPtr)) {}
-
-  /**
    * @brief Getter for the pointer to the grid information.
    * @return the pointer to the grid information
    */
