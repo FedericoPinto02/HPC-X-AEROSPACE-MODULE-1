@@ -3,18 +3,31 @@
 // ----------------------------------------------------------------
 // Field class methods
 // ----------------------------------------------------------------
+<<<<<<< HEAD
 void Field::setup(std::shared_ptr<const Grid> gridPtr, std::vector<Field::Scalar> initialValues) {
     if (!gridPtr) {
         throw std::invalid_argument("Grid pointer cannot be null.");
     }
     if (initialValues.size() != gridPtr->Nx * gridPtr->Ny * gridPtr->Nz) {
         throw std::invalid_argument("Initial values size does not match field dimensions.");
+=======
+void
+Field::setup(std::shared_ptr<const Grid> gridPtr, std::vector<Field::Scalar> initialValues) {
+    if (!gridPtr) {
+        throw std::invalid_argument("Grid pointer cannot be null.");
+    }
+    if (initialValues.size() != gridPtr->size()) {
+        throw std::invalid_argument("Initial values size does not match grid size.");
+>>>>>>> main
     }
     p_grid = std::move(gridPtr);
     m_v = std::move(initialValues);
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 void
 Field::reset(Field::Scalar value) {
     std::fill(m_v.begin(), m_v.end(), value);
@@ -68,7 +81,11 @@ void VectorField::setup(std::shared_ptr<Grid> gridPtr,
                         std::vector<Field::Scalar> initialX,
                         std::vector<Field::Scalar> initialY,
                         std::vector<Field::Scalar> initialZ) {
+<<<<<<< HEAD
     if (!p_grid) {
+=======
+    if (!gridPtr) {
+>>>>>>> main
         throw std::invalid_argument("Grid pointer cannot be null.");
     }
     p_grid = std::move(gridPtr);

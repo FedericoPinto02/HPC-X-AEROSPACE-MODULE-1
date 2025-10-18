@@ -13,8 +13,12 @@ enable_testing()
 
 # lib
 add_library(TridiagMatrix src/core/TridiagMat.cpp)
+add_library(Fields src/core/Fields.cpp)
 
 target_include_directories(TridiagMatrix PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_include_directories(Fields PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
@@ -22,9 +26,13 @@ target_include_directories(TridiagMatrix PUBLIC
 add_executable(testTridiag tests/test_tridiag.cpp)
 target_link_libraries(testTridiag PRIVATE TridiagMatrix gtest_main)
 
+add_executable(testFields tests/test_fields.cpp)
+target_link_libraries(testFields PRIVATE Fields gtest_main)
+
 # Add tests
 include(GoogleTest)
 gtest_discover_tests(testTridiag)
+<<<<<<< HEAD
 
 # === Derivatives library ===
 add_library(Derivatives
@@ -47,3 +55,6 @@ target_link_libraries(test_derivatives
 
 # Register the test
 gtest_discover_tests(test_derivatives)
+=======
+gtest_discover_tests(testFields)
+>>>>>>> main
