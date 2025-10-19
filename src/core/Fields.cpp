@@ -1,4 +1,5 @@
 #include "core/Fields.hpp"
+#include <stdexcept>
 
 // ----------------------------------------------------------------
 // Field class methods
