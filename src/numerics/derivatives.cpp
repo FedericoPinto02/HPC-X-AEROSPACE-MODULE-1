@@ -144,9 +144,9 @@ void Derivatives::computeDivergence(const Field &field, Field &divergence) {
 }
 
 void Derivatives::computeHessianDiag(const Field &field, VectorField &hessianDiag) {
-    computeDx(field, hessianDiag.x());
-    computeDy(field, hessianDiag.y());
-    computeDz(field, hessianDiag.z());
+    computeDxx(field, hessianDiag.x());
+    computeDyy(field, hessianDiag.y());
+    computeDzz(field, hessianDiag.z());
     // todo - may be optimized in terms of locality: tiling ??
 }
 

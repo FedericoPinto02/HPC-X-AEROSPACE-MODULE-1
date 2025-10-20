@@ -749,3 +749,87 @@ TEST(ComputeDivergence, SimpleLinearField) {
                     << "Error at (i,j,k)=(" << i << "," << j << "," << k << ")";
             }
 }
+
+TEST(ComputeDivergence, ComplexScalarField) {
+    // === Grid setup ===
+    std::shared_ptr<const Grid> grid = std::make_shared<Grid>(5, 5, 5, 0.5, 0.5, 0.5);
+
+    // === Field: f(x,y,z) = x*y + y*z + z*x ===
+    std::vector<Field::Scalar> values(grid->size());
+    size_t idx = 0;
+    for (size_t k = 0; k < grid->Nz; ++k)
+        for (size_t j = 0; j < grid->Ny; ++j)
+            for (size_t i = 0; i < grid->Nx; ++i, ++idx) {
+                double x = i * grid->dx;
+                double y = j * grid->dy;
+                double z = k * grid->dz;
+                values[idx] = x*y + y*z + z*x;
+            }
+
+    Field field;
+    field.setup(grid, values);
+
+    // === Divergence field ===
+    Field divergence;
+    divergence.setup(grid, std::vector<Field::Scalar>(grid->size(), 0.0));
+
+    // === Compute divergence ===
+    Derivatives deriv;
+    deriv.computeDivergence(field, divergence);
+
+    // === Check interior ===
+    const double tol = 1e-5;
+    for (size_t k = 1; k < grid->Nz - 1; ++k)
+        for (size_t j = 1; j < grid->Ny - 1; ++j)
+            for (size_t i = 1; i < grid->Nx - 1; ++i) {
+                double x = i * grid->dx;
+                double y = j * grid->dy;
+                double z = k * grid->dz;
+                double div_exact = 2.0 * (x + y + z);
+                EXPECT_NEAR(divergence(i,j,k), div_exact, tol)
+                    << "Error at (i,j,k)=(" << i << "," << j << "," << k << ")";
+            }
+}
+
+TEST(ComputeHessianDiag, QuadraticField) {
+    // === Grid setup ===
+    std::shared_ptr<const Grid> grid = std::make_shared<Grid>(5, 5, 5, 0.5, 0.5, 0.5);
+
+    // === Field: f(x,y,z) = x^2 + 2*y^2 + 3*z^2 ===
+    std::vector<Field::Scalar> values(grid->size());
+    size_t idx = 0;
+    for (size_t k = 0; k < grid->Nz; ++k)
+        for (size_t j = 0; j < grid->Ny; ++j)
+            for (size_t i = 0; i < grid->Nx; ++i, ++idx) {
+                double x = i * grid->dx;
+                double y = j * grid->dy;
+                double z = k * grid->dz;
+                values[idx] = x*x + 2.0*y*y + 3.0*z*z;
+            }
+
+    Field field;
+    field.setup(grid, values);
+
+    // === Hessian diagonal fields ===
+    VectorField hessianDiag;
+    hessianDiag.setup(grid, std::vector<Field::Scalar>(grid->size(), 0.0), 
+                      std::vector<Field::Scalar>(grid->size(), 0.0),
+                      std::vector<Field::Scalar>(grid->size(), 0.0)); // assume x(), y(), z() are initialized
+
+    // === Compute Hessian diagonal ===
+    Derivatives deriv;
+    deriv.computeHessianDiag(field, hessianDiag);
+
+    // === Check interior ===
+    const double tol = 1e-5;
+    for (size_t k = 1; k < grid->Nz - 1; ++k)
+        for (size_t j = 1; j < grid->Ny - 1; ++j)
+            for (size_t i = 1; i < grid->Nx - 1; ++i) {
+                EXPECT_NEAR(hessianDiag.x()(i,j,k), 2.0, tol)
+                    << "Error in d²f/dx² at (i,j,k)=(" << i << "," << j << "," << k << ")";
+                EXPECT_NEAR(hessianDiag.y()(i,j,k), 4.0, tol)
+                    << "Error in d²f/dy² at (i,j,k)=(" << i << "," << j << "," << k << ")";
+                EXPECT_NEAR(hessianDiag.z()(i,j,k), 6.0, tol)
+                    << "Error in d²f/dz² at (i,j,k)=(" << i << "," << j << "," << k << ")";
+            }
+}
