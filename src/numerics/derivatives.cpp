@@ -127,7 +127,8 @@ void Derivatives::computeDxx(const Field &field, Field &dxx) {
 
     // safety checks
     
-    // todo - are they really needed ?? wait profilingif (!field.getGrid()) {
+    // todo - are they really needed ?? wait profiling
+    if (!field.getGrid()) {
         throw std::runtime_error("input field has null grid.");
     }
     if (!dxx.getGrid()) {
