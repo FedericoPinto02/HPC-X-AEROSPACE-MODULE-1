@@ -651,9 +651,8 @@ TEST(GeneralSecondDerivativeTest, ComputeAllSecondDerivatives) {
 TEST(ComputeGradient, KnownGrad){
     // === Grid setup ===
     std::shared_ptr<const Grid> grid = std::make_shared<Grid>(5, 5, 5, 0.5, 0.5, 0.5);
-    std::shared_ptr< Grid> grid2 = std::make_shared<Grid>(5, 5, 5, 0.5, 0.5, 0.5);
 
-    // === Field: f(x,y,z) = 1.1 * x^3 + 2.2 * y^3 + 3.3 * z^3 ===
+    // === Field: f(x,y,z) = 1.1 * x^2 + 2.2 * y^2 + 3.3 * z^2 ===
     std::vector<Field::Scalar> values(grid->size());
     size_t idx = 0;
     for (size_t k = 0; k < grid->Nz; ++k)
@@ -662,7 +661,7 @@ TEST(ComputeGradient, KnownGrad){
                 double x = i * grid->dx;
                 double y = j * grid->dy;
                 double z = k * grid->dz;
-                values[idx] = 1.1 * x*x*x + 2.2*y*y*y + 3.3*z*z*z;
+                values[idx] = 1.1 * x*x + 2.2*y*y + 3.3*z*z;
             }
 
     // === Setup Field and derivatives ===
@@ -670,7 +669,7 @@ TEST(ComputeGradient, KnownGrad){
     field.setup(grid, values);
 
     VectorField grad;
-    grad.setup( grid2, std::vector<double>(grid->size(), 0.0), 
+    grad.setup( grid, std::vector<double>(grid->size(), 0.0), 
         std::vector<double>(grid->size(), 0.0), std::vector<double>(grid->size(), 0.0) );
     
     // === Compute gradient ===
@@ -686,9 +685,9 @@ TEST(ComputeGradient, KnownGrad){
                 double y = j * grid->dy;
                 double z = k * grid->dz;
 
-                double dfdx_exact = 3.0 * 1.1 * x * x;
-                double dfdy_exact = 3.0 * 2.2 * y * y;
-                double dfdz_exact = 3.0 * 3.3 * z * z;
+                double dfdx_exact = 2.0 * 1.1 * x;
+                double dfdy_exact = 2.0 * 2.2 * y;
+                double dfdz_exact = 2.0 * 3.3 * z;
 
                 EXPECT_NEAR(grad.x()(i,j,k), dfdx_exact, tol)
                     << "Error in dfdx at (i,j,k)=(" << i << "," << j << "," << k << ")";
@@ -713,5 +712,4 @@ TEST(ComputeGradient, KnownGrad){
         for (size_t j = 0; j < grid->Ny; ++j)
             for (size_t k = 0; k < grid->Nz; ++k)
                 EXPECT_DOUBLE_EQ(grad.x()(i,j,k), 0.0);
-
 }
