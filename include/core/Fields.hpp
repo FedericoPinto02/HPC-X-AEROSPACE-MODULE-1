@@ -20,12 +20,12 @@ public:
    * @brief Getter for the pointer to the grid information.
    * @return the pointer to the grid information
    */
-  std::shared_ptr<const Grid> getGrid() { return p_grid; }
+  [[nodiscard]] std::shared_ptr<const Grid> getGrid() { return p_grid; }
 
   /**
    * @overload
    */
-  std::shared_ptr<const Grid> getGrid() const { return p_grid; }
+  [[nodiscard]] std::shared_ptr<const Grid> getGrid() const { return p_grid; }
 
   /**
    * @brief Read the value in the field at given position.
@@ -143,7 +143,7 @@ public:
    * @param initialY the initial values to populate the y-component with
    * @param initialZ the initial values to populate the z-component with
    */
-  void setup(std::shared_ptr<Grid> gridPtr, std::vector<Field::Scalar> initialX,
+  void setup(std::shared_ptr<const Grid> gridPtr, std::vector<Field::Scalar> initialX,
              std::vector<Field::Scalar> initialY,
              std::vector<Field::Scalar> initialZ);
 
