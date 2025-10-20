@@ -647,3 +647,71 @@ TEST(GeneralSecondDerivativeTest, ComputeAllSecondDerivatives) {
                 EXPECT_DOUBLE_EQ(dfdxx(i,j,k), 0.0);
             }
 }
+
+TEST(ComputeGradient, KnownGrad){
+    // === Grid setup ===
+    std::shared_ptr<const Grid> grid = std::make_shared<Grid>(5, 5, 5, 0.5, 0.5, 0.5);
+    std::shared_ptr< Grid> grid2 = std::make_shared<Grid>(5, 5, 5, 0.5, 0.5, 0.5);
+
+    // === Field: f(x,y,z) = 1.1 * x^3 + 2.2 * y^3 + 3.3 * z^3 ===
+    std::vector<Field::Scalar> values(grid->size());
+    size_t idx = 0;
+    for (size_t k = 0; k < grid->Nz; ++k)
+        for (size_t j = 0; j < grid->Ny; ++j)
+            for (size_t i = 0; i < grid->Nx; ++i, ++idx) {
+                double x = i * grid->dx;
+                double y = j * grid->dy;
+                double z = k * grid->dz;
+                values[idx] = 1.1 * x*x*x + 2.2*y*y*y + 3.3*z*z*z;
+            }
+
+    // === Setup Field and derivatives ===
+    Field field;
+    field.setup(grid, values);
+
+    VectorField grad;
+    grad.setup( grid2, std::vector<double>(grid->size(), 0.0), 
+        std::vector<double>(grid->size(), 0.0), std::vector<double>(grid->size(), 0.0) );
+    
+    // === Compute gradient ===
+    Derivatives deriv;
+    deriv.computeGradient(field, grad);
+    
+    // === Check gradient in interior ===
+    const double tol = 1e-5;
+    for (size_t k = 1; k < grid->Nz - 1; ++k)
+        for (size_t j = 1; j < grid->Ny - 1; ++j)
+            for (size_t i = 1; i < grid->Nx - 1; ++i) {
+                double x = i * grid->dx;
+                double y = j * grid->dy;
+                double z = k * grid->dz;
+
+                double dfdx_exact = 3.0 * 1.1 * x * x;
+                double dfdy_exact = 3.0 * 2.2 * y * y;
+                double dfdz_exact = 3.0 * 3.3 * z * z;
+
+                EXPECT_NEAR(grad.x()(i,j,k), dfdx_exact, tol)
+                    << "Error in dfdx at (i,j,k)=(" << i << "," << j << "," << k << ")";
+                EXPECT_NEAR(grad.y()(i,j,k), dfdy_exact, tol)
+                    << "Error in dfdy at (i,j,k)=(" << i << "," << j << "," << k << ")";
+                EXPECT_NEAR(grad.z()(i,j,k), dfdz_exact, tol)
+                    << "Error in dfdz at (i,j,k)=(" << i << "," << j << "," << k << ")";
+            }
+
+    // === Borders should stay at zero ===
+    for (size_t k : {size_t(0), grid->Nz-1})
+        for (size_t j = 0; j < grid->Ny; ++j)
+            for (size_t i = 0; i < grid->Nx; ++i)
+                EXPECT_DOUBLE_EQ(grad.z()(i,j,k), 0.0);
+
+    for (size_t j : {size_t(0), grid->Ny-1})
+        for (size_t k = 0; k < grid->Nz; ++k)
+            for (size_t i = 0; i < grid->Nx; ++i)
+                EXPECT_DOUBLE_EQ(grad.y()(i,j,k), 0.0);
+
+    for (size_t i : {size_t(0), grid->Nx-1})
+        for (size_t j = 0; j < grid->Ny; ++j)
+            for (size_t k = 0; k < grid->Nz; ++k)
+                EXPECT_DOUBLE_EQ(grad.x()(i,j,k), 0.0);
+
+}
