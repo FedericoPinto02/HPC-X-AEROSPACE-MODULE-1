@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <execution>
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 #include "core/Mesh.hpp"

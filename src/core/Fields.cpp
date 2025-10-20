@@ -11,7 +11,7 @@ Field::setup(std::shared_ptr<const Grid> gridPtr, std::vector<Field::Scalar> ini
     if (initialValues.size() != gridPtr->size()) {
         throw std::invalid_argument("Initial values size does not match grid size.");
     }
-    p_grid = std::move(gridPtr);
+    p_grid = gridPtr;
     m_v = std::move(initialValues);
 }
 
@@ -71,10 +71,10 @@ void VectorField::setup(std::shared_ptr<const Grid> gridPtr,
     if (!gridPtr) {
         throw std::invalid_argument("Grid pointer cannot be null.");
     }
-    p_grid = std::move(gridPtr);
-    m_x.setup(gridPtr, std::move(initialX));
-    m_y.setup(gridPtr, std::move(initialY));
-    m_z.setup(gridPtr, std::move(initialZ));
+    p_grid = gridPtr;
+    m_x.setup(p_grid, std::move(initialX));
+    m_y.setup(p_grid, std::move(initialY));
+    m_z.setup(p_grid, std::move(initialZ));
 }
 
 void VectorField::update(std::vector<Field::Scalar> newX,
