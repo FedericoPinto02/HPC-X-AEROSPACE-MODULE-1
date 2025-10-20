@@ -1,0 +1,9 @@
+{
+  "mesh": { "nx": 50, "ny": 50, "nz": 50, "dx": 1.0, "dy": 1.0, "dz": 1.0 },
+
+  "physics": { "viscosity": 1e-3},
+
+  "initial_conditions": { "velocity": [0.0, 0.0, 0.0], "pressure": 0.0 },
+
+  "time": { "dt": 0.001, "t_end": 1.0 }
+}
