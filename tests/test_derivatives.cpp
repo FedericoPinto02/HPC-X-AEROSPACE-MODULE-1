@@ -579,7 +579,6 @@ TEST(ComputeDzz, Throws_NegativeDz) {
     EXPECT_THROW(deriv.computeDzz(field, dzz), std::runtime_error);
 }
 
-
 TEST(GeneralSecondDerivativeTest, ComputeAllSecondDerivatives) {
     // === Grid setup ===
     std::shared_ptr<const Grid> grid = std::make_shared<Grid>(5, 5, 5, 0.5, 0.5, 0.5);
@@ -712,4 +711,41 @@ TEST(ComputeGradient, KnownGrad){
         for (size_t j = 0; j < grid->Ny; ++j)
             for (size_t k = 0; k < grid->Nz; ++k)
                 EXPECT_DOUBLE_EQ(grad.x()(i,j,k), 0.0);
+}
+
+TEST(ComputeDivergence, SimpleLinearField) {
+    // === Grid setup ===
+    std::shared_ptr<const Grid> grid = std::make_shared<Grid>(5, 5, 5, 0.5, 0.5, 0.5);
+
+    // === Field: f(x,y,z) = x + 2y + 3z ===
+    std::vector<Field::Scalar> values(grid->size());
+    size_t idx = 0;
+    for (size_t k = 0; k < grid->Nz; ++k)
+        for (size_t j = 0; j < grid->Ny; ++j)
+            for (size_t i = 0; i < grid->Nx; ++i, ++idx) {
+                double x = i * grid->dx;
+                double y = j * grid->dy;
+                double z = k * grid->dz;
+                values[idx] = x + 2.0*y + 3.0*z;
+            }
+
+    Field field;
+    field.setup(grid, values);
+
+    Field divergence;
+    divergence.setup(grid, std::vector<Field::Scalar>(grid->size(), 0.0));
+
+    // === Compute divergence ===
+    Derivatives deriv;
+    deriv.computeDivergence(field, divergence);
+
+    // === Check interior ===
+    const double tol = 1e-5;
+    for (size_t k = 1; k < grid->Nz - 1; ++k)
+        for (size_t j = 1; j < grid->Ny - 1; ++j)
+            for (size_t i = 1; i < grid->Nx - 1; ++i) {
+                double div_exact = 6.0; // = 6.0
+                EXPECT_NEAR(divergence(i,j,k), div_exact, tol)
+                    << "Error at (i,j,k)=(" << i << "," << j << "," << k << ")";
+            }
 }
