@@ -2,6 +2,13 @@
 #include "core/Mesh.hpp"
 #include <stdexcept>
 
+void Derivatives::computeGradient(const Field &field, VectorField &gradient) {
+    computeDx(field, gradient.x());
+    computeDy(field, gradient.y());
+    computeDz(field, gradient.z());
+    // todo - may be optimized in terms of locality: tiling ??
+}
+
 void Derivatives::computeDx(const Field &field, Field &dx) {
 
     // safety checks
@@ -122,6 +129,26 @@ void Derivatives::computeDz(const Field &field, Field &dz) {
                 }
 }
 
+void Derivatives::computeDivergence(const Field &field, Field &divergence) {
+    Field tmp;
+    tmp.setup(field.getGrid(),
+                std::vector<Field::Scalar>(field.getGrid()->size(), 0.0));
+
+    divergence.reset();
+    computeDx(field, tmp);
+    divergence.add(tmp);
+    computeDy(field, tmp);
+    divergence.add(tmp);
+    computeDz(field, tmp);
+    divergence.add(tmp);
+}
+
+void Derivatives::computeHessianDiag(const Field &field, VectorField &hessianDiag) {
+    computeDx(field, hessianDiag.x());
+    computeDy(field, hessianDiag.y());
+    computeDz(field, hessianDiag.z());
+    // todo - may be optimized in terms of locality: tiling ??
+}
 
 void Derivatives::computeDxx(const Field &field, Field &dxx) {
 
