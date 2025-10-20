@@ -5,6 +5,7 @@
 void Derivatives::computeDx(const Field &field, Field &dx) {
 
     // safety checks
+    // todo - are they really needed ?? wait profiling
     if (!field.getGrid()) {
         throw std::runtime_error("input field has null grid.");
     }
@@ -44,6 +45,7 @@ void Derivatives::computeDx(const Field &field, Field &dx) {
 void Derivatives::computeDy(const Field &field, Field &dy) {
 
     // safety checks
+    // todo - are they really needed ?? wait profiling
     if (!field.getGrid()) {
         throw std::runtime_error("input field has null grid.");
     }
@@ -83,6 +85,7 @@ void Derivatives::computeDy(const Field &field, Field &dy) {
 void Derivatives::computeDz(const Field &field, Field &dz) {
     
     // safety checks
+    // todo - are they really needed ?? wait profiling
     if (!field.getGrid()) {
         throw std::runtime_error("input field has null grid.");
     }
@@ -123,7 +126,8 @@ void Derivatives::computeDz(const Field &field, Field &dz) {
 void Derivatives::computeDxx(const Field &field, Field &dxx) {
 
     // safety checks
-    if (!field.getGrid()) {
+    
+    // todo - are they really needed ?? wait profilingif (!field.getGrid()) {
         throw std::runtime_error("input field has null grid.");
     }
     if (!dxx.getGrid()) {
@@ -162,6 +166,7 @@ void Derivatives::computeDxx(const Field &field, Field &dxx) {
 void Derivatives::computeDyy(const Field &field, Field &dyy) {
 
     // safety checks
+    // todo - are they really needed ?? wait profiling
     if (!field.getGrid()) {
         throw std::runtime_error("input field has null grid.");
     }
@@ -201,6 +206,7 @@ void Derivatives::computeDyy(const Field &field, Field &dyy) {
 void Derivatives::computeDzz(const Field &field, Field &dzz) {
 
     // safety checks
+    // todo - are they really needed ?? wait profiling
     if (!field.getGrid()) {
         throw std::runtime_error("input field has null grid.");
     }
