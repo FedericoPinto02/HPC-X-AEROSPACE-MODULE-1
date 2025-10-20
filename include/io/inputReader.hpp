@@ -31,7 +31,7 @@ class InputReader {
     public:
         InputReader() {};
 
-        void readAndSetInput(const std::string& filename) {}
+        InputData readAndSetInput(const std::string& filename) {}
 
     private:
         std::string filename;

@@ -4,11 +4,11 @@
 #include <core/Fields.hpp>
 
 struct SimulationData{
-    std::shared_ptr<Mesh> mesh;
+    std::shared_ptr<Grid> mesh;
     std::shared_ptr<Field> pressure;
     std::shared_ptr<VectorField> velocity;
     InputData input;
-}
+};
 
 class Initializer {
     public:
