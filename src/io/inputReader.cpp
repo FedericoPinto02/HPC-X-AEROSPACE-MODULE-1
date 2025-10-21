@@ -1,17 +1,24 @@
 #include "io/inputReader.hpp"
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
+#include <nlohmann/json.hpp>
 
-InputReader::InputReader(const std::string& filename) : filename(filename) {}
+using json = nlohmann::json;
 
-InputData InputReader::readAndSetInput(const std::string& filename){
+InputData InputReader::readAndSetInput(const std::string& filename) {
     std::ifstream inputFile(filename);
     if (!inputFile.is_open()) {
         throw std::runtime_error("Could not open input file: " + filename);
     }
 
-    nlohmann::json jsonData;
-    inputFile >> jsonData;
+    json jsonData;
+    try {
+        inputFile >> jsonData;
+    } catch (const json::exception& e) {
+        throw std::runtime_error("JSON parsing error: " + std::string(e.what()));
+    }
+
     InputData data;
 
     // Parse mesh data

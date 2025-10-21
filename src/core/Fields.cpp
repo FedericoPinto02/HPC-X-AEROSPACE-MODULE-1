@@ -5,14 +5,14 @@
 // Field class methods
 // ----------------------------------------------------------------
 void
-Field::setup(std::shared_ptr<const Grid> gridPtr, std::vector<Field::Scalar> initialValues) {
+Field::setup(std::shared_ptr<Grid> gridPtr, std::vector<Field::Scalar> initialValues) {
     if (!gridPtr) {
         throw std::invalid_argument("Grid pointer cannot be null.");
     }
     if (initialValues.size() != gridPtr->size()) {
         throw std::invalid_argument("Initial values size does not match grid size.");
     }
-    p_grid = std::move(gridPtr);
+    p_grid = gridPtr;
     m_v = std::move(initialValues);
 }
 
@@ -72,7 +72,7 @@ void VectorField::setup(std::shared_ptr<Grid> gridPtr,
     if (!gridPtr) {
         throw std::invalid_argument("Grid pointer cannot be null.");
     }
-    p_grid = std::move(gridPtr);
+    p_grid = gridPtr;
     m_x.setup(gridPtr, std::move(initialX));
     m_y.setup(gridPtr, std::move(initialY));
     m_z.setup(gridPtr, std::move(initialZ));

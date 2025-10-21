@@ -3,10 +3,8 @@
 
 #include <algorithm>
 #include <cstddef>
-#include <execution>
 #include <memory>
 #include <vector>
-
 #include "core/Mesh.hpp"
 
 /**
@@ -25,18 +23,18 @@ public:
    * @brief Constructor with a provided Grid.
    * @param gridPtr the pointer to the Grid
    */
-  Field(std::shared_ptr<const Grid> gridPtr) : p_grid(std::move(gridPtr)) {}
+  Field(std::shared_ptr<Grid> gridPtr) : p_grid(std::move(gridPtr)) {}
 
   /**
    * @brief Getter for the pointer to the grid information.
    * @return the pointer to the grid information
    */
-  std::shared_ptr<const Grid> getGrid() { return p_grid; }
+  std::shared_ptr<Grid> getGrid() { return p_grid; }
 
   /**
    * @overload
    */
-  std::shared_ptr<const Grid> getGrid() const { return p_grid; }
+  std::shared_ptr<Grid> getGrid() const { return p_grid; }
 
   /**
    * @brief Read the value in the field at given position.
@@ -66,7 +64,7 @@ public:
    * @param gridPtr the pointer to the grid information
    * @param initialValues the initial values to populate the field with
    */
-  void setup(std::shared_ptr<const Grid> gridPtr,
+  void setup(std::shared_ptr<Grid> gridPtr,
              std::vector<Scalar> initialValues);
 
   /**
@@ -103,7 +101,7 @@ private:
   /**
    * @brief Pointer to the grid information (dimensions and spacing).
    */
-  std::shared_ptr<const Grid> p_grid;
+  std::shared_ptr<Grid> p_grid;
 
   /**
    * @brief Vector storing the field values in a flattened, row-major indexed 1D
@@ -121,12 +119,12 @@ public:
    * @brief Getter for the pointer to the grid information.
    * @return the pointer to the grid information
    */
-  std::shared_ptr<const Grid> getGrid() { return p_grid; }
+  std::shared_ptr<Grid> getGrid() { return p_grid; }
 
   /**
    * @overload
    */
-  std::shared_ptr<const Grid> getGrid() const { return p_grid; }
+  std::shared_ptr<Grid> getGrid() const { return p_grid; }
 
   /**
    * @brief Access the x-component of the vector field.
@@ -154,7 +152,8 @@ public:
    * @param initialY the initial values to populate the y-component with
    * @param initialZ the initial values to populate the z-component with
    */
-  void setup(std::shared_ptr<Grid> gridPtr, std::vector<Field::Scalar> initialX,
+  void setup(std::shared_ptr<Grid> gridPtr, 
+             std::vector<Field::Scalar> initialX,
              std::vector<Field::Scalar> initialY,
              std::vector<Field::Scalar> initialZ);
 
@@ -186,7 +185,7 @@ public:
   void multiply(Field::Scalar value);
 
 private:
-  std::shared_ptr<const Grid> p_grid;
+  std::shared_ptr<Grid> p_grid;
   Field m_x;
   Field m_y;
   Field m_z;
