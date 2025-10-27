@@ -50,11 +50,9 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
         break;
     }
     std::fill(subdiag.begin(), subdiag.end(), -d);
-    subdiag.front() *= 2;
     subdiag.back() *= 2;
     std::fill(supdiag.begin(), supdiag.end(), -d);
     supdiag.front() *= 2;
-    supdiag.back() *= 2;
     std::fill(diag.begin(), diag.end(), 1+2*d);
 }
 
@@ -96,10 +94,10 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
         break;
     }
 
-    for (size_t i=1 ; i<matA.getSize() ; i++)
+    for (size_t i=1 ; i<matA.getSize()-1 ; i++)
     {
         double gamma = porosity.valueWithOffset(iStart, jStart, kStart, derivativeDirection, i);
-        subdiag[i-2] = - gamma * dCoef;
+        subdiag[i-1] = - gamma * dCoef;
         supdiag[i] = - gamma * dCoef;
         diag[i] = 1 + 2 * gamma * dCoef;
     }
@@ -142,7 +140,7 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
         
 
         rhsC.back() = uBoundNew(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, matA.getSize()); 
-
+        break;
 
     
     case BoundaryType::Tangent:
@@ -158,13 +156,11 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
                         gamma * dCoef * eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,matA.getSize()-1) +
                         -3* gamma * dCoef * eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,matA.getSize()) +
                          gamma * dCoef * xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,matA.getSize());
-
+        break;
     default:
         break;
     }
         
-    
-
 }
 
 void LinearSys::ThomaSolver(){
@@ -191,7 +187,7 @@ void LinearSys::ThomaSolver(){
     {
         b[i] = b[i] - a[i-1] * c[i-1];
         rhsC[i] = rhsC[i] - a[i-1] * rhsC[i-1];
-        if (i < n - 1)                  // needed because of c dimensions (n-1)
+        if (i < matA.getSize() - 1)                  // needed because of c dimensions (n-1)
             c[i] /= b[i];
         rhsC[i] /= b[i];
     }
