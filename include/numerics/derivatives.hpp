@@ -10,45 +10,23 @@
  */
 class Derivatives {
 public:
-    void computeGradient(const Field &field, VectorField &gradient) {
-        computeDx(field, gradient.x());
-        computeDy(field, gradient.y());
-        computeDz(field, gradient.z());
-        // todo - may be optimized in terms of locality: tiling ??
-    }
+    void computeGradient(const Field &field, VectorField &gradient) const;
 
-    void computeDx(const Field &field, Field &dx);
+    void computeDx(const Field &field, Field &dx) const;
 
-    void computeDy(const Field &field, Field &dy);
+    void computeDy(const Field &field, Field &dy) const;
 
-    void computeDz(const Field &field, Field &dz);
+    void computeDz(const Field &field, Field &dz) const;
 
-    void computeDivergence(const Field &field, Field &divergence) {
-        Field tmp;
-        tmp.setup(field.getGrid(),
-                  std::vector<Field::Scalar>(field.getGrid()->size(), 0.0));
+    void computeDivergence(const Field &field, Field &divergence) const;
 
-        divergence.reset();
-        computeDx(field, tmp);
-        divergence.add(tmp);
-        computeDy(field, tmp);
-        divergence.add(tmp);
-        computeDz(field, tmp);
-        divergence.add(tmp);
-    }
+    void computeHessianDiag(const Field &field, VectorField &hessianDiag) const;
 
-    void computeHessianDiag(const Field &field, VectorField &hessianDiag) {
-        computeDx(field, hessianDiag.x());
-        computeDy(field, hessianDiag.y());
-        computeDz(field, hessianDiag.z());
-        // todo - may be optimized in terms of locality: tiling ??
-    }
+    void computeDxx(const Field &field, Field &dxx) const;
 
-    void computeDxx(const Field &field, Field &dxx);
+    void computeDyy(const Field &field, Field &dyy) const;
 
-    void computeDyy(const Field &field, Field &dyy);
-
-    void computeDzz(const Field &field, Field &dzz);
+    void computeDzz(const Field &field, Field &dzz) const;
 };
 
 #endif // NSBSOLVER_DERIVATIVES_HPP
