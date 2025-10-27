@@ -60,7 +60,7 @@ void Field::multiply(Field::Scalar value) {
                   [value](Scalar &elem) { elem *= value; });*/
 }
 
-
+  
 // ----------------------------------------------------------------
 // VectorField class methods
 // ----------------------------------------------------------------
