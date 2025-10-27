@@ -6,7 +6,7 @@
 #include <core/Fields.hpp>
 
 
-LinSys::LinSys(int n, BoundaryType boundaryType) 
+LinearSys::LinearSys(int n, BoundaryType boundaryType) 
     : 
      boundaryType (boundaryType),
      matA (n)
@@ -16,7 +16,7 @@ LinSys::LinSys(int n, BoundaryType boundaryType)
     unknownX.resize(n, 0.0);
 }
 
-void LinSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field phi, const Axis direction)
+void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field phi, const Axis direction)
 {
 
     std::vector<double>& diag = matA.getDiag(0);
@@ -59,7 +59,9 @@ void LinSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field phi, c
 }
 
 // fix iStart please
-void LinSys::fillSystemVelocity(Field porosity, std::vector<double>& rhsIncomplete, VectorField U, const Axis direction, const size_t iStart, const size_t jStart, const size_t kStart)
+ void LinearSys::fillSystemVelocity(Field porosity, std::vector<double>& rhsIncomplete, 
+        VectorField etaNew, VectorField eta, VectorField xi,
+        const Axis direction, const size_t iStart, const size_t jStart, const size_t kStart)
 {
 
     std::vector<double>& diag = matA.getDiag(0);
@@ -122,7 +124,7 @@ void LinSys::fillSystemVelocity(Field porosity, std::vector<double>& rhsIncomple
             break;
         }
         */
-        diag.back() = 1.0; 
+        diag.back() = 1.0;  // the other is aready initialized to zero
         break;
     
     case BoundaryType::Tangent:
