@@ -22,5 +22,11 @@
   "time": {
     "dt": 0.1,
     "t_end": 1.0
+  },
+
+  "output": {
+    "output_interval": 20,
+    "output_prefix": "simulation_output"
   }
+
 }

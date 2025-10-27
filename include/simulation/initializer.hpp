@@ -13,6 +13,7 @@ struct SimulationData {
     std::shared_ptr<Grid> mesh;
     std::shared_ptr<Field> pressure;
     std::shared_ptr<VectorField> velocity;
+    std::shared_ptr<Field> porosity;
     InputData input;
 };
 
@@ -48,6 +49,13 @@ private:
      * @return shared pointer to the pressure Field
      */
     std::shared_ptr<Field> initializePressure(std::shared_ptr<Grid> grid);
+
+    /**
+     * @brief Initialize the porosity field.
+     * @param grid the computational grid
+     * @return shared pointer to the porosity Field
+     */
+    std::shared_ptr<Field> initializePorosity(std::shared_ptr<Grid> grid);
 
     /**
      * @brief Initialize the velocity vector field.

@@ -5,7 +5,7 @@
 // Field class methods
 // ----------------------------------------------------------------
 void
-Field::setup(std::shared_ptr<Grid> gridPtr, std::vector<Field::Scalar> initialValues) {
+Field::setup(std::shared_ptr<const Grid> gridPtr, std::vector<Field::Scalar> initialValues) {
     if (!gridPtr) {
         throw std::invalid_argument("Grid pointer cannot be null.");
     }
@@ -65,7 +65,7 @@ void Field::multiply(Field::Scalar value) {
 // ----------------------------------------------------------------
 // VectorField class methods
 // ----------------------------------------------------------------
-void VectorField::setup(std::shared_ptr<Grid> gridPtr,
+void VectorField::setup(std::shared_ptr<const Grid> gridPtr,
                         std::vector<Field::Scalar> initialX,
                         std::vector<Field::Scalar> initialY,
                         std::vector<Field::Scalar> initialZ) {

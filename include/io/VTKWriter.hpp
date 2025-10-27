@@ -1,4 +1,3 @@
-#pragma once
 #ifndef NSBSOLVER_VTKWRITER_HPP
 #define NSBSOLVER_VTKWRITER_HPP
 
