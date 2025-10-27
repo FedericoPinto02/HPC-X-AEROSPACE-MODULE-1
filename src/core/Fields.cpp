@@ -4,6 +4,48 @@
 // ----------------------------------------------------------------
 // Field class methods
 // ----------------------------------------------------------------
+Field::Scalar &
+Field::valueWithOffset(const size_t i, const size_t j, const size_t k,
+                       const Axis offsetDirection, const int offset) {
+    switch (offsetDirection) {
+        case Axis::X: {
+            const auto i_new = static_cast<size_t>(static_cast<ssize_t>(i) + offset);
+            return (*this)(i_new, j, k);
+        }
+        case Axis::Y: {
+            const auto j_new = static_cast<size_t>(static_cast<ssize_t>(j) + offset);
+            return (*this)(i, j_new, k);
+        }
+        case Axis::Z: {
+            const auto k_new = static_cast<size_t>(static_cast<ssize_t>(k) + offset);
+            return (*this)(i, j, k_new);
+        }
+        default:
+            throw std::invalid_argument("Invalid direction.");
+    }
+}
+
+const Field::Scalar &
+Field::valueWithOffset(const size_t i, const size_t j, const size_t k,
+                       const Axis offsetDirection, const int offset) const {
+    switch (offsetDirection) {
+        case Axis::X: {
+            const auto i_new = static_cast<size_t>(static_cast<ssize_t>(i) + offset);
+            return (*this)(i_new, j, k);
+        }
+        case Axis::Y: {
+            const auto j_new = static_cast<size_t>(static_cast<ssize_t>(j) + offset);
+            return (*this)(i, j_new, k);
+        }
+        case Axis::Z: {
+            const auto k_new = static_cast<size_t>(static_cast<ssize_t>(k) + offset);
+            return (*this)(i, j, k_new);
+        }
+        default:
+            throw std::invalid_argument("Invalid direction.");
+    }
+}
+
 void
 Field::setup(std::shared_ptr<const Grid> gridPtr, std::vector<Field::Scalar> initialValues) {
     if (!gridPtr) {
@@ -61,10 +103,63 @@ void Field::multiply(Field::Scalar value) {
                   [value](Scalar &elem) { elem *= value; });*/
 }
 
-  
+
 // ----------------------------------------------------------------
 // VectorField class methods
 // ----------------------------------------------------------------
+Field &VectorField::operator()(Axis componentDirection) {
+    switch (componentDirection) {
+        case Axis::X:
+            return m_x;
+        case Axis::Y:
+            return m_y;
+        case Axis::Z:
+            return m_z;
+        default:
+            throw std::invalid_argument("Invalid direction.");
+    }
+}
+
+const Field &VectorField::operator()(Axis componentDirection) const {
+    switch (componentDirection) {
+        case Axis::X:
+            return m_x;
+        case Axis::Y:
+            return m_y;
+        case Axis::Z:
+            return m_z;
+        default:
+            throw std::invalid_argument("Invalid direction.");
+    }
+}
+
+Field::Scalar &VectorField::operator()(const Axis componentDirection, const size_t i, const size_t j, const size_t k) {
+    switch (componentDirection) {
+        case Axis::X:
+            return m_x(i, j, k);
+        case Axis::Y:
+            return m_y(i, j, k);
+        case Axis::Z:
+            return m_z(i, j, k);
+        default:
+            throw std::invalid_argument("Invalid direction.");
+    }
+}
+
+const Field::Scalar &
+VectorField::operator()(const Axis componentDirection, const size_t i, const size_t j, const size_t k) const {
+    switch (componentDirection) {
+        case Axis::X:
+            return m_x(i, j, k);
+        case Axis::Y:
+            return m_y(i, j, k);
+        case Axis::Z:
+            return m_z(i, j, k);
+        default:
+            throw std::invalid_argument("Invalid direction.");
+    }
+}
+
 void VectorField::setup(std::shared_ptr<const Grid> gridPtr,
                         std::vector<Field::Scalar> initialX,
                         std::vector<Field::Scalar> initialY,
