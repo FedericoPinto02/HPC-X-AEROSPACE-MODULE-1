@@ -10,23 +10,23 @@
  */
 class Derivatives {
 public:
-    void computeGradient(const Field &field, VectorField &gradient);
+    void computeGradient(const Field &field, VectorField &gradient) const;
 
-    void computeDx(const Field &field, Field &dx);
+    void computeDx(const Field &field, Field &dx) const;
 
-    void computeDy(const Field &field, Field &dy);
+    void computeDy(const Field &field, Field &dy) const;
 
-    void computeDz(const Field &field, Field &dz);
+    void computeDz(const Field &field, Field &dz) const;
 
-    void computeDivergence(const Field &field, Field &divergence);
+    void computeDivergence(const Field &field, Field &divergence) const;
 
-    void computeHessianDiag(const Field &field, VectorField &hessianDiag);
+    void computeHessianDiag(const Field &field, VectorField &hessianDiag) const;
 
-    void computeDxx(const Field &field, Field &dxx);
+    void computeDxx(const Field &field, Field &dxx) const;
 
-    void computeDyy(const Field &field, Field &dyy);
+    void computeDyy(const Field &field, Field &dyy) const;
 
-    void computeDzz(const Field &field, Field &dzz);
+    void computeDzz(const Field &field, Field &dzz) const;
 };
 
 #endif // NSBSOLVER_DERIVATIVES_HPP
