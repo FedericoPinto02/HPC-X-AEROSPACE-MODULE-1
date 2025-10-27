@@ -19,9 +19,9 @@ LinSys::LinSys(int n, BoundaryType boundaryType)
 void LinSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field phi, const Axis direction)
 {
 
-    std::vector<double> diag = matA.getDiag(0);
-    std::vector<double> subdiag = matA.getDiag(-1);
-    std::vector<double> supdiag = matA.getDiag(1);
+    std::vector<double>& diag = matA.getDiag(0);
+    std::vector<double>& subdiag = matA.getDiag(-1);
+    std::vector<double>& supdiag = matA.getDiag(1);
 
     if (rhsIncomplete.size() != matA.getSize() - 2) {
         throw std::runtime_error("Dimension mismatch: rhsIncomplete must be size - 2.");
@@ -62,9 +62,9 @@ void LinSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field phi, c
 void LinSys::fillSystemVelocity(Field porosity, std::vector<double>& rhsIncomplete, VectorField U, const Axis direction, const size_t iStart, const size_t jStart, const size_t kStart)
 {
 
-    std::vector<double> diag = matA.getDiag(0);
-    std::vector<double> subdiag = matA.getDiag(-1);
-    std::vector<double> supdiag = matA.getDiag(1);
+    std::vector<double>& diag = matA.getDiag(0);
+    std::vector<double>& subdiag = matA.getDiag(-1);
+    std::vector<double>& supdiag = matA.getDiag(1);
 
     if (rhsIncomplete.size() != matA.getSize() - 2) {
         throw std::runtime_error("Dimension mismatch: rhsIncomplete must be size - 2.");
