@@ -39,7 +39,7 @@ double TridiagMat::getElement(int i, int j) const {
   return 0.0; // elements outside the tridiagonals are zero
 }
 
-std::vector<double> TridiagMat::getDiag(int w) const {
+std::vector<double>& TridiagMat::getDiag(int w) {
   if (w == -1)
     return subdiag;
   else if (w == 0)

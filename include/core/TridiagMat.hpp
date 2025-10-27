@@ -38,7 +38,7 @@ public:
    * @brief Get the whole diagonal, subdiagonal or supdiagonal
    * @param w number indicating sub (-1), diag (0) or sup (1)
    */
-  std::vector<double> getDiag(int w) const;
+  std::vector<double>& getDiag(int w);
 
   /**
    * @brief Get the first element from the diagonal w
