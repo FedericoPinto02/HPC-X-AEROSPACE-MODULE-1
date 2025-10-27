@@ -9,9 +9,9 @@
 #include "core/Mesh.hpp"
 
   enum class Axis {
-        x = 0,
-        y = 1,
-        z = 2
+        X = 0,
+        Y = 1,
+        Z = 2
     };
 
 /**

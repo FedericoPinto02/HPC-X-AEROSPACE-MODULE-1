@@ -32,8 +32,8 @@ public:
      * @brief Fill the linear system for Velocity variables
      */
     void fillSystemVelocity(Field& porosity, std::vector<double>& rhsIncomplete, 
-        VectorField& etaNew, VectorField& eta, VectorField& xi,
-        const Axis direction, const size_t iStart, const size_t jStart, const size_t kStart);
+        VectorField& eta, VectorField& xi, VectorField& uBoundNew, VectorField& uBoundOld,
+        const Axis fieldComponent, const Axis derivativeDirection, const size_t iStart, const size_t jStart, const size_t kStart);
 
     /**
      * @brief Solve the linear system

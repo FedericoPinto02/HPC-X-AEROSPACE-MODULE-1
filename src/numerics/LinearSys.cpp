@@ -37,13 +37,13 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
     double d = 0;
     switch (direction)
     {
-    case Axis::x:
+    case Axis::X:
         d = 1 / grid->dx / grid->dx;
         break;
-    case Axis::y:
+    case Axis::Y:
         d = 1 / grid->dy / grid->dy;
         break;
-    case Axis::z:
+    case Axis::Z:
         d = 1 / grid->dz / grid->dz;
         break;
     default:
@@ -58,10 +58,10 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
     std::fill(diag.begin(), diag.end(), 1+2*d);
 }
 
-// fix iStart please
+
  void LinearSys::fillSystemVelocity(Field& porosity, std::vector<double>& rhsIncomplete, 
-        VectorField& etaNew, VectorField& eta, VectorField& xi,
-        const Axis direction, const size_t iStart, const size_t jStart, const size_t kStart)
+        VectorField& eta, VectorField& xi, VectorField& uBoundNew, VectorField& uBoundOld,
+        const Axis fieldComponent, const Axis derivativeDirection, const size_t iStart, const size_t jStart, const size_t kStart)
 {
 
     std::vector<double>& diag = matA.getDiag(0);
@@ -79,18 +79,18 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
     );
     // Need to complete RHS, once onto the switch case!
 
-    std::shared_ptr<const Grid> grid = etaNew.getGrid();
-    double d = 0;
-    switch (direction)
+    std::shared_ptr<const Grid> grid = eta.getGrid();
+    double dCoef = 0;
+    switch (derivativeDirection)
     {
-    case Axis::x:
-        d = 1 / grid->dx / grid->dx;
+    case Axis::X:
+        dCoef = 1 / grid->dx / grid->dx;
         break;
-    case Axis::y:
-        d = 1 / grid->dy / grid->dy;
+    case Axis::Y:
+        dCoef = 1 / grid->dy / grid->dy;
         break;
-    case Axis::z:
-        d = 1 / grid->dz / grid->dz;
+    case Axis::Z:
+        dCoef = 1 / grid->dz / grid->dz;
         break;
     default:
         break;
@@ -98,41 +98,63 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
 
     for (size_t i=1 ; i<matA.getSize() ; i++)
     {
-        double gamma = porosity(iStart, jStart, kStart, direction, i);
-        subdiag[i-2] = - gamma * d;
-        supdiag[i] = - gamma * d;
-        diag[i] = 1 + 2 * gamma * d;
+        double gamma = porosity(iStart, jStart, kStart, derivativeDirection, i);
+        subdiag[i-2] = - gamma * dCoef;
+        supdiag[i] = - gamma * dCoef;
+        diag[i] = 1 + 2 * gamma * dCoef;
     }
     
     switch (boundaryType)
     {
         // TO DO: write b.c. for RHS
     case BoundaryType::Normal:
-        /** 
-        switch (direction)
+        
+        switch (fieldComponent)
         {
-        case Axis::x:
-            rhsC = 1 / grid->dx / grid->dx;
+        case Axis::X:  // it's a dirichlet on u component
+            rhsC.front() = uBoundNew(Axis::X, iStart, jStart, kStart, Axis::X,  0) + 
+                            - grid->dx /2 * ( (uBoundNew(Axis::Y, iStart, jStart, kStart, Axis::Y,  1) 
+                        - uBoundNew(Axis::Y, iStart, jStart, kStart, Axis::Y,  -1)) / grid->dy +
+                        (uBoundNew(Axis::Z, iStart, jStart, kStart, Axis::Z,  1) 
+                        - uBoundNew(Axis::Z, iStart, jStart, kStart, Axis::Z,  -1)) / grid->dz
+                            );
             break;
-        case Axis::y:
-            d = 1 / grid->dy / grid->dy;
+        case Axis::Y:
+            rhsC.front() = uBoundNew(Axis::Y, iStart, jStart, kStart, Axis::Y,  0) + 
+                            - grid->dy /2 * ( (uBoundNew(Axis::X, iStart, jStart, kStart, Axis::X,  1) 
+                        - uBoundNew(Axis::X, iStart, jStart, kStart, Axis::X,  -1)) / grid->dx +
+                        (uBoundNew(Axis::Z, iStart, jStart, kStart, Axis::Z,  1) 
+                        - uBoundNew(Axis::Z, iStart, jStart, kStart, Axis::Z,  -1)) / grid->dz
+                            );
             break;
-        case Axis::z:
-            d = 1 / grid->dz / grid->dz;
+        case Axis::Z:
+            rhsC.front() = uBoundNew(Axis::Z, iStart, jStart, kStart, Axis::Z,  0) + 
+                            - grid->dz /2 * ( (uBoundNew(Axis::X, iStart, jStart, kStart, Axis::X,  1) 
+                        - uBoundNew(Axis::X, iStart, jStart, kStart, Axis::X,  -1)) / grid->dx +
+                        (uBoundNew(Axis::Y, iStart, jStart, kStart, Axis::Y,  1) 
+                        - uBoundNew(Axis::Y, iStart, jStart, kStart, Axis::Y,  -1)) / grid->dy
+                            );
             break;
         default:
             break;
         }
-        */
+        
         diag.back() = 1.0;  // the other is aready initialized to zero
-        rhsC.back() = eta
+        rhsC.back() = uBoundNew(fieldComponent, iStart, jStart, kStart, derivativeDirection, matA.getSize()); 
         break;
     
     case BoundaryType::Tangent:
         diag.front() = 1.0;
-        double gamma = porosity(iStart, jStart, kStart, direction, matA.getSize());
-        diag.back() = 1 + 3 * gamma * d;
-        subdiag.back() = - gamma * d;
+        double gamma = porosity(iStart, jStart, kStart, derivativeDirection, matA.getSize());
+        diag.back() = 1 + 3 * gamma * dCoef;
+        subdiag.back() = - gamma * dCoef;
+
+        rhsC.front() = uBoundNew(fieldComponent, iStart, jStart, kStart, derivativeDirection, 0); 
+        rhsC.back() = 2*gamma*dCoef *uBoundNew(fieldComponent, iStart, jStart, kStart, derivativeDirection,  matA.getSize()) + 
+                        2*gamma*dCoef *uBoundOld(fieldComponent, iStart, jStart, kStart, derivativeDirection,  matA.getSize()) + 
+                        gamma * dCoef * eta(fieldComponent, iStart, jStart, kStart, derivativeDirection,  matA.getSize()-1) +
+                        -3* gamma * dCoef * eta(fieldComponent, iStart, jStart, kStart, derivativeDirection,  matA.getSize()) +
+                         gamma * dCoef * xi(fieldComponent, iStart, jStart, kStart, derivativeDirection,  matA.getSize()) ;
 
     default:
         break;
