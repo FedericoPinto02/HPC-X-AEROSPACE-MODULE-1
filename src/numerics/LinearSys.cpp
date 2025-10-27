@@ -16,7 +16,7 @@ LinearSys::LinearSys(int n, BoundaryType boundaryType)
     unknownX.resize(n, 0.0);
 }
 
-void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field phi, const Axis direction)
+void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& phi, const Axis direction)
 {
 
     std::vector<double>& diag = matA.getDiag(0);
@@ -59,8 +59,8 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field phi
 }
 
 // fix iStart please
- void LinearSys::fillSystemVelocity(Field porosity, std::vector<double>& rhsIncomplete, 
-        VectorField etaNew, VectorField eta, VectorField xi,
+ void LinearSys::fillSystemVelocity(Field& porosity, std::vector<double>& rhsIncomplete, 
+        VectorField& etaNew, VectorField& eta, VectorField& xi,
         const Axis direction, const size_t iStart, const size_t jStart, const size_t kStart)
 {
 
@@ -79,7 +79,7 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field phi
     );
     // Need to complete RHS, once onto the switch case!
 
-    std::shared_ptr<const Grid> grid = U.getGrid();
+    std::shared_ptr<const Grid> grid = etaNew.getGrid();
     double d = 0;
     switch (direction)
     {
@@ -125,6 +125,7 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field phi
         }
         */
         diag.back() = 1.0;  // the other is aready initialized to zero
+        rhsC.back() = eta
         break;
     
     case BoundaryType::Tangent:

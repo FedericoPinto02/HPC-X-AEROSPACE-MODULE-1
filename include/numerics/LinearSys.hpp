@@ -26,13 +26,13 @@ public:
     /**
      * @brief Fill the linear system for Pressure variables
      */
-    void fillSystemPressure(std::vector<double>& rhsIncomplete, Field phi, const Axis direction);
+    void fillSystemPressure(std::vector<double>& rhsIncomplete, Field& phi, const Axis direction);
 
     /**
      * @brief Fill the linear system for Velocity variables
      */
-    void fillSystemVelocity(Field porosity, std::vector<double>& rhsIncomplete, 
-        VectorField etaNew, VectorField eta, VectorField xi,
+    void fillSystemVelocity(Field& porosity, std::vector<double>& rhsIncomplete, 
+        VectorField& etaNew, VectorField& eta, VectorField& xi,
         const Axis direction, const size_t iStart, const size_t jStart, const size_t kStart);
 
     /**
