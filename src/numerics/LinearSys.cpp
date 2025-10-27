@@ -106,7 +106,7 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
     {
     case BoundaryType::Normal:
         
-        switch (fieldComponent)
+        {switch (fieldComponent)
         {
         case Axis::X:  // it's a dirichlet on u component
             rhsC.front() = uBoundNew(Axis::X).valueWithOffset(iStart, jStart, kStart, Axis::X,  0) 
@@ -133,7 +133,7 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
                             );
             break;
         default:
-            break;
+            break;}
         }
         
         diag.back() = 1.0;  // the other is aready initialized to zero
@@ -144,7 +144,7 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
 
     
     case BoundaryType::Tangent:
-        diag.front() = 1.0;
+        {diag.front() = 1.0;
         double gamma = porosity.valueWithOffset(iStart, jStart, kStart, derivativeDirection, matA.getSize());
         diag.back() = 1 + 3 * gamma * dCoef;
         subdiag.back() = - gamma * dCoef;
@@ -156,7 +156,7 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
                         gamma * dCoef * eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,matA.getSize()-1) +
                         -3* gamma * dCoef * eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,matA.getSize()) +
                          gamma * dCoef * xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,matA.getSize());
-        break;
+        break;}
     default:
         break;
     }

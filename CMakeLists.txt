@@ -17,6 +17,7 @@ enable_testing()
 # lib
 add_library(allib src/core/TridiagMat.cpp 
                   src/core/Fields.cpp
+                  src/numerics/LinearSys.cpp
                   src/numerics/derivatives.cpp
 )
 
@@ -29,6 +30,7 @@ target_include_directories(allib PUBLIC
 add_executable(alltests tests/test_tridiag.cpp
                         tests/test_fields.cpp
                         tests/test_derivatives.cpp
+                        tests/test_linearSys.cpp
 )
 
 
