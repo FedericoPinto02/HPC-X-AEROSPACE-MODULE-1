@@ -1,14 +1,14 @@
 #include <iostream>
-#include <numeric>
 #include "io/inputReader.hpp"
 #include "simulation/initializer.hpp"
+#include "io/VTKWriter.hpp"
 
 int main() {
     try {
         // 1️⃣ Legge il file di input
         InputReader reader;
         InputData data = reader.readAndSetInput(
-            "/Users/michele.milani/Desktop/HPC4AER/AUTERI/HPC-X-AREOSPACE-MODULE-1/data/config.json"
+            "../data/config.json"
         );
 
         // 2️⃣ Inizializza la simulazione
@@ -19,9 +19,6 @@ int main() {
         std::cout << "=== Mesh info ===\n";
         std::cout << "Size: " << sim.mesh->Nx << " x " 
                   << sim.mesh->Ny << " x " << sim.mesh->Nz << "\n";
-        std::cout << "Cell sizes: dx=" << sim.mesh->dx
-                  << ", dy=" << sim.mesh->dy
-                  << ", dz=" << sim.mesh->dz << "\n";
 
         // 4️⃣ Stampa valori iniziali di pressione e velocità
         std::cout << "\n=== Initial conditions ===\n";
@@ -50,9 +47,13 @@ int main() {
         std::cout << "Average velocity v: " << sum_v / N << "\n";
         std::cout << "Average velocity w: " << sum_w / N << "\n";
 
-        std::cout << "\n✅ All fields initialized successfully!\n";
-    }
-    catch (const std::exception& e) {
+        // 6️⃣ Scrive un file VTK con i campi iniziali
+        VTKWriter writer(Nx, Ny, Nz, sim.mesh->dx, sim.mesh->dy, sim.mesh->dz);
+        writer.write_legacy("../results/initial.vtk", sim.pressure, sim.velocity, "Initial Conditions");
+
+        std::cout << "\n✅ VTK file 'results/initial.vtk' scritto correttamente!\n";
+
+    } catch (const std::exception& e) {
         std::cerr << "❌ Exception: " << e.what() << std::endl;
         return 1;
     }

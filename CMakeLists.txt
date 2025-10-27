@@ -25,10 +25,15 @@ add_library(Initializer src/simulation/initializer.cpp)
 target_include_directories(Initializer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(Initializer PUBLIC Fields InputReader)
 
+add_library(VTKWriter src/io/VTKWriter.cpp)
+target_include_directories(VTKWriter PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+
 # Main executable
 add_executable(test_initializer src/main.cpp)
 target_link_libraries(test_initializer PRIVATE
     InputReader
     Initializer
     Fields
+    VTKWriter
 )
