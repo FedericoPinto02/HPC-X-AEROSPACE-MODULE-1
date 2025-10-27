@@ -98,7 +98,7 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
 
     for (size_t i=1 ; i<matA.getSize() ; i++)
     {
-        double gamma = porosity(iStart, jStart, kStart, derivativeDirection, i);
+        double gamma = porosity.valueWithOffset(iStart, jStart, kStart, derivativeDirection, i);
         subdiag[i-2] = - gamma * dCoef;
         supdiag[i] = - gamma * dCoef;
         diag[i] = 1 + 2 * gamma * dCoef;
@@ -106,33 +106,32 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
     
     switch (boundaryType)
     {
-        // TO DO: write b.c. for RHS
     case BoundaryType::Normal:
         
         switch (fieldComponent)
         {
         case Axis::X:  // it's a dirichlet on u component
-            rhsC.front() = uBoundNew(Axis::X, iStart, jStart, kStart, Axis::X,  0) + 
-                            - grid->dx /2 * ( (uBoundNew(Axis::Y, iStart, jStart, kStart, Axis::Y,  1) 
-                        - uBoundNew(Axis::Y, iStart, jStart, kStart, Axis::Y,  -1)) / grid->dy +
-                        (uBoundNew(Axis::Z, iStart, jStart, kStart, Axis::Z,  1) 
-                        - uBoundNew(Axis::Z, iStart, jStart, kStart, Axis::Z,  -1)) / grid->dz
+            rhsC.front() = uBoundNew(Axis::X).valueWithOffset(iStart, jStart, kStart, Axis::X,  0) 
+                            - grid->dx /2 * ( (uBoundNew(Axis::Y).valueWithOffset(iStart, jStart, kStart, Axis::Y,  1)
+                                            - uBoundNew(Axis::Y).valueWithOffset(iStart, jStart, kStart, Axis::Y,  -1)) / grid->dy +
+                                            (uBoundNew(Axis::Z).valueWithOffset(iStart, jStart, kStart, Axis::Z,  1)
+                                            - uBoundNew(Axis::Z).valueWithOffset(iStart, jStart, kStart, Axis::Z,  -1)) / grid->dz
                             );
             break;
         case Axis::Y:
-            rhsC.front() = uBoundNew(Axis::Y, iStart, jStart, kStart, Axis::Y,  0) + 
-                            - grid->dy /2 * ( (uBoundNew(Axis::X, iStart, jStart, kStart, Axis::X,  1) 
-                        - uBoundNew(Axis::X, iStart, jStart, kStart, Axis::X,  -1)) / grid->dx +
-                        (uBoundNew(Axis::Z, iStart, jStart, kStart, Axis::Z,  1) 
-                        - uBoundNew(Axis::Z, iStart, jStart, kStart, Axis::Z,  -1)) / grid->dz
+            rhsC.front() = uBoundNew(Axis::Y).valueWithOffset(iStart, jStart, kStart, Axis::Y,  0) 
+                            - grid->dy /2 * ( (uBoundNew(Axis::X).valueWithOffset(iStart, jStart, kStart, Axis::X,  1)
+                                            - uBoundNew(Axis::X).valueWithOffset(iStart, jStart, kStart, Axis::X,  -1)) / grid->dx +
+                                            (uBoundNew(Axis::Z).valueWithOffset(iStart, jStart, kStart, Axis::Z,  1)
+                                            - uBoundNew(Axis::Z).valueWithOffset(iStart, jStart, kStart, Axis::Z,  -1)) / grid->dz
                             );
             break;
         case Axis::Z:
-            rhsC.front() = uBoundNew(Axis::Z, iStart, jStart, kStart, Axis::Z,  0) + 
-                            - grid->dz /2 * ( (uBoundNew(Axis::X, iStart, jStart, kStart, Axis::X,  1) 
-                        - uBoundNew(Axis::X, iStart, jStart, kStart, Axis::X,  -1)) / grid->dx +
-                        (uBoundNew(Axis::Y, iStart, jStart, kStart, Axis::Y,  1) 
-                        - uBoundNew(Axis::Y, iStart, jStart, kStart, Axis::Y,  -1)) / grid->dy
+            rhsC.front() = uBoundNew(Axis::Z).valueWithOffset(iStart, jStart, kStart, Axis::Z,  0) 
+                            - grid->dz /2 * ( (uBoundNew(Axis::Y).valueWithOffset(iStart, jStart, kStart, Axis::Y,  1)
+                                                - uBoundNew(Axis::Y).valueWithOffset(iStart, jStart, kStart, Axis::Y,  -1)) / grid->dy +
+                                                (uBoundNew(Axis::X).valueWithOffset(iStart, jStart, kStart, Axis::X,  1)
+                                                - uBoundNew(Axis::X).valueWithOffset(iStart, jStart, kStart, Axis::X,  -1)) / grid->dx
                             );
             break;
         default:
@@ -140,21 +139,25 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
         }
         
         diag.back() = 1.0;  // the other is aready initialized to zero
-        rhsC.back() = uBoundNew(fieldComponent, iStart, jStart, kStart, derivativeDirection, matA.getSize()); 
-        break;
+        
+
+        rhsC.back() = uBoundNew(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, matA.getSize()); 
+
+
     
     case BoundaryType::Tangent:
         diag.front() = 1.0;
-        double gamma = porosity(iStart, jStart, kStart, derivativeDirection, matA.getSize());
+        double gamma = porosity.valueWithOffset(iStart, jStart, kStart, derivativeDirection, matA.getSize());
         diag.back() = 1 + 3 * gamma * dCoef;
         subdiag.back() = - gamma * dCoef;
 
-        rhsC.front() = uBoundNew(fieldComponent, iStart, jStart, kStart, derivativeDirection, 0); 
-        rhsC.back() = 2*gamma*dCoef *uBoundNew(fieldComponent, iStart, jStart, kStart, derivativeDirection,  matA.getSize()) + 
-                        2*gamma*dCoef *uBoundOld(fieldComponent, iStart, jStart, kStart, derivativeDirection,  matA.getSize()) + 
-                        gamma * dCoef * eta(fieldComponent, iStart, jStart, kStart, derivativeDirection,  matA.getSize()-1) +
-                        -3* gamma * dCoef * eta(fieldComponent, iStart, jStart, kStart, derivativeDirection,  matA.getSize()) +
-                         gamma * dCoef * xi(fieldComponent, iStart, jStart, kStart, derivativeDirection,  matA.getSize()) ;
+        rhsC.front() = uBoundNew(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,0); 
+
+        rhsC.back() = 2*gamma*dCoef *uBoundNew(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,matA.getSize()) + 
+                        2*gamma*dCoef *uBoundOld(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,matA.getSize()) + 
+                        gamma * dCoef * eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,matA.getSize()-1) +
+                        -3* gamma * dCoef * eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,matA.getSize()) +
+                         gamma * dCoef * xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,matA.getSize());
 
     default:
         break;
@@ -184,7 +187,7 @@ void LinearSys::ThomaSolver(){
    
     c[0] /= b[0];
     rhsC[0] /= b[0];
-    for ( unsigned int i = 1; i < n ; i++)
+    for ( unsigned int i = 1; i < matA.getSize() ; i++)
     {
         b[i] = b[i] - a[i-1] * c[i-1];
         rhsC[i] = rhsC[i] - a[i-1] * rhsC[i-1];
@@ -194,9 +197,8 @@ void LinearSys::ThomaSolver(){
     }
 
     // Backward Sweep 
-    x.resize(n);
-    x[n-1] = rhsC[n-1];
-    for ( int i = n - 2; i >= 0; i-- )
+    unknownX[matA.getSize()-1] = rhsC[matA.getSize()-1];
+    for ( int i = matA.getSize() - 2; i >= 0; i-- )
     {
         unknownX[i] = rhsC[i] - c[i] * unknownX[i+1];
     }
