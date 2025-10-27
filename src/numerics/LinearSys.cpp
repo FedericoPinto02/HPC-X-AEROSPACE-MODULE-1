@@ -164,5 +164,43 @@ void LinearSys::fillSystemPressure(std::vector<double>& rhsIncomplete, Field& ph
 
 }
 
+void LinearSys::ThomaSolver(){
+    /*
+    Solves the tridiagonal system Ax = f using the Thomas algorithm.
+    a: sub-diagonal (a[0] is not used)
+    b: main diagonal
+    c: super-diagonal (c[n-1] is not used)
+    f: right-hand side
+    x: solution vector (to be computed)
+    All vectors are of size n, except a and c which are of size n-1.
+    A compatibility check is performed to ensure the dimensions are correct.
+    */
+
+    // Compatibility check
+
+    std::vector<double> b = matA.getDiag(0);
+    std::vector<double> a = matA.getDiag(-1);
+    std::vector<double> c = matA.getDiag(1);
+   
+    c[0] /= b[0];
+    rhsC[0] /= b[0];
+    for ( unsigned int i = 1; i < n ; i++)
+    {
+        b[i] = b[i] - a[i-1] * c[i-1];
+        rhsC[i] = rhsC[i] - a[i-1] * rhsC[i-1];
+        if (i < n - 1)                  // needed because of c dimensions (n-1)
+            c[i] /= b[i];
+        rhsC[i] /= b[i];
+    }
+
+    // Backward Sweep 
+    x.resize(n);
+    x[n-1] = rhsC[n-1];
+    for ( int i = n - 2; i >= 0; i-- )
+    {
+        unknownX[i] = rhsC[i] - c[i] * unknownX[i+1];
+    }
+};
+
 
 
