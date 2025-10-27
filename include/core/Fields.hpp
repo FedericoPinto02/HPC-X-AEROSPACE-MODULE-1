@@ -8,6 +8,12 @@
 #include <vector>
 #include "core/Mesh.hpp"
 
+  enum class Axis {
+        x = 0,
+        y = 1,
+        z = 2
+    };
+
 /**
  * @brief Class representing a scalar field defined on a 3D grid.
  */
@@ -48,6 +54,63 @@ public:
         const size_t index = i + p_grid->Nx * (j + p_grid->Ny * k);
         return m_v.at(index);
     }
+
+    /**
+   * @brief Read the value in the field at given position considering direction offset.
+   * @param i x-index
+   * @param j y-index
+   * @param k z-index
+   * @param direction direction
+   * @param offset index offset
+   * @return the value in the field at position (i,j,k)
+   */
+    Scalar &operator()(const size_t i, const size_t j, const size_t k,const Axis direction, const int offset){
+        size_t i_new = i;
+        size_t j_new = j;
+        size_t k_new = k;
+
+    switch (direction) {
+    case Axis::x:
+      i_new = static_cast<size_t>(static_cast<ssize_t>(i) + offset);
+      break;
+    case Axis::y:
+      j_new = static_cast<size_t>(static_cast<ssize_t>(j) + offset);
+      break;
+    case Axis::z:
+      k_new = static_cast<size_t>(static_cast<ssize_t>(k) + offset);
+      break;
+    default:
+      throw std::invalid_argument("Invalid direction for operator()");
+    }
+
+    return (*this)(i_new, j_new, k_new);
+    };
+
+    /**
+   * @overload
+   */
+    const Scalar &operator()(const size_t i, const size_t j, const size_t k,const Axis direction, const int offset) const{
+
+        size_t i_new = i;
+        size_t j_new = j;
+        size_t k_new = k;
+
+    switch (direction) {
+    case Axis::x:
+      i_new = static_cast<size_t>(static_cast<ssize_t>(i) + offset);
+      break;
+    case Axis::y:
+      j_new = static_cast<size_t>(static_cast<ssize_t>(j) + offset);
+      break;
+    case Axis::z:
+      k_new = static_cast<size_t>(static_cast<ssize_t>(k) + offset);
+      break;
+    default:
+      throw std::invalid_argument("Invalid direction for operator()");
+    }
+
+    return (*this)(i_new, j_new, k_new);
+    };
 
     /**
      * @brief Setup the field with initial values matching a given grid.
