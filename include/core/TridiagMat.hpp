@@ -38,7 +38,32 @@ public:
    * @brief Get the whole diagonal, subdiagonal or supdiagonal
    * @param w number indicating sub (-1), diag (0) or sup (1)
    */
-  std::vector<double>& getDiag(int w);
+  std::vector<double>& getDiag(int w){
+    if (w == -1)
+    return subdiag;
+  else if (w == 0)
+    return diag;
+  else if (w == 1)
+    return supdiag;
+  else {
+    throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
+  }
+  };
+
+  /**
+   * @overload
+   */
+  std::vector<double> getDiag(int w) const{
+    if (w == -1)
+    return subdiag;
+  else if (w == 0)
+    return diag;
+  else if (w == 1)
+    return supdiag;
+  else {
+    throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
+  }
+  };
 
   /**
    * @brief Get the first element from the diagonal w

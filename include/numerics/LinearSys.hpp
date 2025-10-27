@@ -34,7 +34,9 @@ public:
     void fillSystemVelocity(Field& porosity, std::vector<double>& rhsIncomplete, 
         VectorField& etaNew, VectorField& eta, VectorField& xi,
         const Axis direction, const size_t iStart, const size_t jStart, const size_t kStart);
-
+    
+    void ThomaSolver();
+    
     /**
      * @brief Solve the linear system
      */
