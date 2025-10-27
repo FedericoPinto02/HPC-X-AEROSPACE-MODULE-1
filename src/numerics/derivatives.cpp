@@ -2,14 +2,14 @@
 #include "core/Mesh.hpp"
 #include <stdexcept>
 
-void Derivatives::computeGradient(const Field &field, VectorField &gradient) {
+void Derivatives::computeGradient(const Field &field, VectorField &gradient) const{
     computeDx(field, gradient.x());
     computeDy(field, gradient.y());
     computeDz(field, gradient.z());
     // todo - may be optimized in terms of locality: tiling ??
 }
 
-void Derivatives::computeDx(const Field &field, Field &dx) {
+void Derivatives::computeDx(const Field &field, Field &dx) const{
 
     // safety checks
     // todo - are they really needed ?? wait profiling
@@ -49,7 +49,7 @@ void Derivatives::computeDx(const Field &field, Field &dx) {
                 }
 }
 
-void Derivatives::computeDy(const Field &field, Field &dy) {
+void Derivatives::computeDy(const Field &field, Field &dy) const{
 
     // safety checks
     // todo - are they really needed ?? wait profiling
@@ -89,7 +89,7 @@ void Derivatives::computeDy(const Field &field, Field &dy) {
                 }
 }
 
-void Derivatives::computeDz(const Field &field, Field &dz) {
+void Derivatives::computeDz(const Field &field, Field &dz) const{
     
     // safety checks
     // todo - are they really needed ?? wait profiling
@@ -129,7 +129,7 @@ void Derivatives::computeDz(const Field &field, Field &dz) {
                 }
 }
 
-void Derivatives::computeDivergence(const Field &field, Field &divergence) {
+void Derivatives::computeDivergence(const Field &field, Field &divergence) const{
     Field tmp;
     tmp.setup(field.getGrid(),
                 std::vector<Field::Scalar>(field.getGrid()->size(), 0.0));
@@ -143,14 +143,14 @@ void Derivatives::computeDivergence(const Field &field, Field &divergence) {
     divergence.add(tmp);
 }
 
-void Derivatives::computeHessianDiag(const Field &field, VectorField &hessianDiag) {
+void Derivatives::computeHessianDiag(const Field &field, VectorField &hessianDiag) const{
     computeDxx(field, hessianDiag.x());
     computeDyy(field, hessianDiag.y());
     computeDzz(field, hessianDiag.z());
     // todo - may be optimized in terms of locality: tiling ??
 }
 
-void Derivatives::computeDxx(const Field &field, Field &dxx) {
+void Derivatives::computeDxx(const Field &field, Field &dxx) const{
 
     // safety checks
     
@@ -191,7 +191,7 @@ void Derivatives::computeDxx(const Field &field, Field &dxx) {
                 }
 }
 
-void Derivatives::computeDyy(const Field &field, Field &dyy) {
+void Derivatives::computeDyy(const Field &field, Field &dyy) const{
 
     // safety checks
     // todo - are they really needed ?? wait profiling
@@ -231,7 +231,7 @@ void Derivatives::computeDyy(const Field &field, Field &dyy) {
                 }
 }
 
-void Derivatives::computeDzz(const Field &field, Field &dzz) {
+void Derivatives::computeDzz(const Field &field, Field &dzz) const{
 
     // safety checks
     // todo - are they really needed ?? wait profiling
