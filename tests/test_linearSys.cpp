@@ -1,16 +1,15 @@
+#include <cmath>
 #include <gtest/gtest.h>
 #include <memory>
 #include <vector>
-#include <cmath>
 
 #include "core/Fields.hpp"
-#include "numerics/LinearSys.hpp"
 #include "core/Mesh.hpp"
-
+#include "numerics/LinearSys.hpp"
 
 // Fixture semplificata per test di accesso e operazioni scalari
 class FieldSimpleTestFixture : public ::testing::Test {
-protected:
+  protected:
     // --- Configurazione Griglia Principale ---
     const size_t Nx = 2, Ny = 3, Nz = 4;
     const size_t vectorSize = Nx * Ny * Nz; // 24
@@ -38,7 +37,8 @@ protected:
         testField.setup(gridPtr, initialData);
 
         // 3. Inizializza la griglia e il campo per i test di errore
-        mismatchedGridPtr = std::make_shared<const Grid>(5, 5, 5, 0.1, 0.1, 0.1);
+        mismatchedGridPtr =
+            std::make_shared<const Grid>(5, 5, 5, 0.1, 0.1, 0.1);
         std::vector<Field::Scalar> mismatchedData(125, 1.0);
         mismatchedField.setup(mismatchedGridPtr, mismatchedData);
     }
@@ -51,10 +51,10 @@ protected:
  *
  * Questo è un test "ovvio" perché non controlla nessun valore di
  * elemento, ma solo che il costruttore/setup del campo abbia
- * memorizzato correttamente la sua griglia e calcolato la sua dimensione totale.
+ * memorizzato correttamente la sua griglia e calcolato la sua dimensione
+ * totale.
  */
-TEST_F(FieldSimpleTestFixture, SetupCorrectlyInitializesGrid)
-{
+TEST_F(FieldSimpleTestFixture, SetupCorrectlyInitializesGrid) {
     // 1. Verifica che il campo abbia effettivamente una griglia
     ASSERT_NE(testField.getGrid(), nullptr);
 
@@ -63,8 +63,24 @@ TEST_F(FieldSimpleTestFixture, SetupCorrectlyInitializesGrid)
     EXPECT_EQ(testField.getGrid()->Nx, Nx);
     EXPECT_EQ(testField.getGrid()->Ny, Ny);
     EXPECT_EQ(testField.getGrid()->Nz, Nz);
-    
+
     // 3. Verifica che il campo 'sappia' la sua dimensione totale
     //    (vectorSize è ereditato dalla fixture)
     EXPECT_EQ(testField.getGrid()->Nx, vectorSize);
+}
+
+// === fillSystemPressure tests ===
+
+TEST_F(FieldSimpleTestFixture, FillSystemPressure_runTimeError) {
+    int matrixSize = 10;
+    LinearSys linearSys(matrixSize, BoundaryType::Normal);
+
+    std::vector<double> rhsIncomplete;
+    rhsIncomplete.resize(matrixSize);
+
+    const Axis direction = Axis::X;
+
+    EXPECT_THROW(
+        linearSys.fillSystemPressure(rhsIncomplete, testField, direction),
+        std::runtime_error);
 }
