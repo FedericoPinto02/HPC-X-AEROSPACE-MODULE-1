@@ -68,53 +68,63 @@ log
 ---
 
 ## 🧱 Program Structure Draft
-> Files marked with `$$` are currently empty placeholders.
-
-```text
+'''
 .
-├── build
-│   └── cmake_file $$
-├── CMakeLists.txt $$
+├── benchmarks
+│   └── placeholder.txt
+├── CMakeLists.txt
 ├── data
-│   └── config.in $$
+│   └── config.in
+├── .DS_Store
+├── examples
+│   └── placeholder.txt
+├── extern
+│   └── googletest
+├── .gitignore
+├── .gitmodules
 ├── include
 │   ├── core
-│   │   ├── mesh.hpp $$
-│   │   ├── physicalField.hpp
+│   │   ├── Fields.hpp
+│   │   ├── Mesh.hpp
 │   │   └── TridiagMat.hpp
 │   ├── io
-│   │   ├── inputReader.hpp $$
-│   │   └── logWriter.hpp $$
+│   │   ├── inputReader.hpp
+│   │   └── logWriter.hpp
 │   ├── numerics
-│   │   ├── derivatives.hpp $$
-│   │   └── linearsys.hpp $$
+│   │   ├── derivatives.hpp
+│   │   └── LinearSys.hpp
 │   └── simulation
-│       ├── initializer.hpp $$
-│       ├── pressureStep.hpp $$
-│       ├── timeIntegrator.hpp $$
-│       └── viscousStep.hpp $$
+│       ├── initializer.hpp
+│       ├── pressureStep.hpp
+│       ├── SimulationContext.hpp
+│       └── viscousStep.hpp
 ├── LICENSE
 ├── README.md
 ├── results
-│   └── results.out $$
-└── src
-    ├── core
-    │   ├── mesh.cpp $$
-    │   ├── physicalField.cpp $$ → write .cpp
-    │   └── TridiagMat.cpp $$ → write .cpp
-    ├── io
-    │   ├── inputReader.cpp $$
-    │   └── logWriter.cpp $$
-    ├── main.cpp $$
-    ├── numerics
-    │   ├── derivatives.cpp $$
-    │   ├── linearsys.cpp $$
-    │   ├── thomas.cpp → to merge into linearsys.cpp
-    │   └── thomas_test.cpp → to merge into linearsys.cpp
-    └── simulation
-        ├── initializer.cpp $$
-        ├── pressureStep.cpp $$
-        ├── timeIntegrator.cpp $$
-        └── viscousStep.cpp $$
-└── tests
-```
+│   └── results.out
+├── src
+│   ├── core
+│   │   ├── Fields.cpp
+│   │   ├── mesh.cpp
+│   │   └── TridiagMat.cpp
+│   ├── io
+│   │   ├── inputReader.cpp
+│   │   └── logWriter.cpp
+│   ├── main.cpp
+│   ├── numerics
+│   │   ├── derivatives.cpp
+│   │   └── LinearSys.cpp
+│   └── simulation
+│       ├── initializer.cpp
+│       ├── pressureStep.cpp
+│       ├── timeIntegrator.cpp
+│       └── viscousStep.cpp
+├── tests
+│   ├── test_derivatives.cpp
+│   ├── test_fields.cpp
+│   ├── test_linearSys.cpp
+│   └── test_tridiag.cpp
+├── test.sh
+└── .vscode
+    └── settings.json
+'''
