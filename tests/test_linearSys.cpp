@@ -2,85 +2,308 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include <vector>
+#include <stdexcept> // Required for std::runtime_error
 
-#include "core/Fields.hpp"
-#include "core/Mesh.hpp"
-#include "numerics/LinearSys.hpp"
-
-// Fixture semplificata per test di accesso e operazioni scalari
-class FieldSimpleTestFixture : public ::testing::Test {
-  protected:
-    // --- Configurazione Griglia Principale ---
-    const size_t Nx = 2, Ny = 3, Nz = 4;
-    const size_t vectorSize = Nx * Ny * Nz; // 24
-    std::shared_ptr<const Grid> gridPtr;
-
-    // --- Campo di Test Principale ---
-    Field testField; // Campo popolato con 0, 1, 2, ...
-
-    // --- Campo per Test di Errore ---
-    std::shared_ptr<const Grid> mismatchedGridPtr;
-    Field mismatchedField; // Ha una griglia diversa
-
-    /**
-     * @brief Inizializza gli oggetti prima di ogni test.
-     */
-    void SetUp() override {
-        // 1. Inizializza la griglia principale
-        gridPtr = std::make_shared<const Grid>(Nx, Ny, Nz, 0.1, 0.1, 0.1);
-
-        // 2. Inizializza testField (0, 1, 2, ..., 23)
-        std::vector<Field::Scalar> initialData(vectorSize);
-        for (size_t i = 0; i < vectorSize; i++) {
-            initialData[i] = static_cast<Field::Scalar>(i);
-        }
-        testField.setup(gridPtr, initialData);
-
-        // 3. Inizializza la griglia e il campo per i test di errore
-        mismatchedGridPtr =
-            std::make_shared<const Grid>(5, 5, 5, 0.1, 0.1, 0.1);
-        std::vector<Field::Scalar> mismatchedData(125, 1.0);
-        mismatchedField.setup(mismatchedGridPtr, mismatchedData);
-    }
-};
+// Include necessary class definitions
+#include "core/Mesh.hpp"     // For Grid
+#include "core/Fields.hpp"   // For Field and VectorField
+#include "numerics/LinearSys.hpp" // The class we are testing
 
 /**
- * @test SetupCorrectlyInitializesGrid
- * @brief Verifica che il campo sia stato inizializzato correttamente
- * con la griglia e la dimensione corrette definite in SetUp().
+ * @brief Standalone test fixture for the LinearSys class.
  *
- * Questo è un test "ovvio" perché non controlla nessun valore di
- * elemento, ma solo che il costruttore/setup del campo abbia
- * memorizzato correttamente la sua griglia e calcolato la sua dimensione
- * totale.
+ * This fixture does not inherit from any other test fixture.
+ * It creates all necessary objects (Grid, Field, VectorField)
+ * from scratch required to test the LinearSys interface.
+ *
+ * It is declared as a 'friend' of LinearSys to allow access
+ * to private members for testing.
  */
-TEST_F(FieldSimpleTestFixture, SetupCorrectlyInitializesGrid) {
-    // 1. Verifica che il campo abbia effettivamente una griglia
-    ASSERT_NE(testField.getGrid(), nullptr);
+class LinearSysTestFixture : public ::testing::Test {
+protected:
+    // --- Grid Configuration ---
+    // Using sizes greater than 2 for robust testing
+    const size_t Nx = 3, Ny = 4, Nz = 5;
+    const double dx = 0.1, dy = 0.1, dz = 0.1;
+    const size_t vectorSize = Nx * Ny * Nz; // 60
+    std::shared_ptr<const Grid> gridPtr;
 
-    // 2. Verifica che la griglia memorizzata abbia le dimensioni corrette
-    //    (Nx, Ny, Nz sono ereditati dalla fixture)
-    EXPECT_EQ(testField.getGrid()->Nx, Nx);
-    EXPECT_EQ(testField.getGrid()->Ny, Ny);
-    EXPECT_EQ(testField.getGrid()->Nz, Nz);
+    // --- Fields required for testing ---
+    Field testField;    // Used for fillSystemPressure
+    Field porosity;     // Used for fillSystemVelocity
+    VectorField eta, xi, uBoundNew, uBoundOld; // Used for fillSystemVelocity
 
-    // 3. Verifica che il campo 'sappia' la sua dimensione totale
-    //    (vectorSize è ereditato dalla fixture)
-    EXPECT_EQ(testField.getGrid()->Nx, vectorSize);
+    /**
+     * @brief Sets up all required objects before each test.
+     */
+    void SetUp() override {
+        // 1. Initialize the Grid
+        gridPtr = std::make_shared<const Grid>(Nx, Ny, Nz, dx, dy, dz);
+
+        // 2. Initialize scalar Fields (testField and porosity)
+        std::vector<Field::Scalar> scalarData(vectorSize, 1.0);
+        
+        std::vector<Field::Scalar> testFieldData = scalarData;
+        testField.setup(gridPtr, testFieldData);
+
+        std::vector<Field::Scalar> porosityData = scalarData;
+        porosity.setup(gridPtr, porosityData);
+
+        // 3. Initialize VectorFields (eta, xi, uBoundNew, uBoundOld)
+        std::vector<Field::Scalar> vecDataX(vectorSize, 1.1);
+        std::vector<Field::Scalar> vecDataY(vectorSize, 2.2);
+        std::vector<Field::Scalar> vecDataZ(vectorSize, 3.3);
+
+        std::vector<Field::Scalar> eta_x = vecDataX, eta_y = vecDataY, eta_z = vecDataZ;
+        eta.setup(gridPtr, eta_x, eta_y, eta_z);
+
+        std::vector<Field::Scalar> xi_x = vecDataX, xi_y = vecDataY, xi_z = vecDataZ;
+        xi.setup(gridPtr, xi_x, xi_y, xi_z);
+
+        std::vector<Field::Scalar> new_x = vecDataX, new_y = vecDataY, new_z = vecDataZ;
+        uBoundNew.setup(gridPtr, new_x, new_y, new_z);
+
+        std::vector<Field::Scalar> old_x = vecDataX, old_y = vecDataY, old_z = vecDataZ;
+        uBoundOld.setup(gridPtr, old_x, old_y, old_z);
+    }
+
+    /**
+     * @brief Helper function to set up the 3x3 test matrix.
+     * This function is a member of LinearSysTestFixture, which IS a friend
+     * of LinearSys and can access its private members.
+     */
+    void setupTestMatrix(LinearSys& sys) {
+        // Access private matA
+        sys.matA.getDiag( 0).at(0) = 2.0;
+        sys.matA.getDiag( 0).at(1) = 2.0;
+        sys.matA.getDiag( 0).at(2) = 2.0;
+        
+        sys.matA.getDiag(-1).at(0) = -1.0;
+        sys.matA.getDiag(-1).at(1) = -1.0;
+        
+        sys.matA.getDiag( 1).at(0) = -1.0;
+        sys.matA.getDiag( 1).at(1) = -1.0;
+    }
+    
+    // No TearDown() is needed
+};
+
+
+// === CONSTRUCTOR TESTS ===
+
+TEST_F(LinearSysTestFixture, Constructor_CanBeCreated) {
+    // Test that the constructor doesn't throw exceptions with valid sizes
+    EXPECT_NO_THROW(LinearSys sys(Nx, BoundaryType::Normal));
+    EXPECT_NO_THROW(LinearSys sys(Ny, BoundaryType::Tangent));
+    EXPECT_NO_THROW(LinearSys sys(Nz, BoundaryType::Normal));
 }
 
-// === fillSystemPressure tests ===
+// === SETTER/GETTER TESTS ===
 
-TEST_F(FieldSimpleTestFixture, FillSystemPressure_runTimeError) {
-    int matrixSize = 10;
-    LinearSys linearSys(matrixSize, BoundaryType::Normal);
+TEST_F(LinearSysTestFixture, SetRhs_MismatchedRhsSize) {
+    // System is declared with size Nx
+    LinearSys linearSys(Nx, BoundaryType::Normal);
+    
+    // But the rhs vector has the WRONG size (Nx + 1)
+    std::vector<double> rhs(Nx + 1); 
 
-    std::vector<double> rhsIncomplete;
-    rhsIncomplete.resize(matrixSize);
-
-    const Axis direction = Axis::X;
-
+    // Expect a runtime_error because rhs size (Nx+1) doesn't match
+    // the system size (Nx)
     EXPECT_THROW(
-        linearSys.fillSystemPressure(rhsIncomplete, testField, direction),
+        linearSys.setRhs(rhs),
+        std::runtime_error);
+}
+
+// === fillSystemPressure TESTS ===
+
+TEST_F(LinearSysTestFixture, FillSystemPressure_CorrectExecution) {
+
+
+    // Test for X-direction
+    LinearSys linearSysX(Nx, BoundaryType::Normal);
+    // Set the known RHS vector using the public setter
+    std::vector<double> rhsx = {1.0, 0.0, 1.0};
+    linearSysX.setRhs(rhsx);
+    // The function now fills the internal rhsC, no parameter needed
+    EXPECT_NO_THROW(
+        linearSysX.fillSystemPressure(testField, Axis::X));
+
+    // Test for Y-direction
+    LinearSys linearSysY(Ny, BoundaryType::Normal);
+    std::vector<double> rhsy = {1.0, 0.0, 1.0, 2.0};
+    linearSysY.setRhs(rhsy);
+    EXPECT_NO_THROW(
+        linearSysY.fillSystemPressure(testField, Axis::Y));
+    
+    // Test for Z-direction
+    LinearSys linearSysZ(Nz, BoundaryType::Normal);
+    std::vector<double> rhsz = {1.0, 0.0, 1.0, 2.0, 0.5};
+    linearSysZ.setRhs(rhsz);
+    EXPECT_NO_THROW(
+        linearSysZ.fillSystemPressure(testField, Axis::Z));
+}
+
+
+// === fillSystemVelocity TESTS ===
+
+TEST_F(LinearSysTestFixture, FillSystemVelocity_CorrectExecution) {
+
+
+    // System declared with correct size (Nz) for Axis::Z derivative
+    LinearSys linearSys(Nz, BoundaryType::Tangent);
+     std::vector<double> rhsz = {1.0, 0.0, 1.0, 2.0, 0.5};
+    linearSys.setRhs(rhsz);
+
+    // The function now fills the internal rhsC, no parameter needed
+    EXPECT_NO_THROW(
+        linearSys.fillSystemVelocity(porosity, eta, xi, uBoundNew, uBoundOld,
+                                     Axis::X, Axis::Z, 0, 0, 0));
+    
+    // System declared with correct size (Ny) for Axis::Y derivative
+    LinearSys linearSysY(Ny, BoundaryType::Tangent);
+     std::vector<double> rhsy = {1.0, 0.0, 1.0, 2.0};
+    linearSysY.setRhs(rhsy);
+    
+    EXPECT_NO_THROW(
+        linearSysY.fillSystemVelocity(porosity, eta, xi, uBoundNew, uBoundOld,
+                                     Axis::Y, Axis::Y, 0, 0, 0));
+}
+
+// === SOLVER TESTS ===
+
+/**
+ * @brief Tests the ThomaSolver with a manually constructed system.
+ */
+TEST_F(LinearSysTestFixture, ThomaSolver_CalculatesKnownSolution) {
+    const int n = 3;
+    LinearSys sys(n, BoundaryType::Normal);
+
+    // 1. Manually create a simple 3x3 system
+    //    [ 2 -1  0 ] [x0]   [ 1]
+    //    [-1  2 -1 ] [x1] = [ 0]
+    //    [ 0 -1  2 ] [x2]   [ 1]
+    //    Solution is: x = [1, 1, 1]
+    
+    // Call the helper function (which has friend access)
+    setupTestMatrix(sys); 
+
+    // 2. Set the known RHS vector using the public setter
+    std::vector<double> rhs = {1.0, 0.0, 1.0};
+    sys.setRhs(rhs);
+
+    // 3. Solve the system
+    sys.ThomaSolver();
+
+    // 4. Get the solution vector using the public getter
+    const std::vector<double>& solution = sys.getSolution();
+
+    // 5. Check the results
+    ASSERT_EQ(solution.size(), n);
+    EXPECT_NEAR(solution.at(0), 1.0, 1e-9);
+    EXPECT_NEAR(solution.at(1), 1.0, 1e-9);
+    EXPECT_NEAR(solution.at(2), 1.0, 1e-9);
+}
+
+
+// === ADDITIONAL TESTS ===
+
+/**
+ * @brief Tests the constructor's handling of invalid (zero or negative) sizes.
+ *
+ * The LinearSys class should not be constructible with a size
+ * less than or equal to zero. It should throw an exception.
+ */
+TEST_F(LinearSysTestFixture, Constructor_ThrowsOnInvalidSize) {
+    // A system size of 0 is invalid
+    EXPECT_THROW(
+        LinearSys sys(0, BoundaryType::Normal),
+        std::exception); // Expect any std::exception (or be more specific if known)
+
+    // A negative system size is invalid
+    EXPECT_THROW(
+        LinearSys sys(-5, BoundaryType::Normal),
+        std::exception);
+}
+
+/**
+ * @brief Tests the getSolution() method on a newly constructed system.
+ *
+ * When a LinearSys object is first created, the internal solution
+ * vector (unknownX) should exist, have the correct size 'n',
+ * and be initialized (e.g., to all zeros).
+ */
+TEST_F(LinearSysTestFixture, GetSolution_ReturnsCorrectSizedVector) {
+    const int n = 5;
+    LinearSys sys(n, BoundaryType::Normal);
+    
+    // Get the solution vector before solving
+    const std::vector<double>& solution = sys.getSolution();
+
+    // Check that the vector has the correct size
+    ASSERT_EQ(solution.size(), n);
+
+    // Check that all initial values are 0.0
+    // (This assumes default std::vector<double>(n) initialization)
+    for (double val : solution) {
+        EXPECT_DOUBLE_EQ(val, 0.0);
+    }
+}
+
+
+/**
+ * @brief Tests the ThomaSolver with the same matrix but a different RHS.
+ *
+ * This test uses the same 3x3 matrix from 'setupTestMatrix' but
+ * provides a different RHS vector to produce a different
+ * known solution.
+ */
+TEST_F(LinearSysTestFixture, ThomaSolver_CalculatesDifferentSolution) {
+    const int n = 3;
+    LinearSys sys(n, BoundaryType::Normal);
+
+    // 1. Use the same 3x3 matrix:
+    //    [ 2 -1  0 ]
+    //    [-1  2 -1 ]
+    //    [ 0 -1  2 ]
+    setupTestMatrix(sys);
+
+    // 2. Set a new RHS vector: b = {0, 0, 4}
+    //    For the matrix A, A*x = b with x = {1, 2, 3} gives:
+    //    b_0 = 2(1) - 1(2) + 0(3) = 0
+    //    b_1 = -1(1) + 2(2) - 1(3) = -1 + 4 - 3 = 0
+    //    b_2 = 0(1) - 1(2) + 2(3) = -2 + 6 = 4
+    std::vector<double> rhs = {0.0, 0.0, 4.0};
+    sys.setRhs(rhs);
+
+    // 3. Solve the system
+    sys.ThomaSolver();
+
+    // 4. Get the solution
+    const std::vector<double>& solution = sys.getSolution();
+
+    // 5. Check the new solution: x = {1, 2, 3}
+    ASSERT_EQ(solution.size(), n);
+    EXPECT_NEAR(solution.at(0), 1.0, 1e-9);
+    EXPECT_NEAR(solution.at(1), 2.0, 1e-9);
+    EXPECT_NEAR(solution.at(2), 3.0, 1e-9);
+}
+
+/**
+ * @brief Tests setRhs with another mismatched size (empty vector).
+ *
+ * This complements the existing 'SetRhs_MismatchedRhsSize' test
+ * by checking the edge case of an empty vector.
+ */
+TEST_F(LinearSysTestFixture, SetRhs_MismatchedRhsSize_EmptyVector) {
+    // System is declared with size Nx (3)
+    LinearSys linearSys(Nx, BoundaryType::Normal);
+    
+    // Pass an empty vector
+    std::vector<double> rhs_empty; 
+
+    // Expect a runtime_error because rhs size (0) doesn't match
+    // the system size (Nx)
+    EXPECT_THROW(
+        linearSys.setRhs(rhs_empty),
         std::runtime_error);
 }

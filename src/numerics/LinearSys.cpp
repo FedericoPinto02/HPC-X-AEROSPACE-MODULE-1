@@ -9,24 +9,38 @@ LinearSys::LinearSys(int n, BoundaryType boundaryType)
     : boundaryType(boundaryType), matA(n)
 
 {
-    rhsC.resize(n, 0.0);
     unknownX.resize(n, 0.0);
 }
 
-void LinearSys::fillSystemPressure(std::vector<double> &rhsIncomplete,
-                                   Field &phi, const Axis direction) {
+
+void LinearSys::setRhs(const std::vector<double>& newRhs) {
+    if (newRhs.size() != matA.getSize()) {
+        throw std::runtime_error(
+            "Dimension mismatch: newRhs size does not match system size.");
+    }
+    
+    this->rhsC = newRhs;
+}
+
+const std::vector<double>& LinearSys::getSolution() const {
+    return this->unknownX;
+}
+
+void LinearSys::fillSystemPressure(const Field &phi, const Axis direction) {
 
     std::vector<double> &diag = matA.getDiag(0);
     std::vector<double> &subdiag = matA.getDiag(-1);
     std::vector<double> &supdiag = matA.getDiag(1);
 
-    if (rhsIncomplete.size() != matA.getSize() - 2) {
+    if (rhsC.size() != matA.getSize()) {
         throw std::runtime_error(
-            "Dimension mismatch: rhsIncomplete must be size - 2.");
+            "Dimension mismatch: rhsIncomplete must be size n.");
     }
-    // Assign incomplete RHS
-    std::copy(rhsIncomplete.begin(), rhsIncomplete.end(), rhsC.begin() + 1);
-    // No need to complete RHS, already set to 0.0
+    // Assign RHS homogeneous b.c. 
+    rhsC.front() = 0.0;
+    rhsC.back() = 0.0;
+
+
     std::shared_ptr<const Grid> grid = phi.getGrid();
     double d = 0;
     switch (direction) {
@@ -50,8 +64,8 @@ void LinearSys::fillSystemPressure(std::vector<double> &rhsIncomplete,
 }
 
 void LinearSys::fillSystemVelocity(
-    Field &porosity, std::vector<double> &rhsIncomplete, VectorField &eta,
-    VectorField &xi, VectorField &uBoundNew, VectorField &uBoundOld,
+    const Field &porosity, const VectorField &eta,
+    const VectorField &xi, const VectorField &uBoundNew, const VectorField &uBoundOld,
     const Axis fieldComponent, const Axis derivativeDirection,
     const size_t iStart, const size_t jStart, const size_t kStart) {
 
@@ -59,12 +73,11 @@ void LinearSys::fillSystemVelocity(
     std::vector<double> &subdiag = matA.getDiag(-1);
     std::vector<double> &supdiag = matA.getDiag(1);
 
-    if (rhsIncomplete.size() != matA.getSize() - 2) {
+    if (rhsC.size() != matA.getSize()) {
         throw std::runtime_error(
-            "Dimension mismatch: rhsIncomplete must be size - 2.");
+            "Dimension mismatch: rhsC must be size n.");
     }
-    // Assign incomplete RHS
-    std::copy(rhsIncomplete.begin(), rhsIncomplete.end(), rhsC.begin() + 1);
+    
     // Need to complete RHS, once onto the switch case!
 
     std::shared_ptr<const Grid> grid = eta.getGrid();
