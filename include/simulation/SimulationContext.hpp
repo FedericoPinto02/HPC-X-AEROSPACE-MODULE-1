@@ -56,7 +56,7 @@ struct Constants {
     Field k;
 
     // Body force acting on the medium (e.g. gravity)
-    VectorField f;
+    VectorField f; // would fit better as time dependant boundary conditions
 };
 
 struct InitialConditionsSettings {
@@ -68,21 +68,24 @@ struct BoundaryConditionsSettings {
 };
 
 struct SimulationState {
-    
-    // TODO - WORK IN PROGRESS... (VectorFieldHandler, FieldHandler)
-    // Velocity fields
-    // VectorFieldHandler<> xi;
-    // VectorFieldHandler<> eta;
-    // VectorFieldHandler<> zeta;
-    // VectorFieldHandler<> u;
-    VectorField u;
-    Field p;
 
-    // // Pressure fields
-    // FieldHandler<> psi;
-    // FieldHandler<> phi;
-    // FieldHandler<> c_phi;
-    // FieldHandler<> p;
+    /*
+     * TODO - WORK IN PROGRESS... (VectorFieldHandler, FieldHandler)*/
+    // Velocity fields
+    VectorField xi;
+    VectorField eta;
+    VectorField zeta;
+    VectorField u;
+    VectorField etaOld;
+    VectorField zetaOld;
+    VectorField uOld;
+
+    // Pressure fields
+    Field psi;
+    Field phi;
+    Field c_phi;
+    Field p;
+     
     
 };
 
