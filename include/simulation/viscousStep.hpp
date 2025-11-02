@@ -31,7 +31,7 @@ public:
 
 private:
 
-     VectorField g, gradP, dxxEta, dyyZeta, dzzU;    
+     VectorField g, gradP, dxxEta, dyyZeta, dzzU, xi;    
     /**
      * @brief Construct temporary fields to proceed in computations
      * @param Grid pointer

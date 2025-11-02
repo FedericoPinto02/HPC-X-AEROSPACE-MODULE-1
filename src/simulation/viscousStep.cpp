@@ -29,6 +29,7 @@ void ViscousStep::initializeWorkspaceFields(std::shared_ptr<const Grid> gridPtr)
     dxxEta.setup(gridPtr, zeros, zeros, zeros);
     dyyZeta.setup(gridPtr, zeros, zeros, zeros);
     dzzU.setup(gridPtr, zeros, zeros, zeros);
+    xi.setup(gridPtr, zeros, zeros, zeros);
 }
 
 void ViscousStep::computeG()
@@ -38,7 +39,7 @@ void ViscousStep::computeG()
     auto& zeta = context_.state.zeta;
     auto& u = context_.state.u;
     auto& p = context_.state.p;
-    auto& k_data = context_.constants.k.getData();
+    auto& k_data = context_.constants.k.getData(); // k cant be 0!!!
     double nu_val = context_.constants.nu;
     
     Derivatives derive;
@@ -49,7 +50,6 @@ void ViscousStep::computeG()
     // g = f  -grad(p)  -nu/k *u  +nu*(dxx eta + dyy zeta + dzz u)
 
     // Let me cook
-    
     for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
 
         derive.computeDxx(eta(axis), dxxEta(axis));
@@ -76,7 +76,30 @@ void ViscousStep::computeG()
 
 void ViscousStep::computeXi()
 {
+     // Ingredients list
+    auto& u = context_.state.u;
+    auto& k_data = context_.constants.k.getData();  // k cant be 0!!!
+    double nu_val = context_.constants.nu;
+    double dt_val = context_.timeSettings.dt;
+   
+    // Recepie
+    // beta = 1+ dt*nu /2/k
+    // xi = u + dt/beta * g
 
+    // Let me cook
+    for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
+
+        auto& u_data = context_.state.u(axis).getData();
+        auto& g_data = g(axis).getData();
+        auto& xi_data = xi(axis).getData();
+
+        for (size_t i = 0; i < u_data.size(); i++)
+        {
+            xi_data[i] = u_data[i] 
+                        + dt_val * g_data[i]
+                        / (1 + dt_val * nu_val * 0.5 / k_data[i]);
+        }
+    }
 }
 
 void ViscousStep::closeViscousStep()
