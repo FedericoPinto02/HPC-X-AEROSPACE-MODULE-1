@@ -65,6 +65,8 @@ struct InitialConditionsSettings {
 
 struct BoundaryConditionsSettings {
     // TODO - TBD
+    VectorField uBoundOld;
+    VectorField uBoundNew;
 };
 
 struct SimulationState {
