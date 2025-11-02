@@ -32,24 +32,26 @@ protected:
     }
 
     // SetUp() runs after the constructor
+    // In test_viscousStep.cpp
     void SetUp() override {
-        // 1. Grid and Context are already constructed.
-        //    We just need to finish populating the fields.
-        
+        // ...
         std::vector<Field::Scalar> zeros(grid->size(), 0.0);
-        std::vector<Field::Scalar> ones(grid->size(), 1.0); // For 'k' != 0
+        std::vector<Field::Scalar> ones(grid->size(), 1.0); 
 
-        // 2. Populate the rest of the context
-        // context.gridPtr = grid; // <-- MOVED to the constructor
+        // ...
         context.constants.nu = 1.0;
-
-        // 3. Initialize all required fields...
         context.constants.k.setup(grid, ones); 
         context.constants.f.setup(grid, zeros, zeros, zeros);
         context.state.p.setup(grid, zeros);
+
+        // Inizializza sia i campi 'attuali' SIA quelli 'vecchi'
         context.state.u.setup(grid, zeros, zeros, zeros);
         context.state.eta.setup(grid, zeros, zeros, zeros);
         context.state.zeta.setup(grid, zeros, zeros, zeros);
+        
+        context.state.uOld.setup(grid, zeros, zeros, zeros);
+        context.state.etaOld.setup(grid, zeros, zeros, zeros);
+        context.state.zetaOld.setup(grid, zeros, zeros, zeros);
 
         // 4. Create the object under test
         viscousStep = std::make_unique<ViscousStep>(context);

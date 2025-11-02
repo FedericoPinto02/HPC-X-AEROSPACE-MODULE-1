@@ -153,11 +153,14 @@ TEST_F(LinearSysTestFixture, FillSystemVelocity_CorrectExecution) {
     LinearSys linearSys(Nz, BoundaryType::Tangent);
      std::vector<double> rhsz = {1.0, 0.0, 1.0, 2.0, 0.5};
     linearSys.setRhs(rhsz);
+    double nu = 1.0e-5;
+    double dt = 1.0e-3;
+
 
     // The function now fills the internal rhsC, no parameter needed
     EXPECT_NO_THROW(
         linearSys.fillSystemVelocity(porosity, eta, xi, uBoundNew, uBoundOld,
-                                     Axis::X, Axis::Z, 0, 0, 0));
+                                     Axis::X, Axis::Z, 0, 0, 0, nu, dt));
     
     // System declared with correct size (Ny) for Axis::Y derivative
     LinearSys linearSysY(Ny, BoundaryType::Tangent);
@@ -166,7 +169,7 @@ TEST_F(LinearSysTestFixture, FillSystemVelocity_CorrectExecution) {
     
     EXPECT_NO_THROW(
         linearSysY.fillSystemVelocity(porosity, eta, xi, uBoundNew, uBoundOld,
-                                     Axis::Y, Axis::Y, 0, 0, 0));
+                                     Axis::Y, Axis::Y, 0, 0, 0, nu, dt));
 }
 
 // === SOLVER TESTS ===

@@ -19,7 +19,7 @@ void ViscousStep::run()
 {
     computeG();
     computeXi();
-    //closeViscousStep();
+    closeViscousStep();
 }
 
 void ViscousStep::initializeWorkspaceFields(std::shared_ptr<const Grid> gridPtr)
@@ -37,8 +37,8 @@ void ViscousStep::computeG()
 {
     // Ingredients list
     auto& eta = context_.state.etaOld;
-    auto& zeta = context_.state.zeta;
-    auto& u = context_.state.u;
+    auto& zeta = context_.state.zetaOld;
+    auto& u = context_.state.uOld;
     auto& p = context_.state.p;
     auto& k_data = context_.constants.k.getData(); // k cant be 0!!!
     double nu_val = context_.constants.nu;
@@ -58,7 +58,7 @@ void ViscousStep::computeG()
         derive.computeDzz(u(axis), dzzU(axis));
 
         auto& f_data = context_.constants.f(axis).getData();
-        auto& u_data = context_.state.u(axis).getData();
+        auto& u_data = context_.state.uOld(axis).getData();
         auto& gradP_data = gradP(axis).getData();
         auto& dxx_data = dxxEta(axis).getData();
         auto& dyy_data = dyyZeta(axis).getData();
@@ -78,7 +78,7 @@ void ViscousStep::computeG()
 void ViscousStep::computeXi()
 {
      // Ingredients list
-    auto& u = context_.state.u;
+    auto& u = context_.state.uOld;
     auto& k_data = context_.constants.k.getData();  // k cant be 0!!!
     double nu_val = context_.constants.nu;
     double dt_val = context_.timeSettings.dt;
@@ -90,7 +90,7 @@ void ViscousStep::computeXi()
     // Let me cook
     for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
 
-        auto& u_data = context_.state.u(axis).getData();
+        auto& u_data = context_.state.uOld(axis).getData();
         auto& g_data = g(axis).getData();
         auto& xi_data = xi(axis).getData();
 
@@ -113,6 +113,7 @@ void ViscousStep::closeViscousStep()
     // ------------------------------------------
     // Solve Eta --------------------------------
     // ------------------------------------------
+    {
     normalAxis = Axis::X;
     size_t nSystem = context_.gridPtr->Ny * context_.gridPtr->Nz; // number of linear systems to solve
     size_t sysDimension = context_.gridPtr->Nx; // dimension of linear system to solve
@@ -126,6 +127,12 @@ void ViscousStep::closeViscousStep()
     std::vector<double> rhs_u(sysDimension);
     std::vector<double> rhs_v(sysDimension);
     std::vector<double> rhs_w(sysDimension);
+    rhs_u.front() = 0;
+    rhs_u.back() = 0;
+    rhs_v.front() = 0;
+    rhs_v.back() = 0;
+    rhs_w.front() = 0;
+    rhs_w.back() = 0;
 
     iStart = 0;
     for (size_t j = 0; j < context_.gridPtr->Ny; j++)
@@ -184,6 +191,7 @@ void ViscousStep::closeViscousStep()
 
         }
     }
+    }
    
 
 
@@ -191,6 +199,7 @@ void ViscousStep::closeViscousStep()
     // ------------------------------------------
     // Solve Zeta --------------------------------
     // ------------------------------------------
+    {
     normalAxis = Axis::Y;
     size_t nSystem = context_.gridPtr->Nx * context_.gridPtr->Nz; // number of linear systems to solve
     size_t sysDimension = context_.gridPtr->Ny; // dimension of linear system to solve
@@ -204,6 +213,13 @@ void ViscousStep::closeViscousStep()
     std::vector<double> rhs_u(sysDimension);
     std::vector<double> rhs_v(sysDimension);
     std::vector<double> rhs_w(sysDimension);
+    rhs_u.front() = 0;
+    rhs_u.back() = 0;
+    rhs_v.front() = 0;
+    rhs_v.back() = 0;
+    rhs_w.front() = 0;
+    rhs_w.back() = 0;
+
 
     jStart = 0;
     for (size_t i = 0; i < context_.gridPtr->Nx; i++)
@@ -262,6 +278,7 @@ void ViscousStep::closeViscousStep()
 
         }
     }
+    }
 
 
 
@@ -270,6 +287,7 @@ void ViscousStep::closeViscousStep()
     // ------------------------------------------
     // Solve U --------------------------------
     // ------------------------------------------
+    {
     normalAxis = Axis::Z;
     size_t nSystem = context_.gridPtr->Nx * context_.gridPtr->Ny; // number of linear systems to solve
     size_t sysDimension = context_.gridPtr->Nz; // dimension of linear system to solve
@@ -283,6 +301,13 @@ void ViscousStep::closeViscousStep()
     std::vector<double> rhs_u(sysDimension);
     std::vector<double> rhs_v(sysDimension);
     std::vector<double> rhs_w(sysDimension);
+    rhs_u.front() = 0;
+    rhs_u.back() = 0;
+    rhs_v.front() = 0;
+    rhs_v.back() = 0;
+    rhs_w.front() = 0;
+    rhs_w.back() = 0;
+
 
     kStart = 0;
     for (size_t i = 0; i < context_.gridPtr->Nx; i++)
@@ -341,6 +366,7 @@ void ViscousStep::closeViscousStep()
 
         }
     }
+    } 
 
 
 
