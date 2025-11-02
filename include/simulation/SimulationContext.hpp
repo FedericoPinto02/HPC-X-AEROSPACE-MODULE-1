@@ -46,8 +46,8 @@ struct TimeIntegrationSettings {
 // };
 
 struct Constants {
-    // Kinematic viscosity of the fluid (solid: very high; fluid: low)
-    Field nu;
+    // Kinematic viscosity of the fluid (solid: very high; fluid: low)   // nope?
+    double nu;     // why is it a field??
 
     // Density of the medium (solid: very high; fluid: low)
     Field rho;

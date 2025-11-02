@@ -23,6 +23,11 @@ enum class Axis {
 class Field {
 public:
     using Scalar = double;
+    
+    
+    std::vector<Field::Scalar>& getData() { return m_v; }
+    const std::vector<Field::Scalar>& getData() const { return m_v; }
+
     /**
      * @brief Getter for the pointer to the grid information.
      * @return the pointer to the grid information

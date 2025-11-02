@@ -31,6 +31,13 @@ public:
 
 private:
 
+     VectorField g, gradP, dxxEta, dyyZeta, dzzU;    
+    /**
+     * @brief Construct temporary fields to proceed in computations
+     * @param Grid pointer
+     */
+    void initializeWorkspaceFields(std::shared_ptr<const Grid> gridPtr);
+
     /**
      * @brief Compute G term
      */ 
