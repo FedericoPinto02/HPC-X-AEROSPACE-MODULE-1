@@ -19,6 +19,10 @@ add_library(allib src/core/TridiagMat.cpp
                   src/core/Fields.cpp
                   src/numerics/LinearSys.cpp
                   src/numerics/derivatives.cpp
+                  src/io/inputReader.cpp
+                  src/io/VTKWriter.cpp
+                  src/simulation/initializer.cpp
+                  src/simulation/viscousStep.cpp
 )
 
 target_include_directories(allib PUBLIC 
@@ -31,6 +35,7 @@ add_executable(alltests tests/test_tridiag.cpp
                         tests/test_fields.cpp
                         tests/test_derivatives.cpp
                         tests/test_linearSys.cpp
+                        tests/test_viscousStep.cpp
 )
 
 

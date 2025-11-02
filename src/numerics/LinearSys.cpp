@@ -67,7 +67,8 @@ void LinearSys::fillSystemVelocity(
     const Field &porosity, const VectorField &eta,
     const VectorField &xi, const VectorField &uBoundNew, const VectorField &uBoundOld,
     const Axis fieldComponent, const Axis derivativeDirection,
-    const size_t iStart, const size_t jStart, const size_t kStart) {
+    const size_t iStart, const size_t jStart, const size_t kStart, 
+    const double nu, const double dt) {
 
     std::vector<double> &diag = matA.getDiag(0);
     std::vector<double> &subdiag = matA.getDiag(-1);
@@ -97,8 +98,10 @@ void LinearSys::fillSystemVelocity(
     }
 
     for (size_t i = 1; i < matA.getSize() - 1; i++) {
-        double gamma = porosity.valueWithOffset(iStart, jStart, kStart,
+        double k = porosity.valueWithOffset(iStart, jStart, kStart,
                                                 derivativeDirection, i);
+        double beta = 1 + (dt * nu * 0.5 / k);
+        double gamma = dt * nu * 0.5 / beta;
         subdiag[i - 1] = -gamma * dCoef;
         supdiag[i] = -gamma * dCoef;
         diag[i] = 1 + 2 * gamma * dCoef;
@@ -173,8 +176,10 @@ void LinearSys::fillSystemVelocity(
 
     case BoundaryType::Tangent: {
         diag.front() = 1.0;
-        double gamma = porosity.valueWithOffset(
+        double k = porosity.valueWithOffset(
             iStart, jStart, kStart, derivativeDirection, matA.getSize());
+        double beta = 1 + (dt * nu * 0.5 / k);
+        double gamma = dt * nu * 0.5 / beta;
         diag.back() = 1 + 3 * gamma * dCoef;
         subdiag.back() = -gamma * dCoef;
 

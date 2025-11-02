@@ -51,7 +51,8 @@ public:
         const Field &porosity, const VectorField &eta,
         const VectorField &xi, const VectorField &uBoundNew, const VectorField &uBoundOld,
         const Axis fieldComponent, const Axis derivativeDirection,
-        const size_t iStart, const size_t jStart, const size_t kStart);
+        const size_t iStart, const size_t jStart, const size_t kStart, 
+        const double nu, const double dt);
 
     /**
      * @brief Solve the linear system
