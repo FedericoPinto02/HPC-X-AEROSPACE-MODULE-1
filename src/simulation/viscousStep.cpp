@@ -161,7 +161,7 @@ void ViscousStep::closeViscousStep()
             }
 
             mySystem_u.setRhs(rhs_u);
-
+            
             mySystem_u.fillSystemVelocity(context_.constants.k, context_.state.etaOld, xi, context_.bcSettings.uBoundNew, 
                                         context_.bcSettings.uBoundOld, Axis::X, Axis::X, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
             mySystem_u.ThomaSolver();

@@ -165,9 +165,7 @@ void LinearSys::fillSystemVelocity(
         }
         
         diag.back() = 1.0;  // the other is aready initialized to zero
-        
-
-        diag.back() = 1.0; // the other is aready initialized to zero
+        diag.front() = 1.0;
 
         rhsC.back() = uBoundNew(fieldComponent)
                           .valueWithOffset(iStart, jStart, kStart,
