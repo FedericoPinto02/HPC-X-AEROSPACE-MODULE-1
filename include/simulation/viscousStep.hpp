@@ -14,6 +14,9 @@
  */
 class ViscousStep
 {
+    friend class ViscousStepTest;
+    friend class ViscousStepSolverTest;
+    friend class ViscousStepRobustnessTest;
 public:
 
     /**

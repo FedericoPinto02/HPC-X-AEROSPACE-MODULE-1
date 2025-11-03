@@ -1,10 +1,10 @@
 #include <algorithm>
 #include <cmath>
-#include <simulation/viscousStep.hpp>
 #include <core/Fields.hpp>
 #include <vector>
 #include <numerics/derivatives.hpp>
 #include <numerics/LinearSys.hpp>
+#include <simulation/viscousStep.hpp>
 
 
 
@@ -77,7 +77,7 @@ void ViscousStep::computeG()
 
 void ViscousStep::computeXi()
 {
-     // Ingredients list
+    // Ingredients list
     auto& u = context_.state.uOld;
     auto& k_data = context_.constants.k.getData();  // k cant be 0!!!
     double nu_val = context_.constants.nu;
@@ -104,11 +104,12 @@ void ViscousStep::computeXi()
 }
 
 void ViscousStep::closeViscousStep()
-{
+{   
     double porosity, beta, gamma, mul, deriv_u, deriv_v, deriv_w;
     size_t iStart, jStart, kStart;
     // solve on the face orthogonal to normalAxis
     Axis normalAxis;
+    
 
     // ------------------------------------------
     // Solve Eta --------------------------------
@@ -161,7 +162,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_u.setRhs(rhs_u);
 
-            mySystem_u.fillSystemVelocity(context_.constants.k, context_.state.etaOld, context_.state.xi, context_.bcSettings.uBoundNew, 
+            mySystem_u.fillSystemVelocity(context_.constants.k, context_.state.etaOld, xi, context_.bcSettings.uBoundNew, 
                                         context_.bcSettings.uBoundOld, Axis::X, Axis::X, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
             mySystem_u.ThomaSolver();
             std::vector<double> unknown_u = mySystem_u.getSolution();
@@ -169,7 +170,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_v.setRhs(rhs_v);
 
-            mySystem_v.fillSystemVelocity(context_.constants.k, context_.state.etaOld, context_.state.xi, context_.bcSettings.uBoundNew, 
+            mySystem_v.fillSystemVelocity(context_.constants.k, context_.state.etaOld, xi, context_.bcSettings.uBoundNew, 
                                         context_.bcSettings.uBoundOld, Axis::Y, Axis::X, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
             mySystem_v.ThomaSolver();
             std::vector<double> unknown_v = mySystem_v.getSolution();
@@ -177,7 +178,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_w.setRhs(rhs_w);
 
-            mySystem_w.fillSystemVelocity(context_.constants.k, context_.state.etaOld, context_.state.xi, context_.bcSettings.uBoundNew, 
+            mySystem_w.fillSystemVelocity(context_.constants.k, context_.state.etaOld, xi, context_.bcSettings.uBoundNew, 
                                         context_.bcSettings.uBoundOld, Axis::Z, Axis::X, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
             mySystem_w.ThomaSolver();
             std::vector<double> unknown_w = mySystem_w.getSolution();
