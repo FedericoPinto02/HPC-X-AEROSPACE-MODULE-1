@@ -5,64 +5,50 @@
 #include "io/inputReader.hpp"
 #include "core/Mesh.hpp"
 #include "core/Fields.hpp"
+#include "simulation/SimulationContext.hpp"
 
 /**
- * @brief Structure to hold all simulation data.
- */
-struct SimulationData {
-    std::shared_ptr<Grid> mesh;
-    std::shared_ptr<Field> pressure;
-    std::shared_ptr<VectorField> velocity;
-    std::shared_ptr<Field> porosity;
-    InputData input;
-};
-
-/**
- * @brief Class responsible for initializing simulation data.
+ * @brief Class responsible for initializing the simulation context.
  */
 class Initializer {
 public:
-    /**
-     * @brief Constructor.
-     * @param inputData the input data from configuration file
-     */
-    Initializer(const InputData& inputData);
+    Initializer() = default;
 
     /**
-     * @brief Setup and initialize all simulation components.
-     * @return SimulationData structure containing all initialized data
+     * @brief Setup and initialize the simulation context from input data.
+     * @param inputData configuration data read from JSON
+     * @return fully constructed SimulationContext
      */
-    SimulationData setup();
+    SimulationContext setup(const InputData& inputData);
 
 private:
-    InputData data;
-
     /**
      * @brief Build the computational grid from input data.
-     * @return shared pointer to the Grid
      */
-    std::shared_ptr<Grid> buildGrid();
+    std::shared_ptr<Grid> buildGrid(const InputData& data);
 
     /**
-     * @brief Initialize the pressure field.
-     * @param grid the computational grid
-     * @return shared pointer to the pressure Field
+     * @brief Initialize the physical fields.
      */
-    std::shared_ptr<Field> initializePressure(std::shared_ptr<Grid> grid);
+    Field initializePressure(const std::shared_ptr<Grid>& grid, const InputData& data);
+    VectorField initializeVelocity(const std::shared_ptr<Grid>& grid, const InputData& data);
+    Field initializePorosity(const std::shared_ptr<Grid>& grid, const InputData& data);
 
     /**
-     * @brief Initialize the porosity field.
-     * @param grid the computational grid
-     * @return shared pointer to the porosity Field
+     * @brief Build constant fields (nu, rho, k, f) from input data.
      */
-    std::shared_ptr<Field> initializePorosity(std::shared_ptr<Grid> grid);
+    Constants buildConstants(const std::shared_ptr<Grid>& grid, const InputData& data);
 
     /**
-     * @brief Initialize the velocity vector field.
-     * @param grid the computational grid
-     * @return shared pointer to the velocity VectorField
+     * @brief Build time integration settings.
      */
-    std::shared_ptr<VectorField> initializeVelocity(std::shared_ptr<Grid> grid);
+    TimeIntegrationSettings buildTimeSettings(const InputData& data);
+
+    /**
+     * @brief Build output/logging settings.
+     */
+    // OutputSettings buildOutputSettings(const InputData& data);
+    // LoggingSettings buildLoggingSettings(const InputData& data);
 };
 
 #endif // NSBSOLVER_INITIALIZER_HPP

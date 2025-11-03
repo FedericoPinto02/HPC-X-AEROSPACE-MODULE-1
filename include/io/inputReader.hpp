@@ -59,7 +59,7 @@ public:
      * @return InputData structure containing all parsed data
      * @throws std::runtime_error if file cannot be opened or parsed
      */
-    InputData readAndSetInput(const std::string& filename);
+    InputData read(const std::string& filename);
 };
 
 #endif // INPUTREADER_HPP

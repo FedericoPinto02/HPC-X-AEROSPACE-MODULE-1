@@ -1,21 +1,23 @@
 #include "simulation/initializer.hpp"
-#include <core/Mesh.hpp>
 #include <iostream>
-#include <vector>
 #include <cmath>
 
-Initializer::Initializer(const InputData& inputData) : data(inputData) {}
+SimulationContext Initializer::setup(const InputData& data) {
+    SimulationContext ctx{
+        .gridPtr = buildGrid(data),
+        .timeSettings = buildTimeSettings(data),
+        // .outputSettings = buildOutputSettings(data),
+        // .loggingSettings = buildLoggingSettings(data),
+        .constants = buildConstants(buildGrid(data), data),
+        .icSettings = {},
+        .bcSettings = {},
+        .state = {}
+    };
 
-SimulationData Initializer::setup(){
-    auto grid = buildGrid();
-    auto pressure = initializePressure(grid);
-    auto velocity = initializeVelocity(grid);
-    auto porosity = initializePorosity(grid);
-
-    return SimulationData{grid, pressure, velocity, porosity, data};
+    return ctx;
 }
 
-std::shared_ptr<Grid> Initializer::buildGrid() {
+std::shared_ptr<Grid> Initializer::buildGrid(const InputData& data) {
     auto grid = std::make_shared<Grid>(
         data.mesh.nx,
         data.mesh.ny,
@@ -25,63 +27,76 @@ std::shared_ptr<Grid> Initializer::buildGrid() {
         data.mesh.dz
     );
 
-    std::cout << "Building grid..." << std::endl;
-    std::cout << "nx = " << grid->Nx << ", ny = " << grid->Ny << ", nz = " << grid->Nz << std::endl;
-    std::cout << "dx = " << grid->dx << ", dy = " << grid->dy << ", dz = " << grid->dz << std::endl;
+    std::cout << "Grid built: "
+              << grid->Nx << "x" << grid->Ny << "x" << grid->Nz
+              << " spacing = (" << grid->dx << ", " << grid->dy << ", " << grid->dz << ")\n";
 
     return grid;
 }
 
-std::shared_ptr<Field> Initializer::initializePressure(std::shared_ptr<Grid> grid) {
+Field Initializer::initializePressure(const std::shared_ptr<Grid>& grid, const InputData& data) {
     const size_t N = grid->Nx * grid->Ny * grid->Nz;
-    std::vector<double> p0(N, data.initialConditions.p0);
-
-    auto pressure = std::make_shared<Field>();
-    pressure->setup(grid, p0);   // <-- direttamente
-    return pressure;
+    std::vector<double> values(N, data.initialConditions.p0);
+    Field p;
+    p.setup(grid, values);
+    return p;
 }
 
-std::shared_ptr<VectorField> Initializer::initializeVelocity(std::shared_ptr<Grid> grid) {
+VectorField Initializer::initializeVelocity(const std::shared_ptr<Grid>& grid, const InputData& data) {
     const size_t N = grid->Nx * grid->Ny * grid->Nz;
-    std::vector<double> u0(N, data.initialConditions.u0);
-    std::vector<double> v0(N, data.initialConditions.v0);
-    std::vector<double> w0(N, data.initialConditions.w0);
-
-    auto velocity = std::make_shared<VectorField>();
-    velocity->setup(grid, u0, v0, w0); // <-- direttamente
-    return velocity;
+    std::vector<double> u(N, data.initialConditions.u0);
+    std::vector<double> v(N, data.initialConditions.v0);
+    std::vector<double> w(N, data.initialConditions.w0);
+    VectorField vel;
+    vel.setup(grid, u, v, w);
+    return vel;
 }
 
+Field Initializer::initializePorosity(const std::shared_ptr<Grid>& grid, const InputData& data) {
+    const size_t Nx = grid->Nx, Ny = grid->Ny, Nz = grid->Nz;
+    std::vector<double> vals(Nx * Ny * Nz);
 
-std::shared_ptr<Field> Initializer::initializePorosity(std::shared_ptr<Grid> grid) {
-    const size_t Nx = grid->Nx;
-    const size_t Ny = grid->Ny;
-    const size_t Nz = grid->Nz;
-    const double dx = grid->dx;
-    const double dy = grid->dy;
-    const double dz = grid->dz;
+    for (size_t k = 0; k < Nz; ++k)
+        for (size_t j = 0; j < Ny; ++j)
+            for (size_t i = 0; i < Nx; ++i)
+                vals[i + Nx * (j + Ny * k)] =
+                    std::sin(i * grid->dx) * std::sin(j * grid->dy) * std::sin(k * grid->dz);
 
-    std::vector<double> kValues(Nx * Ny * Nz);
-
-    // Calcola la porosità come funzione della posizione
-    for (size_t k = 0; k < Nz; ++k) {
-        for (size_t j = 0; j < Ny; ++j) {
-            for (size_t i = 0; i < Nx; ++i) {
-                double x = i * dx;
-                double y = j * dy;
-                double z = k * dz;
-
-                // Esempio: porosità k(x,y,z) = sin(x) * sin(y) * sin(z)
-                kValues[i + Nx * (j + Ny * k)] = std::sin(x) * std::sin(y) * std::sin(z);
-
-            }
-        }
-    }
-
-    auto porosity = std::make_shared<Field>();
-    porosity->setup(grid, kValues);
-
-    return porosity;
+    Field f;
+    f.setup(grid, vals);
+    return f;
 }
 
+Constants Initializer::buildConstants(const std::shared_ptr<Grid>& grid, const InputData& data) {
+    Constants c;
+    c.nu.setup(grid, std::vector<double>(grid->size(), data.physics.viscosity));
+    c.rho.setup(grid, std::vector<double>(grid->size(), 1.0)); // assumiamo densità costante unitaria
 
+    c.k = initializePorosity(grid, data);  // placeholder: could be permeability
+    std::vector<double> fx(grid->size(), 0.0);
+    std::vector<double> fy(grid->size(), 0.0);
+    std::vector<double> fz(grid->size(), -9.81);
+    c.f.setup(grid, fx, fy, fz);
+    return c;
+}
+
+TimeIntegrationSettings Initializer::buildTimeSettings(const InputData& data) {
+    return TimeIntegrationSettings(data.time.dt, data.time.t_end);
+}
+
+// OutputSettings Initializer::buildOutputSettings(const InputData& data) {
+//     OutputSettings o;
+//     o.outputDir = data.output.dir;
+//     o.baseFilename = data.output.baseName;
+//     o.outputStepFrequency = data.output.frequency;
+//     return o;
+// }
+
+// LoggingSettings Initializer::buildLoggingSettings(const InputData& data) {
+//     LoggingSettings log;
+//     log.verbose = data.logging.verbose;
+//     log.logToFile = data.logging.toFile;
+//     log.logFilename = data.logging.filename;
+//     log.logToConsole = data.logging.toConsole;
+//     return log;
+// }

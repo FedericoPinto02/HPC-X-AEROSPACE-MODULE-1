@@ -6,7 +6,7 @@
 
 using json = nlohmann::json;
 
-InputData InputReader::readAndSetInput(const std::string& filename) {
+InputData InputReader::read(const std::string& filename) {
     std::ifstream inputFile(filename);
     if (!inputFile.is_open()) {
         throw std::runtime_error("Could not open input file: " + filename);
