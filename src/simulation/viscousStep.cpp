@@ -154,9 +154,9 @@ void ViscousStep::closeViscousStep()
                 deriv_v = (context_.state.etaOld(Axis::Y, i + 1, j, k) + context_.state.etaOld(Axis::Y, i - 1, j, k) - 2.0 * context_.state.etaOld(Axis::Y, i, j, k))*mul;
                 deriv_w = (context_.state.etaOld(Axis::Z, i + 1, j, k) + context_.state.etaOld(Axis::Z, i - 1, j, k) - 2.0 * context_.state.etaOld(Axis::Z, i, j, k))*mul;
 
-                rhs_u[i] = context_.state.xi(Axis::X, i,j,k) + gamma * deriv_u;
-                rhs_v[i] = context_.state.xi(Axis::Y, i,j,k) + gamma * deriv_v;
-                rhs_w[i] = context_.state.xi(Axis::Z, i,j,k) + gamma * deriv_w;
+                rhs_u[i] = xi(Axis::X, i,j,k) + gamma * deriv_u;
+                rhs_v[i] = xi(Axis::Y, i,j,k) + gamma * deriv_v;
+                rhs_w[i] = xi(Axis::Z, i,j,k) + gamma * deriv_w;
             }
 
             mySystem_u.setRhs(rhs_u);

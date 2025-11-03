@@ -58,7 +58,7 @@ public:
     /**
      * @brief Solve the linear system
      */
-    void solveSystem();
+    void ThomaSolver();
 
    
 

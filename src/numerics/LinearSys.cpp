@@ -214,6 +214,7 @@ void LinearSys::fillSystemVelocity(
         break;
     }
 }
+}
 
 void LinearSys::ThomaSolver() {
     /*

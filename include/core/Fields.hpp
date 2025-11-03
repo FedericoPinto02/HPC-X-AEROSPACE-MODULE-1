@@ -253,12 +253,7 @@ public:
      * @param k z-index
      * @return the y-component value of the vector field at position (i,j,k)
      */
-<<<<<<< HEAD
-    Field::Scalar &y(const size_t &i, const size_t &j, const size_t &k) { return m_y(i, j, k); }
-=======
-    Scalar &y(const size_t i, const size_t j, const size_t k) { return m_y(i, j, k); }
-
->>>>>>> 0d73f6c (Adding methods aliasing access operators: value() and valueWithOffset() for Field, component() and value() for VectorField. Minor refactoring and fixes.)
+    Scalar &y(const size_t &i, const size_t &j, const size_t &k) { return m_y(i, j, k); }
     /**
      * @deprecated
      * @brief Access the z-component of the vector field.
