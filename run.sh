@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+BUILD_DIR="build"
+CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Release"
+
+mkdir -p "$BUILD_DIR"
+pushd "$BUILD_DIR" > /dev/null
+
+# Configura e compila
+cmake .. ${CMAKE_FLAGS}
+make -j"$(nproc)"
+
+# Esegui il main
+echo -e "\n=== Running main program ==="
+./main
+
+popd > /dev/null
