@@ -1,0 +1,32 @@
+{
+  "mesh": {
+    "nx": 16,
+    "ny": 16,
+    "nz": 16,
+    "dx": 1.0,
+    "dy": 1.0,
+    "dz": 1.0
+  },
+
+  "physics": {
+    "viscosity": 1e-3
+  },
+
+  "initial_conditions": {
+    "u0": 5.0,
+    "v0": 10.0,
+    "w0": 50.0,
+    "p0": 0.0
+  },
+
+  "time": {
+    "dt": 0.1,
+    "t_end": 1.0
+  },
+
+  "output": {
+    "output_interval": 20,
+    "output_prefix": "simulation_output"
+  }
+
+}
