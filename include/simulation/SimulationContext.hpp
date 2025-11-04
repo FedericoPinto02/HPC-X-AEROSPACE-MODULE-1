@@ -30,20 +30,20 @@ struct TimeIntegrationSettings {
     }
 };
 
-// struct OutputSettings {
-//     std::string outputDir;
-//     std::string baseFilename;
-//     // TODO - etc... TBD
-//     size_t outputStepFrequency;
-// };
+struct OutputSettings {
+     std::string outputDir;
+     std::string baseFilename;
+     // TODO - etc... TBD
+     size_t outputStepFrequency;
+ };
 
-// struct LoggingSettings {
-//     bool verbose;
-//     bool logToFile;
-//     std::string logFilename;
-//     bool logToConsole;
-//     // TODO - etc... TBD
-// };
+struct LoggingSettings {
+     bool verbose;
+     bool logToFile;
+     std::string logFilename;
+     bool logToConsole;
+     // TODO - etc... TBD
+ };
 
 struct Constants {
     // Kinematic viscosity of the fluid (solid: very high; fluid: low)   // nope?
@@ -94,8 +94,8 @@ struct SimulationState {
 struct SimulationContext {
     std::shared_ptr<const Grid> gridPtr; // todo - move into proper Mesh object ??
     TimeIntegrationSettings timeSettings;
-    // OutputSettings outputSettings;
-    // LoggingSettings loggingSettings;
+    OutputSettings outputSettings;
+    LoggingSettings loggingSettings;
     Constants constants;
     InitialConditionsSettings icSettings;
     BoundaryConditionsSettings bcSettings;
