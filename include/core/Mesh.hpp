@@ -3,7 +3,7 @@
 
 #include <cstddef>
 
-
+ /** 
  * @brief Struct to hold grid dimensions and spacing information along each direction.
  */
 struct Grid {
