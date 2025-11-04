@@ -17,14 +17,6 @@ enum class Axis {
     Y = 1,
     Z = 2
 };
-/**
- * @brief Enum class representing the three coordinate axes.
- */
-enum class Axis {
-    X = 0,
-    Y = 1,
-    Z = 2
-};
 
 /**
  * @brief Class representing a scalar field defined on a 3D grid.
