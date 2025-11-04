@@ -713,12 +713,15 @@ TEST(ComputeGradient, KnownGrad){
                 EXPECT_DOUBLE_EQ(grad.x()(i,j,k), 0.0);
 }
 
-TEST(ComputeDivergence, SimpleLinearField) {
+TEST(ComputeDivergence, SimpleLinearVectorField) {
     // === Grid setup ===
     std::shared_ptr<const Grid> grid = std::make_shared<Grid>(5, 5, 5, 0.5, 0.5, 0.5);
 
-    // === Field: f(x,y,z) = x + 2y + 3z ===
-    std::vector<Field::Scalar> values(grid->size());
+    // === Analytical vector field: u = (x, 2y, 3z) ===
+    std::vector<Field::Scalar> valuesX(grid->size());
+    std::vector<Field::Scalar> valuesY(grid->size());
+    std::vector<Field::Scalar> valuesZ(grid->size());
+
     size_t idx = 0;
     for (size_t k = 0; k < grid->Nz; ++k)
         for (size_t j = 0; j < grid->Ny; ++j)
@@ -726,48 +729,13 @@ TEST(ComputeDivergence, SimpleLinearField) {
                 double x = i * grid->dx;
                 double y = j * grid->dy;
                 double z = k * grid->dz;
-                values[idx] = x + 2.0*y + 3.0*z;
+                valuesX[idx] = x;
+                valuesY[idx] = 2.0 * y;
+                valuesZ[idx] = 3.0 * z;
             }
 
-    Field field;
-    field.setup(grid, values);
-
-    Field divergence;
-    divergence.setup(grid, std::vector<Field::Scalar>(grid->size(), 0.0));
-
-    // === Compute divergence ===
-    Derivatives deriv;
-    deriv.computeDivergence(field, divergence);
-
-    // === Check interior ===
-    const double tol = 1e-5;
-    for (size_t k = 1; k < grid->Nz - 1; ++k)
-        for (size_t j = 1; j < grid->Ny - 1; ++j)
-            for (size_t i = 1; i < grid->Nx - 1; ++i) {
-                double div_exact = 6.0; // = 6.0
-                EXPECT_NEAR(divergence(i,j,k), div_exact, tol)
-                    << "Error at (i,j,k)=(" << i << "," << j << "," << k << ")";
-            }
-}
-
-TEST(ComputeDivergence, ComplexScalarField) {
-    // === Grid setup ===
-    std::shared_ptr<const Grid> grid = std::make_shared<Grid>(5, 5, 5, 0.5, 0.5, 0.5);
-
-    // === Field: f(x,y,z) = x*y + y*z + z*x ===
-    std::vector<Field::Scalar> values(grid->size());
-    size_t idx = 0;
-    for (size_t k = 0; k < grid->Nz; ++k)
-        for (size_t j = 0; j < grid->Ny; ++j)
-            for (size_t i = 0; i < grid->Nx; ++i, ++idx) {
-                double x = i * grid->dx;
-                double y = j * grid->dy;
-                double z = k * grid->dz;
-                values[idx] = x*y + y*z + z*x;
-            }
-
-    Field field;
-    field.setup(grid, values);
+    VectorField vecField;
+    vecField.setup(grid, valuesX, valuesY, valuesZ);
 
     // === Divergence field ===
     Field divergence;
@@ -775,21 +743,20 @@ TEST(ComputeDivergence, ComplexScalarField) {
 
     // === Compute divergence ===
     Derivatives deriv;
-    deriv.computeDivergence(field, divergence);
+    deriv.computeDivergence(vecField, divergence);
 
-    // === Check interior ===
+    // === Check interior points ===
     const double tol = 1e-5;
     for (size_t k = 1; k < grid->Nz - 1; ++k)
         for (size_t j = 1; j < grid->Ny - 1; ++j)
             for (size_t i = 1; i < grid->Nx - 1; ++i) {
-                double x = i * grid->dx;
-                double y = j * grid->dy;
-                double z = k * grid->dz;
-                double div_exact = 2.0 * (x + y + z);
+                double div_exact = 6.0; // ∂x/∂x + ∂(2y)/∂y + ∂(3z)/∂z = 6
                 EXPECT_NEAR(divergence(i,j,k), div_exact, tol)
                     << "Error at (i,j,k)=(" << i << "," << j << "," << k << ")";
             }
 }
+
+
 
 TEST(ComputeHessianDiag, QuadraticField) {
     // === Grid setup ===

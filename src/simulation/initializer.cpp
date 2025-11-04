@@ -69,7 +69,7 @@ Field Initializer::initializePorosity(const std::shared_ptr<Grid>& grid, const I
 
 Constants Initializer::buildConstants(const std::shared_ptr<Grid>& grid, const InputData& data) {
     Constants c;
-    c.nu.setup(grid, std::vector<double>(grid->size(), data.physics.viscosity));
+    c.nu = 1e-5;
     c.rho.setup(grid, std::vector<double>(grid->size(), 1.0)); // assumiamo densità costante unitaria
 
     c.k = initializePorosity(grid, data);  // placeholder: could be permeability

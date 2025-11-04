@@ -3,13 +3,20 @@
 
 #include <algorithm>
 #include <cstddef>
-#include <execution>
 #include <memory>
 #include <stdexcept>
 #include <vector>
-
 #include "core/Mesh.hpp"
 
+
+/**
+ * @brief Enum class representing the three coordinate axes.
+ */
+enum class Axis {
+    X = 0,
+    Y = 1,
+    Z = 2
+};
 /**
  * @brief Enum class representing the three coordinate axes.
  */
@@ -25,6 +32,10 @@ enum class Axis {
 class Field {
 public:
     using Scalar = double;
+    
+    
+    std::vector<Field::Scalar>& getData() { return m_v; }
+    const std::vector<Field::Scalar>& getData() const { return m_v; }
 
     /**
      * @brief Getter for the pointer to the grid information.
@@ -242,6 +253,7 @@ public:
      */
     Field &y() { return m_y; }
 
+
     /**
      * @deprecated
      * @brief Access the y-component value of the vector field at the given position.
@@ -250,8 +262,7 @@ public:
      * @param k z-index
      * @return the y-component value of the vector field at position (i,j,k)
      */
-    Scalar &y(const size_t i, const size_t j, const size_t k) { return m_y(i, j, k); }
-
+    Scalar &y(const size_t &i, const size_t &j, const size_t &k) { return m_y(i, j, k); }
     /**
      * @deprecated
      * @brief Access the z-component of the vector field.

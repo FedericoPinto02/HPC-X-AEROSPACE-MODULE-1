@@ -18,7 +18,7 @@ public:
 
     void computeDz(const Field &field, Field &dz) const;
 
-    void computeDivergence(const Field &field, Field &divergence) const;
+    void computeDivergence(const VectorField &field, Field &divergence) const;
 
     void computeHessianDiag(const Field &field, VectorField &hessianDiag) const;
 

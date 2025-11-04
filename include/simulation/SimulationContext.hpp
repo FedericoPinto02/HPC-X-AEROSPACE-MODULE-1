@@ -31,23 +31,23 @@ struct TimeIntegrationSettings {
 };
 
 struct OutputSettings {
-    std::string outputDir;
-    std::string baseFilename;
-    // TODO - etc... TBD
-    size_t outputStepFrequency;
-};
+     std::string outputDir;
+     std::string baseFilename;
+     // TODO - etc... TBD
+     size_t outputStepFrequency;
+ };
 
 struct LoggingSettings {
-    bool verbose;
-    bool logToFile;
-    std::string logFilename;
-    bool logToConsole;
-    // TODO - etc... TBD
-};
-
+     bool verbose;
+     bool logToFile;
+     std::string logFilename;
+     bool logToConsole;
+     // TODO - etc... TBD
+ }; 
+ 
 struct Constants {
-    // Kinematic viscosity of the fluid (solid: very high; fluid: low)
-    Field nu;
+    // Kinematic viscosity of the fluid (solid: very high; fluid: low)   // nope?
+    double nu;     // why is it a field??
 
     // Density of the medium (solid: very high; fluid: low)
     Field rho;
@@ -56,7 +56,7 @@ struct Constants {
     Field k;
 
     // Body force acting on the medium (e.g. gravity)
-    VectorField f;
+    VectorField f; // would fit better as time dependant boundary conditions
 };
 
 struct InitialConditionsSettings {
@@ -65,23 +65,26 @@ struct InitialConditionsSettings {
 
 struct BoundaryConditionsSettings {
     // TODO - TBD
+    VectorField uBoundOld;
+    VectorField uBoundNew;
 };
 
 struct SimulationState {
+
     /*
-     * TODO - WORK IN PROGRESS... (VectorFieldHandler, FieldHandler)
+     * TODO - WORK IN PROGRESS... (VectorFieldHandler, FieldHandler)*/
     // Velocity fields
-    VectorFieldHandler<> xi;
-    VectorFieldHandler<> eta;
-    VectorFieldHandler<> zeta;
-    VectorFieldHandler<> u;
+    VectorField eta;
+    VectorField zeta;
+    VectorField u;
+    VectorField etaOld;
+    VectorField zetaOld;
+    VectorField uOld;
 
     // Pressure fields
-    FieldHandler<> psi;
-    FieldHandler<> phi;
-    FieldHandler<> c_phi;
-    FieldHandler<> p;
-     */
+    Field p;
+     
+    
 };
 
 struct SimulationContext {

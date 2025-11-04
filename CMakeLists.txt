@@ -6,7 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Include directories
 include_directories(include)
-include_directories(extern)
+include_directories(extern)  # per nlohmann/json
+
 
 # Libraries
 add_library(TridiagMatrix src/core/TridiagMat.cpp)
@@ -45,20 +46,37 @@ add_subdirectory(extern/googletest)
 
 enable_testing()
 
-# Libraries for tests
-add_library(allib
-    src/core/TridiagMat.cpp
-    src/core/Fields.cpp
-    src/numerics/derivatives.cpp
+# lib
+add_library(allib src/core/TridiagMat.cpp 
+                  src/core/Fields.cpp
+                  src/numerics/LinearSys.cpp
+                  src/numerics/derivatives.cpp
+                  src/io/inputReader.cpp
+                  src/io/VTKWriter.cpp
+                  src/simulation/initializer.cpp
+                  src/simulation/viscousStep.cpp
+                  src/simulation/pressureStep.cpp
 )
 target_include_directories(allib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# Executable (tests)
-add_executable(alltests
-    tests/test_tridiag.cpp
-    tests/test_fields.cpp
-    tests/test_derivatives.cpp
+target_include_directories(allib PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+
+# executable
+add_executable(alltests tests/test_tridiag.cpp
+                        tests/test_fields.cpp
+                        tests/test_derivatives.cpp
+                        tests/test_linearSys.cpp
+                        tests/test_viscousStep.cpp
+                        tests/test_pressureStep.cpp
+)
+
+
+target_link_libraries(alltests PRIVATE allib gtest_main)
+
+
 
 target_link_libraries(alltests PRIVATE allib gtest_main)
 

@@ -10,6 +10,7 @@ protected:
   const size_t Nx = 2, Ny = 3, Nz = 4;
   const size_t vectorSize = Nx * Ny * Nz;
   std::shared_ptr<const Grid> gridPtr;
+  
   std::vector<Field::Scalar> m_v;
   Field testField;
 
@@ -17,6 +18,7 @@ protected:
     gridPtr = std::make_shared<const Grid>(Nx, Ny, Nz, 0.1, 0.1, 0.1);
     m_v.resize(vectorSize);
     for (size_t i = 0; i < vectorSize; i++)
+
       m_v.at(i) = (Field::Scalar)i;
 
     std::vector<Field::Scalar> setupDataCopy = m_v;
@@ -25,6 +27,7 @@ protected:
 
   Field createOtherField(Field::Scalar initialValue = 0.0) {
     std::vector<Field::Scalar> setupData(vectorSize);
+    
     std::fill(setupData.begin(), setupData.end(), initialValue);
     Field other;
 
@@ -86,6 +89,7 @@ TEST(FieldTest, Setup_gridPointerNull) {
   EXPECT_THROW(field.setup(nullptr, m_v), std::invalid_argument);
 }
 
+
 TEST(FieldTest, Setup_vectorSizeMismatch) {
   std::shared_ptr<const Grid> gridPtr =
       std::make_shared<const Grid>(2, 3, 4, 0.1, 0.1, 0.1);
@@ -98,6 +102,7 @@ TEST(FieldTest, Setup_vectorSizeMismatch) {
 
   EXPECT_THROW(field.setup(gridPtr, m_v), std::invalid_argument);
 }
+
 
 TEST_F(FieldTestFixture, Setup_correctGridSetup) {
   EXPECT_EQ(gridPtr.get(), testField.getGrid().get());
@@ -114,6 +119,7 @@ TEST_F(FieldTestFixture, Setup_correctVectorSetup) {
 
 // === reset test ===
 
+
 TEST_F(FieldTestFixture, Reset_correctExecution) {
   testField.reset(1.0);
   for (size_t i = 0; i < Nx; i++)
@@ -125,7 +131,6 @@ TEST_F(FieldTestFixture, Reset_correctExecution) {
 }
 
 // === update tests ===
-
 TEST_F(FieldTestFixture, Update_invalidArgumentNewVectorSize) {
   std::vector<Field::Scalar> m_v_new;
   m_v_new.resize(vectorSize - 2);
@@ -133,6 +138,7 @@ TEST_F(FieldTestFixture, Update_invalidArgumentNewVectorSize) {
 
   EXPECT_THROW(testField.update(m_v_new), std::invalid_argument);
 }
+
 
 TEST_F(FieldTestFixture, Update_correctExecution) {
   std::vector<Field::Scalar> m_v_new;
@@ -142,6 +148,7 @@ TEST_F(FieldTestFixture, Update_correctExecution) {
 
   for (size_t i = 0; i < Nx; i++)
     for (size_t j = 0; j < Ny; j++)
+    
       for (size_t k = 0; k < Nz; k++)
         EXPECT_DOUBLE_EQ(testField(i, j, k), 2.5);
 }
@@ -151,7 +158,6 @@ TEST_F(FieldTestFixture, Update_correctExecution) {
 TEST_F(FieldTestFixture, AddElement_correctExecution) {
   Field::Scalar value = 2.0;
   testField.add(value);
-
   for (size_t i = 0; i < Nx; i++)
     for (size_t j = 0; j < Ny; j++)
       for (size_t k = 0; k < Nz; k++) {

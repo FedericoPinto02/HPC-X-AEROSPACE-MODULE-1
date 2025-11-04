@@ -168,9 +168,9 @@ void VectorField::setup(std::shared_ptr<const Grid> gridPtr,
         throw std::invalid_argument("Grid pointer cannot be null.");
     }
     p_grid = gridPtr;
-    m_x.setup(p_grid, std::move(initialX));
-    m_y.setup(p_grid, std::move(initialY));
-    m_z.setup(p_grid, std::move(initialZ));
+    m_x.setup(gridPtr, std::move(initialX));
+    m_y.setup(gridPtr, std::move(initialY));
+    m_z.setup(gridPtr, std::move(initialZ));
 }
 
 void VectorField::update(std::vector<Field::Scalar> newX,

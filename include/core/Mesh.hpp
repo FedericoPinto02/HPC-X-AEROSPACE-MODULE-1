@@ -3,8 +3,7 @@
 
 #include <cstddef>
 
-
-/**
+ /** 
  * @brief Struct to hold grid dimensions and spacing information along each direction.
  */
 struct Grid {
@@ -25,7 +24,6 @@ struct Grid {
      */
     size_t size() const { return Nx * Ny * Nz; }
 };
-
 // todo - TBD: Mesh class ?? methods for grid generation ??
 
 #endif // NSBSOLVER_MESH_HPP

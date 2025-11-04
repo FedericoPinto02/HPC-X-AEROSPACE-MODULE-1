@@ -38,6 +38,30 @@ double TridiagMat::getElement(int i, int j) const {
     return supdiag[i];
   return 0.0; // elements outside the tridiagonals are zero
 }
+std::vector<double> TridiagMat::getDiag(int w) const {
+  if (w == -1)
+    return subdiag;
+  else if (w == 0)
+    return diag;
+  else if (w == 1)
+    return supdiag;
+  else {
+    throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
+  }
+}
+
+std::vector<double>& TridiagMat::getDiag(int w)  {
+  if (w == -1)
+    return subdiag;
+  else if (w == 0)
+    return diag;
+  else if (w == 1)
+    return supdiag;
+  else {
+    throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
+  }
+}
+
 
 
 double TridiagMat::getFirstElementFromDiag(int w) const {
