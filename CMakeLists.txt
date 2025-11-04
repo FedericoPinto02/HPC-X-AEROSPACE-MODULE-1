@@ -23,6 +23,7 @@ add_library(allib src/core/TridiagMat.cpp
                   src/io/VTKWriter.cpp
                   src/simulation/initializer.cpp
                   src/simulation/viscousStep.cpp
+                  src/simulation/pressureStep.cpp
 )
 
 target_include_directories(allib PUBLIC 
@@ -36,6 +37,7 @@ add_executable(alltests tests/test_tridiag.cpp
                         tests/test_derivatives.cpp
                         tests/test_linearSys.cpp
                         tests/test_viscousStep.cpp
+                        tests/test_pressureStep.cpp
 )
 
 

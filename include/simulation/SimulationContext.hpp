@@ -43,8 +43,8 @@ struct LoggingSettings {
      std::string logFilename;
      bool logToConsole;
      // TODO - etc... TBD
- };
-
+ }; 
+ 
 struct Constants {
     // Kinematic viscosity of the fluid (solid: very high; fluid: low)   // nope?
     double nu;     // why is it a field??
@@ -74,7 +74,6 @@ struct SimulationState {
     /*
      * TODO - WORK IN PROGRESS... (VectorFieldHandler, FieldHandler)*/
     // Velocity fields
-    VectorField xi;
     VectorField eta;
     VectorField zeta;
     VectorField u;
@@ -83,9 +82,6 @@ struct SimulationState {
     VectorField uOld;
 
     // Pressure fields
-    Field psi;
-    Field phi;
-    Field c_phi;
     Field p;
      
     

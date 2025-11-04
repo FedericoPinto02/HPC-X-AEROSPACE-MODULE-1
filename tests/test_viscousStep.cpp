@@ -330,7 +330,6 @@ protected:
         context.state.uOld.setup(grid, u_x, u_y, u_z);
         context.state.etaOld.setup(grid, eta_x, eta_y, eta_z);
         context.state.zetaOld.setup(grid, zeta_x, zeta_y, zeta_z);
-        context.state.xi.setup(grid, zeta_x, zeta_y, zeta_z);
 
         // Set non-zero boundary conditions
         context.bcSettings.uBoundNew.setup(grid, u_x, u_y, u_z);

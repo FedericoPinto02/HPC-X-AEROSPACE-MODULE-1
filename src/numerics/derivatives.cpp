@@ -129,17 +129,17 @@ void Derivatives::computeDz(const Field &field, Field &dz) const{
                 }
 }
 
-void Derivatives::computeDivergence(const Field &field, Field &divergence) const{
+void Derivatives::computeDivergence(const VectorField &field, Field &divergence) const{
     Field tmp;
     tmp.setup(field.getGrid(),
                 std::vector<Field::Scalar>(field.getGrid()->size(), 0.0));
 
     divergence.reset();
-    computeDx(field, tmp);
+    computeDx(field(Axis::X), tmp);
     divergence.add(tmp);
-    computeDy(field, tmp);
+    computeDy(field(Axis::Y), tmp);
     divergence.add(tmp);
-    computeDz(field, tmp);
+    computeDz(field(Axis::Z), tmp);
     divergence.add(tmp);
 }
 
