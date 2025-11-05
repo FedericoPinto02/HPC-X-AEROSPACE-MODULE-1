@@ -20,7 +20,7 @@ public:
      * @brief Solve the Navier-Stokes-Brinkman equations.
      * @param SimualtionData structure.
      */
-    void solve(SimulationData& simData);
+    void solve();
 
 private:
    

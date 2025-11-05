@@ -10,11 +10,13 @@
 #include "core/Fields.hpp"
 #include "numerics/derivatives.hpp" 
 #include "simulation/NSBsolver.hpp"
+#include "io/VTKWriter.hpp"
+#include "io/inputReader.hpp"
 
 
 
 
-void NSBsolver::solve(SimulationData& simData)
+void NSBsolver::solve()
 {
 
     // ----- 1. Read input -----
@@ -29,16 +31,16 @@ void NSBsolver::solve(SimulationData& simData)
     std::cout << "SimulationData created correctly.\n";
 
     // Initialize steps & VTK writer
-    ViscousStep viscousStep(SimulationData simData);
-    PressureStep pressureStep(SimulationData simData);
-    VTKWriter vtkWriter(SimulationData simData);
+    ViscousStep viscousStep{simData};
+    PressureStep pressureStep{simData};
+    VTKWriter vtkWriter{simData};
 
     // Time integration
     for (unsigned int i = 1; i < simData.totalSteps; i++)
     {
         auto start = std::chrono::high_resolution_clock::now();  // start timer
-        simData.currStep =+ 1;
-        simData.currTime =+ simData.dt;
+        simData.currStep++;
+        simData.currTime += simData.dt; 
         viscousStep.run();
         pressureStep.run();
         auto end = std::chrono::high_resolution_clock::now();    // stop timer
