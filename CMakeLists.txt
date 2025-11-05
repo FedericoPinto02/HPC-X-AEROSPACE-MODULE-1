@@ -32,11 +32,11 @@ file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS ${PROJECT_INCLUDE_DIR}/*.hpp)
 
 # Add owned src and headers in the library
 add_library(NSBSolver ${SOURCE_FILES} ${HEADER_FILES})
-# Include owned headers (exposed publicly), external headers (internal use only)
-# and muparserx headers (internal use only).
-target_include_directories(NSBSolver
-        PUBLIC ${PROJECT_INCLUDE_DIR}
-        PRIVATE ${PROJECT_EXTERN_DIR} ${muparserx_SOURCE_DIR}/parser
+# Include owned headers, external headers and muparserx headers.
+target_include_directories(NSBSolver PUBLIC
+        ${PROJECT_INCLUDE_DIR}
+        ${PROJECT_EXTERN_DIR}
+        ${muparserx_SOURCE_DIR}/parser
 )
 # Link muparserx library for internal use only
 target_link_libraries(NSBSolver PRIVATE muparserx)
