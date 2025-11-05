@@ -58,6 +58,51 @@ Field::setup(std::shared_ptr<const Grid> gridPtr, std::vector<Field::Scalar> ini
     m_v = std::move(initialValues);
 }
 
+void Field::populate(
+        const std::function<double(double x, double y, double z)> &func,
+        FieldOffset offset, Axis offsetAxis
+) {
+    auto xOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::X)
+                   ? static_cast<double>(offset) : 0.0;
+    auto yOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Y)
+                   ? static_cast<double>(offset) : 0.0;
+    auto zOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Z)
+                   ? static_cast<double>(offset) : 0.0;
+    for (auto k = 0; k < p_grid->Nz; ++k) {
+        for (auto j = 0; j < p_grid->Ny; ++j) {
+            for (auto i = 0; i < p_grid->Nx; ++i) {
+                auto x = (i + xOffset) * p_grid->dx;
+                auto y = (j + yOffset) * p_grid->dy;
+                auto z = (k + zOffset) * p_grid->dz;
+                (*this)(i, j, k) = func(x, y, z);
+            }
+        }
+    }
+}
+
+void Field::populate(
+        double time,
+        const std::function<double(double t, double x, double y, double z)> &func,
+        FieldOffset offset, Axis offsetAxis
+) {
+    auto xOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::X)
+                   ? static_cast<double>(offset) : 0.0;
+    auto yOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Y)
+                   ? static_cast<double>(offset) : 0.0;
+    auto zOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Z)
+                   ? static_cast<double>(offset) : 0.0;
+    for (auto k = 0; k < p_grid->Nz; ++k) {
+        for (auto j = 0; j < p_grid->Ny; ++j) {
+            for (auto i = 0; i < p_grid->Nx; ++i) {
+                auto x = (i + xOffset) * p_grid->dx;
+                auto y = (j + yOffset) * p_grid->dy;
+                auto z = (k + zOffset) * p_grid->dz;
+                (*this)(i, j, k) = func(time, x, y, z);
+            }
+        }
+    }
+}
+
 void
 Field::reset(Field::Scalar value) {
     std::fill(m_v.begin(), m_v.end(), value);
