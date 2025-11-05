@@ -26,12 +26,38 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(muparserx)
 
-file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/*.cpp)
-list(FILTER SOURCE_FILES EXCLUDE REGEX ".*main.cpp$") # exclude the main.cpp
-file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS ${PROJECT_INCLUDE_DIR}/*.hpp)
+# todo - use it when all files actually compile ! (allow WIP files not to be compiled and break everything :D)
+# file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/*.cpp)
+# list(FILTER SOURCE_FILES EXCLUDE REGEX ".*main.cpp$") # exclude the main.cpp
+# file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS ${PROJECT_INCLUDE_DIR}/*.hpp)
 
 # Add owned src and headers in the library
-add_library(NSBSolver ${SOURCE_FILES} ${HEADER_FILES})
+add_library(NSBSolver
+        # ${SOURCE_FILES} ${HEADER_FILES}   todo - use it when all files actually compile !
+        # Explicit header files
+        include/core/Fields.hpp
+        include/core/Mesh.hpp
+        include/core/TridiagMat.hpp
+        include/io/inputReader.hpp
+        include/io/VTKWriter.hpp
+        include/numerics/derivatives.hpp
+        include/numerics/LinearSys.hpp
+        include/simulation/initializer.hpp
+        include/simulation/pressureStep.hpp
+        include/simulation/viscousStep.hpp
+        # Explicit source files
+        src/core/Fields.cpp
+        src/core/Mesh.cpp
+        src/core/TridiagMat.cpp
+        src/io/inputReader.cpp
+        src/io/VTKWriter.cpp
+        src/numerics/derivatives.cpp
+        src/numerics/LinearSys.cpp
+        src/simulation/initializer.cpp
+        src/simulation/pressureStep.cpp
+        src/simulation/viscousStep.cpp
+
+)
 # Include owned headers, external headers and muparserx headers.
 target_include_directories(NSBSolver PUBLIC
         ${PROJECT_INCLUDE_DIR}
