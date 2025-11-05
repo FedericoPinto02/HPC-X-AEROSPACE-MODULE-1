@@ -38,12 +38,13 @@ void fillSines(std::vector<Field::Scalar>& x,
 class ViscousStepTest : public ::testing::Test {
 protected:
     // Test objects
+
+    const double dt = 0.1;
     std::shared_ptr<Grid> grid;
     SimulationContext context;
     std::unique_ptr<ViscousStep> viscousStep;
 
     const double nu = 1.0;
-    const double dt = 0.1;
 
     // --- CONSTRUCTOR ---
     ViscousStepTest()
