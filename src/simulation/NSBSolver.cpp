@@ -1,23 +1,21 @@
-#include <iostream>
-#include <cmath>
-#include <memory>
 #include <chrono>
+#include <cmath>
+#include <iostream>
+#include <memory>
 
 // --- Include headers ---
-#include "simulation/pressureStep.hpp" 
-#include "simulation/viscousStep.hpp" 
-#include "simulation/SimulationData.hpp"
+#include "simulation/NSBSolver.hpp"
+
 #include "core/Fields.hpp"
-#include "numerics/derivatives.hpp" 
-#include "simulation/NSBsolver.hpp"
-#include "io/VTKWriter.hpp"
 #include "io/inputReader.hpp"
+#include "io/VTKWriter.hpp"
+#include "numerics/derivatives.hpp"
+#include "simulation/pressureStep.hpp"
+#include "simulation/SimulationContext.hpp"
+#include "simulation/viscousStep.hpp"
 
 
-
-
-void NSBsolver::solve()
-{
+void NSBSolver::solve() {
 
     // ----- 1. Read input -----
     InputReader reader;

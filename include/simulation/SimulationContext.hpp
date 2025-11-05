@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NSBSOLVER_SIMULATIONCONTEXT_HPP
+#define NSBSOLVER_SIMULATIONCONTEXT_HPP
 
 #include <cstddef>
 #include <string>
@@ -6,9 +7,22 @@
 
 #include "core/Fields.hpp"
 
+struct OutputSettings {
+    std::string dir;
+    std::string baseFilename;
+    bool enabled; // in case of benchmark, avoid wasting so much time producing VTK files...
+    size_t frequency;
+};
 
-struct SimulationData 
-{
+struct LoggingSettings {
+    bool verbose;
+    bool logToFile;
+    std::string filename;
+    bool logToConsole;
+    size_t frequency;
+};
+
+struct SimulationData {
     // Grid
     double dx, dy, dz;
     double Lx, Ly, Lz;
@@ -34,22 +48,13 @@ struct SimulationData
     VectorField uBoundNew;
 
     // Kinematic viscosity of the fluid
-    double nu;     
+    double nu;
 
     // Permeability of the (porous) medium (solid: very low; fluid: very high)
     Field k;
 
-    // Body force acting on the medium 
-    VectorField f; 
-
-    // Output & Log
-    std::string outputDir;
-    std::string baseFilename;
-    size_t outputStepFrequency;
-    bool verbose;
-    bool logToFile;
-    std::string logFilename;
-    bool logToConsole;
-
-
+    // Body force acting on the medium
+    VectorField f;
 };
+
+#endif //NSBSOLVER_SIMULATIONCONTEXT_HPP
