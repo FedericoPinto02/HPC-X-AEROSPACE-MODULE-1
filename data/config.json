@@ -1,34 +1,34 @@
 {
   "mesh": {
-    "nx": 10,
-    "ny": 10,
-    "nz": 10,
-    "dx": 0.1,
-    "dy": 0.1,
-    "dz": 0.1
+    "nx": 20,
+    "ny": 20,
+    "nz": 20,
+    "dx": 0.05,
+    "dy": 0.05,
+    "dz": 0.05
   },
 
   "time": {
-    "dt": 0.01,
-    "t_end": 1.0
+    "dt": 0.001,
+    "t_end": 0.05
   },
 
   "physics": {
     "nu": 1e-5,
-    "k": "sin(x)*sin(y)*sin(z) + 10.0"
+    "k": "1e10 "
   },
 
   "forces": {
-    "fx": "0.0 * cos(pi*z)",
-    "fy": "0.0 * cos(pi*y)",
-    "fz": "0.0 * cos(pi*x)"
+    "fx": "cos(t) * sin(x) * sin(y) * sin(z)     - 3 * sin(t) * sin(x) * sin(y) * cos(z) ",
+    "fy": "cos(t) * cos(x) * cos(y) * cos(z)      - 3 * sin(t) * cos(x) * cos(y) * sin(z) ",
+    "fz": "cos(t) * cos(x) * sin(y) * (sin(z) + cos(z))  - 3 * cos(x) * sin(y) * (cos(z) + sin(z))"
   },
 
  "initial_conditions": {
-  "u": "20 * sin(pi*x)^2 * sin(2*pi*y) * sin(2*pi*z)",
-  "v": "-20 * sin(2*pi*x) * sin(pi*y)^2 * sin(2*pi*z)",
-  "w": "0.0",
-  "p": "1e5"
+  "u": " sin(t) * sin(x) * sin(y) * sin(z)",
+  "v": " sin(t) * cos(x) * cos(y) * cos(z)",
+  "w": " sin(t) * cos(x) * sin(y) * (sin(z) + cos(z))",
+  "p": " sin(t) * 3.0 * cos(x) * sin(y) * (sin(z) - cos(z))"
 },
 
   "boundary_conditions": {

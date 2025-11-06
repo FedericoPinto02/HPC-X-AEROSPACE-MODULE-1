@@ -48,7 +48,7 @@ void ViscousStep::computeG()
     
 
     // Recepie
-    // g = f  -grad(p)  -nu/k *u  +nu*(dxx eta + dyy zeta + dzz u)
+    // g = f  -grad(p)  -nu/k *u * 0.5  +nu*(dxx eta + dyy zeta + dzz u) * 0.5
 
     // Let me cook
     for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
@@ -69,8 +69,8 @@ void ViscousStep::computeG()
         {
             g_data[i] = f_data[i] 
                         - gradP_data[i] 
-                        - nu_val * u_data[i] / k_data[i]
-                        + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]);
+                        - nu_val * u_data[i] / k_data[i] * 0.5
+                        + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]) * 0.5;
         }
     }
 }
@@ -156,9 +156,9 @@ void ViscousStep::closeViscousStep()
                 deriv_v = (data_.eta(Axis::Y, i + 1, j, k) + data_.eta(Axis::Y, i - 1, j, k) - 2.0 * data_.eta(Axis::Y, i, j, k))*mul;
                 deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k))*mul;
 
-                rhs_u[i] = xi(Axis::X, i,j,k) + gamma * deriv_u;
-                rhs_v[i] = xi(Axis::Y, i,j,k) + gamma * deriv_v;
-                rhs_w[i] = xi(Axis::Z, i,j,k) + gamma * deriv_w;
+                rhs_u[i] = xi(Axis::X, i,j,k) - gamma * deriv_u;
+                rhs_v[i] = xi(Axis::Y, i,j,k) - gamma * deriv_v;
+                rhs_w[i] = xi(Axis::Z, i,j,k) - gamma * deriv_w;
             }
 
             mySystem_u.setRhs(rhs_u);
@@ -243,9 +243,9 @@ void ViscousStep::closeViscousStep()
                 deriv_v = (data_.zeta(Axis::Y, i, j + 1, k) + data_.zeta(Axis::Y, i, j - 1, k) - 2.0 * data_.zeta(Axis::Y, i, j, k))*mul;
                 deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k))*mul;
 
-                rhs_u[j] = data_.eta(Axis::X, i,j,k) + gamma * deriv_u;
-                rhs_v[j] = data_.eta(Axis::Y, i,j,k) + gamma * deriv_v;
-                rhs_w[j] = data_.eta(Axis::Z, i,j,k) + gamma * deriv_w;
+                rhs_u[j] = data_.eta(Axis::X, i,j,k) - gamma * deriv_u;
+                rhs_v[j] = data_.eta(Axis::Y, i,j,k) - gamma * deriv_v;
+                rhs_w[j] = data_.eta(Axis::Z, i,j,k) - gamma * deriv_w;
             }
 
             mySystem_u.setRhs(rhs_u);
@@ -331,9 +331,9 @@ void ViscousStep::closeViscousStep()
                 deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k))*mul;
                 deriv_w = (data_.u(Axis::Z, i, j, k + 1) + data_.u(Axis::Z, i, j, k - 1) - 2.0 * data_.u(Axis::Z, i, j, k))*mul;
 
-                rhs_u[k] = data_.zeta(Axis::X, i,j,k) + gamma * deriv_u;
-                rhs_v[k] = data_.zeta(Axis::Y, i,j,k) + gamma * deriv_v;
-                rhs_w[k] = data_.zeta(Axis::Z, i,j,k) + gamma * deriv_w;
+                rhs_u[k] = data_.zeta(Axis::X, i,j,k) - gamma * deriv_u;
+                rhs_v[k] = data_.zeta(Axis::Y, i,j,k) - gamma * deriv_v;
+                rhs_w[k] = data_.zeta(Axis::Z, i,j,k) - gamma * deriv_w;
             }
 
             mySystem_u.setRhs(rhs_u);
