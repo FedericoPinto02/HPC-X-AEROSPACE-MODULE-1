@@ -113,6 +113,7 @@ SimulationData Initializer::setup(const InputData& inputData) {
 
     // --- Build Grid object ---
     auto grid = std::make_shared<Grid>(sim.Nx, sim.Ny, sim.Nz, sim.dx, sim.dy, sim.dz);
+    sim.gridPtr = grid; // temporary
 
     // --- Initial fields ---
     sim.u = initializeVectorFieldFromExpr(grid,

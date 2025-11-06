@@ -24,10 +24,11 @@ struct LoggingSettings {
 
 struct SimulationData {
     // Grid
+    std::shared_ptr<const Grid> gridPtr;
     double dx, dy, dz;
     double Lx, Ly, Lz;
     size_t Nx, Ny, Nz;
-
+    
     // Time integration settings
     double dt;
     double currTime;
@@ -39,6 +40,11 @@ struct SimulationData {
     VectorField eta;
     VectorField zeta;
     VectorField u;
+
+    // temp Velocity fields
+    VectorField etaOld;
+    VectorField zetaOld;
+    VectorField uOld;
 
     // Pressure field
     Field p;

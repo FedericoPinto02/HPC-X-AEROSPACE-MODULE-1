@@ -44,8 +44,8 @@ add_library(NSBSolver
         include/numerics/derivatives.hpp
         include/numerics/LinearSys.hpp
         include/simulation/initializer.hpp
-        #include/simulation/pressureStep.hpp
-        #include/simulation/viscousStep.hpp
+        include/simulation/pressureStep.hpp
+        include/simulation/viscousStep.hpp
         # Explicit source files
         src/core/Fields.cpp
         src/core/Mesh.cpp
@@ -55,8 +55,8 @@ add_library(NSBSolver
         src/numerics/derivatives.cpp
         src/numerics/LinearSys.cpp
         src/simulation/initializer.cpp
-        #src/simulation/pressureStep.cpp
-        #src/simulation/viscousStep.cpp
+        src/simulation/pressureStep.cpp
+        src/simulation/viscousStep.cpp
 
 )
 # Include owned headers, external headers and muparserx headers.
@@ -111,8 +111,8 @@ if (BUILD_TESTS)
             ${PROJECT_TESTS_DIR}/test_fields.cpp
             ${PROJECT_TESTS_DIR}/test_derivatives.cpp
             ${PROJECT_TESTS_DIR}/test_linearSys.cpp
-            #${PROJECT_TESTS_DIR}/test_viscousStep.cpp
-            #${PROJECT_TESTS_DIR}/test_pressureStep.cpp
+            ${PROJECT_TESTS_DIR}/test_viscousStep.cpp
+            ${PROJECT_TESTS_DIR}/test_pressureStep.cpp
     )
 
     # Link test executable with the libraries to be tested and GoogleTest tests runner

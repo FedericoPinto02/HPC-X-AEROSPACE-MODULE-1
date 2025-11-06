@@ -22,7 +22,7 @@ public:
      * @brief Constructor
      * @param contex Contains all simulation data
      */
-    PressureStep(SimulationContext& ctx);
+    PressureStep(SimulationData& simData);
     
     
 
@@ -44,7 +44,7 @@ private:
 
 
 
-    SimulationContext& context_;
+    SimulationData& data_;
 
 
 

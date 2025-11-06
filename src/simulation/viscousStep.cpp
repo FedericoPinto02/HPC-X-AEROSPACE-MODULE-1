@@ -8,9 +8,9 @@
 
 
 
-ViscousStep::ViscousStep(SimulationContext& ctx) : context_(ctx)
+ViscousStep::ViscousStep(SimulationData& simData) : data_(simData)
 {
-    initializeWorkspaceFields(context_.gridPtr);
+    initializeWorkspaceFields(data_.gridPtr);
 }
 
 
@@ -36,12 +36,12 @@ void ViscousStep::initializeWorkspaceFields(std::shared_ptr<const Grid> gridPtr)
 void ViscousStep::computeG()
 {
     // Ingredients list
-    auto& eta = context_.state.etaOld;
-    auto& zeta = context_.state.zetaOld;
-    auto& u = context_.state.uOld;
-    auto& p = context_.state.p;
-    auto& k_data = context_.constants.k.getData(); // k cant be 0!!!
-    double nu_val = context_.constants.nu;
+    auto& eta = data_.etaOld;
+    auto& zeta = data_.zetaOld;
+    auto& u = data_.uOld;
+    auto& p = data_.p;
+    auto& k_data = data_.k.getData(); // k cant be 0!!!
+    double nu_val = data_.nu;
     
     Derivatives derive;
     derive.computeGradient(p, gradP);
@@ -57,8 +57,8 @@ void ViscousStep::computeG()
         derive.computeDyy(zeta(axis), dyyZeta(axis));
         derive.computeDzz(u(axis), dzzU(axis));
 
-        auto& f_data = context_.constants.f(axis).getData();
-        auto& u_data = context_.state.uOld(axis).getData();
+        auto& f_data = data_.f(axis).getData();
+        auto& u_data = data_.uOld(axis).getData();
         auto& gradP_data = gradP(axis).getData();
         auto& dxx_data = dxxEta(axis).getData();
         auto& dyy_data = dyyZeta(axis).getData();
@@ -78,10 +78,10 @@ void ViscousStep::computeG()
 void ViscousStep::computeXi()
 {
     // Ingredients list
-    auto& u = context_.state.uOld;
-    auto& k_data = context_.constants.k.getData();  // k cant be 0!!!
-    double nu_val = context_.constants.nu;
-    double dt_val = context_.timeSettings.dt;
+    auto& u = data_.uOld;
+    auto& k_data = data_.k.getData();  // k cant be 0!!!
+    double nu_val = data_.nu;
+    double dt_val = data_.dt;
    
     // Recepie
     // beta = 1+ dt*nu /2/k
@@ -90,7 +90,7 @@ void ViscousStep::computeXi()
     // Let me cook
     for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
 
-        auto& u_data = context_.state.uOld(axis).getData();
+        auto& u_data = data_.uOld(axis).getData();
         auto& g_data = g(axis).getData();
         auto& xi_data = xi(axis).getData();
 
@@ -116,8 +116,8 @@ void ViscousStep::closeViscousStep()
     // ------------------------------------------
     {
     normalAxis = Axis::X;
-    size_t nSystem = context_.gridPtr->Ny * context_.gridPtr->Nz; // number of linear systems to solve
-    size_t sysDimension = context_.gridPtr->Nx; // dimension of linear system to solve
+    size_t nSystem = data_.gridPtr->Ny * data_.gridPtr->Nz; // number of linear systems to solve
+    size_t sysDimension = data_.gridPtr->Nx; // dimension of linear system to solve
     // when solving Eta we fill linsys with dxx derivatives
     // Eta.u is then solved exploiting normal Neumann boundary conditions
     // Eta.v and Eta.w are solved exploiting tangent Dirichlet boundary conditions
@@ -136,24 +136,24 @@ void ViscousStep::closeViscousStep()
     rhs_w.back() = 0;
 
     iStart = 0;
-    for (size_t j = 0; j < context_.gridPtr->Ny; j++)
+    for (size_t j = 0; j < data_.gridPtr->Ny; j++)
     {
-        for (size_t k = 0; k < context_.gridPtr->Nz; k++)
+        for (size_t k = 0; k < data_.gridPtr->Nz; k++)
         {
             jStart = j;
             kStart = k;
 
             for (size_t i = 1; i < sysDimension-1; i++)
             {
-                porosity = context_.constants.k(i,j,k);
-                beta = 1 + (context_.timeSettings.dt * context_.constants.nu * 0.5 / porosity);
-                gamma = context_.timeSettings.dt * context_.constants.nu * 0.5 / beta; // get gamma coefficient for each point
+                porosity = data_.k(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                gamma = data_.dt * data_.nu * 0.5 / beta; // get gamma coefficient for each point
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
-                mul = 1.0 / (context_.gridPtr->dx * context_.gridPtr->dx);
-                deriv_u = (context_.state.etaOld(Axis::X, i + 1, j, k) + context_.state.etaOld(Axis::X, i - 1, j, k) - 2.0 * context_.state.etaOld(Axis::X, i, j, k))*mul;
-                deriv_v = (context_.state.etaOld(Axis::Y, i + 1, j, k) + context_.state.etaOld(Axis::Y, i - 1, j, k) - 2.0 * context_.state.etaOld(Axis::Y, i, j, k))*mul;
-                deriv_w = (context_.state.etaOld(Axis::Z, i + 1, j, k) + context_.state.etaOld(Axis::Z, i - 1, j, k) - 2.0 * context_.state.etaOld(Axis::Z, i, j, k))*mul;
+                mul = 1.0 / (data_.gridPtr->dx * data_.gridPtr->dx);
+                deriv_u = (data_.etaOld(Axis::X, i + 1, j, k) + data_.etaOld(Axis::X, i - 1, j, k) - 2.0 * data_.etaOld(Axis::X, i, j, k))*mul;
+                deriv_v = (data_.etaOld(Axis::Y, i + 1, j, k) + data_.etaOld(Axis::Y, i - 1, j, k) - 2.0 * data_.etaOld(Axis::Y, i, j, k))*mul;
+                deriv_w = (data_.etaOld(Axis::Z, i + 1, j, k) + data_.etaOld(Axis::Z, i - 1, j, k) - 2.0 * data_.etaOld(Axis::Z, i, j, k))*mul;
 
                 rhs_u[i] = xi(Axis::X, i,j,k) + gamma * deriv_u;
                 rhs_v[i] = xi(Axis::Y, i,j,k) + gamma * deriv_v;
@@ -162,32 +162,32 @@ void ViscousStep::closeViscousStep()
 
             mySystem_u.setRhs(rhs_u);
             
-            mySystem_u.fillSystemVelocity(context_.constants.k, context_.state.etaOld, xi, context_.bcSettings.uBoundNew, 
-                                        context_.bcSettings.uBoundOld, Axis::X, Axis::X, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
+            mySystem_u.fillSystemVelocity(data_.k, data_.etaOld, xi, data_.uBoundNew, 
+                                        data_.uBoundOld, Axis::X, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_u.ThomaSolver();
             std::vector<double> unknown_u = mySystem_u.getSolution();
 
 
             mySystem_v.setRhs(rhs_v);
 
-            mySystem_v.fillSystemVelocity(context_.constants.k, context_.state.etaOld, xi, context_.bcSettings.uBoundNew, 
-                                        context_.bcSettings.uBoundOld, Axis::Y, Axis::X, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
+            mySystem_v.fillSystemVelocity(data_.k, data_.etaOld, xi, data_.uBoundNew, 
+                                        data_.uBoundOld, Axis::Y, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_v.ThomaSolver();
             std::vector<double> unknown_v = mySystem_v.getSolution();
 
 
             mySystem_w.setRhs(rhs_w);
 
-            mySystem_w.fillSystemVelocity(context_.constants.k, context_.state.etaOld, xi, context_.bcSettings.uBoundNew, 
-                                        context_.bcSettings.uBoundOld, Axis::Z, Axis::X, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
+            mySystem_w.fillSystemVelocity(data_.k, data_.etaOld, xi, data_.uBoundNew, 
+                                        data_.uBoundOld, Axis::Z, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_w.ThomaSolver();
             std::vector<double> unknown_w = mySystem_w.getSolution();
             
             for (size_t i = 0; i < sysDimension; i++)
             {
-                context_.state.eta(Axis::X, i, j, k) = unknown_u[i];
-                context_.state.eta(Axis::Y, i, j, k) = unknown_v[i];
-                context_.state.eta(Axis::Z, i, j, k) = unknown_w[i];
+                data_.eta(Axis::X, i, j, k) = unknown_u[i];
+                data_.eta(Axis::Y, i, j, k) = unknown_v[i];
+                data_.eta(Axis::Z, i, j, k) = unknown_w[i];
             }
 
         }
@@ -202,8 +202,8 @@ void ViscousStep::closeViscousStep()
     // ------------------------------------------
     {
     normalAxis = Axis::Y;
-    size_t nSystem = context_.gridPtr->Nx * context_.gridPtr->Nz; // number of linear systems to solve
-    size_t sysDimension = context_.gridPtr->Ny; // dimension of linear system to solve
+    size_t nSystem = data_.gridPtr->Nx * data_.gridPtr->Nz; // number of linear systems to solve
+    size_t sysDimension = data_.gridPtr->Ny; // dimension of linear system to solve
     // when solving Zeta we fill linsys with dyy derivatives
     // Zeta.v is then solved exploiting normal Neumann boundary conditions
     // Zeta.u and Zeta.w are solved exploiting tangent Dirichlet boundary conditions
@@ -223,58 +223,58 @@ void ViscousStep::closeViscousStep()
 
 
     jStart = 0;
-    for (size_t i = 0; i < context_.gridPtr->Nx; i++)
+    for (size_t i = 0; i < data_.gridPtr->Nx; i++)
     {
-        for (size_t k = 0; k < context_.gridPtr->Nz; k++)
+        for (size_t k = 0; k < data_.gridPtr->Nz; k++)
         {
             iStart = i;
             kStart = k;
 
             for (size_t j = 1; j < sysDimension-1; j++)
             {
-                porosity = context_.constants.k(i,j,k);
-                beta = 1 + (context_.timeSettings.dt * context_.constants.nu * 0.5 / porosity);
-                gamma = context_.timeSettings.dt * context_.constants.nu * 0.5 / beta; // get gamma coefficient for each point
+                porosity = data_.k(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                gamma = data_.dt * data_.nu * 0.5 / beta; // get gamma coefficient for each point
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
-                mul = 1.0 / (context_.gridPtr->dy * context_.gridPtr->dy);
-                deriv_u = (context_.state.zetaOld(Axis::X, i, j + 1, k) + context_.state.zetaOld(Axis::X, i, j - 1, k) - 2.0 * context_.state.zetaOld(Axis::X, i, j, k))*mul;
-                deriv_v = (context_.state.zetaOld(Axis::Y, i, j + 1, k) + context_.state.zetaOld(Axis::Y, i, j - 1, k) - 2.0 * context_.state.zetaOld(Axis::Y, i, j, k))*mul;
-                deriv_w = (context_.state.zetaOld(Axis::Z, i, j + 1, k) + context_.state.zetaOld(Axis::Z, i, j - 1, k) - 2.0 * context_.state.zetaOld(Axis::Z, i, j, k))*mul;
+                mul = 1.0 / (data_.gridPtr->dy * data_.gridPtr->dy);
+                deriv_u = (data_.zetaOld(Axis::X, i, j + 1, k) + data_.zetaOld(Axis::X, i, j - 1, k) - 2.0 * data_.zetaOld(Axis::X, i, j, k))*mul;
+                deriv_v = (data_.zetaOld(Axis::Y, i, j + 1, k) + data_.zetaOld(Axis::Y, i, j - 1, k) - 2.0 * data_.zetaOld(Axis::Y, i, j, k))*mul;
+                deriv_w = (data_.zetaOld(Axis::Z, i, j + 1, k) + data_.zetaOld(Axis::Z, i, j - 1, k) - 2.0 * data_.zetaOld(Axis::Z, i, j, k))*mul;
 
-                rhs_u[j] = context_.state.eta(Axis::X, i,j,k) + gamma * deriv_u;
-                rhs_v[j] = context_.state.eta(Axis::Y, i,j,k) + gamma * deriv_v;
-                rhs_w[j] = context_.state.eta(Axis::Z, i,j,k) + gamma * deriv_w;
+                rhs_u[j] = data_.eta(Axis::X, i,j,k) + gamma * deriv_u;
+                rhs_v[j] = data_.eta(Axis::Y, i,j,k) + gamma * deriv_v;
+                rhs_w[j] = data_.eta(Axis::Z, i,j,k) + gamma * deriv_w;
             }
 
             mySystem_u.setRhs(rhs_u);
 
-            mySystem_u.fillSystemVelocity(context_.constants.k, context_.state.zetaOld, context_.state.eta, context_.bcSettings.uBoundNew, 
-                                        context_.bcSettings.uBoundOld, Axis::X, Axis::Y, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
+            mySystem_u.fillSystemVelocity(data_.k, data_.zetaOld, data_.eta, data_.uBoundNew, 
+                                        data_.uBoundOld, Axis::X, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_u.ThomaSolver();
             std::vector<double> unknown_u = mySystem_u.getSolution();
 
 
             mySystem_v.setRhs(rhs_v);
 
-            mySystem_v.fillSystemVelocity(context_.constants.k, context_.state.zetaOld, context_.state.eta, context_.bcSettings.uBoundNew, 
-                                        context_.bcSettings.uBoundOld, Axis::Y, Axis::Y, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
+            mySystem_v.fillSystemVelocity(data_.k, data_.zetaOld, data_.eta, data_.uBoundNew, 
+                                        data_.uBoundOld, Axis::Y, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_v.ThomaSolver();
             std::vector<double> unknown_v = mySystem_v.getSolution();
 
 
             mySystem_w.setRhs(rhs_w);
 
-            mySystem_w.fillSystemVelocity(context_.constants.k, context_.state.zetaOld, context_.state.eta, context_.bcSettings.uBoundNew, 
-                                        context_.bcSettings.uBoundOld, Axis::Z, Axis::Y, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
+            mySystem_w.fillSystemVelocity(data_.k, data_.zetaOld, data_.eta, data_.uBoundNew, 
+                                        data_.uBoundOld, Axis::Z, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_w.ThomaSolver();
             std::vector<double> unknown_w = mySystem_w.getSolution();
             
             for (size_t j = 0; j < sysDimension; j++)
             {
-                context_.state.zeta(Axis::X, i, j, k) = unknown_u[j];
-                context_.state.zeta(Axis::Y, i, j, k) = unknown_v[j];
-                context_.state.zeta(Axis::Z, i, j, k) = unknown_w[j];
+                data_.zeta(Axis::X, i, j, k) = unknown_u[j];
+                data_.zeta(Axis::Y, i, j, k) = unknown_v[j];
+                data_.zeta(Axis::Z, i, j, k) = unknown_w[j];
             }
 
         }
@@ -290,8 +290,8 @@ void ViscousStep::closeViscousStep()
     // ------------------------------------------
     {
     normalAxis = Axis::Z;
-    size_t nSystem = context_.gridPtr->Nx * context_.gridPtr->Ny; // number of linear systems to solve
-    size_t sysDimension = context_.gridPtr->Nz; // dimension of linear system to solve
+    size_t nSystem = data_.gridPtr->Nx * data_.gridPtr->Ny; // number of linear systems to solve
+    size_t sysDimension = data_.gridPtr->Nz; // dimension of linear system to solve
     // when solving U we fill linsys with dzz derivatives
     // U.w is then solved exploiting normal Neumann boundary conditions
     // U.v and U.u are solved exploiting tangent Dirichlet boundary conditions
@@ -311,58 +311,58 @@ void ViscousStep::closeViscousStep()
 
 
     kStart = 0;
-    for (size_t i = 0; i < context_.gridPtr->Nx; i++)
+    for (size_t i = 0; i < data_.gridPtr->Nx; i++)
     {
-        for (size_t j = 0; j < context_.gridPtr->Ny; j++)
+        for (size_t j = 0; j < data_.gridPtr->Ny; j++)
         {
             iStart = i;
             jStart = j;
 
             for (size_t k = 1; k < sysDimension-1; k++)
             {
-                porosity = context_.constants.k(i,j,k);
-                beta = 1 + (context_.timeSettings.dt * context_.constants.nu * 0.5 / porosity);
-                gamma = context_.timeSettings.dt * context_.constants.nu * 0.5 / beta; // get gamma coefficient for each point
+                porosity = data_.k(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                gamma = data_.dt * data_.nu * 0.5 / beta; // get gamma coefficient for each point
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
-                mul = 1.0 / (context_.gridPtr->dz * context_.gridPtr->dz);
-                deriv_u = (context_.state.uOld(Axis::X, i, j, k + 1) + context_.state.uOld(Axis::X, i, j, k - 1) - 2.0 * context_.state.uOld(Axis::X, i, j, k))*mul;
-                deriv_v = (context_.state.uOld(Axis::Y, i, j, k + 1) + context_.state.uOld(Axis::Y, i, j, k - 1) - 2.0 * context_.state.uOld(Axis::Y, i, j, k))*mul;
-                deriv_w = (context_.state.uOld(Axis::Z, i, j, k + 1) + context_.state.uOld(Axis::Z, i, j, k - 1) - 2.0 * context_.state.uOld(Axis::Z, i, j, k))*mul;
+                mul = 1.0 / (data_.gridPtr->dz * data_.gridPtr->dz);
+                deriv_u = (data_.uOld(Axis::X, i, j, k + 1) + data_.uOld(Axis::X, i, j, k - 1) - 2.0 * data_.uOld(Axis::X, i, j, k))*mul;
+                deriv_v = (data_.uOld(Axis::Y, i, j, k + 1) + data_.uOld(Axis::Y, i, j, k - 1) - 2.0 * data_.uOld(Axis::Y, i, j, k))*mul;
+                deriv_w = (data_.uOld(Axis::Z, i, j, k + 1) + data_.uOld(Axis::Z, i, j, k - 1) - 2.0 * data_.uOld(Axis::Z, i, j, k))*mul;
 
-                rhs_u[k] = context_.state.zeta(Axis::X, i,j,k) + gamma * deriv_u;
-                rhs_v[k] = context_.state.zeta(Axis::Y, i,j,k) + gamma * deriv_v;
-                rhs_w[k] = context_.state.zeta(Axis::Z, i,j,k) + gamma * deriv_w;
+                rhs_u[k] = data_.zeta(Axis::X, i,j,k) + gamma * deriv_u;
+                rhs_v[k] = data_.zeta(Axis::Y, i,j,k) + gamma * deriv_v;
+                rhs_w[k] = data_.zeta(Axis::Z, i,j,k) + gamma * deriv_w;
             }
 
             mySystem_u.setRhs(rhs_u);
 
-            mySystem_u.fillSystemVelocity(context_.constants.k, context_.state.uOld, context_.state.zeta, context_.bcSettings.uBoundNew, 
-                                        context_.bcSettings.uBoundOld, Axis::X, Axis::Z, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
+            mySystem_u.fillSystemVelocity(data_.k, data_.uOld, data_.zeta, data_.uBoundNew, 
+                                        data_.uBoundOld, Axis::X, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_u.ThomaSolver();
             std::vector<double> unknown_u = mySystem_u.getSolution();
 
 
             mySystem_v.setRhs(rhs_v);
 
-            mySystem_v.fillSystemVelocity(context_.constants.k, context_.state.uOld, context_.state.zeta, context_.bcSettings.uBoundNew, 
-                                        context_.bcSettings.uBoundOld, Axis::Y, Axis::Z, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
+            mySystem_v.fillSystemVelocity(data_.k, data_.uOld, data_.zeta, data_.uBoundNew, 
+                                        data_.uBoundOld, Axis::Y, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_v.ThomaSolver();
             std::vector<double> unknown_v = mySystem_v.getSolution();
 
 
             mySystem_w.setRhs(rhs_w);
 
-            mySystem_w.fillSystemVelocity(context_.constants.k, context_.state.uOld, context_.state.zeta, context_.bcSettings.uBoundNew, 
-                                        context_.bcSettings.uBoundOld, Axis::Z, Axis::Z, iStart, jStart, kStart, context_.constants.nu, context_.timeSettings.dt);
+            mySystem_w.fillSystemVelocity(data_.k, data_.uOld, data_.zeta, data_.uBoundNew, 
+                                        data_.uBoundOld, Axis::Z, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_w.ThomaSolver();
             std::vector<double> unknown_w = mySystem_w.getSolution();
             
             for (size_t k = 0; k < sysDimension; k++)
             {
-                context_.state.u(Axis::X, i, j, k) = unknown_u[k];
-                context_.state.u(Axis::Y, i, j, k) = unknown_v[k];
-                context_.state.u(Axis::Z, i, j, k) = unknown_w[k];
+                data_.u(Axis::X, i, j, k) = unknown_u[k];
+                data_.u(Axis::Y, i, j, k) = unknown_v[k];
+                data_.u(Axis::Z, i, j, k) = unknown_w[k];
             }
 
         }
