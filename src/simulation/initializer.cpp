@@ -120,6 +120,8 @@ SimulationData Initializer::setup(const InputData& inputData) {
                                           inputData.initial_conditions.u_expr,
                                           inputData.initial_conditions.v_expr,
                                           inputData.initial_conditions.w_expr);
+    sim.eta = sim.u;
+    sim.zeta = sim.u;
 
     sim.p = initializeFieldFromExpr(grid, inputData.initial_conditions.p_expr);
 

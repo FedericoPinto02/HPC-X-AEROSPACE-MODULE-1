@@ -46,6 +46,7 @@ add_library(NSBSolver
         include/simulation/initializer.hpp
         include/simulation/pressureStep.hpp
         include/simulation/viscousStep.hpp
+        include/simulation/NSBSolver.hpp
         # Explicit source files
         src/core/Fields.cpp
         src/core/Mesh.cpp
@@ -57,6 +58,7 @@ add_library(NSBSolver
         src/simulation/initializer.cpp
         src/simulation/pressureStep.cpp
         src/simulation/viscousStep.cpp
+        src/simulation/NSBSolver.cpp
 
 )
 # Include owned headers, external headers and muparserx headers.

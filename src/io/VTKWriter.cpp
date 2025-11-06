@@ -1,4 +1,5 @@
 #include "io/VTKWriter.hpp"
+#include "simulation/SimulationContext.hpp"
 #include <fstream>
 #include <iomanip>
 #include <stdexcept>
@@ -72,3 +73,4 @@ void VTKWriter::write_timestep(const std::string &baseprefix, int step,
     std::snprintf(buf, sizeof(buf), "%s_%04d.vtk", baseprefix.c_str(), step);
     write_legacy(std::string(buf), pressure, velocity, title);
 }
+

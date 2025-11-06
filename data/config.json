@@ -1,33 +1,33 @@
 {
   "mesh": {
-    "nx": 100,
-    "ny": 100,
-    "nz": 50,
-    "dx": 1.0,
-    "dy": 2.0,
-    "dz": 1.0
+    "nx": 5,
+    "ny": 5,
+    "nz": 5,
+    "dx": 0.1,
+    "dy": 0.1,
+    "dz": 0.1
   },
 
   "time": {
-    "dt": 1.0,
-    "t_end": 10.0
+    "dt": 0.1,
+    "t_end": 1.0
   },
 
   "physics": {
-    "nu": 1e-3,
-    "k": "sin(x)*sin(y)*sin(z)"
+    "nu": 1e-5,
+    "k": "sin(x)*sin(y)*sin(z) + 50.0"
   },
 
   "forces": {
-    "fx": "0",
-    "fy": "cos(pi*y)",
-    "fz": "70"
+    "fx": "0.0 * cos(pi*z)",
+    "fy": "0.0 * cos(pi*y)",
+    "fz": "0.0 * cos(pi*x)"
   },
 
   "initial_conditions": {
-    "u": "sin(pi*x)*cos(pi*y)*exp(-z)",
-    "v": "0",
-    "w": "x+4",
+    "u": "20 * sin(pi*x)*cos(pi*y)",
+    "v": "20 * sin(pi*z)*cos(pi*y)",
+    "w": "20 * sin(pi*z)*cos(pi*x)",
     "p": "1e5"
   },
 
@@ -41,7 +41,7 @@
     "enabled": true,
     "dir": "./output",
     "base_filename": "simulation_output",
-    "frequency": 20
+    "frequency": 2
   },
 
   "logging": {
@@ -49,6 +49,6 @@
     "log_to_file": false,
     "log_to_console": true,
     "filename": "simulation.log",
-    "frequency": 20
+    "frequency": 2
   }
 }
