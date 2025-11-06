@@ -1,32 +1,54 @@
 {
   "mesh": {
-    "nx": 16,
-    "ny": 16,
-    "nz": 16,
+    "nx": 100,
+    "ny": 100,
+    "nz": 50,
     "dx": 1.0,
-    "dy": 1.0,
+    "dy": 2.0,
     "dz": 1.0
   },
 
+  "time": {
+    "dt": 1.0,
+    "t_end": 10.0
+  },
+
   "physics": {
-    "viscosity": 1e-3
+    "nu": 1e-3,
+    "k": "sin(x)*sin(y)*sin(z)"
+  },
+
+  "forces": {
+    "fx": "0",
+    "fy": "cos(pi*y)",
+    "fz": "70"
   },
 
   "initial_conditions": {
-    "u0": 5.0,
-    "v0": 10.0,
-    "w0": 50.0,
-    "p0": 0.0
+    "u": "sin(pi*x)*cos(pi*y)*exp(-z)",
+    "v": "0",
+    "w": "x+4",
+    "p": "1e5"
   },
 
-  "time": {
-    "dt": 0.1,
-    "t_end": 1.0
+  "boundary_conditions": {
+    "u": "0",
+    "v": "0",
+    "w": "0"
   },
 
   "output": {
-    "output_interval": 20,
-    "output_prefix": "simulation_output"
-  }
+    "enabled": true,
+    "dir": "./output",
+    "base_filename": "simulation_output",
+    "frequency": 20
+  },
 
+  "logging": {
+    "verbose": true,
+    "log_to_file": false,
+    "log_to_console": true,
+    "filename": "simulation.log",
+    "frequency": 20
+  }
 }

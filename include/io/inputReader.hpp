@@ -2,6 +2,9 @@
 #define INPUTREADER_HPP
 
 #include <string>
+#include <stdexcept>
+#include <simulation/SimulationContext.hpp>
+#include <nlohmann/json.hpp>
 
 /**
  * @brief Structure to hold mesh configuration data.
@@ -15,14 +18,36 @@ struct MeshData {
  * @brief Structure to hold physics parameters.
  */
 struct PhysicsData {
-    double viscosity;
+    double nu;              // kinematic viscosity
+    std::string k_expr;     // permeability function expression
 };
 
 /**
- * @brief Structure to hold initial conditions.
+ * @brief Structure to hold initial conditions as string expressions.
  */
 struct InitialConditions {
-    double u0, v0, w0, p0;
+    std::string u_expr;
+    std::string v_expr;
+    std::string w_expr;
+    std::string p_expr;
+};
+
+/**
+ * @brief Structure to hold boundary conditions as string expressions.
+ */
+struct BoundaryConditions {
+    std::string u_expr;
+    std::string v_expr;
+    std::string w_expr;
+};
+
+/**
+ * @brief Structure to hold body force expressions.
+ */
+struct ForcesData {
+    std::string fx_expr;
+    std::string fy_expr;
+    std::string fz_expr;
 };
 
 /**
@@ -39,8 +64,12 @@ struct TimeData {
 struct InputData {
     MeshData mesh;
     PhysicsData physics;
-    InitialConditions initialConditions;
+    InitialConditions initial_conditions;
+    BoundaryConditions boundary_conditions;
+    ForcesData forces;
     TimeData time;
+    OutputSettings output;
+    LoggingSettings logging;
 };
 
 /**
@@ -48,9 +77,6 @@ struct InputData {
  */
 class InputReader {
 public:
-    /**
-     * @brief Default constructor.
-     */
     InputReader() = default;
 
     /**
