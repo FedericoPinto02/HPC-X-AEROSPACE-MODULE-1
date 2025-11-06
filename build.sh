@@ -32,3 +32,5 @@ make
 
 echo "--- Build complete! ---"
 echo "You can now run your executable from within the '$BUILD_DIR' directory."
+
+cd build

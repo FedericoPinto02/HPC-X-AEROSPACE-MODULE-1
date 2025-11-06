@@ -119,8 +119,9 @@ void ViscousStep::closeViscousStep()
     size_t nSystem = data_.gridPtr->Ny * data_.gridPtr->Nz; // number of linear systems to solve
     size_t sysDimension = data_.gridPtr->Nx; // dimension of linear system to solve
     // when solving Eta we fill linsys with dxx derivatives
-    // Eta.u is then solved exploiting normal Neumann boundary conditions
+    // Eta.u is then solved exploiting normal Dirichlet boundary conditions
     // Eta.v and Eta.w are solved exploiting tangent Dirichlet boundary conditions
+    // Differences between normal and tangent are given by staggered grid.
 
     LinearSys mySystem_u(sysDimension, BoundaryType::Normal);
     LinearSys mySystem_v(sysDimension, BoundaryType::Tangent);
@@ -136,9 +137,9 @@ void ViscousStep::closeViscousStep()
     rhs_w.back() = 0;
 
     iStart = 0;
-    for (size_t j = 0; j < data_.gridPtr->Ny; j++)
+    for (size_t j = 1; j < data_.gridPtr->Ny-1; j++)
     {
-        for (size_t k = 0; k < data_.gridPtr->Nz; k++)
+        for (size_t k = 1; k < data_.gridPtr->Nz-1; k++)
         {
             jStart = j;
             kStart = k;
@@ -205,7 +206,7 @@ void ViscousStep::closeViscousStep()
     size_t nSystem = data_.gridPtr->Nx * data_.gridPtr->Nz; // number of linear systems to solve
     size_t sysDimension = data_.gridPtr->Ny; // dimension of linear system to solve
     // when solving Zeta we fill linsys with dyy derivatives
-    // Zeta.v is then solved exploiting normal Neumann boundary conditions
+    // Zeta.v is then solved exploiting normal Dirichlet boundary conditions
     // Zeta.u and Zeta.w are solved exploiting tangent Dirichlet boundary conditions
 
     LinearSys mySystem_u(sysDimension, BoundaryType::Tangent);
@@ -223,9 +224,9 @@ void ViscousStep::closeViscousStep()
 
 
     jStart = 0;
-    for (size_t i = 0; i < data_.gridPtr->Nx; i++)
+    for (size_t i = 1; i < data_.gridPtr->Nx-1; i++)
     {
-        for (size_t k = 0; k < data_.gridPtr->Nz; k++)
+        for (size_t k = 1; k < data_.gridPtr->Nz-1; k++)
         {
             iStart = i;
             kStart = k;
@@ -293,7 +294,7 @@ void ViscousStep::closeViscousStep()
     size_t nSystem = data_.gridPtr->Nx * data_.gridPtr->Ny; // number of linear systems to solve
     size_t sysDimension = data_.gridPtr->Nz; // dimension of linear system to solve
     // when solving U we fill linsys with dzz derivatives
-    // U.w is then solved exploiting normal Neumann boundary conditions
+    // U.w is then solved exploiting normal Dirichlet boundary conditions
     // U.v and U.u are solved exploiting tangent Dirichlet boundary conditions
 
     LinearSys mySystem_u(sysDimension, BoundaryType::Tangent);
@@ -311,9 +312,9 @@ void ViscousStep::closeViscousStep()
 
 
     kStart = 0;
-    for (size_t i = 0; i < data_.gridPtr->Nx; i++)
+    for (size_t i = 1; i < data_.gridPtr->Nx-1; i++)
     {
-        for (size_t j = 0; j < data_.gridPtr->Ny; j++)
+        for (size_t j = 1; j < data_.gridPtr->Ny-1; j++)
         {
             iStart = i;
             jStart = j;

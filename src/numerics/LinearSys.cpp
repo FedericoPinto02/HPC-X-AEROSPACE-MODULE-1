@@ -169,13 +169,13 @@ void LinearSys::fillSystemVelocity(
 
         rhsC.back() = uBoundNew(fieldComponent)
                           .valueWithOffset(iStart, jStart, kStart,
-                                           derivativeDirection, matA.getSize());
+                                           derivativeDirection, matA.getSize()-1);
         break;
 
     case BoundaryType::Tangent: {
         diag.front() = 1.0;
         double k = porosity.valueWithOffset(
-            iStart, jStart, kStart, derivativeDirection, matA.getSize());
+            iStart, jStart, kStart, derivativeDirection, matA.getSize()-1);
         double beta = 1 + (dt * nu * 0.5 / k);
         double gamma = dt * nu * 0.5 / beta;
         diag.back() = 1 + 3 * gamma * dCoef;
@@ -189,23 +189,23 @@ void LinearSys::fillSystemVelocity(
             2 * gamma * dCoef *
                 uBoundNew(fieldComponent)
                     .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, matA.getSize()) +
+                                     derivativeDirection, matA.getSize()-1) +
             2 * gamma * dCoef *
                 uBoundOld(fieldComponent)
                     .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, matA.getSize()) +
+                                     derivativeDirection, matA.getSize()-1) +
             gamma * dCoef *
                 eta(fieldComponent)
                     .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, matA.getSize() - 1) +
+                                     derivativeDirection, matA.getSize() - 2) +
             -3 * gamma * dCoef *
                 eta(fieldComponent)
                     .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, matA.getSize()) +
+                                     derivativeDirection, matA.getSize()-1) +
             gamma * dCoef *
                 xi(fieldComponent)
                     .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, matA.getSize());
+                                     derivativeDirection, matA.getSize()-1);
         break;
     }
     default:
