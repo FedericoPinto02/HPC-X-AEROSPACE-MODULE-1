@@ -63,7 +63,7 @@ void PressureStep::run()
 
             for (size_t i = 1; i < sysDimension-1; i++)
             {
-                rhs[i] = divU(i,j,k) * inv_dt;
+                rhs[i] =  - divU(i,j,k) * inv_dt;
             }
 
             mySystem.setRhs(rhs);
