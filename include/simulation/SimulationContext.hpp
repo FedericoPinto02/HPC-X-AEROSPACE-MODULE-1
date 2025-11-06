@@ -41,11 +41,6 @@ struct SimulationData {
     VectorField zeta;
     VectorField u;
 
-    // temp Velocity fields
-    VectorField etaOld;
-    VectorField zetaOld;
-    VectorField uOld;
-
     // Pressure field
     Field p;
 

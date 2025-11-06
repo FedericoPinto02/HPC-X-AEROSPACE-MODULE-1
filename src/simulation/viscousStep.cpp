@@ -36,9 +36,9 @@ void ViscousStep::initializeWorkspaceFields(std::shared_ptr<const Grid> gridPtr)
 void ViscousStep::computeG()
 {
     // Ingredients list
-    auto& eta = data_.etaOld;
-    auto& zeta = data_.zetaOld;
-    auto& u = data_.uOld;
+    auto& eta = data_.eta;
+    auto& zeta = data_.zeta;
+    auto& u = data_.u;
     auto& p = data_.p;
     auto& k_data = data_.k.getData(); // k cant be 0!!!
     double nu_val = data_.nu;
@@ -58,7 +58,7 @@ void ViscousStep::computeG()
         derive.computeDzz(u(axis), dzzU(axis));
 
         auto& f_data = data_.f(axis).getData();
-        auto& u_data = data_.uOld(axis).getData();
+        auto& u_data = data_.u(axis).getData();
         auto& gradP_data = gradP(axis).getData();
         auto& dxx_data = dxxEta(axis).getData();
         auto& dyy_data = dyyZeta(axis).getData();
@@ -78,7 +78,7 @@ void ViscousStep::computeG()
 void ViscousStep::computeXi()
 {
     // Ingredients list
-    auto& u = data_.uOld;
+    auto& u = data_.u;
     auto& k_data = data_.k.getData();  // k cant be 0!!!
     double nu_val = data_.nu;
     double dt_val = data_.dt;
@@ -90,7 +90,7 @@ void ViscousStep::computeXi()
     // Let me cook
     for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
 
-        auto& u_data = data_.uOld(axis).getData();
+        auto& u_data = data_.u(axis).getData();
         auto& g_data = g(axis).getData();
         auto& xi_data = xi(axis).getData();
 
@@ -151,9 +151,9 @@ void ViscousStep::closeViscousStep()
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
                 mul = 1.0 / (data_.gridPtr->dx * data_.gridPtr->dx);
-                deriv_u = (data_.etaOld(Axis::X, i + 1, j, k) + data_.etaOld(Axis::X, i - 1, j, k) - 2.0 * data_.etaOld(Axis::X, i, j, k))*mul;
-                deriv_v = (data_.etaOld(Axis::Y, i + 1, j, k) + data_.etaOld(Axis::Y, i - 1, j, k) - 2.0 * data_.etaOld(Axis::Y, i, j, k))*mul;
-                deriv_w = (data_.etaOld(Axis::Z, i + 1, j, k) + data_.etaOld(Axis::Z, i - 1, j, k) - 2.0 * data_.etaOld(Axis::Z, i, j, k))*mul;
+                deriv_u = (data_.eta(Axis::X, i + 1, j, k) + data_.eta(Axis::X, i - 1, j, k) - 2.0 * data_.eta(Axis::X, i, j, k))*mul;
+                deriv_v = (data_.eta(Axis::Y, i + 1, j, k) + data_.eta(Axis::Y, i - 1, j, k) - 2.0 * data_.eta(Axis::Y, i, j, k))*mul;
+                deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k))*mul;
 
                 rhs_u[i] = xi(Axis::X, i,j,k) + gamma * deriv_u;
                 rhs_v[i] = xi(Axis::Y, i,j,k) + gamma * deriv_v;
@@ -162,7 +162,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_u.setRhs(rhs_u);
             
-            mySystem_u.fillSystemVelocity(data_.k, data_.etaOld, xi, data_.uBoundNew, 
+            mySystem_u.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
                                         data_.uBoundOld, Axis::X, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_u.ThomaSolver();
             std::vector<double> unknown_u = mySystem_u.getSolution();
@@ -170,7 +170,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_v.setRhs(rhs_v);
 
-            mySystem_v.fillSystemVelocity(data_.k, data_.etaOld, xi, data_.uBoundNew, 
+            mySystem_v.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
                                         data_.uBoundOld, Axis::Y, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_v.ThomaSolver();
             std::vector<double> unknown_v = mySystem_v.getSolution();
@@ -178,7 +178,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_w.setRhs(rhs_w);
 
-            mySystem_w.fillSystemVelocity(data_.k, data_.etaOld, xi, data_.uBoundNew, 
+            mySystem_w.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
                                         data_.uBoundOld, Axis::Z, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_w.ThomaSolver();
             std::vector<double> unknown_w = mySystem_w.getSolution();
@@ -238,9 +238,9 @@ void ViscousStep::closeViscousStep()
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
                 mul = 1.0 / (data_.gridPtr->dy * data_.gridPtr->dy);
-                deriv_u = (data_.zetaOld(Axis::X, i, j + 1, k) + data_.zetaOld(Axis::X, i, j - 1, k) - 2.0 * data_.zetaOld(Axis::X, i, j, k))*mul;
-                deriv_v = (data_.zetaOld(Axis::Y, i, j + 1, k) + data_.zetaOld(Axis::Y, i, j - 1, k) - 2.0 * data_.zetaOld(Axis::Y, i, j, k))*mul;
-                deriv_w = (data_.zetaOld(Axis::Z, i, j + 1, k) + data_.zetaOld(Axis::Z, i, j - 1, k) - 2.0 * data_.zetaOld(Axis::Z, i, j, k))*mul;
+                deriv_u = (data_.zeta(Axis::X, i, j + 1, k) + data_.zeta(Axis::X, i, j - 1, k) - 2.0 * data_.zeta(Axis::X, i, j, k))*mul;
+                deriv_v = (data_.zeta(Axis::Y, i, j + 1, k) + data_.zeta(Axis::Y, i, j - 1, k) - 2.0 * data_.zeta(Axis::Y, i, j, k))*mul;
+                deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k))*mul;
 
                 rhs_u[j] = data_.eta(Axis::X, i,j,k) + gamma * deriv_u;
                 rhs_v[j] = data_.eta(Axis::Y, i,j,k) + gamma * deriv_v;
@@ -249,7 +249,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_u.setRhs(rhs_u);
 
-            mySystem_u.fillSystemVelocity(data_.k, data_.zetaOld, data_.eta, data_.uBoundNew, 
+            mySystem_u.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew, 
                                         data_.uBoundOld, Axis::X, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_u.ThomaSolver();
             std::vector<double> unknown_u = mySystem_u.getSolution();
@@ -257,7 +257,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_v.setRhs(rhs_v);
 
-            mySystem_v.fillSystemVelocity(data_.k, data_.zetaOld, data_.eta, data_.uBoundNew, 
+            mySystem_v.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew, 
                                         data_.uBoundOld, Axis::Y, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_v.ThomaSolver();
             std::vector<double> unknown_v = mySystem_v.getSolution();
@@ -265,7 +265,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_w.setRhs(rhs_w);
 
-            mySystem_w.fillSystemVelocity(data_.k, data_.zetaOld, data_.eta, data_.uBoundNew, 
+            mySystem_w.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew, 
                                         data_.uBoundOld, Axis::Z, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_w.ThomaSolver();
             std::vector<double> unknown_w = mySystem_w.getSolution();
@@ -326,9 +326,9 @@ void ViscousStep::closeViscousStep()
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
                 mul = 1.0 / (data_.gridPtr->dz * data_.gridPtr->dz);
-                deriv_u = (data_.uOld(Axis::X, i, j, k + 1) + data_.uOld(Axis::X, i, j, k - 1) - 2.0 * data_.uOld(Axis::X, i, j, k))*mul;
-                deriv_v = (data_.uOld(Axis::Y, i, j, k + 1) + data_.uOld(Axis::Y, i, j, k - 1) - 2.0 * data_.uOld(Axis::Y, i, j, k))*mul;
-                deriv_w = (data_.uOld(Axis::Z, i, j, k + 1) + data_.uOld(Axis::Z, i, j, k - 1) - 2.0 * data_.uOld(Axis::Z, i, j, k))*mul;
+                deriv_u = (data_.u(Axis::X, i, j, k + 1) + data_.u(Axis::X, i, j, k - 1) - 2.0 * data_.u(Axis::X, i, j, k))*mul;
+                deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k))*mul;
+                deriv_w = (data_.u(Axis::Z, i, j, k + 1) + data_.u(Axis::Z, i, j, k - 1) - 2.0 * data_.u(Axis::Z, i, j, k))*mul;
 
                 rhs_u[k] = data_.zeta(Axis::X, i,j,k) + gamma * deriv_u;
                 rhs_v[k] = data_.zeta(Axis::Y, i,j,k) + gamma * deriv_v;
@@ -337,7 +337,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_u.setRhs(rhs_u);
 
-            mySystem_u.fillSystemVelocity(data_.k, data_.uOld, data_.zeta, data_.uBoundNew, 
+            mySystem_u.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew, 
                                         data_.uBoundOld, Axis::X, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_u.ThomaSolver();
             std::vector<double> unknown_u = mySystem_u.getSolution();
@@ -345,7 +345,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_v.setRhs(rhs_v);
 
-            mySystem_v.fillSystemVelocity(data_.k, data_.uOld, data_.zeta, data_.uBoundNew, 
+            mySystem_v.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew, 
                                         data_.uBoundOld, Axis::Y, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_v.ThomaSolver();
             std::vector<double> unknown_v = mySystem_v.getSolution();
@@ -353,7 +353,7 @@ void ViscousStep::closeViscousStep()
 
             mySystem_w.setRhs(rhs_w);
 
-            mySystem_w.fillSystemVelocity(data_.k, data_.uOld, data_.zeta, data_.uBoundNew, 
+            mySystem_w.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew, 
                                         data_.uBoundOld, Axis::Z, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
             mySystem_w.ThomaSolver();
             std::vector<double> unknown_w = mySystem_w.getSolution();

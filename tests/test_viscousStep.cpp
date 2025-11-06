@@ -108,13 +108,9 @@ protected:
         
         // Setup fields
         data_.p.setup(grid, p_field);
-        data_.u.setup(grid, zeros, zeros, zeros); // Current 'u' is 0
-        data_.eta.setup(grid, zeros, zeros, zeros);
-        data_.zeta.setup(grid, zeros, zeros, zeros);
-        
-        data_.uOld.setup(grid, u_x, u_y, u_z);
-        data_.etaOld.setup(grid, eta_x, eta_y, eta_z);
-        data_.zetaOld.setup(grid, zeta_x, zeta_y, zeta_z);
+        data_.u.setup(grid, u_x, u_y, u_z);
+        data_.eta.setup(grid, eta_x, eta_y, eta_z);
+        data_.zeta.setup(grid, zeta_x, zeta_y, zeta_z);
 
         // Initialize boundary condition fields
         data_.uBoundNew.setup(grid, u_x, u_y, u_z);
@@ -329,10 +325,6 @@ protected:
         data_.u.setup(grid, u_x, u_y, u_z); // Initial u
         data_.eta.setup(grid, eta_x, eta_y, eta_z); // Initial eta
         data_.zeta.setup(grid, zeta_x, zeta_y, zeta_z); // Initial zeta
-        
-        data_.uOld.setup(grid, u_x, u_y, u_z);
-        data_.etaOld.setup(grid, eta_x, eta_y, eta_z);
-        data_.zetaOld.setup(grid, zeta_x, zeta_y, zeta_z);
 
         // Set non-zero boundary conditions
         data_.uBoundNew.setup(grid, u_x, u_y, u_z);
