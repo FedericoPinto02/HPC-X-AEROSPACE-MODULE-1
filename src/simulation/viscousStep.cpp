@@ -197,9 +197,10 @@ void ViscousStep::closeViscousStep()
     // Special case, k = 1/2 (=0)
     // Here Eta.w is computed with tangent b.c while Eta.u and Eta.v come directly from boundary conditions.
     k = 0;
+    iStart = 0;
     for (j = 1; j < data_.gridPtr->Ny - 1; j++)
     {
-         jStart = j;
+        jStart = j;
         kStart = k;
 
         for (size_t i = 1; i < sysDimension - 1; i++)
@@ -233,7 +234,7 @@ void ViscousStep::closeViscousStep()
     {
         for (size_t i = 1; i < sysDimension - 1; i++)
         {
-             jStart = j;
+            jStart = j;
             kStart = k;
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
@@ -275,7 +276,7 @@ void ViscousStep::closeViscousStep()
     {
         for (size_t i = 1; i < sysDimension - 1; i++)
         {
-             jStart = j;
+            jStart = j;
             kStart = k;
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
@@ -306,7 +307,7 @@ void ViscousStep::closeViscousStep()
     {
         for (size_t i = 1; i < sysDimension - 1; i++)
         {
-             jStart = j;
+            jStart = j;
             kStart = k;
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
