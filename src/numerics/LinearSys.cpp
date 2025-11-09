@@ -163,13 +163,14 @@ void LinearSys::fillSystemVelocity(
         default:
             break;
         }
-        
+
         diag.back() = 1.0;  // the other is aready initialized to zero
         diag.front() = 1.0;
 
         rhsC.back() = uBoundNew(fieldComponent)
                           .valueWithOffset(iStart, jStart, kStart,
                                            derivativeDirection, matA.getSize()-1);
+       
         break;
 
     case BoundaryType::Tangent: {
@@ -184,7 +185,6 @@ void LinearSys::fillSystemVelocity(
         rhsC.front() = uBoundNew(fieldComponent)
                            .valueWithOffset(iStart, jStart, kStart,
                                             derivativeDirection, 0);
-
         rhsC.back() =
             2 * gamma * dCoef *
                 uBoundNew(fieldComponent)

@@ -228,7 +228,7 @@ void ViscousStep::closeViscousStep()
         }
     }
     // Special case, k = Nz-1
-    // Here Eta.u and Eta.v are computed with tangent b.c while Eta.w comes directly from boundary conditions.
+    // Here Eta.v is computed with tangent b.c while Eta.u, Eta.w come directly from boundary conditions.
     k = data_.gridPtr->Nz - 1;
     for (j = 1; j < data_.gridPtr->Ny - 1; j++)
     {
@@ -240,20 +240,9 @@ void ViscousStep::closeViscousStep()
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta; 
             mul = 1.0 / (data_.gridPtr->dx * data_.gridPtr->dx);
-            deriv_u = (data_.eta(Axis::X, i + 1, j, k) + data_.eta(Axis::X, i - 1, j, k) - 2.0 * data_.eta(Axis::X, i, j, k))*mul;
             deriv_v = (data_.eta(Axis::Y, i + 1, j, k) + data_.eta(Axis::Y, i - 1, j, k) - 2.0 * data_.eta(Axis::Y, i, j, k))*mul;
-            rhs_u[i] = xi(Axis::X, i,j,k) - gamma * deriv_u;
             rhs_v[i] = xi(Axis::Y, i,j,k) - gamma * deriv_v;
         }
-
-            mySystem_u.setRhs(rhs_u);
-            
-            mySystem_u.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::X, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
-            mySystem_u.ThomaSolver();
-            std::vector<double> unknown_u = mySystem_u.getSolution();
-
-
             mySystem_v.setRhs(rhs_v);
 
             mySystem_v.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
@@ -263,7 +252,7 @@ void ViscousStep::closeViscousStep()
 
         for (size_t i = 0; i < sysDimension; i++)
         {
-            data_.eta(Axis::X, i, j, k) = unknown_u[i];
+            data_.eta(Axis::X, i, j, k) = data_.uBoundNew(Axis::X, i, j, k);
             data_.eta(Axis::Y, i, j, k) = unknown_v[i];
             data_.eta(Axis::Z, i, j, k) = data_.uBoundNew(Axis::Z, i, j, k);
         }
@@ -313,20 +302,10 @@ void ViscousStep::closeViscousStep()
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta; 
             mul = 1.0 / (data_.gridPtr->dx * data_.gridPtr->dx);
-            deriv_u = (data_.eta(Axis::X, i + 1, j, k) + data_.eta(Axis::X, i - 1, j, k) - 2.0 * data_.eta(Axis::X, i, j, k))*mul;
             deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k))*mul;
-            rhs_u[i] = xi(Axis::X, i,j,k) - gamma * deriv_u;
             rhs_w[i] = xi(Axis::Z, i,j,k) - gamma * deriv_w;
         }
-
-            mySystem_u.setRhs(rhs_u);
             
-            mySystem_u.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::X, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
-            mySystem_u.ThomaSolver();
-            std::vector<double> unknown_u = mySystem_u.getSolution();
-
-
             mySystem_w.setRhs(rhs_w);
 
             mySystem_w.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
@@ -336,7 +315,7 @@ void ViscousStep::closeViscousStep()
 
         for (size_t i = 0; i < sysDimension; i++)
         {
-            data_.eta(Axis::X, i, j, k) = unknown_u[i];
+            data_.eta(Axis::X, i, j, k) = data_.uBoundNew(Axis::X, i, j, k);
             data_.eta(Axis::Y, i, j, k) = data_.uBoundNew(Axis::Y, i, j, k);
             data_.eta(Axis::Z, i, j, k) = unknown_w[i];
         }
@@ -528,9 +507,7 @@ void ViscousStep::closeViscousStep()
             gamma = data_.dt * data_.nu * 0.5 / beta; 
             mul = 1.0 / (data_.gridPtr->dy * data_.gridPtr->dy);
             deriv_u = (data_.zeta(Axis::X, i, j + 1, k) + data_.zeta(Axis::X, i, j - 1, k) - 2.0 * data_.zeta(Axis::X, i, j, k)) * mul;
-            deriv_v = (data_.zeta(Axis::Y, i, j + 1, k) + data_.zeta(Axis::Y, i, j - 1, k) - 2.0 * data_.zeta(Axis::Y, i, j, k)) * mul;
             rhs_u[j] = data_.eta(Axis::X, i, j, k) - gamma * deriv_u;
-            rhs_v[j] = data_.eta(Axis::Y, i, j, k) - gamma * deriv_v;
         }
 
         mySystem_u.setRhs(rhs_u);
@@ -539,17 +516,12 @@ void ViscousStep::closeViscousStep()
         mySystem_u.ThomaSolver();
         std::vector<double> unknown_u = mySystem_u.getSolution();
 
-        mySystem_v.setRhs(rhs_v);
-        mySystem_v.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Y, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
-        mySystem_v.ThomaSolver();
-        std::vector<double> unknown_v = mySystem_v.getSolution();
 
         for (size_t j = 0; j < sysDimension; j++)
         {
             // Set tangents from solver
             data_.zeta(Axis::X, i, j, k) = unknown_u[j];
-            data_.zeta(Axis::Y, i, j, k) = unknown_v[j];
+            data_.zeta(Axis::Y, i, j, k) = data_.uBoundNew(Axis::Y, i, j, k);
             // Set normal from boundary conditions
             data_.zeta(Axis::Z, i, j, k) = data_.uBoundNew(Axis::Z, i, j, k);
         }
@@ -601,17 +573,10 @@ void ViscousStep::closeViscousStep()
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta; 
             mul = 1.0 / (data_.gridPtr->dy * data_.gridPtr->dy);
-            deriv_v = (data_.zeta(Axis::Y, i, j + 1, k) + data_.zeta(Axis::Y, i, j - 1, k) - 2.0 * data_.zeta(Axis::Y, i, j, k)) * mul;
             deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k)) * mul;
             rhs_v[j] = data_.eta(Axis::Y, i, j, k) - gamma * deriv_v;
             rhs_w[j] = data_.eta(Axis::Z, i, j, k) - gamma * deriv_w;
         }
-
-        mySystem_v.setRhs(rhs_v);
-        mySystem_v.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Y, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
-        mySystem_v.ThomaSolver();
-        std::vector<double> unknown_v = mySystem_v.getSolution();
 
         mySystem_w.setRhs(rhs_w);
         mySystem_w.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew, 
@@ -624,7 +589,7 @@ void ViscousStep::closeViscousStep()
             // Set normal from boundary conditions
             data_.zeta(Axis::X, i, j, k) = data_.uBoundNew(Axis::X, i, j, k);
             // Set tangents from solver
-            data_.zeta(Axis::Y, i, j, k) = unknown_v[j];
+            data_.zeta(Axis::Y, i, j, k) = data_.uBoundNew(Axis::Y, i, j, k);
             data_.zeta(Axis::Z, i, j, k) = unknown_w[j];
         }
     }
@@ -817,9 +782,7 @@ void ViscousStep::closeViscousStep()
             gamma = data_.dt * data_.nu * 0.5 / beta; 
             mul = 1.0 / (data_.gridPtr->dz * data_.gridPtr->dz);
             deriv_u = (data_.u(Axis::X, i, j, k + 1) + data_.u(Axis::X, i, j, k - 1) - 2.0 * data_.u(Axis::X, i, j, k)) * mul;
-            deriv_w = (data_.u(Axis::Z, i, j, k + 1) + data_.u(Axis::Z, i, j, k - 1) - 2.0 * data_.u(Axis::Z, i, j, k)) * mul;
             rhs_u[k] = data_.zeta(Axis::X, i, j, k) - gamma * deriv_u;
-            rhs_w[k] = data_.zeta(Axis::Z, i, j, k) - gamma * deriv_w;
         }
 
         mySystem_u.setRhs(rhs_u);
@@ -828,17 +791,11 @@ void ViscousStep::closeViscousStep()
         mySystem_u.ThomaSolver();
         std::vector<double> unknown_u = mySystem_u.getSolution();
 
-        mySystem_w.setRhs(rhs_w);
-        mySystem_w.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Z, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
-        mySystem_w.ThomaSolver();
-        std::vector<double> unknown_w = mySystem_w.getSolution();
-
         for (size_t k = 0; k < sysDimension; k++)
         {
             // Set tangents from solver
             data_.u(Axis::X, i, j, k) = unknown_u[k];
-            data_.u(Axis::Z, i, j, k) = unknown_w[k];
+            data_.u(Axis::Z, i, j, k) = data_.uBoundNew(Axis::Z, i, j, k);
             // Set normal from boundary conditions
             data_.u(Axis::Y, i, j, k) = data_.uBoundNew(Axis::Y, i, j, k);
         }
@@ -891,9 +848,7 @@ void ViscousStep::closeViscousStep()
             gamma = data_.dt * data_.nu * 0.5 / beta; 
             mul = 1.0 / (data_.gridPtr->dz * data_.gridPtr->dz);
             deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k)) * mul;
-            deriv_w = (data_.u(Axis::Z, i, j, k + 1) + data_.u(Axis::Z, i, j, k - 1) - 2.0 * data_.u(Axis::Z, i, j, k)) * mul;
             rhs_v[k] = data_.zeta(Axis::Y, i, j, k) - gamma * deriv_v;
-            rhs_w[k] = data_.zeta(Axis::Z, i, j, k) - gamma * deriv_w;
         }
 
         mySystem_v.setRhs(rhs_v);
@@ -902,19 +857,13 @@ void ViscousStep::closeViscousStep()
         mySystem_v.ThomaSolver();
         std::vector<double> unknown_v = mySystem_v.getSolution();
 
-        mySystem_w.setRhs(rhs_w);
-        mySystem_w.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Z, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
-        mySystem_w.ThomaSolver();
-        std::vector<double> unknown_w = mySystem_w.getSolution();
-
         for (size_t k = 0; k < sysDimension; k++)
         {
             // Set normal from boundary conditions
             data_.u(Axis::X, i, j, k) = data_.uBoundNew(Axis::X, i, j, k);
             // Set tangents from solver
             data_.u(Axis::Y, i, j, k) = unknown_v[k];
-            data_.u(Axis::Z, i, j, k) = unknown_w[k];
+            data_.u(Axis::Z, i, j, k) = data_.uBoundNew(Axis::Z, i, j, k);
         }
     }
 
