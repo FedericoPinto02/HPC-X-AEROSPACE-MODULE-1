@@ -76,10 +76,38 @@ VectorField Initializer::initializeVectorFieldFromExpr(
               std::vector<double>(grid->size(), 0.0),
               std::vector<double>(grid->size(), 0.0));
 
-    // populate ogni componente, usando FACE_CENTERED per i vettori
+    // populate each component, using FACE_CENTERED for vectors
     vec(Axis::X).populate(fu, FieldOffset::FACE_CENTERED, Axis::X);
     vec(Axis::Y).populate(fv, FieldOffset::FACE_CENTERED, Axis::Y);
     vec(Axis::Z).populate(fw, FieldOffset::FACE_CENTERED, Axis::Z);
+
+    return vec;
+}
+
+// =========================================================
+// initializeVectorFieldFromExpr --- time
+// =========================================================
+VectorField Initializer::initializeTemporalVectorFieldFromExpr(
+    const double time,
+    std::shared_ptr<const Grid> grid,
+    const std::string& expr_u,
+    const std::string& expr_v,
+    const std::string& expr_w
+) {
+    auto fu = createTimeFunction(expr_u);
+    auto fv = createTimeFunction(expr_v);
+    auto fw = createTimeFunction(expr_w);
+
+    VectorField vec;
+    vec.setup(grid,
+              std::vector<double>(grid->size(), 0.0),
+              std::vector<double>(grid->size(), 0.0),
+              std::vector<double>(grid->size(), 0.0));
+
+    // populate ogni componente, usando FACE_CENTERED per i vettori
+    vec(Axis::X).populate(time, fu, FieldOffset::FACE_CENTERED, Axis::X);
+    vec(Axis::Y).populate(time, fv, FieldOffset::FACE_CENTERED, Axis::Y);
+    vec(Axis::Z).populate(time, fw, FieldOffset::FACE_CENTERED, Axis::Z);
 
     return vec;
 }

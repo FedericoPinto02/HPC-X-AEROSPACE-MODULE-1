@@ -13,6 +13,7 @@
 #include "simulation/pressureStep.hpp"
 #include "simulation/SimulationContext.hpp"
 #include "simulation/viscousStep.hpp"
+#include "simulation/initializer.hpp"
 
 
 void NSBSolver::solve() {
@@ -106,11 +107,18 @@ void NSBSolver::solve() {
 
 
     // Time integration
-    for (unsigned int i = 1; i < simData.totalSteps; i++)
+    for (unsigned int i = 1; i < simData.totalSteps + 1; i++)
     {
-        auto start = std::chrono::high_resolution_clock::now();  // start timer
+        simData.uBoundOld = simData.uBoundNew;
         simData.currStep++;
         simData.currTime += simData.dt; 
+        simData.uBoundNew = init.initializeTemporalVectorFieldFromExpr(
+            simData.currTime,
+            simData.gridPtr,
+            input.boundary_conditions.u_expr,
+            input.boundary_conditions.v_expr,
+            input.boundary_conditions.w_expr);
+        auto start = std::chrono::high_resolution_clock::now();  // start timer
         viscousStep.run();
         pressureStep.run();
         auto end = std::chrono::high_resolution_clock::now();    // stop timer

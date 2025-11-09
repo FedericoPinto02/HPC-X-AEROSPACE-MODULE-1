@@ -81,7 +81,7 @@ void Field::populate(
 }
 
 void Field::populate(
-        double time,
+        const double time,
         const std::function<double(double t, double x, double y, double z)> &func,
         FieldOffset offset, Axis offsetAxis
 ) {

@@ -22,6 +22,14 @@ public:
      */
     SimulationData setup(const InputData& inputData);
 
+    VectorField initializeTemporalVectorFieldFromExpr(
+        const double time,
+        std::shared_ptr<const Grid> grid,
+        const std::string& expr_u,
+        const std::string& expr_v,
+        const std::string& expr_w
+    );
+
 private:
     std::shared_ptr<Grid> buildGrid(const InputData& data);
 
@@ -32,6 +40,7 @@ private:
         const std::string& expr_v,
         const std::string& expr_w
     );
+    
 
     // helpers
     static std::function<double(double,double,double)> makeSpatialFunc(const std::string& expr);

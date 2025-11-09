@@ -132,7 +132,7 @@ public:
      * @param offsetAxis the axis where to apply the offset (default: X)
      */
     void populate(
-            double time,
+            const double time,
             const std::function<double(double t, double x, double y, double z)> &func,
             FieldOffset offset = FieldOffset::FACE_CENTERED, Axis offsetAxis = Axis::X
     );
