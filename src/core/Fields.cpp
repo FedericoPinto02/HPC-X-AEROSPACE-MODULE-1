@@ -63,11 +63,11 @@ void Field::populate(
         FieldOffset offset, Axis offsetAxis
 ) {
     auto xOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::X)
-                   ? static_cast<double>(offset) : 0.0;
+                   ? 0.5 : 0.0;
     auto yOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Y)
-                   ? static_cast<double>(offset) : 0.0;
+                   ? 0.5 : 0.0;
     auto zOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Z)
-                   ? static_cast<double>(offset) : 0.0;
+                   ? 0.5 : 0.0;
     for (auto k = 0; k < p_grid->Nz; ++k) {
         for (auto j = 0; j < p_grid->Ny; ++j) {
             for (auto i = 0; i < p_grid->Nx; ++i) {
@@ -86,11 +86,11 @@ void Field::populate(
         FieldOffset offset, Axis offsetAxis
 ) {
     auto xOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::X)
-                   ? static_cast<double>(offset) : 0.0;
+                   ? 0.5 : 0.0;
     auto yOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Y)
-                   ? static_cast<double>(offset) : 0.0;
+                   ? 0.5 : 0.0;
     auto zOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Z)
-                   ? static_cast<double>(offset) : 0.0;
+                   ? 0.5 : 0.0;
     for (auto k = 0; k < p_grid->Nz; ++k) {
         for (auto j = 0; j < p_grid->Ny; ++j) {
             for (auto i = 0; i < p_grid->Nx; ++i) {

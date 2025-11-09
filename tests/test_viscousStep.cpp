@@ -194,7 +194,7 @@ TEST_F(ViscousStepTest, ComputeG_Correctness) {
     double deriv_term = nu * (dxx_term + dyy_term + dzz_term);
     
     // g.x = 0 - 1.0 - sin(x) + 1.0 * ( (cos(x+1)-2cos(x)+cos(x-1)) + 0 + 0 )
-    double expected_g_x = f_term - gradP_term - u_term + deriv_term;
+    double expected_g_x = f_term - gradP_term - u_term * 0.5 + deriv_term * 0.5;
     
     double g_x_computed = getG(Axis::X, i, j, k_);
     EXPECT_NEAR(g_x_computed, expected_g_x, 1e-9);

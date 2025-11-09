@@ -52,7 +52,7 @@ Field Initializer::initializeFieldFromExpr(const std::shared_ptr<Grid>& grid, co
 
     Field field;
     field.setup(grid, std::vector<double>(grid->size(), 0.0));
-    field.populate(f);  // cell-centered di default
+    field.populate(f, FieldOffset::CELL_CENTERED);
 
     return field;
 }
