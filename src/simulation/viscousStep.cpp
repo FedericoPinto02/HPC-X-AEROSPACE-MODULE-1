@@ -199,6 +199,9 @@ void ViscousStep::closeViscousStep()
     k = 0;
     for (j = 1; j < data_.gridPtr->Ny - 1; j++)
     {
+         jStart = j;
+        kStart = k;
+
         for (size_t i = 1; i < sysDimension - 1; i++)
         {
             porosity = data_.k(i, j, k);
@@ -230,6 +233,8 @@ void ViscousStep::closeViscousStep()
     {
         for (size_t i = 1; i < sysDimension - 1; i++)
         {
+             jStart = j;
+            kStart = k;
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta; 
@@ -270,6 +275,8 @@ void ViscousStep::closeViscousStep()
     {
         for (size_t i = 1; i < sysDimension - 1; i++)
         {
+             jStart = j;
+            kStart = k;
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta; 
@@ -299,6 +306,8 @@ void ViscousStep::closeViscousStep()
     {
         for (size_t i = 1; i < sysDimension - 1; i++)
         {
+             jStart = j;
+            kStart = k;
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta; 

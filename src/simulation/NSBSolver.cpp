@@ -118,6 +118,12 @@ void NSBSolver::solve() {
             input.boundary_conditions.u_expr,
             input.boundary_conditions.v_expr,
             input.boundary_conditions.w_expr);
+        simData.f = init.initializeTemporalVectorFieldFromExpr(
+            simData.currTime,
+            simData.gridPtr,
+            input.forces.fx_expr,
+            input.forces.fy_expr,
+            input.forces.fz_expr);
         auto start = std::chrono::high_resolution_clock::now();  // start timer
         viscousStep.run();
         pressureStep.run();
