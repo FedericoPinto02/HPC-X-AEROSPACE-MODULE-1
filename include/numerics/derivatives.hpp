@@ -18,6 +18,12 @@ public:
 
     void computeDz(const Field &field, Field &dz) const;
 
+    void computeDxDiv(const Field &field, Field &dx) const;
+
+    void computeDyDiv(const Field &field, Field &dy) const;
+
+    void computeDzDiv(const Field &field, Field &dz) const;
+
     void computeDivergence(const VectorField &field, Field &divergence) const;
 
     void computeHessianDiag(const Field &field, VectorField &hessianDiag) const;

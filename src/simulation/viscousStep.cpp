@@ -290,7 +290,7 @@ void ViscousStep::closeViscousStep()
         }
     }
     // Special case, j = Ny-1
-    // Here Eta.u and Eta.w are computed with tangent b.c while Eta.v comes directly from boundary conditions.
+    // Here Eta.w is computed with tangent b.c while Eta.u, Eta.v come directly from boundary conditions.
     j = data_.gridPtr->Ny - 1;
     for (k = 1; k < data_.gridPtr->Nz - 1; k++)
     {
@@ -494,7 +494,7 @@ void ViscousStep::closeViscousStep()
     }
 
     // Special case, k = Nz-1 (Z-max boundary)
-    // Solve for Zeta.u, Zeta.v (tangents to Z), set Zeta.w (normal) from uBoundNew.
+    // Solve for Zeta.u (tangents to Z), set Zeta.w, Zeta.v (normal) from uBoundNew.
     k = data_.gridPtr->Nz - 1;
     for (i = 1; i < data_.gridPtr->Nx - 1; i++)
     {
@@ -561,7 +561,7 @@ void ViscousStep::closeViscousStep()
     }
 
     // Special case, i = Nx-1 (X-max boundary)
-    // Solve for Zeta.v, Zeta.w (tangents to X), set Zeta.u (normal) from uBoundNew.
+    // Solve for Zeta.v (tangents to X), set Zeta.u,Zeta.w (normal) from uBoundNew.
     i = data_.gridPtr->Nx - 1;
     for (k = 1; k < data_.gridPtr->Nz - 1; k++)
     {
@@ -769,7 +769,7 @@ void ViscousStep::closeViscousStep()
     }
 
     // Special case, j = Ny-1 (Y-max boundary)
-    // Solve for U.u, U.w (tangents to Y), set U.v (normal) from uBoundNew.
+    // Solve for U.u (tangents to Y), set U.v, U.w (normal) from uBoundNew.
     j = data_.gridPtr->Ny - 1;
     for (i = 1; i < data_.gridPtr->Nx - 1; i++)
     {
@@ -835,7 +835,7 @@ void ViscousStep::closeViscousStep()
     }
 
     // Special case, i = Nx-1 (X-max boundary)
-    // Solve for U.v, U.w (tangents to X), set U.u (normal) from uBoundNew.
+    // Solve for U.v (tangents to X), set U.u, U.w  (normal) from uBoundNew.
     i = data_.gridPtr->Nx - 1;
     for (j = 1; j < data_.gridPtr->Ny - 1; j++)
     {
