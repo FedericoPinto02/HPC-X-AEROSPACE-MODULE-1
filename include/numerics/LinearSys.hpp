@@ -3,6 +3,7 @@
 #include <core/TridiagMat.hpp>
 #include <core/Fields.hpp>
 #include <stdexcept>
+#include "simulation/SimulationContext.hpp"
 
 enum class BoundaryType {Normal, Tangent};
 class LinearSysTestFixture;
@@ -49,11 +50,9 @@ public:
      * @brief Fill the linear system for Velocity variables
      */
     void fillSystemVelocity(
-        const Field &porosity, const VectorField &eta,
-        const VectorField &xi, const VectorField &uBoundNew, const VectorField &uBoundOld,
+        const SimulationData simData, const VectorField xi,
         const Axis fieldComponent, const Axis derivativeDirection,
-        const size_t iStart, const size_t jStart, const size_t kStart, 
-        const double nu, const double dt);
+        const size_t iStart, const size_t jStart, const size_t kStart);
 
     /**
      * @brief Solve the linear system

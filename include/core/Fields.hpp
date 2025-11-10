@@ -137,6 +137,7 @@ public:
             FieldOffset offset = FieldOffset::FACE_CENTERED, Axis offsetAxis = Axis::X
     );
 
+   
     /**
      * @brief Reset the field values to a specified value (default is zero).
      * @param value the value to reset the field to (default is zero)

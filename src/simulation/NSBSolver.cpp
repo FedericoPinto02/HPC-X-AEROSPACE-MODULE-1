@@ -15,6 +15,7 @@
 #include "simulation/SimulationContext.hpp"
 #include "simulation/viscousStep.hpp"
 #include "simulation/initializer.hpp"
+using namespace MuParserXAdapter; // / createTimeFunction
 
 
 void NSBSolver::solve() {
@@ -43,6 +44,10 @@ void NSBSolver::solve() {
     VTKWriter vtkWriter(simData.Nx, simData.Ny, simData.Nz,
               simData.dx, simData.dy, simData.dz);
 
+    // Boundary conditions expressions
+    simData.bcu = createTimeFunction(input.boundary_conditions.u_expr);
+    simData.bcv = createTimeFunction(input.boundary_conditions.v_expr);
+    simData.bcw = createTimeFunction(input.boundary_conditions.w_expr);
 
     // Time integration
     for (unsigned int i = 1; i < simData.totalSteps + 1; i++)

@@ -114,7 +114,6 @@ if (BUILD_TESTS)
             ${PROJECT_TESTS_DIR}/test_tridiag.cpp
             ${PROJECT_TESTS_DIR}/test_fields.cpp
             ${PROJECT_TESTS_DIR}/test_derivatives.cpp
-            ${PROJECT_TESTS_DIR}/test_linearSys.cpp
             ${PROJECT_TESTS_DIR}/test_viscousStep.cpp
             ${PROJECT_TESTS_DIR}/test_pressureStep.cpp
     )

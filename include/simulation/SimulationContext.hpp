@@ -46,6 +46,9 @@ struct SimulationData {
     // Boundary conditions
     VectorField uBoundOld;
     VectorField uBoundNew;
+    std::function<double (double t, double x, double y, double z)> bcu;
+    std::function<double (double t, double x, double y, double z)> bcv;
+    std::function<double (double t, double x, double y, double z)> bcw;
 
     // Kinematic viscosity of the fluid
     double nu;

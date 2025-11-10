@@ -63,11 +63,9 @@ void LinearSys::fillSystemPressure(const Field &phi, const Axis direction) {
 }
 
 void LinearSys::fillSystemVelocity(
-    const Field &porosity, const VectorField &eta,
-    const VectorField &xi, const VectorField &uBoundNew, const VectorField &uBoundOld,
+    const SimulationData simData, const VectorField xi,
     const Axis fieldComponent, const Axis derivativeDirection,
-    const size_t iStart, const size_t jStart, const size_t kStart, 
-    const double nu, const double dt) {
+    const size_t iStart, const size_t jStart, const size_t kStart) {
 
     std::vector<double> &diag = matA.getDiag(0);
     std::vector<double> &subdiag = matA.getDiag(-1);
@@ -80,7 +78,7 @@ void LinearSys::fillSystemVelocity(
     
     // Need to complete RHS, once onto the switch case!
 
-    std::shared_ptr<const Grid> grid = eta.getGrid();
+    std::shared_ptr<const Grid> grid = simData.eta.getGrid();
     double dCoef = 0;
     switch (derivativeDirection) {
     case Axis::X:
@@ -97,121 +95,164 @@ void LinearSys::fillSystemVelocity(
     }
 
     for (size_t i = 1; i < matA.getSize() - 1; i++) {
-        double k = porosity.valueWithOffset(iStart, jStart, kStart,
+        double k = simData.k.valueWithOffset(iStart, jStart, kStart,
                                                 derivativeDirection, i);
-        double beta = 1 + (dt * nu * 0.5 / k);
-        double gamma = dt * nu * 0.5 / beta;
+        double beta = 1 + (simData.dt * simData.nu * 0.5 / k);
+        double gamma = simData.dt * simData.nu * 0.5 / beta;
         subdiag[i - 1] = -gamma * dCoef;
         supdiag[i] = -gamma * dCoef;
         diag[i] = 1 + 2 * gamma * dCoef;
     }
 
-    switch (boundaryType) {
+    switch (boundaryType)
+    {
     case BoundaryType::Normal:
 
     {
-        switch (fieldComponent) {
-        case Axis::X: // it's a dirichlet on u component
+        switch (fieldComponent)
+        {
+        case Axis::X:
             rhsC.front() =
-                uBoundNew(Axis::X).valueWithOffset(iStart, jStart, kStart,
-                                                   Axis::X, 0) -
+                simData.bcu(simData.currTime, 0.0, jStart * simData.dy, kStart * simData.dz) -
                 grid->dx / 2 *
-                    ((uBoundNew(Axis::Y).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::Y, 1) -
-                      uBoundNew(Axis::Y).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::Y, -1)) /
+                    ((simData.bcv(simData.currTime, 0.0, (jStart + 0.5) * simData.dy, kStart * simData.dz) -
+                      simData.bcv(simData.currTime, 0.0, (jStart - 0.5) * simData.dy, kStart * simData.dz)) /
                          grid->dy +
-                     (uBoundNew(Axis::Z).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::Z, 1) -
-                      uBoundNew(Axis::Z).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::Z, -1)) /
+                     (simData.bcw(simData.currTime, 0.0, jStart * simData.dy, (kStart + 0.5) * simData.dz) -
+                      simData.bcw(simData.currTime, 0.0, jStart * simData.dy, (kStart - 0.5) * simData.dz)) /
                          grid->dz);
             break;
+
         case Axis::Y:
             rhsC.front() =
-                uBoundNew(Axis::Y).valueWithOffset(iStart, jStart, kStart,
-                                                   Axis::Y, 0) -
+                simData.bcv(simData.currTime, iStart * simData.dx, 0.0, kStart * simData.dz) -
                 grid->dy / 2 *
-                    ((uBoundNew(Axis::X).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::X, 1) -
-                      uBoundNew(Axis::X).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::X, -1)) /
+                    ((simData.bcu(simData.currTime, (iStart + 0.5) * simData.dx, 0.0, kStart * simData.dz) -
+                      simData.bcu(simData.currTime, (iStart - 0.5) * simData.dx, 0.0, kStart * simData.dz)) /
                          grid->dx +
-                     (uBoundNew(Axis::Z).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::Z, 1) -
-                      uBoundNew(Axis::Z).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::Z, -1)) /
+                     (simData.bcw(simData.currTime, iStart * simData.dx, 0.0, (kStart + 0.5) * simData.dz) -
+                      simData.bcw(simData.currTime, iStart * simData.dx, 0.0, (kStart - 0.5) * simData.dz)) /
                          grid->dz);
             break;
+
         case Axis::Z:
             rhsC.front() =
-                uBoundNew(Axis::Z).valueWithOffset(iStart, jStart, kStart,
-                                                   Axis::Z, 0) -
+                simData.bcw(simData.currTime, iStart * simData.dx, jStart * simData.dy, 0.0) -
                 grid->dz / 2 *
-                    ((uBoundNew(Axis::Y).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::Y, 1) -
-                      uBoundNew(Axis::Y).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::Y, -1)) /
-                         grid->dy +
-                     (uBoundNew(Axis::X).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::X, 1) -
-                      uBoundNew(Axis::X).valueWithOffset(iStart, jStart, kStart,
-                                                         Axis::X, -1)) /
-                         grid->dx);
+                    ((simData.bcu(simData.currTime, (iStart + 0.5) * simData.dx, jStart * simData.dy, 0.0) -
+                      simData.bcu(simData.currTime, (iStart - 0.5) * simData.dx, jStart * simData.dy, 0.0)) /
+                         grid->dx +
+                     (simData.bcv(simData.currTime, iStart * simData.dx, (jStart + 0.5) * simData.dy, 0.0) -
+                      simData.bcv(simData.currTime, iStart * simData.dx, (jStart - 0.5) * simData.dy, 0.0)) /
+                         grid->dy);
+            break;
+
+        default:
+            break;
+        }
+
+        diag.back() = 1.0; // the other is aready initialized to zero
+        diag.front() = 1.0;
+
+        rhsC.back() = simData.uBoundNew(fieldComponent)
+                          .valueWithOffset(iStart, jStart, kStart,
+                                           derivativeDirection, matA.getSize() - 1);
+
+        break;
+    }
+
+    case BoundaryType::Tangent:
+    {
+        diag.front() = 1.0;
+        double k = simData.k.valueWithOffset(
+            iStart, jStart, kStart, derivativeDirection, matA.getSize() - 1);
+        double beta = 1 + (simData.dt * simData.nu * 0.5 / k);
+        double gamma = simData.dt * simData.nu * 0.5 / beta;
+        diag.back() = 1 + 3 * gamma * dCoef;
+        subdiag.back() = -gamma * dCoef;
+
+        rhsC.front() = simData.uBoundNew(fieldComponent)
+                           .valueWithOffset(iStart, jStart, kStart,
+                                            derivativeDirection, 0);
+
+        std::function<double (double t, double x, double y, double z)> bc;   
+        double xOff = 0.0, yOff = 0.0, zOff = 0.0;                 
+        switch (fieldComponent)
+        {
+        case Axis::X:
+            bc = simData.bcu;
+            xOff = 0.5;
+            break;
+
+        case Axis::Y:
+            bc = simData.bcv;
+            yOff = 0.5;
+            break;
+
+        case Axis::Z:
+            bc = simData.bcw;
+            zOff = 0.5;
             break;
         default:
             break;
         }
 
-        diag.back() = 1.0;  // the other is aready initialized to zero
-        diag.front() = 1.0;
+        switch (derivativeDirection)
+        {
+        case Axis::X:
+            rhsC.back() =
+            xi(fieldComponent)
+                .valueWithOffset(iStart, jStart, kStart,
+                                 derivativeDirection, matA.getSize() - 1) +
 
-        rhsC.back() = uBoundNew(fieldComponent)
-                          .valueWithOffset(iStart, jStart, kStart,
-                                           derivativeDirection, matA.getSize()-1);
-       
-        break;
+            -gamma * dCoef * simData.eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, matA.getSize() - 2) +
 
-    case BoundaryType::Tangent: {
-        diag.front() = 1.0;
-        double k = porosity.valueWithOffset(
-            iStart, jStart, kStart, derivativeDirection, matA.getSize()-1);
-        double beta = 1 + (dt * nu * 0.5 / k);
-        double gamma = dt * nu * 0.5 / beta;
-        diag.back() = 1 + 3 * gamma * dCoef;
-        subdiag.back() = -gamma * dCoef;
+            3.0 * gamma * dCoef *
+                simData.eta(fieldComponent)
+                    .valueWithOffset(iStart, jStart, kStart,
+                                     derivativeDirection, matA.getSize() - 1) +
+            -2.0 * gamma * dCoef *  // uOld
+                bc(simData.currTime - simData.dt, (iStart + matA.getSize() - 1)*simData.dx, (jStart + yOff)*simData.dy, (kStart + zOff)*simData.dz) + 
 
-        rhsC.front() = uBoundNew(fieldComponent)
-                           .valueWithOffset(iStart, jStart, kStart,
-                                            derivativeDirection, 0);
-        rhsC.back() =
-            2 * gamma * dCoef *
-                uBoundNew(fieldComponent)
-                    .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, matA.getSize()-1) +
-            2 * gamma * dCoef *
-                uBoundOld(fieldComponent)
-                    .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, matA.getSize()-1) +
-            gamma * dCoef *
-                eta(fieldComponent)
-                    .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, matA.getSize() - 2) +
-            -3 * gamma * dCoef *
-                eta(fieldComponent)
-                    .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, matA.getSize()-1) +
-            gamma * dCoef *
-                xi(fieldComponent)
-                    .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, matA.getSize()-1);
+            2.0 * gamma * dCoef *
+                 bc(simData.currTime, (iStart + matA.getSize() - 1)*simData.dx, (jStart + yOff)*simData.dy, (kStart + zOff)*simData.dz);
+            break;
+
+        case Axis::Y: 
+            rhsC.back() =
+                xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, matA.getSize() - 1) +
+                -gamma * dCoef * simData.eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, matA.getSize() - 2) +
+                3.0 * gamma * dCoef * simData.eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, matA.getSize() - 1) +
+                
+                
+                -2.0 * gamma * dCoef * bc(simData.currTime - simData.dt, (iStart + xOff)*simData.dx, (jStart + matA.getSize() - 1)*simData.dy, (kStart + zOff)*simData.dz) + 
+                
+                2.0 * gamma * dCoef *
+                    bc(simData.currTime, (iStart + xOff)*simData.dx, (jStart + matA.getSize() - 1)*simData.dy, (kStart + zOff)*simData.dz);
+            break;
+
+        case Axis::Z: 
+            rhsC.back() =
+                xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, matA.getSize() - 1) +
+                -gamma * dCoef * simData.eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, matA.getSize() - 2) +
+                3.0 * gamma * dCoef * simData.eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, matA.getSize() - 1) +
+
+                -2.0 * gamma * dCoef * bc(simData.currTime - simData.dt, (iStart + xOff)*simData.dx, (jStart + yOff)*simData.dy, (kStart + matA.getSize() - 1)*simData.dz) + 
+                
+                2.0 * gamma * dCoef *
+                    bc(simData.currTime, (iStart + xOff)*simData.dx, (jStart + yOff)*simData.dy, (kStart + matA.getSize() - 1)*simData.dz);
+            break;
+        default:
+            break;
+        }
+        
         break;
     }
     default:
         break;
     }
 }
-}
+
 
 void LinearSys::ThomaSolver() {
     /*

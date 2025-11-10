@@ -164,24 +164,22 @@ void ViscousStep::closeViscousStep()
 
             mySystem_u.setRhs(rhs_u);
             
-            mySystem_u.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::X, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
+            mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::X, iStart, jStart, kStart);
+                                        
             mySystem_u.ThomaSolver();
             std::vector<double> unknown_u = mySystem_u.getSolution();
 
 
             mySystem_v.setRhs(rhs_v);
 
-            mySystem_v.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Y, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
+            mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::X, iStart, jStart, kStart);
             mySystem_v.ThomaSolver();
             std::vector<double> unknown_v = mySystem_v.getSolution();
 
 
             mySystem_w.setRhs(rhs_w);
 
-            mySystem_w.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Z, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
+            mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::X, iStart, jStart, kStart);
             mySystem_w.ThomaSolver();
             std::vector<double> unknown_w = mySystem_w.getSolution();
             
@@ -215,8 +213,7 @@ void ViscousStep::closeViscousStep()
 
         mySystem_w.setRhs(rhs_w);
 
-        mySystem_w.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew,
-                                      data_.uBoundOld, Axis::Z, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
+        mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::X, iStart, jStart, kStart);
         mySystem_w.ThomaSolver();
         std::vector<double> unknown_w = mySystem_w.getSolution();
 
@@ -245,8 +242,7 @@ void ViscousStep::closeViscousStep()
         }
             mySystem_v.setRhs(rhs_v);
 
-            mySystem_v.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Y, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
+            mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::X, iStart, jStart, kStart);
             mySystem_v.ThomaSolver();
             std::vector<double> unknown_v = mySystem_v.getSolution();
 
@@ -277,8 +273,7 @@ void ViscousStep::closeViscousStep()
 
         mySystem_v.setRhs(rhs_v);
 
-        mySystem_v.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew,
-                                      data_.uBoundOld, Axis::Y, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
+        mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::X, iStart, jStart, kStart);
         mySystem_v.ThomaSolver();
         std::vector<double> unknown_v = mySystem_v.getSolution();
 
@@ -308,8 +303,7 @@ void ViscousStep::closeViscousStep()
             
             mySystem_w.setRhs(rhs_w);
 
-            mySystem_w.fillSystemVelocity(data_.k, data_.eta, xi, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Z, Axis::X, iStart, jStart, kStart, data_.nu, data_.dt);
+            mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::X, iStart, jStart, kStart);
             mySystem_w.ThomaSolver();
             std::vector<double> unknown_w = mySystem_w.getSolution();
 
@@ -423,24 +417,21 @@ void ViscousStep::closeViscousStep()
 
             mySystem_u.setRhs(rhs_u);
 
-            mySystem_u.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::X, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
+            mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Y, iStart, jStart, kStart);
             mySystem_u.ThomaSolver();
             std::vector<double> unknown_u = mySystem_u.getSolution();
 
 
             mySystem_v.setRhs(rhs_v);
 
-            mySystem_v.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Y, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
+            mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Y, iStart, jStart, kStart);
             mySystem_v.ThomaSolver();
             std::vector<double> unknown_v = mySystem_v.getSolution();
 
 
             mySystem_w.setRhs(rhs_w);
 
-            mySystem_w.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Z, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
+            mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Y, iStart, jStart, kStart);
             mySystem_w.ThomaSolver();
             std::vector<double> unknown_w = mySystem_w.getSolution();
             
@@ -478,8 +469,7 @@ void ViscousStep::closeViscousStep()
         }
 
         mySystem_w.setRhs(rhs_w);
-        mySystem_w.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew,
-                                        data_.uBoundOld, Axis::Z, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
+        mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Y, iStart, jStart, kStart);
         mySystem_w.ThomaSolver();
         std::vector<double> unknown_w = mySystem_w.getSolution();
 
@@ -511,8 +501,7 @@ void ViscousStep::closeViscousStep()
         }
 
         mySystem_u.setRhs(rhs_u);
-        mySystem_u.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::X, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
+        mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Y, iStart, jStart, kStart);
         mySystem_u.ThomaSolver();
         std::vector<double> unknown_u = mySystem_u.getSolution();
 
@@ -545,8 +534,7 @@ void ViscousStep::closeViscousStep()
         }
 
         mySystem_u.setRhs(rhs_u);
-        mySystem_u.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew,
-                                        data_.uBoundOld, Axis::X, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
+        mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Y, iStart, jStart, kStart);
         mySystem_u.ThomaSolver();
         std::vector<double> unknown_u = mySystem_u.getSolution();
 
@@ -579,8 +567,7 @@ void ViscousStep::closeViscousStep()
         }
 
         mySystem_w.setRhs(rhs_w);
-        mySystem_w.fillSystemVelocity(data_.k, data_.zeta, data_.eta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Z, Axis::Y, iStart, jStart, kStart, data_.nu, data_.dt);
+        mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Y, iStart, jStart, kStart);
         mySystem_w.ThomaSolver();
         std::vector<double> unknown_w = mySystem_w.getSolution();
 
@@ -699,24 +686,21 @@ void ViscousStep::closeViscousStep()
 
             mySystem_u.setRhs(rhs_u);
 
-            mySystem_u.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::X, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
+            mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Z, iStart, jStart, kStart);
             mySystem_u.ThomaSolver();
             std::vector<double> unknown_u = mySystem_u.getSolution();
 
 
             mySystem_v.setRhs(rhs_v);
 
-            mySystem_v.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Y, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
+            mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Z, iStart, jStart, kStart);
             mySystem_v.ThomaSolver();
             std::vector<double> unknown_v = mySystem_v.getSolution();
 
 
             mySystem_w.setRhs(rhs_w);
 
-            mySystem_w.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Z, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
+            mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Z, iStart, jStart, kStart);
             mySystem_w.ThomaSolver();
             std::vector<double> unknown_w = mySystem_w.getSolution();
             
@@ -753,8 +737,7 @@ void ViscousStep::closeViscousStep()
         }
 
         mySystem_v.setRhs(rhs_v);
-        mySystem_v.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew,
-                                        data_.uBoundOld, Axis::Y, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
+        mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Z, iStart, jStart, kStart);
         mySystem_v.ThomaSolver();
         std::vector<double> unknown_v = mySystem_v.getSolution();
 
@@ -786,8 +769,7 @@ void ViscousStep::closeViscousStep()
         }
 
         mySystem_u.setRhs(rhs_u);
-        mySystem_u.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::X, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
+        mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Z, iStart, jStart, kStart);
         mySystem_u.ThomaSolver();
         std::vector<double> unknown_u = mySystem_u.getSolution();
 
@@ -819,8 +801,7 @@ void ViscousStep::closeViscousStep()
         }
 
         mySystem_u.setRhs(rhs_u);
-        mySystem_u.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew,
-                                        data_.uBoundOld, Axis::X, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
+        mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Z, iStart, jStart, kStart);
         mySystem_u.ThomaSolver();
         std::vector<double> unknown_u = mySystem_u.getSolution();
 
@@ -852,8 +833,7 @@ void ViscousStep::closeViscousStep()
         }
 
         mySystem_v.setRhs(rhs_v);
-        mySystem_v.fillSystemVelocity(data_.k, data_.u, data_.zeta, data_.uBoundNew, 
-                                        data_.uBoundOld, Axis::Y, Axis::Z, iStart, jStart, kStart, data_.nu, data_.dt);
+        mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Z, iStart, jStart, kStart);
         mySystem_v.ThomaSolver();
         std::vector<double> unknown_v = mySystem_v.getSolution();
 
