@@ -8,9 +8,9 @@
 
 
 
-PressureStep::PressureStep(SimulationContext& ctx) : context_(ctx)
+PressureStep::PressureStep(SimulationData& simData) : data_(simData)
 {
-    initializeWorkspaceFields(context_.gridPtr);
+    initializeWorkspaceFields(data_.gridPtr);
 }
 
 
@@ -39,8 +39,8 @@ void PressureStep::run()
     // ------------------------------------------
     {
     normalAxis = Axis::X;   // x = psi, rhs = divU/dt
-    size_t nSystem = context_.gridPtr->Ny * context_.gridPtr->Nz; // number of linear systems to solve
-    size_t sysDimension = context_.gridPtr->Nx; // dimension of linear system to solve
+    size_t nSystem = data_.gridPtr->Ny * data_.gridPtr->Nz; // number of linear systems to solve
+    size_t sysDimension = data_.gridPtr->Nx; // dimension of linear system to solve
     // when solving Psi we fill linsys with dxx derivatives
 
     LinearSys mySystem(sysDimension, BoundaryType::Normal);
@@ -50,25 +50,25 @@ void PressureStep::run()
 
     
     Derivatives deriv;
-    deriv.computeDivergence(context_.state.u, divU);
-    double inv_dt = 1.0 / context_.timeSettings.dt;
+    deriv.computeDivergence(data_.u, divU);
+    double inv_dt = 1.0 / data_.dt;
 
     // iStart = 0;   
-    for (size_t j = 0; j < context_.gridPtr->Ny; j++)
+    for (size_t j = 0; j < data_.gridPtr->Ny; j++)
     {
-        for (size_t k = 0; k < context_.gridPtr->Nz; k++)
+        for (size_t k = 0; k < data_.gridPtr->Nz; k++)
         {
             // jStart = j;
             // kStart = k;
 
             for (size_t i = 1; i < sysDimension-1; i++)
             {
-                rhs[i] = divU(i,j,k) * inv_dt;
+                rhs[i] =  - divU(i,j,k) * inv_dt;
             }
 
             mySystem.setRhs(rhs);
 
-            mySystem.fillSystemPressure(context_.state.p, normalAxis);
+            mySystem.fillSystemPressure(data_.p, normalAxis);
 
             mySystem.ThomaSolver();
 
@@ -87,17 +87,17 @@ void PressureStep::run()
     // ------------------------------------------
     {
     normalAxis = Axis::Y;   // x = phi, rhs = psi
-    size_t nSystem = context_.gridPtr->Nx * context_.gridPtr->Nz; // number of linear systems to solve
-    size_t sysDimension = context_.gridPtr->Ny; // dimension of linear system to solve
+    size_t nSystem = data_.gridPtr->Nx * data_.gridPtr->Nz; // number of linear systems to solve
+    size_t sysDimension = data_.gridPtr->Ny; // dimension of linear system to solve
     // when solving Phi we fill linsys with dyy derivatives
 
     LinearSys mySystem(sysDimension, BoundaryType::Normal);
     std::vector<double> rhs(sysDimension);      
 
     // jStart = 0;
-    for (size_t i = 0; i < context_.gridPtr->Nx; i++)
+    for (size_t i = 0; i < data_.gridPtr->Nx; i++)
     {
-        for (size_t k = 0; k < context_.gridPtr->Nz; k++)
+        for (size_t k = 0; k < data_.gridPtr->Nz; k++)
         {
             // iStart = i;
             // kStart = k;
@@ -113,7 +113,7 @@ void PressureStep::run()
 
             mySystem.setRhs(rhs);
 
-            mySystem.fillSystemPressure(context_.state.p, normalAxis);
+            mySystem.fillSystemPressure(data_.p, normalAxis);
 
             mySystem.ThomaSolver();
 
@@ -131,17 +131,17 @@ void PressureStep::run()
     // ------------------------------------------
     {
     normalAxis = Axis::Z;   // x = pcr, rhs = phi
-    size_t nSystem = context_.gridPtr->Nx * context_.gridPtr->Ny; // number of linear systems to solve
-    size_t sysDimension = context_.gridPtr->Nz; // dimension of linear system to solve
+    size_t nSystem = data_.gridPtr->Nx * data_.gridPtr->Ny; // number of linear systems to solve
+    size_t sysDimension = data_.gridPtr->Nz; // dimension of linear system to solve
     // when solving Pcr we fill linsys with dzz derivatives
 
     LinearSys mySystem(sysDimension, BoundaryType::Normal);
     std::vector<double> rhs(sysDimension);      
 
     // kStart = 0;
-    for (size_t j = 0; j < context_.gridPtr->Ny; j++)
+    for (size_t j = 0; j < data_.gridPtr->Ny; j++)
     {
-        for (size_t i = 0; i < context_.gridPtr->Nx; i++)
+        for (size_t i = 0; i < data_.gridPtr->Nx; i++)
         {
             // jStart = j;
             // iStart = i;
@@ -157,7 +157,7 @@ void PressureStep::run()
 
             mySystem.setRhs(rhs);
 
-            mySystem.fillSystemPressure(context_.state.p, normalAxis);
+            mySystem.fillSystemPressure(data_.p, normalAxis);
 
             mySystem.ThomaSolver();
 
@@ -172,7 +172,7 @@ void PressureStep::run()
     }
 
     // Add pressure corrector contribution
-    context_.state.p.add( pcr );
+    data_.p.add( pcr );
 
    
 }

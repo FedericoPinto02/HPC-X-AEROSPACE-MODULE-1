@@ -2,9 +2,12 @@
 #define NSBSOLVER_INITIALIZER_HPP
 
 #include <memory>
+#include <string>
+
 #include "io/inputReader.hpp"
 #include "core/Mesh.hpp"
 #include "core/Fields.hpp"
+#include "io/MuParserXAdapter.h"
 #include "simulation/SimulationContext.hpp"
 
 /**
@@ -15,40 +18,32 @@ public:
     Initializer() = default;
 
     /**
-     * @brief Setup and initialize the simulation context from input data.
-     * @param inputData configuration data read from JSON
-     * @return fully constructed SimulationContext
+     * @brief Setup and initialize the SimulationData from input data.
      */
-    SimulationContext setup(const InputData& inputData);
+    SimulationData setup(const InputData& inputData);
+
+    VectorField initializeTemporalVectorFieldFromExpr(
+        const double time,
+        std::shared_ptr<const Grid> grid,
+        const std::string& expr_u,
+        const std::string& expr_v,
+        const std::string& expr_w
+    );
 
 private:
-    /**
-     * @brief Build the computational grid from input data.
-     */
     std::shared_ptr<Grid> buildGrid(const InputData& data);
 
-    /**
-     * @brief Initialize the physical fields.
-     */
-    Field initializePressure(const std::shared_ptr<Grid>& grid, const InputData& data);
-    VectorField initializeVelocity(const std::shared_ptr<Grid>& grid, const InputData& data);
-    Field initializePorosity(const std::shared_ptr<Grid>& grid, const InputData& data);
+    Field initializeFieldFromExpr(const std::shared_ptr<Grid>& grid, const std::string& expr);
+    VectorField initializeVectorFieldFromExpr(
+        const std::shared_ptr<Grid>& grid,
+        const std::string& expr_u,
+        const std::string& expr_v,
+        const std::string& expr_w
+    );
+    
 
-    /**
-     * @brief Build constant fields (nu, rho, k, f) from input data.
-     */
-    Constants buildConstants(const std::shared_ptr<Grid>& grid, const InputData& data);
-
-    /**
-     * @brief Build time integration settings.
-     */
-    TimeIntegrationSettings buildTimeSettings(const InputData& data);
-
-    /**
-     * @brief Build output/logging settings.
-     */
-    // OutputSettings buildOutputSettings(const InputData& data);
-    // LoggingSettings buildLoggingSettings(const InputData& data);
+    // helpers
+    static std::function<double(double,double,double)> makeSpatialFunc(const std::string& expr);
 };
 
 #endif // NSBSOLVER_INITIALIZER_HPP

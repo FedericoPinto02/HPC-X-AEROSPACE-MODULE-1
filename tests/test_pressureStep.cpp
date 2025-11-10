@@ -19,7 +19,7 @@ protected:
     // Test objects
      const double dt = 0.1;
     std::shared_ptr<Grid> grid;
-    SimulationContext context_;
+    SimulationData data_;
     std::unique_ptr<PressureStep> pressureStep;
 
 
@@ -27,8 +27,8 @@ protected:
     PressureStepTest()
         : // 1. Create the grid (10x10x10, dx=1.0)
           grid(std::make_shared<Grid>(10, 10, 10, 1.0, 1.0, 1.0)),
-          // 2. Initialize the context_
-          context_{ grid, {dt, 1.0} } // dt=0.1, totalTime=1.0
+          // 2. Initialize the data_
+          data_{ grid } // dt=0.1, totalTime=1.0
     {
         // Constructor body is empty. SetUp() runs next.
     }
@@ -64,13 +64,13 @@ protected:
         }
         
         // Setup fields in state
-        context_.state.p.setup(grid, p_field);
-        context_.state.u.setup(grid, u_x, u_y, u_z); // Current 'u'
+        data_.p.setup(grid, p_field);
+        data_.u.setup(grid, u_x, u_y, u_z); // Current 'u'
         
         // Remove unneeded fields (eta, zeta, uOld, etc.)
 
         // 4. Create the object under test
-        pressureStep = std::make_unique<PressureStep>(context_);
+        pressureStep = std::make_unique<PressureStep>(data_);
         
         // NOTE: Your initializeWorkspaceFields only inits psi and divU.
         // If phi and pcr are also members, you might need to init them here.
@@ -86,7 +86,7 @@ protected:
     }
     
     double getPressure(size_t i, size_t j, size_t k) {
-        return context_.state.p(i, j, k);
+        return data_.p(i, j, k);
     }
 };
 
@@ -136,14 +136,16 @@ TEST_F(PressureStepTest, Run_WithZeroDivergence_PressureIsUnchanged) {
     // --- Setup (Override) ---
     std::vector<Field::Scalar> zeros(grid->size(), 0.0);
     std::vector<Field::Scalar> ones(grid->size(), 1.0);
+
+    data_.dt = 0.1;
     
     // Set P_initial = 1.0
-    context_.state.p.setup(grid, ones);
+    data_.p.setup(grid, ones);
     // Set U = 0
-    context_.state.u.setup(grid, zeros, zeros, zeros);
+    data_.u.setup(grid, zeros, zeros, zeros);
 
-    // Recreate the test object with the new context_
-    pressureStep = std::make_unique<PressureStep>(context_);
+    // Recreate the test object with the new data_
+    pressureStep = std::make_unique<PressureStep>(data_);
     // ...potential init of phi/pcr...
     // pressureStep->phi.setup(grid, zeros);
     // pressureStep->pcr.setup(grid, zeros);
@@ -173,14 +175,14 @@ class PressureStepRobustnessTest : public ::testing::Test {
 protected:
     const size_t N = 10;
     std::shared_ptr<Grid> grid;
-    SimulationContext context_;
+    SimulationData data_;
     std::unique_ptr<PressureStep> pressureStep;
 
     PressureStepRobustnessTest()
         : // 1. Grid 10x10x10, dx=dy=dz=0.1
           grid(std::make_shared<Grid>(N, N, N, 0.1, 0.1, 0.1)),
           // 2. Context: dt=0.01
-          context_{ grid, {0.01, 1.0} }
+          data_{ grid }
     {}
 
    void SetUp() override {
@@ -209,11 +211,12 @@ protected:
             }
         }
 
-        // --- Set up the context_ ---
-        context_.state.p.setup(grid, p_field);
-        context_.state.u.setup(grid, u_x, u_y, u_z); // Initial u
+        // --- Set up the data_ ---
+        data_.dt = 0.1;
+        data_.p.setup(grid, p_field);
+        data_.u.setup(grid, u_x, u_y, u_z); // Initial u
         
-        pressureStep = std::make_unique<PressureStep>(context_);
+        pressureStep = std::make_unique<PressureStep>(data_);
     }
 
     // Helper to check for NaN or Inf in a scalar field
@@ -246,5 +249,5 @@ TEST_F(PressureStepRobustnessTest, Run_WithPolynomialFields_ProducesFiniteOutput
 
     // --- Verification ---
     // We only check that the final pressure is stable
-    checkFieldFinite(context_.state.p, "context_.state.p");
+    checkFieldFinite(data_.p, "data_.p");
 }

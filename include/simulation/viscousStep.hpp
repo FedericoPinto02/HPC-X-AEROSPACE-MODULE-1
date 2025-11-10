@@ -23,7 +23,7 @@ public:
      * @brief Constructor
      * @param contex Contains all simulation data
      */
-    ViscousStep(SimulationContext& ctx);
+    ViscousStep(SimulationData& simData);
     
     
 
@@ -56,7 +56,7 @@ private:
      */
     void closeViscousStep();
 
-    SimulationContext& context_;
+    SimulationData& data_;
 
 
 

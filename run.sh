@@ -7,11 +7,11 @@ CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF"
 mkdir -p "$BUILD_DIR"
 pushd "$BUILD_DIR" > /dev/null
 
-# Configura e compila
+# Configure and build
 cmake .. ${CMAKE_FLAGS}
 make -j"$(nproc)"
 
-# Esegui il main
+# Run the main program
 echo -e "\n=== Running main program ==="
 ./main
 

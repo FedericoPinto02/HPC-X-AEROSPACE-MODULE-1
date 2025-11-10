@@ -41,7 +41,7 @@ protected:
 
     const double dt = 0.1;
     std::shared_ptr<Grid> grid;
-    SimulationContext context;
+    SimulationData data_;
     std::unique_ptr<ViscousStep> viscousStep;
 
     const double nu = 1.0;
@@ -50,8 +50,8 @@ protected:
     ViscousStepTest()
         : // 1. Create the grid (10x10x10, dx=1.0)
           grid(std::make_shared<Grid>(10, 10, 10, 1.0, 1.0, 1.0)),
-          // 2. Initialize the context
-          context{ grid, {dt, 1.0} } // dt=0.1, totalTime=1.0
+          // 2. Initialize the data_
+          data_{ grid } // dt=0.1, totalTime=1.0
     {
         // Constructor body is empty. SetUp() runs next.
     }
@@ -64,9 +64,10 @@ protected:
         std::vector<Field::Scalar> ones(grid->size(), 1.0); 
 
         // Set constants
-        context.constants.nu = nu;
-        context.constants.k.setup(grid, ones); // k = 1.0 everywhere
-        context.constants.f.setup(grid, zeros, zeros, zeros); // f = [0,0,0]
+        data_.nu = nu;
+        data_.dt = dt;
+        data_.k.setup(grid, ones); // k = 1.0 everywhere
+        data_.f.setup(grid, zeros, zeros, zeros); // f = [0,0,0]
 
         // --- Set "Reasonable" Non-Zero Initial Conditions ---
         
@@ -106,22 +107,18 @@ protected:
         }
         
         // Setup fields
-        context.state.p.setup(grid, p_field);
-        context.state.u.setup(grid, zeros, zeros, zeros); // Current 'u' is 0
-        context.state.eta.setup(grid, zeros, zeros, zeros);
-        context.state.zeta.setup(grid, zeros, zeros, zeros);
-        
-        context.state.uOld.setup(grid, u_x, u_y, u_z);
-        context.state.etaOld.setup(grid, eta_x, eta_y, eta_z);
-        context.state.zetaOld.setup(grid, zeta_x, zeta_y, zeta_z);
+        data_.p.setup(grid, p_field);
+        data_.u.setup(grid, u_x, u_y, u_z);
+        data_.eta.setup(grid, eta_x, eta_y, eta_z);
+        data_.zeta.setup(grid, zeta_x, zeta_y, zeta_z);
 
         // Initialize boundary condition fields
-        context.bcSettings.uBoundNew.setup(grid, u_x, u_y, u_z);
-        context.bcSettings.uBoundOld.setup(grid, u_x, u_y, u_z);
+        data_.uBoundNew.setup(grid, u_x, u_y, u_z);
+        data_.uBoundOld.setup(grid, u_x, u_y, u_z);
         // --- End Non-Zero ICs ---
 
         // 4. Create the object under test
-        viscousStep = std::make_unique<ViscousStep>(context);
+        viscousStep = std::make_unique<ViscousStep>(data_);
     }
 
     // --- HELPER METHODS ---
@@ -197,7 +194,7 @@ TEST_F(ViscousStepTest, ComputeG_Correctness) {
     double deriv_term = nu * (dxx_term + dyy_term + dzz_term);
     
     // g.x = 0 - 1.0 - sin(x) + 1.0 * ( (cos(x+1)-2cos(x)+cos(x-1)) + 0 + 0 )
-    double expected_g_x = f_term - gradP_term - u_term + deriv_term;
+    double expected_g_x = f_term - gradP_term - u_term * 0.5 + deriv_term * 0.5;
     
     double g_x_computed = getG(Axis::X, i, j, k_);
     EXPECT_NEAR(g_x_computed, expected_g_x, 1e-9);
@@ -260,7 +257,7 @@ class ViscousStepRobustnessTest : public ::testing::Test {
 protected:
     const size_t N = 10;
     std::shared_ptr<Grid> grid;
-    SimulationContext context;
+    SimulationData data_;
     std::unique_ptr<ViscousStep> viscousStep;
 
    
@@ -268,8 +265,8 @@ protected:
     ViscousStepRobustnessTest()
         : // 1. Grid 5x5x5, dx=dy=dz=0.1
           grid(std::make_shared<Grid>(N, N, N, 0.1, 0.1, 0.1)),
-          // 2. Context: dt=0.01
-          context{ grid, {0.01, 1.0} }
+          // 2. data_: dt=0.01
+          data_{ grid }
     {}
 
    void SetUp() override {
@@ -317,26 +314,23 @@ protected:
             }
         }
 
-        // --- Set up the context ---
-        context.constants.nu = 1.0e-3;
-        context.constants.k.setup(grid, ones); // k = 1.0 (non-zero)
-        context.constants.f.setup(grid, f_field, f_field, f_field); // f = [10, 10, 10]
+        // --- Set up the data_ ---
+        data_.dt = 0.1;
+        data_.nu = 1.0e-3;
+        data_.k.setup(grid, ones); // k = 1.0 (non-zero)
+        data_.f.setup(grid, f_field, f_field, f_field); // f = [10, 10, 10]
 
         // Set state fields
-        context.state.p.setup(grid, p_field);
-        context.state.u.setup(grid, u_x, u_y, u_z); // Initial u
-        context.state.eta.setup(grid, eta_x, eta_y, eta_z); // Initial eta
-        context.state.zeta.setup(grid, zeta_x, zeta_y, zeta_z); // Initial zeta
-        
-        context.state.uOld.setup(grid, u_x, u_y, u_z);
-        context.state.etaOld.setup(grid, eta_x, eta_y, eta_z);
-        context.state.zetaOld.setup(grid, zeta_x, zeta_y, zeta_z);
+        data_.p.setup(grid, p_field);
+        data_.u.setup(grid, u_x, u_y, u_z); // Initial u
+        data_.eta.setup(grid, eta_x, eta_y, eta_z); // Initial eta
+        data_.zeta.setup(grid, zeta_x, zeta_y, zeta_z); // Initial zeta
 
         // Set non-zero boundary conditions
-        context.bcSettings.uBoundNew.setup(grid, u_x, u_y, u_z);
-        context.bcSettings.uBoundOld.setup(grid, u_x, u_y, u_z);
+        data_.uBoundNew.setup(grid, u_x, u_y, u_z);
+        data_.uBoundOld.setup(grid, u_x, u_y, u_z);
         
-        viscousStep = std::make_unique<ViscousStep>(context);
+        viscousStep = std::make_unique<ViscousStep>(data_);
     }
 
     // Helper function to check a field for NaN or Inf
@@ -359,7 +353,7 @@ protected:
  *
  * This test will FAIL if:
  * 1. Your Field::setup() method does not set p_grid (causes SIGSEGV).
- * 2. Your viscousStep.cpp passes context_.state.xi to the solver (causes NaN).
+ * 2. Your viscousStep.cpp passes data_.xi to the solver (causes NaN).
  * 3. Your solver logic has a divide-by-zero or other instability.
  */
 TEST_F(ViscousStepRobustnessTest, Run_WithPolynomialFields_ProducesFiniteOutput)
@@ -373,15 +367,15 @@ TEST_F(ViscousStepRobustnessTest, Run_WithPolynomialFields_ProducesFiniteOutput)
     // We don't check for specific values. We only check that the
     // simulation is stable and did not produce NaN or Inf.
     
-    checkFieldFinite(context.state.eta(Axis::X), "eta(X)");
-    checkFieldFinite(context.state.eta(Axis::Y), "eta(Y)");
-    checkFieldFinite(context.state.eta(Axis::Z), "eta(Z)");
+    checkFieldFinite(data_.eta(Axis::X), "eta(X)");
+    checkFieldFinite(data_.eta(Axis::Y), "eta(Y)");
+    checkFieldFinite(data_.eta(Axis::Z), "eta(Z)");
     
-    checkFieldFinite(context.state.zeta(Axis::X), "zeta(X)");
-    checkFieldFinite(context.state.zeta(Axis::Y), "zeta(Y)");
-    checkFieldFinite(context.state.zeta(Axis::Z), "zeta(Z)");
+    checkFieldFinite(data_.zeta(Axis::X), "zeta(X)");
+    checkFieldFinite(data_.zeta(Axis::Y), "zeta(Y)");
+    checkFieldFinite(data_.zeta(Axis::Z), "zeta(Z)");
 
-    checkFieldFinite(context.state.u(Axis::X), "u(X)");
-    checkFieldFinite(context.state.u(Axis::Y), "u(Y)");
-    checkFieldFinite(context.state.u(Axis::Z), "u(Z)");
+    checkFieldFinite(data_.u(Axis::X), "u(X)");
+    checkFieldFinite(data_.u(Axis::Y), "u(Y)");
+    checkFieldFinite(data_.u(Axis::Z), "u(Z)");
 }

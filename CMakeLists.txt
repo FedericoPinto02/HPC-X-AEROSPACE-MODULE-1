@@ -3,6 +3,7 @@ project(NSBSolver)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 include(FetchContent)
 
@@ -40,22 +41,26 @@ add_library(NSBSolver
         include/core/TridiagMat.hpp
         include/io/inputReader.hpp
         include/io/VTKWriter.hpp
+        include/io/logWriter.hpp
         include/numerics/derivatives.hpp
         include/numerics/LinearSys.hpp
         include/simulation/initializer.hpp
         include/simulation/pressureStep.hpp
         include/simulation/viscousStep.hpp
+        include/simulation/NSBSolver.hpp
         # Explicit source files
         src/core/Fields.cpp
         src/core/Mesh.cpp
         src/core/TridiagMat.cpp
         src/io/inputReader.cpp
         src/io/VTKWriter.cpp
+        src/io/logWriter.cpp
         src/numerics/derivatives.cpp
         src/numerics/LinearSys.cpp
         src/simulation/initializer.cpp
         src/simulation/pressureStep.cpp
         src/simulation/viscousStep.cpp
+        src/simulation/NSBSolver.cpp
 
 )
 # Include owned headers, external headers and muparserx headers.

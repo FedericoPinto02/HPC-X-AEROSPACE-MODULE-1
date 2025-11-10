@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <functional>
 #include <memory>
 #include <stdexcept>
 #include <vector>
@@ -19,15 +20,23 @@ enum class Axis {
 };
 
 /**
+ * @brief Enum describing the position of the field's points in a staggered grid.
+ */
+enum class FieldOffset {
+    CELL_CENTERED, FACE_CENTERED
+};
+
+/**
  * @brief Class representing a scalar field defined on a 3D grid.
  */
 class Field {
 public:
     using Scalar = double;
-    
-    
-    std::vector<Field::Scalar>& getData() { return m_v; }
-    const std::vector<Field::Scalar>& getData() const { return m_v; }
+
+
+    std::vector<Field::Scalar> &getData() { return m_v; }
+
+    const std::vector<Field::Scalar> &getData() const { return m_v; }
 
     /**
      * @brief Getter for the pointer to the grid information.
@@ -103,6 +112,30 @@ public:
      */
     void setup(std::shared_ptr<const Grid> gridPtr,
                std::vector<Scalar> initialValues);
+
+    /**
+     * @brief Populates the underlying field based on a given function in (x,y,z).
+     * @param func a function or a lambda to use for populating the field
+     * @param offset the offset of the field in the staggered grid (default: FACE_CENTERED i.e., no offset)
+     * @param offsetAxis the axis where to apply the offset (default: X)
+     */
+    void populate(
+            const std::function<double(double x, double y, double z)> &func,
+            FieldOffset offset = FieldOffset::FACE_CENTERED, Axis offsetAxis = Axis::X
+    );
+
+    /**
+     * @brief Populates the underlying field based on a given function in (t,x,y,z).
+     * @param time the time affecting the given function in (t,x,y,z)
+     * @param func a function or a lambda to use for populating the field
+     * @param offset the offset of the field in the staggered grid (default: FACE_CENTERED i.e., no offset)
+     * @param offsetAxis the axis where to apply the offset (default: X)
+     */
+    void populate(
+            const double time,
+            const std::function<double(double t, double x, double y, double z)> &func,
+            FieldOffset offset = FieldOffset::FACE_CENTERED, Axis offsetAxis = Axis::X
+    );
 
     /**
      * @brief Reset the field values to a specified value (default is zero).
@@ -255,6 +288,7 @@ public:
      * @return the y-component value of the vector field at position (i,j,k)
      */
     Scalar &y(const size_t &i, const size_t &j, const size_t &k) { return m_y(i, j, k); }
+
     /**
      * @deprecated
      * @brief Access the z-component of the vector field.

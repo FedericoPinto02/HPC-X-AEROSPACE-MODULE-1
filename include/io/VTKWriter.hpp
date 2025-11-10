@@ -42,6 +42,7 @@ public:
                         const std::shared_ptr<Field> &pressure,
                         const std::shared_ptr<VectorField> &velocity,
                         const std::string &title = "Navier-Stokes Output") const;
+                        
 
 private:
     int Nx_, Ny_, Nz_;
