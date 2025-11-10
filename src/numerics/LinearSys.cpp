@@ -36,9 +36,6 @@ void LinearSys::fillSystemPressure(const Field &phi, const Axis direction) {
         throw std::runtime_error(
             "Dimension mismatch: rhsIncomplete must be size n.");
     }
-    // Assign RHS homogeneous b.c. 
-    rhsC.front() = 0.0;
-    rhsC.back() = 0.0;
 
 
     std::shared_ptr<const Grid> grid = phi.getGrid();
@@ -57,10 +54,12 @@ void LinearSys::fillSystemPressure(const Field &phi, const Axis direction) {
         break;
     }
     std::fill(subdiag.begin(), subdiag.end(), -d);
-    subdiag.back() *= 2;
     std::fill(supdiag.begin(), supdiag.end(), -d);
-    supdiag.front() *= 2;
-    std::fill(diag.begin(), diag.end(), 1 + 2 * d);
+    std::fill(diag.begin(), diag.end(), 1.0 + 2.0 * d);
+
+    // Boundary conditions
+    supdiag.front() = - 2.0 * d;
+    diag.back() = 1.0 + d;
 }
 
 void LinearSys::fillSystemVelocity(

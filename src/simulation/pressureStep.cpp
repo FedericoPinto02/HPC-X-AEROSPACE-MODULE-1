@@ -45,8 +45,6 @@ void PressureStep::run()
 
     LinearSys mySystem(sysDimension, BoundaryType::Normal);
     std::vector<double> rhs(sysDimension);
-    rhs.front() = 0;
-    rhs.back() = 0;
 
     
     Derivatives deriv;
@@ -61,7 +59,7 @@ void PressureStep::run()
             // jStart = j;
             // kStart = k;
 
-            for (size_t i = 1; i < sysDimension-1; i++)
+            for (size_t i = 0; i < sysDimension; i++)
             {
                 rhs[i] =  - divU(i,j,k) * inv_dt;
             }
@@ -102,14 +100,10 @@ void PressureStep::run()
             // iStart = i;
             // kStart = k;
 
-            for (size_t j = 1; j < sysDimension-1; j++)
+            for (size_t j = 0; j < sysDimension; j++)
             {
                 rhs[j] = psi(i,j,k);
             }
-
-            // Double check on boundary conditions
-            rhs.front() = 0.0;
-            rhs.back() = 0.0;
 
             mySystem.setRhs(rhs);
 
@@ -146,14 +140,10 @@ void PressureStep::run()
             // jStart = j;
             // iStart = i;
 
-            for (size_t k = 1; k < sysDimension-1; k++)
+            for (size_t k = 0; k < sysDimension; k++)
             {
                 rhs[k] = phi(i,j,k);
             }
-
-            // Double check on boundary conditions
-            rhs.front() = 0.0;
-            rhs.back() = 0.0;
 
             mySystem.setRhs(rhs);
 
