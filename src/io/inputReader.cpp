@@ -96,7 +96,7 @@ InputData InputReader::read(const std::string& filename) {
         data.output.enabled = jsonData["output"]["enabled"];
         data.output.dir = jsonData["output"]["dir"];
         data.output.baseFilename = jsonData["output"]["base_filename"];
-        data.output.frequency = jsonData["output"]["frequency"];
+        data.output.outputFrequency = jsonData["output"]["output_frequency"];
     } catch (const json::exception& e) {
         throw std::runtime_error("Error parsing 'output' section: " + std::string(e.what()));
     }
@@ -105,11 +105,10 @@ InputData InputReader::read(const std::string& filename) {
     // Logging
     // ----------------------------
     try {
-        data.logging.verbose = jsonData["logging"]["verbose"];
         data.logging.logToFile = jsonData["logging"]["log_to_file"];
         data.logging.logToConsole = jsonData["logging"]["log_to_console"];
         data.logging.filename = jsonData["logging"]["filename"];
-        data.logging.frequency = jsonData["logging"]["frequency"];
+        data.logging.loggingFrequency = jsonData["logging"]["logging_frequency"];
     } catch (const json::exception& e) {
         throw std::runtime_error("Error parsing 'logging' section: " + std::string(e.what()));
     }

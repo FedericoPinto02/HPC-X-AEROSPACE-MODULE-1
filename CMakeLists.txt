@@ -41,6 +41,7 @@ add_library(NSBSolver
         include/core/TridiagMat.hpp
         include/io/inputReader.hpp
         include/io/VTKWriter.hpp
+        include/io/logWriter.hpp
         include/numerics/derivatives.hpp
         include/numerics/LinearSys.hpp
         include/simulation/initializer.hpp
@@ -53,6 +54,7 @@ add_library(NSBSolver
         src/core/TridiagMat.cpp
         src/io/inputReader.cpp
         src/io/VTKWriter.cpp
+        src/io/logWriter.cpp
         src/numerics/derivatives.cpp
         src/numerics/LinearSys.cpp
         src/simulation/initializer.cpp

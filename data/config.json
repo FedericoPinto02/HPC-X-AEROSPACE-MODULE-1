@@ -1,11 +1,11 @@
 {
   "mesh": {
-    "nx": 80,
-    "ny": 80,
-    "nz": 80,
-    "dx": 0.07453416149,
-    "dy": 0.07453416149,
-    "dz": 0.07453416149
+    "nx": 10,
+    "ny": 10,
+    "nz": 10,
+    "dx": 0.1,
+    "dy": 0.1,
+    "dz": 0.1
   },
 
   "time": {
@@ -39,16 +39,15 @@
 
   "output": {
     "enabled": true,
-    "dir": "./output",
+    "dir": "../output",
     "base_filename": "simulation_output",
-    "frequency": 1
+    "output_frequency": 1
   },
 
   "logging": {
-    "verbose": true,
     "log_to_file": false,
     "log_to_console": true,
-    "filename": "simulation.log",
-    "frequency": 1
+    "filename": "../output/simulation.log",
+    "logging_frequency": 1
   }
 }

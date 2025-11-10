@@ -9,6 +9,7 @@
 #include "core/Fields.hpp"
 #include "io/inputReader.hpp"
 #include "io/VTKWriter.hpp"
+#include "io/logWriter.hpp"
 #include "numerics/derivatives.hpp"
 #include "simulation/pressureStep.hpp"
 #include "simulation/SimulationContext.hpp"
@@ -21,85 +22,22 @@ void NSBSolver::solve() {
     // ----- 1. Read input -----
     InputReader reader;
     InputData input = reader.read("../data/config.json");
+
     std::cout << "[OK] Input file read successfully.\n";
+    LogWriter logger(input.logging);
+    logger.printInputSummary(input);
 
-    // ----- 2. Print verbose input summary -----
-    // This will only print if "verbose: true" is set in config.json
-    if (input.logging.verbose) 
-    {
-        std::cout << "\n=== INPUT CONFIG SUMMARY ===\n" << std::boolalpha;
-
-        std::cout << "[MESH]\n";
-        std::cout << "  - Grid size (Nx, Ny, Nz): " << input.mesh.nx << ", " << input.mesh.ny << ", " << input.mesh.nz << "\n";
-        std::cout << "  - Spacing (dx, dy, dz):   " << input.mesh.dx << ", " << input.mesh.dy << ", " << input.mesh.dz << "\n";
-
-        std::cout << "[TIME]\n";
-        std::cout << "  - Time step (dt):   " << input.time.dt << "\n";
-        std::cout << "  - End time (t_end): " << input.time.t_end << "\n";
-
-        std::cout << "[PHYSICS]\n";
-        std::cout << "  - Viscosity (nu):   " << input.physics.nu << "\n";
-        std::cout << "  - Permeability (k): \"" << input.physics.k_expr << "\"\n";
-
-        std::cout << "[FORCES]\n";
-        std::cout << "  - Force x (fx): \"" << input.forces.fx_expr << "\"\n";
-        std::cout << "  - Force y (fy): \"" << input.forces.fy_expr << "\"\n";
-        std::cout << "  - Force z (fz): \"" << input.forces.fz_expr << "\"\n";
-
-        std::cout << "[INITIAL CONDITIONS]\n";
-        std::cout << "  - Velocity u: \"" << input.initial_conditions.u_expr << "\"\n";
-        std::cout << "  - Velocity v: \"" << input.initial_conditions.v_expr << "\"\n";
-        std::cout << "  - Velocity w: \"" << input.initial_conditions.w_expr << "\"\n";
-        std::cout << "  - Pressure p: \"" << input.initial_conditions.p_expr << "\"\n";
-
-        std::cout << "[BOUNDARY CONDITIONS]\n";
-        std::cout << "  - Velocity u: \"" << input.boundary_conditions.u_expr << "\"\n";
-        std::cout << "  - Velocity v: \"" << input.boundary_conditions.v_expr << "\"\n";
-        std::cout << "  - Velocity w: \"" << input.boundary_conditions.w_expr << "\"\n";
-
-        std::cout << "[OUTPUT]\n";
-        std::cout << "  - Enabled:    " << input.output.enabled << "\n";
-        std::cout << "  - Directory:  \"" << input.output.dir << "\"\n";
-        std::cout << "  - Filename:   \"" << input.output.baseFilename << "\"\n";
-        std::cout << "  - Frequency:  " << input.output.frequency << "\n";
-
-        std::cout << "[LOGGING]\n";
-        std::cout << "  - Verbose:        " << input.logging.verbose << "\n";
-        std::cout << "  - Log to File:    " << input.logging.logToFile << "\n";
-        std::cout << "  - Log to Console: " << input.logging.logToConsole << "\n";
-        std::cout << "  - Filename:       \"" << input.logging.filename << "\"\n";
-        std::cout << "  - Frequency:      " << input.logging.frequency << "\n";
-        
-        std::cout << "============================\n\n";
-    }
-
-    // ----- 3. Simulation Setup -----
+    // ----- 2. Simulation Setup -----
     std::cout << "Initializing simulation setup...\n";
     Initializer init;
     SimulationData simData = init.setup(input);
+
     std::cout << "[OK] SimulationData created successfully.\n\n";
-
-    // ----- 4. Print simulation summary -----
-    std::cout << "=== SIMULATION RUNTIME SETTINGS ===\n";
-    
-    std::cout << "[GRID]\n";
-    std::cout << "  - Grid size (Nx, Ny, Nz): " << simData.Nx << " x " << simData.Ny << " x " << simData.Nz << "\n";
-    std::cout << "  - Domain (Lx, Ly, Lz):  " << simData.Lx << ", " << simData.Ly << ", " << simData.Lz << "\n";
-    std::cout << "  - Spacing (dx, dy, dz): " << simData.dx << ", " << simData.dy << ", " << simData.dz << "\n";
-
-    std::cout << "[TIME]\n";
-    std::cout << "  - Time step (dt): " << simData.dt << "\n";
-    std::cout << "  - Total time:     " << simData.totalSimTime << "\n";
-    std::cout << "  - Total steps:    " << simData.totalSteps << "\n";
-
-    std::cout << "[PHYSICS]\n";
-    std::cout << "  - Viscosity (nu): " << simData.nu << "\n\n";
-
-    std::cout << "Initialization complete. Starting simulation... ✅\n\n";
-
+    logger.printRuntimeSummary(simData);
 
     // Initialize steps & VTK writer
     OutputSettings output = input.output;
+    LoggingSettings logging = input.logging;
     ViscousStep viscousStep{simData};
     PressureStep pressureStep{simData};
     VTKWriter vtkWriter(simData.Nx, simData.Ny, simData.Nz,
@@ -128,15 +66,16 @@ void NSBSolver::solve() {
         viscousStep.run();
         pressureStep.run();
         auto end = std::chrono::high_resolution_clock::now();    // stop timer
+
         std::chrono::duration<double> elapsed = end - start;
-        std::cout << "Step " << simData.currStep 
-                  << " done successfully in " 
-                  << elapsed.count() << " s.\n";
+        if (simData.currStep % logging.loggingFrequency == 0) {
+            logger.printLoopProgress(simData, elapsed.count());
+        }
         
         // --- ON-THE-FLY OUTPUT LOGIC ---
 
         // 1. Check if we should write output this step
-        if (output.enabled && (simData.currStep % output.frequency == 0))
+        if (output.enabled && (simData.currStep % output.outputFrequency == 0))
         {
             // 2. Prepare arguments
             std::string baseprefix = output.dir + "/" + output.baseFilename;

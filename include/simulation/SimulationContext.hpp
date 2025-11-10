@@ -10,16 +10,15 @@
 struct OutputSettings {
     std::string dir;
     std::string baseFilename;
-    bool enabled; // in case of benchmark, avoid wasting so much time producing VTK files...
-    size_t frequency;
+    bool enabled;
+    size_t outputFrequency;
 };
 
 struct LoggingSettings {
-    bool verbose;
     bool logToFile;
-    std::string filename;
     bool logToConsole;
-    size_t frequency;
+    std::string filename;
+    size_t loggingFrequency;
 };
 
 struct SimulationData {
