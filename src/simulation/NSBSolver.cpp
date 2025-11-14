@@ -18,36 +18,62 @@
 using namespace MuParserXAdapter; // / createTimeFunction
 
 
-void NSBSolver::solve() {
+NSBSolver::NSBSolver(const std::string& configFile) 
+    : configFile(configFile) {}
 
-    // ----- 1. Read input -----
+    
+void NSBSolver::setup() {
+    // 1. Read input
     InputReader reader;
-    InputData input = reader.read("../data/config.json");
+    input = reader.read(configFile);
 
     std::cout << "[OK] Input file read successfully.\n";
-    LogWriter logger(input.logging);
-    logger.printInputSummary(input);
 
-    // ----- 2. Simulation Setup -----
+    // 2. Logger
+    logger = std::make_unique<LogWriter>(input.logging);
+    logger->printInputSummary(input);
+
+    // 3. Init SimulationData
     std::cout << "Initializing simulation setup...\n";
     Initializer init;
-    SimulationData simData = init.setup(input);
+    simData = init.setup(input);
 
     std::cout << "[OK] SimulationData created successfully.\n\n";
-    logger.printRuntimeSummary(simData);
+    logger->printRuntimeSummary(simData);
 
-    // Initialize steps & VTK writer
-    OutputSettings output = input.output;
-    LoggingSettings logging = input.logging;
-    ViscousStep viscousStep{simData};
-    PressureStep pressureStep{simData};
-    VTKWriter vtkWriter(simData.Nx, simData.Ny, simData.Nz,
-              simData.dx, simData.dy, simData.dz);
+    // 4. Steps
+    viscousStep  = std::make_unique<ViscousStep>(simData);
+    pressureStep = std::make_unique<PressureStep>(simData);
 
-    // Boundary conditions expressions
+    // 5. Writer
+    vtkWriter = std::make_unique<VTKWriter>(
+        simData.Nx, simData.Ny, simData.Nz,
+        simData.dx, simData.dy, simData.dz
+    );
+
+    // Store output/logging settings
+    outputSettings  = input.output;
+    loggingSettings = input.logging;
+
+    // ----- 5. Boundary conditions expressions -----
     simData.bcu = createTimeFunction(input.boundary_conditions.u_expr);
     simData.bcv = createTimeFunction(input.boundary_conditions.v_expr);
     simData.bcw = createTimeFunction(input.boundary_conditions.w_expr);
+
+    // Store initializer for temporal fields
+    initializer = std::make_unique<Initializer>(init);
+
+}
+
+
+void NSBSolver::solve() {
+
+    if (!initializer) {
+        std::cerr << "[ERROR] NSBSolver::setup() was not called before solve().\n";
+        std::exit(EXIT_FAILURE);
+    }
+
+    auto& init = *initializer;
 
     // Time integration
     for (unsigned int i = 1; i < simData.totalSteps + 1; i++)
@@ -68,22 +94,22 @@ void NSBSolver::solve() {
             input.forces.fy_expr,
             input.forces.fz_expr);
         auto start = std::chrono::high_resolution_clock::now();  // start timer
-        viscousStep.run();
-        pressureStep.run();
+        viscousStep->run();
+        pressureStep->run();
         auto end = std::chrono::high_resolution_clock::now();    // stop timer
 
         std::chrono::duration<double> elapsed = end - start;
-        if (simData.currStep % logging.loggingFrequency == 0) {
-            logger.printLoopProgress(simData, elapsed.count());
+        if (simData.currStep % loggingSettings.loggingFrequency == 0) {
+            logger->printLoopProgress(simData, elapsed.count());
         }
         
         // --- ON-THE-FLY OUTPUT LOGIC ---
 
         // 1. Check if we should write output this step
-        if (output.enabled && (simData.currStep % output.outputFrequency == 0))
+        if (outputSettings.enabled && (simData.currStep % outputSettings.outputFrequency == 0))
         {
             // 2. Prepare arguments
-            std::string baseprefix = output.dir + "/" + output.baseFilename;
+            std::string baseprefix = outputSettings.dir + "/" + outputSettings.baseFilename;
             int step = static_cast<int>(simData.currStep);
             std::string title = "Simulation Data";
 
@@ -92,7 +118,7 @@ void NSBSolver::solve() {
             auto velocity_ptr = std::make_shared<VectorField>(simData.u);
 
             // 4. Call the 5-argument writer function
-            vtkWriter.write_timestep(baseprefix, 
+            vtkWriter->write_timestep(baseprefix, 
                                      step, 
                                      pressure_ptr, 
                                      velocity_ptr, 

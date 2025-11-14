@@ -1,3 +1,6 @@
+#ifndef LOGWRITER_HPP
+#define LOGWRITER_HPP
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -27,3 +30,5 @@ private:
 
     void write(const std::string& msg);
 };
+
+#endif // LOGWRITER_HPP

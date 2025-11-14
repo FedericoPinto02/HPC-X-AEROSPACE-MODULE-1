@@ -2,8 +2,13 @@
 #define NBSOLVER_NSBSOLVER_HPP
 
 #include <memory>
+#include <string>
 
 #include "io/inputReader.hpp"
+#include "io/VTKWriter.hpp"
+#include "io/logWriter.hpp"
+#include "simulation/pressureStep.hpp"
+#include "simulation/viscousStep.hpp"
 #include "core/Mesh.hpp"
 #include "core/Fields.hpp"
 #include "simulation/SimulationContext.hpp"
@@ -13,22 +18,23 @@
  */
 class NSBSolver {
 public:
-    /**
-     * @brief Default constructor.
-     */
-    NSBSolver() = default;
+    explicit NSBSolver(const std::string& configFile);
 
-
-    /**
-     * @brief Solve the Navier-Stokes-Brinkman equations.
-     * @param SimulationData structure.
-     */
+    void setup();
     void solve();
 
 private:
-    SimulationData data;
+    std::string configFile;
+    InputData input;
+    SimulationData simData;
     OutputSettings outputSettings;
     LoggingSettings loggingSettings;
+
+    std::unique_ptr<ViscousStep> viscousStep;
+    std::unique_ptr<PressureStep> pressureStep;
+    std::unique_ptr<VTKWriter> vtkWriter;
+    std::unique_ptr<LogWriter> logger;
+    std::unique_ptr<Initializer> initializer;
 };
 
 #endif //NBSOLVER_NSBSOLVER_HPP

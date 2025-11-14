@@ -19,7 +19,6 @@ mkdir $BUILD_DIR
 # --- 4. Enter the build directory ---
 # Tutti i comandi successivi verranno eseguiti da dentro 'build/'
 cd $BUILD_DIR
-mkdir output
 
 # --- 5. Run CMake (Configure/Prepare) ---
 # Il '..' dice a cmake di cercare CMakeLists.txt nella cartella genitore

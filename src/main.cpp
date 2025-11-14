@@ -1,7 +1,12 @@
 #include "simulation/NSBSolver.hpp"
 
 int main() {
-    NSBSolver solver;
-    solver.solve();
+
+    std::string configFile = "../data/config.json";
+
+    NSBSolver problem(configFile);
+    problem.setup();
+    problem.solve();
+
     return 0;
 }
