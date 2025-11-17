@@ -4,6 +4,9 @@
 #include <vector>
 
 class TridiagMat {
+
+  friend class SchurSequentialSolver;
+  
   private:
     std::vector<double> diag;
     std::vector<double> subdiag;

@@ -11,6 +11,8 @@ class LinearSysTestFixture;
 class LinearSys {
 
     friend class LinearSysTestFixture;
+    friend class SchurSolverTestFixture;
+    friend class SchurSequentialSolver;
 
 private: 
     TridiagMat matA;
@@ -58,10 +60,5 @@ public:
      * @brief Solve the linear system
      */
     void ThomaSolver();
-
-   
-
-
-
 
 };
