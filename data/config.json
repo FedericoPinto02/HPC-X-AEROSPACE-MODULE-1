@@ -7,45 +7,38 @@
     "dy": 0.1,
     "dz": 0.1
   },
-
   "time": {
     "dt": 0.001,
-    "t_end": 0.03
+    "t_end": 0.04
   },
-
   "physics": {
     "nu": 6.0,
     "k": "1e10"
   },
-
   "forces": {
     "fx": "cos(t) * sin(x) * sin(y) * sin(z) + sin(t) * ( (21 + 6e-10) * sin(x) * sin(y) * sin(z) - 3 * sin(x) * sin(y) * cos(z) )",
     "fy": "cos(t) * cos(x) * cos(y) * cos(z) + sin(t) * ( (21 + 6e-10) * cos(x) * cos(y) * cos(z) - 3 * cos(x) * cos(y) * sin(z) )",
     "fz": "cos(t) * cos(x) * sin(y) * (sin(z) + cos(z)) + sin(t) * ( (15 + 6e-10) * cos(x) * sin(y) * (sin(z) + cos(z)) )"
   },
-
- "initial_conditions": {
-  "u": " sin(t) * sin(x) * sin(y) * sin(z)",
-  "v": " sin(t) * cos(x) * cos(y) * cos(z)",
-  "w": " sin(t) * cos(x) * sin(y) * (sin(z) + cos(z))",
-  "p": " - sin(t) * 3.0 * cos(x) * sin(y) * (sin(z) - cos(z))"
-},
-
+  "initial_conditions": {
+    "u": " sin(t) * sin(x) * sin(y) * sin(z)",
+    "v": " sin(t) * cos(x) * cos(y) * cos(z)",
+    "w": " sin(t) * cos(x) * sin(y) * (sin(z) + cos(z))",
+    "p": " - sin(t) * 3.0 * cos(x) * sin(y) * (sin(z) - cos(z))"
+  },
   "boundary_conditions": {
     "u": " sin(t) * sin(x) * sin(y) * sin(z)",
     "v": " sin(t) * cos(x) * cos(y) * cos(z)",
     "w": " sin(t) * cos(x) * sin(y) * (sin(z) + cos(z))"
   },
-
   "output": {
     "enabled": true,
     "dir": "../output",
     "base_filename": "simulation_output",
     "output_frequency": 1
   },
-
   "logging": {
-    "log_to_file": false,
+    "log_to_file": true,
     "log_to_console": true,
     "filename": "../output/simulation.log",
     "logging_frequency": 1
