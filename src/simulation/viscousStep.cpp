@@ -4,8 +4,28 @@
 #include <vector>
 #include <numerics/derivatives.hpp>
 #include <numerics/LinearSys.hpp>
+#include "numerics/SchurSequentialSolver.hpp"
 #include <simulation/viscousStep.hpp>
 
+
+std::vector<double> ViscousStep::solveSystem(LinearSys& sys, BoundaryType bType) {
+    // 1. Se vogliamo usare il solver classico (debug o P=1 reale)
+    if (nDomainsSchur <= 1) {
+        sys.ThomaSolver();
+        return sys.getSolution();
+    }
+
+    // 2. Logica Schur Sequenziale
+    // Costruisce il solver ogni volta. 
+    // Nota: È costoso allocare memoria ogni volta, ma per ora va bene.
+    // In futuro ottimizzaremo creando il solver una volta sola se le dimensioni non cambiano.
+    SchurSequentialSolver schur(sys.getMatrix().getSize(), nDomainsSchur, bType);
+    
+    schur.PreProcess(sys.getMatrix());
+    
+    // Nota: sys.getRhs() prende il vettore "finito" con le BC applicate
+    return schur.solve(sys.getRhs());
+}
 
 
 ViscousStep::ViscousStep(SimulationData& simData) : data_(simData)
@@ -165,23 +185,25 @@ void ViscousStep::closeViscousStep()
             mySystem_u.setRhs(rhs_u);
             
             mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::X, iStart, jStart, kStart);
-                                        
-            mySystem_u.ThomaSolver();
-            std::vector<double> unknown_u = mySystem_u.getSolution();
+            // mySystem_u.ThomaSolver();
+            // std::vector<double> unknown_u = mySystem_u.getSolution();
+            std::vector<double> unknown_u = solveSystem(mySystem_u, BoundaryType::Normal);
 
 
             mySystem_v.setRhs(rhs_v);
 
             mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::X, iStart, jStart, kStart);
-            mySystem_v.ThomaSolver();
-            std::vector<double> unknown_v = mySystem_v.getSolution();
+            // mySystem_v.ThomaSolver();
+            // std::vector<double> unknown_v = mySystem_v.getSolution();
+            std::vector<double> unknown_v = solveSystem(mySystem_v, BoundaryType::Tangent);
 
 
             mySystem_w.setRhs(rhs_w);
 
             mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::X, iStart, jStart, kStart);
-            mySystem_w.ThomaSolver();
-            std::vector<double> unknown_w = mySystem_w.getSolution();
+            // mySystem_w.ThomaSolver();
+            // std::vector<double> unknown_w = mySystem_w.getSolution();
+            std::vector<double> unknown_w = solveSystem(mySystem_w, BoundaryType::Tangent);
             
             for (size_t i = 0; i < sysDimension; i++)
             {
@@ -214,8 +236,9 @@ void ViscousStep::closeViscousStep()
         mySystem_w.setRhs(rhs_w);
 
         mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::X, iStart, jStart, kStart);
-        mySystem_w.ThomaSolver();
-        std::vector<double> unknown_w = mySystem_w.getSolution();
+        std::vector<double> unknown_w = solveSystem(mySystem_w, BoundaryType::Tangent);
+        // mySystem_w.ThomaSolver();
+        // std::vector<double> unknown_w = mySystem_w.getSolution();
 
         for (size_t i = 0; i < sysDimension; i++)
         {
@@ -243,8 +266,9 @@ void ViscousStep::closeViscousStep()
             mySystem_v.setRhs(rhs_v);
 
             mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::X, iStart, jStart, kStart);
-            mySystem_v.ThomaSolver();
-            std::vector<double> unknown_v = mySystem_v.getSolution();
+            // mySystem_v.ThomaSolver();
+            // std::vector<double> unknown_v = mySystem_v.getSolution();
+            std::vector<double> unknown_v = solveSystem(mySystem_v, BoundaryType::Tangent);
 
         for (size_t i = 0; i < sysDimension; i++)
         {
@@ -274,8 +298,9 @@ void ViscousStep::closeViscousStep()
         mySystem_v.setRhs(rhs_v);
 
         mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::X, iStart, jStart, kStart);
-        mySystem_v.ThomaSolver();
-        std::vector<double> unknown_v = mySystem_v.getSolution();
+        //mySystem_v.ThomaSolver();
+        //std::vector<double> unknown_v = mySystem_v.getSolution();
+        std::vector<double> unknown_v = solveSystem(mySystem_v, BoundaryType::Tangent);
 
         for (size_t i = 0; i < sysDimension; i++)
         {
@@ -304,8 +329,9 @@ void ViscousStep::closeViscousStep()
             mySystem_w.setRhs(rhs_w);
 
             mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::X, iStart, jStart, kStart);
-            mySystem_w.ThomaSolver();
-            std::vector<double> unknown_w = mySystem_w.getSolution();
+            //mySystem_w.ThomaSolver();
+            //std::vector<double> unknown_w = mySystem_w.getSolution();
+            std::vector<double> unknown_w = solveSystem(mySystem_w, BoundaryType::Tangent);
 
         for (size_t i = 0; i < sysDimension; i++)
         {
@@ -418,22 +444,25 @@ void ViscousStep::closeViscousStep()
             mySystem_u.setRhs(rhs_u);
 
             mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Y, iStart, jStart, kStart);
-            mySystem_u.ThomaSolver();
-            std::vector<double> unknown_u = mySystem_u.getSolution();
+            // mySystem_u.ThomaSolver();
+            // std::vector<double> unknown_u = mySystem_u.getSolution();
+            std::vector<double> unknown_u = solveSystem(mySystem_u, BoundaryType::Tangent);
 
 
             mySystem_v.setRhs(rhs_v);
 
             mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Y, iStart, jStart, kStart);
-            mySystem_v.ThomaSolver();
-            std::vector<double> unknown_v = mySystem_v.getSolution();
+            // mySystem_v.ThomaSolver();
+            // std::vector<double> unknown_v = mySystem_v.getSolution();
+            std::vector<double> unknown_v = solveSystem(mySystem_v, BoundaryType::Normal);
 
 
             mySystem_w.setRhs(rhs_w);
 
             mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Y, iStart, jStart, kStart);
-            mySystem_w.ThomaSolver();
-            std::vector<double> unknown_w = mySystem_w.getSolution();
+            // mySystem_w.ThomaSolver();
+            //std::vector<double> unknown_w = mySystem_w.getSolution();
+            std::vector<double> unknown_w = solveSystem(mySystem_w, BoundaryType::Tangent);
             
             for (size_t j = 0; j < sysDimension; j++)
             {
@@ -470,8 +499,9 @@ void ViscousStep::closeViscousStep()
 
         mySystem_w.setRhs(rhs_w);
         mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Y, iStart, jStart, kStart);
-        mySystem_w.ThomaSolver();
-        std::vector<double> unknown_w = mySystem_w.getSolution();
+        //mySystem_w.ThomaSolver();
+        //std::vector<double> unknown_w = mySystem_w.getSolution();
+        std::vector<double> unknown_w = solveSystem(mySystem_w, BoundaryType::Tangent);
 
         for (size_t j = 0; j < sysDimension; j++)
         {
@@ -502,8 +532,9 @@ void ViscousStep::closeViscousStep()
 
         mySystem_u.setRhs(rhs_u);
         mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Y, iStart, jStart, kStart);
-        mySystem_u.ThomaSolver();
-        std::vector<double> unknown_u = mySystem_u.getSolution();
+        //mySystem_u.ThomaSolver();
+        //std::vector<double> unknown_u = mySystem_u.getSolution();
+        std::vector<double> unknown_u = solveSystem(mySystem_u, BoundaryType::Tangent);
 
 
         for (size_t j = 0; j < sysDimension; j++)
@@ -535,8 +566,9 @@ void ViscousStep::closeViscousStep()
 
         mySystem_u.setRhs(rhs_u);
         mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Y, iStart, jStart, kStart);
-        mySystem_u.ThomaSolver();
-        std::vector<double> unknown_u = mySystem_u.getSolution();
+        //mySystem_u.ThomaSolver();
+        //std::vector<double> unknown_u = mySystem_u.getSolution();
+        std::vector<double> unknown_u = solveSystem(mySystem_u, BoundaryType::Tangent);
 
         for (size_t j = 0; j < sysDimension; j++)
         {
@@ -568,8 +600,9 @@ void ViscousStep::closeViscousStep()
 
         mySystem_w.setRhs(rhs_w);
         mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Y, iStart, jStart, kStart);
-        mySystem_w.ThomaSolver();
-        std::vector<double> unknown_w = mySystem_w.getSolution();
+        //mySystem_w.ThomaSolver();
+        //std::vector<double> unknown_w = mySystem_w.getSolution();
+        std::vector<double> unknown_w = solveSystem(mySystem_w, BoundaryType::Tangent);
 
         for (size_t j = 0; j < sysDimension; j++)
         {
@@ -687,22 +720,25 @@ void ViscousStep::closeViscousStep()
             mySystem_u.setRhs(rhs_u);
 
             mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Z, iStart, jStart, kStart);
-            mySystem_u.ThomaSolver();
-            std::vector<double> unknown_u = mySystem_u.getSolution();
+            //mySystem_u.ThomaSolver();
+            //std::vector<double> unknown_u = mySystem_u.getSolution();
+            std::vector<double> unknown_u = solveSystem(mySystem_u, BoundaryType::Tangent);
 
 
             mySystem_v.setRhs(rhs_v);
 
             mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Z, iStart, jStart, kStart);
-            mySystem_v.ThomaSolver();
-            std::vector<double> unknown_v = mySystem_v.getSolution();
+            //mySystem_v.ThomaSolver();
+            //std::vector<double> unknown_v = mySystem_v.getSolution();
+            std::vector<double> unknown_v = solveSystem(mySystem_v, BoundaryType::Tangent);
 
 
             mySystem_w.setRhs(rhs_w);
 
             mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Z, iStart, jStart, kStart);
-            mySystem_w.ThomaSolver();
-            std::vector<double> unknown_w = mySystem_w.getSolution();
+            //mySystem_w.ThomaSolver();
+            //std::vector<double> unknown_w = mySystem_w.getSolution();
+            std::vector<double> unknown_w = solveSystem(mySystem_w, BoundaryType::Normal);
             
             for (size_t k = 0; k < sysDimension; k++)
             {
@@ -738,8 +774,9 @@ void ViscousStep::closeViscousStep()
 
         mySystem_v.setRhs(rhs_v);
         mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Z, iStart, jStart, kStart);
-        mySystem_v.ThomaSolver();
-        std::vector<double> unknown_v = mySystem_v.getSolution();
+        //mySystem_v.ThomaSolver();
+        //std::vector<double> unknown_v = mySystem_v.getSolution();
+        std::vector<double> unknown_v = solveSystem(mySystem_v, BoundaryType::Normal);
 
         for (size_t k = 0; k < sysDimension; k++)
         {
@@ -770,8 +807,9 @@ void ViscousStep::closeViscousStep()
 
         mySystem_u.setRhs(rhs_u);
         mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Z, iStart, jStart, kStart);
-        mySystem_u.ThomaSolver();
-        std::vector<double> unknown_u = mySystem_u.getSolution();
+        //mySystem_u.ThomaSolver();
+        //std::vector<double> unknown_u = mySystem_u.getSolution();
+        std::vector<double> unknown_u = solveSystem(mySystem_u, BoundaryType::Tangent);
 
         for (size_t k = 0; k < sysDimension; k++)
         {
@@ -802,8 +840,9 @@ void ViscousStep::closeViscousStep()
 
         mySystem_u.setRhs(rhs_u);
         mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Z, iStart, jStart, kStart);
-        mySystem_u.ThomaSolver();
-        std::vector<double> unknown_u = mySystem_u.getSolution();
+        //mySystem_u.ThomaSolver();
+        //std::vector<double> unknown_u = mySystem_u.getSolution();
+        std::vector<double> unknown_u = solveSystem(mySystem_u, BoundaryType::Tangent);
 
         for (size_t k = 0; k < sysDimension; k++)
         {
@@ -834,8 +873,9 @@ void ViscousStep::closeViscousStep()
 
         mySystem_v.setRhs(rhs_v);
         mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Z, iStart, jStart, kStart);
-        mySystem_v.ThomaSolver();
-        std::vector<double> unknown_v = mySystem_v.getSolution();
+        //mySystem_v.ThomaSolver();
+        //std::vector<double> unknown_v = mySystem_v.getSolution();
+        std::vector<double> unknown_v = solveSystem(mySystem_v, BoundaryType::Tangent);
 
         for (size_t k = 0; k < sysDimension; k++)
         {

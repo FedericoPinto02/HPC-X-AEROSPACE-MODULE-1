@@ -57,6 +57,16 @@ public:
         const size_t iStart, const size_t jStart, const size_t kStart);
 
     /**
+     * @brief Getter per accedere alla matrice interna (necessario per Schur).
+     */
+    const TridiagMat& getMatrix() const { return matA; }
+
+    /**
+     * @brief Getter per accedere al RHS interno (modificato da fillSystem).
+     */
+    const std::vector<double>& getRhs() const { return rhsC; }
+
+    /**
      * @brief Solve the linear system
      */
     void ThomaSolver();

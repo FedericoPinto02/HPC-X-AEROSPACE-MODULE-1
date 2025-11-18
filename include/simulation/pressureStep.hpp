@@ -46,6 +46,13 @@ private:
 
     SimulationData& data_;
 
+    int nDomainsSchur = 4;
+
+    /**
+     * @brief Wrapper che decide se usare Thoma (P=1) o Schur (P>1).
+     */
+    std::vector<double> solveSystem(LinearSys& sys, BoundaryType bType);
+
 
 
 };

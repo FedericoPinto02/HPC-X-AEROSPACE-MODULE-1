@@ -4,7 +4,28 @@
 #include <core/Fields.hpp>
 #include <numerics/derivatives.hpp>
 #include <numerics/LinearSys.hpp>
+#include "numerics/SchurSequentialSolver.hpp"
 #include <simulation/pressureStep.hpp>
+
+
+std::vector<double> PressureStep::solveSystem(LinearSys& sys, BoundaryType bType) {
+    // 1. Se vogliamo usare il solver classico (debug o P=1 reale)
+    if (nDomainsSchur <= 1) {
+        sys.ThomaSolver();
+        return sys.getSolution();
+    }
+
+    // 2. Logica Schur Sequenziale
+    // Costruisce il solver ogni volta. 
+    // Nota: È costoso allocare memoria ogni volta, ma per ora va bene.
+    // In futuro ottimizzaremo creando il solver una volta sola se le dimensioni non cambiano.
+    SchurSequentialSolver schur(sys.getMatrix().getSize(), nDomainsSchur, bType);
+    
+    schur.PreProcess(sys.getMatrix());
+    
+    // Nota: sys.getRhs() prende il vettore "finito" con le BC applicate
+    return schur.solve(sys.getRhs());
+}
 
 
 
@@ -68,9 +89,10 @@ void PressureStep::run()
 
             mySystem.fillSystemPressure(data_.p, normalAxis);
 
-            mySystem.ThomaSolver();
+            // mySystem.ThomaSolver();
 
-            std::vector<Field::Scalar> solution = mySystem.getSolution();
+            // std::vector<Field::Scalar> solution = mySystem.getSolution();
+            std::vector<Field::Scalar> solution = solveSystem(mySystem, BoundaryType::Normal);
             for (size_t i = 0; i < sysDimension; i++)
             {
                 psi(i, j, k) = solution[i];
@@ -109,9 +131,10 @@ void PressureStep::run()
 
             mySystem.fillSystemPressure(data_.p, normalAxis);
 
-            mySystem.ThomaSolver();
-
-            std::vector<Field::Scalar> solution = mySystem.getSolution();
+            // mySystem.ThomaSolver();
+            
+            // std::vector<Field::Scalar> solution = mySystem.getSolution();
+            std::vector<Field::Scalar> solution = solveSystem(mySystem, BoundaryType::Normal);
             for (size_t j = 0; j < sysDimension; j++)
             {
                 phi(i, j, k) = solution[j];
@@ -149,9 +172,10 @@ void PressureStep::run()
 
             mySystem.fillSystemPressure(data_.p, normalAxis);
 
-            mySystem.ThomaSolver();
+            // mySystem.ThomaSolver();
 
-            std::vector<Field::Scalar> solution = mySystem.getSolution();
+            // std::vector<Field::Scalar> solution = mySystem.getSolution();
+            std::vector<Field::Scalar> solution = solveSystem(mySystem, BoundaryType::Normal);
             for (size_t k = 0; k < sysDimension; k++)
             {
                 pcr(i, j, k) = solution[k];
