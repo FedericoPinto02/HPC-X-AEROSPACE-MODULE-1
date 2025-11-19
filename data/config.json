@@ -1,15 +1,18 @@
 {
   "mesh": {
-    "nx": 10,
-    "ny": 10,
-    "nz": 10,
+    "nx": 20,
+    "ny": 20,
+    "nz": 20,
     "dx": 0.1,
     "dy": 0.1,
     "dz": 0.1
   },
   "time": {
     "dt": 0.001,
-    "t_end": 0.04
+    "t_end": 0.01
+  },
+  "parallelization": {
+    "schur_domains": 4
   },
   "physics": {
     "nu": 6.0,
@@ -38,9 +41,9 @@
     "output_frequency": 1
   },
   "logging": {
-    "log_to_file": true,
+    "log_to_file": false,
     "log_to_console": true,
-    "filename": "../output/simulation.log",
-    "logging_frequency": 1
+    "dir": "../output",
+    "filename": "simulation.log"
   }
 }

@@ -1,34 +1,32 @@
-#ifndef LOGWRITER_HPP
-#define LOGWRITER_HPP
+#pragma once
 
-#include <iostream>
-#include <fstream>
 #include <string>
+#include <fstream>
+#include <iostream>
 #include <sstream>
-#include <chrono>
-#include "io/inputReader.hpp" 
-#include "../simulation/SimulationContext.hpp" 
+#include "io/inputReader.hpp"
+#include "simulation/SimulationContext.hpp"
 
 /**
  * @brief Handles console and file logging.
  */
 class LogWriter {
 public:
-    explicit LogWriter(const LoggingSettings &logSettings);
+    LogWriter(const LoggingSettings &logSettings);
 
-    void printInputSummary(const InputData &input);
-    void printRuntimeSummary(const SimulationData &simData);
-    void printLoopProgress(const SimulationData& simData, double elapsedSec);
+    void write(const std::string& msg);
 
-    ~LogWriter();
+    void printSimulationHeader(const InputData &input, const SimulationData &simData);
+
+    void printStepHeader();
+
+    void printStepProgress(int step, double time, double dt, double elapsedSec, bool isOutputStep);
 
 private:
     bool logToFile_;
     bool logToConsole_;
-    std::ofstream file_;
     std::string filename_;
+    std::ofstream file_;
 
-    void write(const std::string& msg);
+    std::string separator(int width = 60, char c = '=') const;
 };
-
-#endif // LOGWRITER_HPP

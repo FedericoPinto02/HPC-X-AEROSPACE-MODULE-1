@@ -4,6 +4,8 @@
 #include <cstddef>
 #include <string>
 #include <vector>
+#include <functional>
+#include <memory>
 
 #include "core/Fields.hpp"
 
@@ -17,8 +19,13 @@ struct OutputSettings {
 struct LoggingSettings {
     bool logToFile;
     bool logToConsole;
+    std::string dir;
     std::string filename;
     size_t loggingFrequency;
+};
+
+struct ParallelizationSettings {
+    int schurDomains;
 };
 
 struct SimulationData {

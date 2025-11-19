@@ -107,10 +107,19 @@ InputData InputReader::read(const std::string& filename) {
     try {
         data.logging.logToFile = jsonData["logging"]["log_to_file"];
         data.logging.logToConsole = jsonData["logging"]["log_to_console"];
+        data.logging.dir = jsonData["logging"]["dir"];
         data.logging.filename = jsonData["logging"]["filename"];
-        data.logging.loggingFrequency = jsonData["logging"]["logging_frequency"];
     } catch (const json::exception& e) {
         throw std::runtime_error("Error parsing 'logging' section: " + std::string(e.what()));
+    }
+
+    // ----------------------------
+    // Parallelization
+    // ----------------------------
+    try {
+        data.parallelization.schurDomains = jsonData["parallelization"]["schur_domains"];
+    } catch (const json::exception& e) {
+        throw std::runtime_error("Error parsing 'parallelization' section: " + std::string(e.what()));
     }
 
     return data;

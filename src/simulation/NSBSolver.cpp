@@ -15,54 +15,47 @@
 #include "simulation/SimulationContext.hpp"
 #include "simulation/viscousStep.hpp"
 #include "simulation/initializer.hpp"
-using namespace MuParserXAdapter; // / createTimeFunction
 
+using namespace MuParserXAdapter; 
 
 NSBSolver::NSBSolver(const std::string& configFile) 
     : configFile(configFile) {}
 
     
 void NSBSolver::setup() {
-    // 1. Read input
+
+    // Read input
     InputReader reader;
     input = reader.read(configFile);
 
-    std::cout << "[OK] Input file read successfully.\n";
-
-    // 2. Logger
+    // Logger
     logger = std::make_unique<LogWriter>(input.logging);
-    logger->printInputSummary(input);
-
-    // 3. Init SimulationData
-    std::cout << "Initializing simulation setup...\n";
+    
+    // Init SimulationData
     Initializer init;
     simData = init.setup(input);
 
-    std::cout << "[OK] SimulationData created successfully.\n\n";
-    logger->printRuntimeSummary(simData);
-
-    // 4. Steps
+    // Steps
     viscousStep  = std::make_unique<ViscousStep>(simData);
     pressureStep = std::make_unique<PressureStep>(simData);
 
-    // 5. Writer
-    vtkWriter = std::make_unique<VTKWriter>(
-        simData.Nx, simData.Ny, simData.Nz,
-        simData.dx, simData.dy, simData.dz
-    );
+    // Writer
+    vtkWriter = std::make_unique<VTKWriter>(input.output, simData);
 
-    // Store output/logging settings
+    // Store settings
     outputSettings  = input.output;
     loggingSettings = input.logging;
 
-    // ----- 5. Boundary conditions expressions -----
+    // Boundary conditions expressions
     simData.bcu = createTimeFunction(input.boundary_conditions.u_expr);
     simData.bcv = createTimeFunction(input.boundary_conditions.v_expr);
     simData.bcw = createTimeFunction(input.boundary_conditions.w_expr);
 
-    // Store initializer for temporal fields
+    // Store initializer
     initializer = std::make_unique<Initializer>(init);
 
+    // Logging
+    logger->printSimulationHeader(input, simData);
 }
 
 
@@ -75,58 +68,52 @@ void NSBSolver::solve() {
 
     auto& init = *initializer;
 
+    logger->printStepHeader();
+
     // Time integration
     for (unsigned int i = 1; i < simData.totalSteps + 1; i++)
     {
+        // 1. Update Time & Fields
         simData.uBoundOld = simData.uBoundNew;
         simData.currStep++;
         simData.currTime += simData.dt; 
+
         simData.uBoundNew = init.initializeTemporalVectorFieldFromExpr(
             simData.currTime,
             simData.gridPtr,
             input.boundary_conditions.u_expr,
             input.boundary_conditions.v_expr,
             input.boundary_conditions.w_expr);
+            
         simData.f = init.initializeTemporalVectorFieldFromExpr(
             simData.currTime,
             simData.gridPtr,
             input.forces.fx_expr,
             input.forces.fy_expr,
             input.forces.fz_expr);
-        auto start = std::chrono::high_resolution_clock::now();  // start timer
+
+        // 2. Physics Steps (Timed)
+        auto start = std::chrono::high_resolution_clock::now(); 
+        
         viscousStep->run();
         pressureStep->run();
-        auto end = std::chrono::high_resolution_clock::now();    // stop timer
-
-        std::chrono::duration<double> elapsed = end - start;
-        if (simData.currStep % loggingSettings.loggingFrequency == 0) {
-            logger->printLoopProgress(simData, elapsed.count());
-        }
         
-        // --- ON-THE-FLY OUTPUT LOGIC ---
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
 
-        // 1. Check if we should write output this step
-        if (outputSettings.enabled && (simData.currStep % outputSettings.outputFrequency == 0))
-        {
-            // 2. Prepare arguments
-            std::string baseprefix = outputSettings.dir + "/" + outputSettings.baseFilename;
-            int step = static_cast<int>(simData.currStep);
-            std::string title = "Simulation Data";
+        // 3. Output
+        bool vtkWritten = vtkWriter->write_timestep_if_needed(
+                            simData.currStep, 
+                            simData.p, 
+                            simData.u);
 
-            // 3. Create shared_ptrs "on the fly" (makes copies)
-            auto pressure_ptr = std::make_shared<Field>(simData.p);
-            auto velocity_ptr = std::make_shared<VectorField>(simData.u);
-
-            // 4. Call the 5-argument writer function
-            vtkWriter->write_timestep(baseprefix, 
-                                     step, 
-                                     pressure_ptr, 
-                                     velocity_ptr, 
-                                     title);
-            
-            std::cout << "VTK file written for step " << step << "\n";
-        }
-        // --- END OUTPUT LOGIC ---
-
+        // 4. Logging Progress (Tabular)
+        logger->printStepProgress(
+                simData.currStep,
+                simData.currTime,
+                simData.dt,
+                elapsed.count(),
+                vtkWritten
+            );
     }
 }
