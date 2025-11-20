@@ -10,25 +10,27 @@
 
 std::vector<double> ViscousStep::solveSystem(LinearSys& sys, BoundaryType bType) {
     // 1. Se vogliamo usare il solver classico (debug o P=1 reale)
-    if (nDomainsSchur <= 1) {
+    if (parallel_.schurDomains <= 1) {
         sys.ThomaSolver();
         return sys.getSolution();
     }
-
-    // 2. Logica Schur Sequenziale
-    // Costruisce il solver ogni volta. 
-    // Nota: È costoso allocare memoria ogni volta, ma per ora va bene.
-    // In futuro ottimizzaremo creando il solver una volta sola se le dimensioni non cambiano.
-    SchurSequentialSolver schur(sys.getMatrix().getSize(), nDomainsSchur, bType);
-    
-    schur.PreProcess(sys.getMatrix());
-    
-    // Nota: sys.getRhs() prende il vettore "finito" con le BC applicate
-    return schur.solve(sys.getRhs());
+    else 
+    {
+        // 2. Logica Schur Sequenziale
+        // Costruisce il solver ogni volta. 
+        // Nota: È costoso allocare memoria ogni volta, ma per ora va bene.
+        // In futuro ottimizzaremo creando il solver una volta sola se le dimensioni non cambiano.
+        SchurSequentialSolver schur(sys.getMatrix().getSize(), parallel_.schurDomains, bType);
+        
+        schur.PreProcess(sys.getMatrix());
+        
+        // Nota: sys.getRhs() prende il vettore "finito" con le BC applicate
+        return schur.solve(sys.getRhs());
+    }
 }
 
 
-ViscousStep::ViscousStep(SimulationData& simData) : data_(simData)
+ViscousStep::ViscousStep(SimulationData& simData, ParallelizationSettings& parallel) : data_(simData), parallel_(parallel)
 {
     initializeWorkspaceFields(data_.gridPtr);
 }

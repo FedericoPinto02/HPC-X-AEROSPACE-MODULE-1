@@ -23,7 +23,7 @@ public:
      * @brief Constructor
      * @param contex Contains all simulation data
      */
-    ViscousStep(SimulationData& simData);
+    ViscousStep(SimulationData& simData, ParallelizationSettings& parallel);
     
     
 
@@ -57,8 +57,7 @@ private:
     void closeViscousStep();
 
     SimulationData& data_;
-
-    int nDomainsSchur = 4;
+    ParallelizationSettings parallel_;
 
     /**
      * @brief Wrapper che decide se usare Thoma (P=1) o Schur (P>1).

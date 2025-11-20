@@ -22,7 +22,7 @@ public:
      * @brief Constructor
      * @param contex Contains all simulation data
      */
-    PressureStep(SimulationData& simData);
+    PressureStep(SimulationData& simData, ParallelizationSettings& parallel);
     
     
 
@@ -45,8 +45,7 @@ private:
 
 
     SimulationData& data_;
-
-    int nDomainsSchur = 4;
+    ParallelizationSettings parallel_;
 
     /**
      * @brief Wrapper che decide se usare Thoma (P=1) o Schur (P>1).

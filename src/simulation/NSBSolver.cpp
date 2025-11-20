@@ -35,9 +35,12 @@ void NSBSolver::setup() {
     Initializer init;
     simData = init.setup(input);
 
+    ParallelizationSettings parallel;
+    parallel.schurDomains = input.parallelization.schurDomains;
+
     // Steps
-    viscousStep  = std::make_unique<ViscousStep>(simData);
-    pressureStep = std::make_unique<PressureStep>(simData);
+    viscousStep  = std::make_unique<ViscousStep>(simData, parallel);
+    pressureStep = std::make_unique<PressureStep>(simData, parallel);
 
     // Writer
     vtkWriter = std::make_unique<VTKWriter>(input.output, simData);
