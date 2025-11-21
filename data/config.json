@@ -1,11 +1,12 @@
 {
   "mesh": {
-    "nx": 20,
-    "ny": 20,
-    "nz": 20,
-    "dx": 0.29268292682,
-    "dy": 0.29268292682,
-    "dz": 0.29268292682
+    "nx": 60,
+    "ny": 60,
+    "nz": 60,
+    "dx": 0.09917355371,
+    "dy": 0.09917355371,
+    "dz": 0.09917355371,
+    "input_for_manufactured_solution": true
   },
 
   "time": {
@@ -14,7 +15,7 @@
   },
 
   "parallelization": {
-    "schur_domains": 4
+    "schur_domains": 1
   },
 
   "physics": {

@@ -31,6 +31,7 @@ InputData InputReader::read(const std::string& filename) {
         data.mesh.dx = jsonData["mesh"]["dx"];
         data.mesh.dy = jsonData["mesh"]["dy"];
         data.mesh.dz = jsonData["mesh"]["dz"];
+        data.mesh.input_for_manufactured_solution = jsonData["mesh"]["input_for_manufactured_solution"];
     } catch (const json::exception& e) {
         throw std::runtime_error("Error parsing 'mesh' section: " + std::string(e.what()));
     }
@@ -120,6 +121,29 @@ InputData InputReader::read(const std::string& filename) {
         data.parallelization.schurDomains = jsonData["parallelization"]["schur_domains"];
     } catch (const json::exception& e) {
         throw std::runtime_error("Error parsing 'parallelization' section: " + std::string(e.what()));
+    }
+
+    // ----------------------------
+    // Manufactured Solution Overrides
+    // ----------------------------
+    if (data.mesh.input_for_manufactured_solution, false) {
+        // Set Characteristic Length L equal to kinematic viscosity nu.
+        // This ensures that the Reynolds number Re = (U * L) / nu is exactly 1 (assuming U ~ 1).
+        double L = data.physics.nu;
+
+        // Calculate grid spacing dx based on the provided nx.
+        // The domain length is L, and we use the formula: dx = L / (nx * 0.5).
+        double calculated_dx = L / (static_cast<double>(data.mesh.nx) * 0.5);
+
+        // Enforce an isotropic grid (cubic cells and cubic domain):
+        // 1. Set all spatial steps equal to the calculated dx
+        data.mesh.dx = calculated_dx;
+        data.mesh.dy = calculated_dx;
+        data.mesh.dz = calculated_dx;
+
+        // 2. Set y and z grid points equal to nx
+        data.mesh.ny = data.mesh.nx;
+        data.mesh.nz = data.mesh.nx;
     }
 
     return data;

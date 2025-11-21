@@ -34,6 +34,13 @@ void LogWriter::printSimulationHeader(const InputData &input, const SimulationDa
     s << "   NSB SOLVER - NAVIER STOKES BRINKMAN SIMULATION   \n";
     s << separator(60, '#') << "\n";
 
+    // SIMULATION MODE
+    if (input.mesh.input_for_manufactured_solution) {
+        s << "[SIMULATION MODE]\n"
+          << "  Type       : MANUFACTURED SOLUTION (Validation)\n"
+          << "  Note       : Grid overridden to isotropic, L = nu (Re = 1)\n\n";
+    }
+
     // GRID INFO
     s << "[GRID CONFIGURATION]\n"
       << "  Dimensions : " << simData.Nx << " x " << simData.Ny << " x " << simData.Nz << "\n"

@@ -12,6 +12,7 @@
 struct MeshData {
     int nx, ny, nz;
     double dx, dy, dz;
+    bool input_for_manufactured_solution;
 };
 
 /**
