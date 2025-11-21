@@ -127,9 +127,9 @@ SimulationData Initializer::setup(const InputData& inputData) {
     sim.dx = inputData.mesh.dx;
     sim.dy = inputData.mesh.dy;
     sim.dz = inputData.mesh.dz;
-    sim.Lx = sim.Nx * sim.dx;
-    sim.Ly = sim.Ny * sim.dy;
-    sim.Lz = sim.Nz * sim.dz;
+    sim.Lx = (sim.Nx + 0.5) * sim.dx;
+    sim.Ly = (sim.Ny + 0.5) * sim.dy;
+    sim.Lz = (sim.Nz + 0.5) * sim.dz;
 
     // --- Time ---
     sim.dt = inputData.time.dt;
