@@ -65,6 +65,9 @@ struct SimulationData {
 
     // Body force acting on the medium
     VectorField f;
+    std::function<double (double t, double x, double y, double z)> fx;
+    std::function<double (double t, double x, double y, double z)> fy;
+    std::function<double (double t, double x, double y, double z)> fz;
 };
 
 #endif //NSBSOLVER_SIMULATIONCONTEXT_HPP

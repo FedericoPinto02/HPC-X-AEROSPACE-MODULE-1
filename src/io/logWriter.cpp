@@ -21,11 +21,6 @@ void LogWriter::write(const std::string& msg) {
   if (logToFile_ && file_.is_open()) file_ << msg << std::flush;
 }
 
-std::string LogWriter::separator(int width, char c) const {
-    return std::string(width, c) + "\n";
-}
-
-// --- NUOVO HEADER UNIFICATO ---
 void LogWriter::printSimulationHeader(const InputData &input, const SimulationData &simData)
 {
     std::ostringstream s;

@@ -35,7 +35,6 @@ private:
     std::unique_ptr<PressureStep> pressureStep;
     std::unique_ptr<VTKWriter> vtkWriter;
     std::unique_ptr<LogWriter> logger;
-    std::unique_ptr<Initializer> initializer;
 };
 
 #endif //NBSOLVER_NSBSOLVER_HPP

@@ -28,5 +28,7 @@ private:
     std::string filename_;
     std::ofstream file_;
 
-    std::string separator(int width = 60, char c = '=') const;
+    std::string separator(int width = 60, char c = '=') const {
+        return std::string(width, c) + "\n";
+    }
 };
