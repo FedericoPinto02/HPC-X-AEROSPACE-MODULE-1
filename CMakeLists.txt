@@ -3,7 +3,7 @@ project(NSBSolver)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+# set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 include(FetchContent)
 
@@ -20,12 +20,12 @@ set(PROJECT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(PROJECT_EXTERN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/extern) # for nlohmann/json
 
 # Fetch MuParser source code automatically
-FetchContent_Declare(
-        muparserx
-        GIT_REPOSITORY https://github.com/beltoforion/muparserx.git
-        GIT_TAG v4.0.12
-)
-FetchContent_MakeAvailable(muparserx)
+# FetchContent_Declare(
+#         muparserx
+#         GIT_REPOSITORY https://github.com/beltoforion/muparserx.git
+#         GIT_TAG v4.0.12
+# )
+# FetchContent_MakeAvailable(muparserx)
 
 # todo - use it when all files actually compile ! (allow WIP files not to be compiled and break everything :D)
 # file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/*.cpp)
@@ -69,10 +69,12 @@ add_library(NSBSolver
 target_include_directories(NSBSolver PUBLIC
         ${PROJECT_INCLUDE_DIR}
         ${PROJECT_EXTERN_DIR}
-        ${muparserx_SOURCE_DIR}/parser
+        # ${muparserx_SOURCE_DIR}/parser
 )
 # Link muparserx library for internal use only
-target_link_libraries(NSBSolver PRIVATE muparserx)
+target_link_libraries(NSBSolver PRIVATE 
+                                # muparserx
+)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -51,43 +51,8 @@ InputData InputReader::read(const std::string& filename) {
     // ----------------------------
     try {
         data.physics.nu = jsonData["physics"]["nu"];
-        data.physics.k_expr = jsonData["physics"]["k"];
     } catch (const json::exception& e) {
         throw std::runtime_error("Error parsing 'physics' section: " + std::string(e.what()));
-    }
-
-    // ----------------------------
-    // Initial conditions
-    // ----------------------------
-    try {
-        data.initial_conditions.u_expr = jsonData["initial_conditions"]["u"];
-        data.initial_conditions.v_expr = jsonData["initial_conditions"]["v"];
-        data.initial_conditions.w_expr = jsonData["initial_conditions"]["w"];
-        data.initial_conditions.p_expr = jsonData["initial_conditions"]["p"];
-    } catch (const json::exception& e) {
-        throw std::runtime_error("Error parsing 'initial_conditions' section: " + std::string(e.what()));
-    }
-
-    // ----------------------------
-    // Boundary conditions
-    // ----------------------------
-    try {
-        data.boundary_conditions.u_expr = jsonData["boundary_conditions"]["u"];
-        data.boundary_conditions.v_expr = jsonData["boundary_conditions"]["v"];
-        data.boundary_conditions.w_expr = jsonData["boundary_conditions"]["w"];
-    } catch (const json::exception& e) {
-        throw std::runtime_error("Error parsing 'boundary_conditions' section: " + std::string(e.what()));
-    }
-
-    // ----------------------------
-    // Forces
-    // ----------------------------
-    try {
-        data.forces.fx_expr = jsonData["forces"]["fx"];
-        data.forces.fy_expr = jsonData["forces"]["fy"];
-        data.forces.fz_expr = jsonData["forces"]["fz"];
-    } catch (const json::exception& e) {
-        throw std::runtime_error("Error parsing 'forces' section: " + std::string(e.what()));
     }
 
     // ----------------------------

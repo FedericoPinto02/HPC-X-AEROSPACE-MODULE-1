@@ -20,35 +20,6 @@ struct MeshData {
  */
 struct PhysicsData {
     double nu;              // kinematic viscosity
-    std::string k_expr;     // permeability function expression
-};
-
-/**
- * @brief Structure to hold initial conditions as string expressions.
- */
-struct InitialConditions {
-    std::string u_expr;
-    std::string v_expr;
-    std::string w_expr;
-    std::string p_expr;
-};
-
-/**
- * @brief Structure to hold boundary conditions as string expressions.
- */
-struct BoundaryConditions {
-    std::string u_expr;
-    std::string v_expr;
-    std::string w_expr;
-};
-
-/**
- * @brief Structure to hold body force expressions.
- */
-struct ForcesData {
-    std::string fx_expr;
-    std::string fy_expr;
-    std::string fz_expr;
 };
 
 /**
@@ -65,9 +36,6 @@ struct TimeData {
 struct InputData {
     MeshData mesh;
     PhysicsData physics;
-    InitialConditions initial_conditions;
-    BoundaryConditions boundary_conditions;
-    ForcesData forces;
     TimeData time;
     OutputSettings output;
     LoggingSettings logging;

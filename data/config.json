@@ -1,6 +1,6 @@
 {
   "mesh": {
-    "nx": 60,
+    "nx": 30,
     "ny": 60,
     "nz": 60,
     "dx": 0.09917355371,
@@ -19,33 +19,13 @@
   },
 
   "physics": {
-    "nu": 6.0,
-    "k": "1e10"
-  },
-
-  "forces": {
-    "fx": "cos(t) * sin(x) * sin(y) * sin(z) + sin(t) * ( (21 + 6e-10) * sin(x) * sin(y) * sin(z) - 3 * sin(x) * sin(y) * cos(z) )",
-    "fy": "cos(t) * cos(x) * cos(y) * cos(z) + sin(t) * ( (21 + 6e-10) * cos(x) * cos(y) * cos(z) - 3 * cos(x) * cos(y) * sin(z) )",
-    "fz": "cos(t) * cos(x) * sin(y) * (sin(z) + cos(z)) + sin(t) * ( (15 + 6e-10) * cos(x) * sin(y) * (sin(z) + cos(z)) )"
-  },
-
- "initial_conditions": {
-  "u": " sin(t) * sin(x) * sin(y) * sin(z)",
-  "v": " sin(t) * cos(x) * cos(y) * cos(z)",
-  "w": " sin(t) * cos(x) * sin(y) * (sin(z) + cos(z))",
-  "p": " - sin(t) * 3.0 * cos(x) * sin(y) * (sin(z) - cos(z))"
-},
-
-  "boundary_conditions": {
-    "u": " sin(t) * sin(x) * sin(y) * sin(z)",
-    "v": " sin(t) * cos(x) * cos(y) * cos(z)",
-    "w": " sin(t) * cos(x) * sin(y) * (sin(z) + cos(z))"
+    "nu": 6.0
   },
 
   "output": {
     "enabled": true,
     "dir": "../output",
-    "base_filename": "simulation_output",
+    "base_filename": "simulation_output30",
     "output_frequency": 30
   },
 

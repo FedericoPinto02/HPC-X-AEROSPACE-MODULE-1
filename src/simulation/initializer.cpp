@@ -4,100 +4,76 @@
 #include <cmath>
 #include <algorithm> // std::fill
 
-using namespace MuParserXAdapter; // per createFunction / createTimeFunction
 
 // =========================================================
-// makeSpatialFunc
+// 1. Inizializzazione Campi Scalari (Field)
 // =========================================================
-std::function<double(double,double,double)> Initializer::makeSpatialFunc(const std::string& expr) {
-    if (expr.empty()) {
-        return [](double, double, double) { return 0.0; };
-    }
 
-    // Se la stringa contiene 't', crea una funzione temporale e valuta a t=0
-    if (expr.find('t') != std::string::npos) {
-        auto ft = createTimeFunction(expr);
-        return [ft](double x, double y, double z) {
-            return ft(0.0, x, y, z);
-        };
-    } else {
-        return createFunction(expr);
-    }
+Field Initializer::initializeFieldFromSpatialFunc(
+    const std::shared_ptr<Grid>& grid, 
+    const SpatialFunc& func
+) {
+    Field field;
+    size_t size = grid->size();
+    field.setup(grid, std::vector<double>(size, 0.0));
+    field.populate(func, FieldOffset::CELL_CENTERED); 
+
+    return field;
 }
 
-// =========================================================
-// makeTemporalFunc (Nuovo)
-// =========================================================
-TemporalFunc Initializer::makeTemporalFunc(const std::string& expr) {
-    if (expr.empty()) {
-        // Se l'espressione è vuota, la funzione restituisce 0.0 per ogni t, x, y, z
-        return [](double, double, double, double) { return 0.0; };
-    }
-    // MuParserXAdapter::createTimeFunction crea una TemporalFunc (t, x, y, z)
-    return createTimeFunction(expr);
-}// =========================================================
-// initializeFieldFromExpr (Corretto la Grid)
-// =========================================================
-Field Initializer::initializeFieldFromExpr(const std::shared_ptr<const Grid>& grid, const std::string& expr) {
-    auto f = makeSpatialFunc(expr);
-
+Field Initializer::initializeFieldFromTemporalFunc(
+    const double time,
+    const std::shared_ptr<Grid>& grid, 
+    const TemporalFunc& func
+) {
     Field field;
-    // La dimensione è 'grid->size()', che è il numero di celle (CELL_CENTERED)
-    field.setup(grid, std::vector<double>(grid->size(), 0.0));
-    field.populate(f, FieldOffset::CELL_CENTERED);
+    size_t size = grid->size();
+    field.setup(grid, std::vector<double>(size, 0.0));
+    field.populate(time, func, FieldOffset::CELL_CENTERED); 
 
     return field;
 }
 
 // =========================================================
-// initializeVectorFieldFromExpr (Corretto la Grid)
+// 2. Inizializzazione Campi Vettoriali (VectorField)
 // =========================================================
-VectorField Initializer::initializeVectorFieldFromExpr(
-    const std::shared_ptr<const Grid>& grid,
-    const std::string& expr_u,
-    const std::string& expr_v,
-    const std::string& expr_w
+
+VectorField Initializer::initializeVectorFieldFromSpatialFunc(
+    const std::shared_ptr<Grid>& grid,
+    const SpatialFunc& func_u,
+    const SpatialFunc& func_v,
+    const SpatialFunc& func_w
 ) {
-    auto fu = makeSpatialFunc(expr_u);
-    auto fv = makeSpatialFunc(expr_v);
-    auto fw = makeSpatialFunc(expr_w);
-
     VectorField vec;
-    // La dimensione è 'grid->size()', che è il numero di celle (CELL_CENTERED)
-    vec.setup(grid,
-              std::vector<double>(grid->size(), 0.0),
-              std::vector<double>(grid->size(), 0.0),
-              std::vector<double>(grid->size(), 0.0));
-
-    // populate ogni componente, usando FACE_CENTERED per i vettori
-    vec(Axis::X).populate(fu, FieldOffset::FACE_CENTERED, Axis::X);
-    vec(Axis::Y).populate(fv, FieldOffset::FACE_CENTERED, Axis::Y);
-    vec(Axis::Z).populate(fw, FieldOffset::FACE_CENTERED, Axis::Z);
+    size_t size = grid->size();
+    vec.setup(
+        grid, 
+        std::vector<double>(size, 0.0), // Componente X inizializzata a zero
+        std::vector<double>(size, 0.0), // Componente Y inizializzata a zero
+        std::vector<double>(size, 0.0)  // Componente Z inizializzata a zero
+    );
+    vec(Axis::X).populate(func_u, FieldOffset::FACE_CENTERED, Axis::X);
+    vec(Axis::Y).populate(func_v, FieldOffset::FACE_CENTERED, Axis::Y);
+    vec(Axis::Z).populate(func_w, FieldOffset::FACE_CENTERED, Axis::Z);
 
     return vec;
 }
 
-// =========================================================
-// initializeVectorFieldFromTemporalFunc (Implementazione)
-// =========================================================
 VectorField Initializer::initializeVectorFieldFromTemporalFunc(
     const double time,
-    const std::shared_ptr<const Grid>& grid,
+    const std::shared_ptr<Grid>& grid,
     const TemporalFunc& func_u,
     const TemporalFunc& func_v,
     const TemporalFunc& func_w
 ) {
     VectorField vec;
-    vec.setup(grid,
-              std::vector<double>(grid->size(), 0.0),
-              std::vector<double>(grid->size(), 0.0),
-              std::vector<double>(grid->size(), 0.0));
-
-    // Si assume che VectorField::Field::populate abbia un overload per funzioni temporali.
-    // Basandomi sul tuo codice, si assume che sia:
-    // field.populate(time, temporal_func, offset, axis)
-
-    // Inizializza ogni componente al tempo specificato
+    size_t size = grid->size();
+    vec.setup(
+        grid, 
+        std::vector<double>(size, 0.0), // Componente X inizializzata a zero
+        std::vector<double>(size, 0.0), // Componente Y inizializzata a zero
+        std::vector<double>(size, 0.0)  // Componente Z inizializzata a zero
+    );
     vec(Axis::X).populate(time, func_u, FieldOffset::FACE_CENTERED, Axis::X);
     vec(Axis::Y).populate(time, func_v, FieldOffset::FACE_CENTERED, Axis::Y);
     vec(Axis::Z).populate(time, func_w, FieldOffset::FACE_CENTERED, Axis::Z);
@@ -106,8 +82,9 @@ VectorField Initializer::initializeVectorFieldFromTemporalFunc(
 }
 
 // =========================================================
-// updateVectorFieldWithTemporalFunc (Implementazione)
+// 3. Aggiornamento Campi (Update)
 // =========================================================
+
 void Initializer::updateVectorFieldWithTemporalFunc(
     const double time,
     VectorField& vec,
@@ -115,10 +92,6 @@ void Initializer::updateVectorFieldWithTemporalFunc(
     const TemporalFunc& func_v,
     const TemporalFunc& func_w
 ) {
-    // Si assume che Field::populate abbia un overload che accetta il tempo
-    // e aggiorna il campo in-place.
-    // field.populate(time, temporal_func, offset, axis)
-    
     vec(Axis::X).populate(time, func_u, FieldOffset::FACE_CENTERED, Axis::X);
     vec(Axis::Y).populate(time, func_v, FieldOffset::FACE_CENTERED, Axis::Y);
     vec(Axis::Z).populate(time, func_w, FieldOffset::FACE_CENTERED, Axis::Z);
@@ -131,6 +104,7 @@ void Initializer::updateVectorFieldWithTemporalFunc(
 // =========================================================
 SimulationData Initializer::setup(const InputData& inputData) {
     SimulationData sim;
+    double t0 = 0.0;
 
     // --- Grid / mesh ---
     sim.Nx = static_cast<size_t>(inputData.mesh.nx);
@@ -145,7 +119,7 @@ SimulationData Initializer::setup(const InputData& inputData) {
 
     // --- Time ---
     sim.dt = inputData.time.dt;
-    sim.currTime = 0.0;
+    sim.currTime = t0;
     sim.totalSimTime = inputData.time.t_end;
     sim.currStep = 0;
     sim.totalSteps = static_cast<size_t>(std::ceil(sim.totalSimTime / sim.dt));
@@ -158,36 +132,36 @@ SimulationData Initializer::setup(const InputData& inputData) {
     sim.gridPtr = grid; // temporary
 
     // --- Initial fields ---
-    sim.u = initializeVectorFieldFromExpr(grid,
-                                          inputData.initial_conditions.u_expr,
-                                          inputData.initial_conditions.v_expr,
-                                          inputData.initial_conditions.w_expr);
+    TemporalFunc ui_func = ConfigFuncs::u_init_func;
+    TemporalFunc vi_func = ConfigFuncs::v_init_func;
+    TemporalFunc wi_func = ConfigFuncs::w_init_func;
+    TemporalFunc pi_func = ConfigFuncs::p_init_func;
+
+    sim.u = initializeVectorFieldFromTemporalFunc(t0, grid, ui_func, vi_func, wi_func);
     sim.eta = sim.u;
     sim.zeta = sim.u;
 
-    sim.p = initializeFieldFromExpr(grid, inputData.initial_conditions.p_expr);
+    sim.p = initializeFieldFromTemporalFunc(t0, grid, pi_func);
 
     // --- Permeability ---
-    sim.k = initializeFieldFromExpr(grid, inputData.physics.k_expr);
+    SpatialFunc k_func = ConfigFuncs::k_func;
+
+    sim.k = initializeFieldFromSpatialFunc(grid, k_func);
 
     // Salva le funzioni temporali di Boundary Condition in simData
-    sim.bcu = makeTemporalFunc(inputData.boundary_conditions.u_expr);
-    sim.bcv = makeTemporalFunc(inputData.boundary_conditions.v_expr);
-    sim.bcw = makeTemporalFunc(inputData.boundary_conditions.w_expr);
+    sim.bcu = ConfigFuncs::bcu_func;
+    sim.bcv = ConfigFuncs::bcv_func;
+    sim.bcw = ConfigFuncs::bcw_func;
+
+    sim.uBoundNew = initializeVectorFieldFromTemporalFunc(t0, grid, sim.bcu, sim.bcv, sim.bcw);
+    sim.uBoundOld = sim.uBoundNew;
 
     // Salva le funzioni temporali delle Forze in simData
-    sim.fx = makeTemporalFunc(inputData.forces.fx_expr);
-    sim.fy = makeTemporalFunc(inputData.forces.fy_expr);
-    sim.fz = makeTemporalFunc(inputData.forces.fz_expr);
+    sim.fx = ConfigFuncs::fx_func;
+    sim.fy = ConfigFuncs::fy_func;
+    sim.fz = ConfigFuncs::fz_func;
 
-    // Boundary conditions - Inizializza uBoundNew a t=0 usando le funzioni temporali
-    sim.uBoundNew = initializeVectorFieldFromTemporalFunc(sim.currTime, grid,
-                                                          sim.bcu, sim.bcv, sim.bcw);
-    sim.uBoundOld = sim.uBoundNew; // copia a t=0
-
-    // Body force - Inizializza f a t=0 usando le funzioni temporali
-    sim.f = initializeVectorFieldFromTemporalFunc(sim.currTime, grid,
-                                                  sim.fx, sim.fy, sim.fz);
+    sim.f = initializeVectorFieldFromTemporalFunc(t0, grid, sim.fx, sim.fy, sim.fz);
 
     return sim;
 }
