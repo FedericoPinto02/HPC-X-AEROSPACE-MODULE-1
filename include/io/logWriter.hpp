@@ -22,8 +22,11 @@ public:
 
     void printStepProgress(int step, double time, double dt, double elapsedSec, bool isOutputStep);
 
+    void printFinalSummary(double totalCpuTimeSec, double meanCpuTimePerCellTimestep, unsigned int totalSteps, 
+            const unsigned int totalCells);
+
 private:
-    bool logToFile_;
+    bool logToFile_;    
     bool logToConsole_;
     std::string logDir_;
     std::string filename_;

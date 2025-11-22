@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <memory>
+#include <ctime>
 
 // --- Include headers ---
 #include "simulation/NSBSolver.hpp"
@@ -50,6 +51,8 @@ void NSBSolver::solve() {
 
     logger->printStepHeader();
 
+    std::clock_t start_cpu_time = std::clock();
+
     // Time integration
     for (unsigned int i = 1; i < simData.totalSteps + 1; i++)
     {
@@ -92,4 +95,18 @@ void NSBSolver::solve() {
                 vtkWritten
             );
     }
+
+    std::clock_t end_cpu_time = std::clock();
+    double total_cpu_time_sec = static_cast<double>(end_cpu_time - start_cpu_time) / CLOCKS_PER_SEC;
+
+    const unsigned int total_cells = simData.Nx * simData.Ny * simData.Nz;
+    double steps_times_cells = simData.totalSteps * total_cells;
+    double mean_cpu_time_per_cell_timestep = total_cpu_time_sec / steps_times_cells;
+
+    logger->printFinalSummary(
+        total_cpu_time_sec, 
+        mean_cpu_time_per_cell_timestep,
+        simData.totalSteps,
+        total_cells
+    );
 }

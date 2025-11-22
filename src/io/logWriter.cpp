@@ -91,3 +91,40 @@ void LogWriter::printStepProgress(int step, double time, double dt, double elaps
       
     write(s.str());
 }
+
+void LogWriter::printFinalSummary(
+    double totalCpuTimeSec, 
+    double meanCpuTimePerCellTimestep, 
+    unsigned int totalSteps, 
+    const unsigned int totalCells) 
+{
+    std::ostringstream s;
+    
+    s << "\n" << separator(60, '=');
+    s << "   SIMULATION SUMMARY & PERFORMANCE METRICS   \n";
+    s << separator(60, '=') << "\n";
+
+    s << std::fixed << std::setprecision(6);
+    
+    // I. Dati generali
+    s << "[GENERAL STATS]\n"
+      << std::setw(30) << std::left << "Total Timesteps Completed:" << totalSteps << "\n"
+      << std::setw(30) << std::left << "Total Grid Cells (N_cells):" << totalCells << "\n\n";
+
+    // II. Tempi
+    s << "[PERFORMANCE TIMING]\n"
+      << std::setw(30) << std::left << "Total CPU Time (solve loop):" << totalCpuTimeSec << " s\n"
+      << std::setw(30) << std::left << "Avg CPU Time per Timestep:" << (totalCpuTimeSec / totalSteps) << " s\n";
+    
+    // III. Metrica chiave
+    s << "\n" << separator(60, '*');
+    s << std::scientific << std::setprecision(4); // Utilizza notazione scientifica per la metrica
+    
+    s << "[TARGET METRIC]\n"
+      << std::setw(30) << std::left << "CPU Time / (Steps * Cells):" 
+      << meanCpuTimePerCellTimestep << " s\n";
+      
+    s << separator(60, '*') << "\n";
+    
+    write(s.str());
+}
