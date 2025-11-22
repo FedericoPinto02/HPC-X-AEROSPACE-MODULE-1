@@ -1,24 +1,24 @@
 #include "core/Fields.hpp"
+
 #include <stdexcept>
 
-// ----------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 // Field class methods
-// ----------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 Field::Scalar &
-Field::valueWithOffset(const size_t i, const size_t j, const size_t k,
-                       const Axis offsetDirection, const int offset) {
+Field::valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int offset) {
     switch (offsetDirection) {
         case Axis::X: {
             const auto i_new = static_cast<size_t>(static_cast<ssize_t>(i) + offset);
-            return (*this)(i_new, j, k);
+            return data_[idx(i_new, j, k)];
         }
         case Axis::Y: {
             const auto j_new = static_cast<size_t>(static_cast<ssize_t>(j) + offset);
-            return (*this)(i, j_new, k);
+            return data_[idx(i, j_new, k)];
         }
         case Axis::Z: {
             const auto k_new = static_cast<size_t>(static_cast<ssize_t>(k) + offset);
-            return (*this)(i, j, k_new);
+            return data_[idx(i, j, k_new)];
         }
         default:
             throw std::invalid_argument("Invalid direction.");
@@ -26,220 +26,117 @@ Field::valueWithOffset(const size_t i, const size_t j, const size_t k,
 }
 
 const Field::Scalar &
-Field::valueWithOffset(const size_t i, const size_t j, const size_t k,
-                       const Axis offsetDirection, const int offset) const {
+Field::valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int offset) const {
     switch (offsetDirection) {
         case Axis::X: {
             const auto i_new = static_cast<size_t>(static_cast<ssize_t>(i) + offset);
-            return (*this)(i_new, j, k);
+            return data_[idx(i_new, j, k)];
         }
         case Axis::Y: {
             const auto j_new = static_cast<size_t>(static_cast<ssize_t>(j) + offset);
-            return (*this)(i, j_new, k);
+            return data_[idx(i, j_new, k)];
         }
         case Axis::Z: {
             const auto k_new = static_cast<size_t>(static_cast<ssize_t>(k) + offset);
-            return (*this)(i, j, k_new);
+            return data_[idx(i, j, k_new)];
         }
         default:
             throw std::invalid_argument("Invalid direction.");
     }
 }
 
-void
-Field::setup(std::shared_ptr<const Grid> gridPtr, std::vector<Field::Scalar> initialValues) {
-    if (!gridPtr) {
-        throw std::invalid_argument("Grid pointer cannot be null.");
-    }
-    if (initialValues.size() != gridPtr->size()) {
-        throw std::invalid_argument("Initial values size does not match grid size.");
-    }
-    p_grid = gridPtr;
-    m_v = std::move(initialValues);
-}
-
-void Field::populate(
-        const std::function<double(double x, double y, double z)> &func,
-        FieldOffset offset, Axis offsetAxis
-) {
-    auto xOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::X)
-                   ? 0.5 : 0.0;
-    auto yOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Y)
-                   ? 0.5 : 0.0;
-    auto zOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Z)
-                   ? 0.5 : 0.0;
-    for (auto k = 0; k < p_grid->Nz; ++k) {
-        for (auto j = 0; j < p_grid->Ny; ++j) {
-            for (auto i = 0; i < p_grid->Nx; ++i) {
-                auto x = (i + xOffset) * p_grid->dx;
-                auto y = (j + yOffset) * p_grid->dy;
-                auto z = (k + zOffset) * p_grid->dz;
-                (*this)(i, j, k) = func(x, y, z);
-            }
-        }
-    }
-}
-
-void Field::populate(
-        const double time,
-        const std::function<double(double t, double x, double y, double z)> &func,
-        FieldOffset offset, Axis offsetAxis
-) {
-    auto xOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::X)
-                   ? 0.5 : 0.0;
-    auto yOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Y)
-                   ? 0.5 : 0.0;
-    auto zOffset = (offset == FieldOffset::FACE_CENTERED && offsetAxis == Axis::Z)
-                   ? 0.5 : 0.0;
-    for (auto k = 0; k < p_grid->Nz; ++k) {
-        for (auto j = 0; j < p_grid->Ny; ++j) {
-            for (auto i = 0; i < p_grid->Nx; ++i) {
-                auto x = (i + xOffset) * p_grid->dx;
-                auto y = (j + yOffset) * p_grid->dy;
-                auto z = (k + zOffset) * p_grid->dz;
-                (*this)(i, j, k) = func(time, x, y, z);
+void Field::populate(double time) {
+    for (auto k = 0; k < grid_.get().Nz; ++k) {
+        for (auto j = 0; j < grid_.get().Ny; ++j) {
+            for (auto i = 0; i < grid_.get().Nx; ++i) {
+                auto x = grid_.get().to_x(i, offset_, offsetAxis_);
+                auto y = grid_.get().to_y(j, offset_, offsetAxis_);
+                auto z = grid_.get().to_z(k, offset_, offsetAxis_);
+                data_[idx(i, j, k)] = populateFunction_(x, y, z, time);
             }
         }
     }
 }
 
 void
-Field::reset(Field::Scalar value) {
-    std::fill(m_v.begin(), m_v.end(), value);
+Field::reset(const Field::Scalar value) {
+    std::fill(data_.begin(), data_.end(), value);
 }
 
 void
 Field::update(std::vector<Field::Scalar> newV) {
-    if (newV.size() != m_v.size()) {
+    if (newV.size() != data_.size()) {
         throw std::invalid_argument("New vector size does not match field size.");
     }
-    m_v = std::move(newV);
+    data_ = std::move(newV);
 }
 
-void Field::add(Field::Scalar value) {
-    for (auto &elem: m_v) {
+void Field::add(const Field::Scalar value) {
+    for (auto &elem: data_) {
         elem += value;
     }
     // todo - workaround ??: std::execution::par_unseq not available for clang 15 (libc++ 15)
-    /*std::for_each(std::execution::par_unseq, m_v.begin(), m_v.end(),
+    /*std::for_each(std::execution::par_unseq, data_.begin(), data_.end(),
                   [value](Scalar &elem) { elem += value; });*/
 }
 
-void Field::add(Field &other) {
-    if (other.getGrid()->Nx != p_grid->Nx
-        || other.getGrid()->Ny != p_grid->Ny
-        || other.getGrid()->Nz != p_grid->Nz) {
+void Field::add(const Field &other) {
+    if (other.getGrid().Nx != grid_.get().Nx
+        || other.getGrid().Ny != grid_.get().Ny
+        || other.getGrid().Nz != grid_.get().Nz) {
         throw std::invalid_argument("Fields sizes do not match.");
     }
-    for (size_t i = 0; i < m_v.size(); ++i) {
-        m_v[i] += other.m_v[i];
+    for (size_t i = 0; i < data_.size(); ++i) {
+        data_[i] += other.data_[i];
     }
     // todo - workaround ??: std::execution::par_unseq not available for clang 15 (libc++ 15)
-    /*std::for_each(std::execution::par_unseq, m_v.begin(), m_v.end(),
-                  [&other, this, n = size_t(0)](Scalar &elem) mutable { elem += other.m_v[n++]; });*/
+    /*std::for_each(std::execution::par_unseq, data_.begin(), data_.end(),
+                  [&other, this, n = size_t(0)](Scalar &elem) mutable { elem += other.data_[n++]; });*/
 }
 
-void Field::multiply(Field::Scalar value) {
-    for (auto &elem: m_v) {
+void Field::multiply(const Field::Scalar value) {
+    for (auto &elem: data_) {
         elem *= value;
     }
     // todo - workaround ??: std::execution::par_unseq not available for clang 15 (libc++ 15)
-    /*std::for_each(std::execution::par_unseq, m_v.begin(), m_v.end(),
+    /*std::for_each(std::execution::par_unseq, data_.begin(), data_.end(),
                   [value](Scalar &elem) { elem *= value; });*/
 }
 
 
-// ----------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 // VectorField class methods
-// ----------------------------------------------------------------
-Field &VectorField::operator()(Axis componentDirection) {
-    switch (componentDirection) {
-        case Axis::X:
-            return m_x;
-        case Axis::Y:
-            return m_y;
-        case Axis::Z:
-            return m_z;
-        default:
-            throw std::invalid_argument("Invalid direction.");
-    }
+// ---------------------------------------------------------------------------------------------------------------------
+Field::Scalar &VectorField::operator()(Axis componentDirection, size_t i, size_t j, size_t k) {
+    return component(componentDirection).value(i, j, k);
 }
 
-const Field &VectorField::operator()(Axis componentDirection) const {
-    switch (componentDirection) {
-        case Axis::X:
-            return m_x;
-        case Axis::Y:
-            return m_y;
-        case Axis::Z:
-            return m_z;
-        default:
-            throw std::invalid_argument("Invalid direction.");
-    }
-}
-
-Field::Scalar &VectorField::operator()(const Axis componentDirection, const size_t i, const size_t j, const size_t k) {
-    switch (componentDirection) {
-        case Axis::X:
-            return m_x(i, j, k);
-        case Axis::Y:
-            return m_y(i, j, k);
-        case Axis::Z:
-            return m_z(i, j, k);
-        default:
-            throw std::invalid_argument("Invalid direction.");
-    }
-}
-
-const Field::Scalar &
-VectorField::operator()(const Axis componentDirection, const size_t i, const size_t j, const size_t k) const {
-    switch (componentDirection) {
-        case Axis::X:
-            return m_x(i, j, k);
-        case Axis::Y:
-            return m_y(i, j, k);
-        case Axis::Z:
-            return m_z(i, j, k);
-        default:
-            throw std::invalid_argument("Invalid direction.");
-    }
-}
-
-void VectorField::setup(std::shared_ptr<const Grid> gridPtr,
-                        std::vector<Field::Scalar> initialX,
-                        std::vector<Field::Scalar> initialY,
-                        std::vector<Field::Scalar> initialZ) {
-    if (!gridPtr) {
-        throw std::invalid_argument("Grid pointer cannot be null.");
-    }
-    p_grid = gridPtr;
-    m_x.setup(gridPtr, std::move(initialX));
-    m_y.setup(gridPtr, std::move(initialY));
-    m_z.setup(gridPtr, std::move(initialZ));
+const Field::Scalar &VectorField::operator()(Axis componentDirection, size_t i, size_t j, size_t k) const {
+    return component(componentDirection).value(i, j, k);
 }
 
 void VectorField::update(std::vector<Field::Scalar> newX,
                          std::vector<Field::Scalar> newY,
                          std::vector<Field::Scalar> newZ) {
-    m_x.update(std::move(newX));
-    m_y.update(std::move(newY));
-    m_z.update(std::move(newZ));
+    component(Axis::X).update(std::move(newX));
+    component(Axis::Y).update(std::move(newY));
+    component(Axis::Z).update(std::move(newZ));
 }
 
-void VectorField::add(Field::Scalar value) {
-    m_x.add(value);
-    m_y.add(value);
-    m_z.add(value);
+void VectorField::add(const Field::Scalar value) {
+    component(Axis::X).add(value);
+    component(Axis::Y).add(value);
+    component(Axis::Z).add(value);
 }
 
-void VectorField::add(VectorField &other) {
-    m_x.add(other.x());
-    m_y.add(other.y());
-    m_z.add(other.z());
+void VectorField::add(const VectorField &other) {
+    component(Axis::X).add(other.component(Axis::X));
+    component(Axis::Y).add(other.component(Axis::Y));
+    component(Axis::Z).add(other.component(Axis::Z));
 }
 
-void VectorField::multiply(Field::Scalar value) {
-    m_x.multiply(value);
-    m_y.multiply(value);
-    m_z.multiply(value);
+void VectorField::multiply(const Field::Scalar value) {
+    component(Axis::X).multiply(value);
+    component(Axis::Y).multiply(value);
+    component(Axis::Z).multiply(value);
 }

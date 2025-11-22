@@ -51,7 +51,6 @@ add_library(NSBSolver
         include/simulation/NSBSolver.hpp
         # Explicit source files
         src/core/Fields.cpp
-        src/core/Mesh.cpp
         src/core/TridiagMat.cpp
         src/io/inputReader.cpp
         src/io/VTKWriter.cpp

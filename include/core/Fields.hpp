@@ -7,24 +7,10 @@
 #include <memory>
 #include <stdexcept>
 #include <vector>
+
 #include "core/Mesh.hpp"
+#include "core/Functions.hpp"
 
-
-/**
- * @brief Enum class representing the three coordinate axes.
- */
-enum class Axis {
-    X = 0,
-    Y = 1,
-    Z = 2
-};
-
-/**
- * @brief Enum describing the position of the field's points in a staggered grid.
- */
-enum class FieldOffset {
-    CELL_CENTERED, FACE_CENTERED
-};
 
 /**
  * @brief Class representing a scalar field defined on a 3D grid.
@@ -33,42 +19,113 @@ class Field {
 public:
     using Scalar = double;
 
+private:
+    /// The reference to the grid information.
+    std::reference_wrapper<const Grid> grid_;
+    /// The offset of the field in the staggered grid.
+    const GridStaggering offset_;
+    /// The axis where to apply the offset in the staggered grid.
+    const Axis offsetAxis_;
 
-    std::vector<Field::Scalar> &getData() { return m_v; }
+    /// Vector storing the field values in a flattened, row-major indexed 1D array.
+    std::vector<Scalar> data_;
 
-    const std::vector<Field::Scalar> &getData() const { return m_v; }
+    /// The function used for populating the field.
+    Functions::Fun populateFunction_;
+
 
     /**
-     * @brief Getter for the pointer to the grid information.
-     * @return the pointer to the grid information
+     * @brief Computes the linear index for 3D access in row-major order.
+     * @param i the x-index
+     * @param j the y-index
+     * @param k the z-index
+     * @return the corresponding 1D index
      */
-    [[nodiscard]] std::shared_ptr<const Grid> getGrid() { return p_grid; }
+    [[nodiscard]] inline size_t idx(size_t i, size_t j, size_t k) const {
+        return (k * grid_.get().Ny + j) * grid_.get().Nx + i;
+    }
 
-    /**
-     * @overload
-     */
-    [[nodiscard]] std::shared_ptr<const Grid> getGrid() const { return p_grid; }
 
-    /**
-     * @brief Access the value in the field at given position.
-     * @param i x-index
-     * @param j y-index
-     * @param k z-index
-     * @return the value in the field at position (i,j,k)
-     */
-    [[nodiscard]] Scalar &operator()(const size_t i, const size_t j, const size_t k) {
-        // Assuming row-major order
-        const size_t index = i + p_grid->Nx * (j + p_grid->Ny * k);
-        return m_v[index];
+public:
+    /// @deprecated - Use [idx] instead.
+    std::vector<Field::Scalar> &getData() { return data_; }
+
+    /// @deprecated - Use [idx] instead.
+    const std::vector<Field::Scalar> &getData() const { return data_; }
+
+    friend class VectorField;
+
+
+    //==================================================================================================================
+    //--- Setup --------------------------------------------------------------------------------------------------------
+    //==================================================================================================================
+    explicit Field(const Grid &grid,
+                   GridStaggering offset = GridStaggering::CELL_CENTERED,
+                   Axis offsetAxis = Axis::X)
+            : grid_(grid), offset_(offset), offsetAxis_(offsetAxis),
+              populateFunction_(Functions::ZERO),
+              data_(grid.size(), Scalar(0)) {
     }
 
     /**
-     * @overload
+     * @brief Setup the field with a function to populate it (e.g., initial condition).
+     * @param populateFunction the function to use for populating the field
      */
-    [[nodiscard]] const Scalar &operator()(const size_t i, const size_t j, const size_t k) const {
-        // Assuming row-major order
-        const size_t index = i + p_grid->Nx * (j + p_grid->Ny * k);
-        return m_v[index];
+    void setup(const Functions::Fun &populateFunction) {
+        populateFunction_ = populateFunction;
+    }
+
+    /**
+     * @brief Populates the underlying field based on the stored function in (x,y,z,t).
+     * @param time the time affecting the stored function in (x,y,z,t)
+     */
+    void populate(double time = 0);
+
+
+    //==================================================================================================================
+    //--- Grid accessors -----------------------------------------------------------------------------------------------
+    //==================================================================================================================
+    /**
+     * @brief Getter for the reference to the grid information.
+     * @return the pointer to the grid information
+     */
+    [[nodiscard]] inline const Grid &getGrid() { return grid_; }
+
+    /// @overload
+    [[nodiscard]] inline const Grid &getGrid() const { return grid_; }
+
+
+    //==================================================================================================================
+    //--- Data accessors -----------------------------------------------------------------------------------------------
+    //==================================================================================================================
+    /**
+     * @brief Access the value in the field at given linear index.
+     * @param index the linear index
+     * @return the value in the field at the given index
+     */
+    [[nodiscard]] inline Scalar &operator[](size_t index) {
+        return data_[index];
+    }
+
+    /// @overload
+    [[nodiscard]] inline const Scalar &operator[](size_t index) const {
+        return data_[index];
+    }
+
+    /**
+     * @brief Access the value in the field at given position.
+     * @param i the x-index
+     * @param j the y-index
+     * @param k the z-index
+     * @return the value in the field at position (i,j,k)
+     */
+    [[nodiscard]] inline Scalar &operator()(size_t i, size_t j, size_t k) {
+        return data_[idx(i, j, k)];
+    }
+
+    /// @overload
+    [[nodiscard]] inline const Scalar &operator()(size_t i, size_t j, size_t k) const {
+        return data_[idx(i, j, k)];
     }
 
     /**
@@ -76,15 +133,13 @@ public:
      *
      * This method is a named alias for the access operator.
      */
-    [[nodiscard]] Scalar &value(const size_t i, const size_t j, const size_t k) {
-        return this->operator()(i, j, k);
+    [[nodiscard]] inline Scalar &value(size_t i, size_t j, size_t k) {
+        return data_[idx(i, j, k)];
     }
 
-    /**
-     * @overload
-     */
-    [[nodiscard]] const Scalar &value(const size_t i, const size_t j, const size_t k) const {
-        return this->operator()(i, j, k);
+    /// @overload
+    [[nodiscard]] inline const Scalar &value(size_t i, size_t j, size_t k) const {
+        return data_[idx(i, j, k)];
     }
 
     /**
@@ -96,48 +151,15 @@ public:
      * @param offset the offset value (can be positive or negative)
      * @return the value in the field at position (i,j,k)
      */
-    [[nodiscard]] Scalar &
-    valueWithOffset(const size_t i, const size_t j, const size_t k, const Axis offsetDirection, const int offset);
+    [[nodiscard]] Scalar &valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int offset);
 
-    /**
-     * @overload
-     */
-    [[nodiscard]] const Scalar &
-    valueWithOffset(const size_t i, const size_t j, const size_t k, const Axis offsetDirection, const int offset) const;
+    /// @overload
+    [[nodiscard]] const Scalar &valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int offset) const;
 
-    /**
-     * @brief Setup the field with initial values matching a given grid.
-     * @param gridPtr the pointer to the grid information
-     * @param initialValues the initial values to populate the field with
-     */
-    void setup(std::shared_ptr<const Grid> gridPtr,
-               std::vector<Scalar> initialValues);
 
-    /**
-     * @brief Populates the underlying field based on a given function in (x,y,z).
-     * @param func a function or a lambda to use for populating the field
-     * @param offset the offset of the field in the staggered grid (default: FACE_CENTERED i.e., no offset)
-     * @param offsetAxis the axis where to apply the offset (default: X)
-     */
-    void populate(
-            const std::function<double(double x, double y, double z)> &func,
-            FieldOffset offset = FieldOffset::FACE_CENTERED, Axis offsetAxis = Axis::X
-    );
-
-    /**
-     * @brief Populates the underlying field based on a given function in (t,x,y,z).
-     * @param time the time affecting the given function in (t,x,y,z)
-     * @param func a function or a lambda to use for populating the field
-     * @param offset the offset of the field in the staggered grid (default: FACE_CENTERED i.e., no offset)
-     * @param offsetAxis the axis where to apply the offset (default: X)
-     */
-    void populate(
-            const double time,
-            const std::function<double(double t, double x, double y, double z)> &func,
-            FieldOffset offset = FieldOffset::FACE_CENTERED, Axis offsetAxis = Axis::X
-    );
-
-   
+    //==================================================================================================================
+    //--- Operations ---------------------------------------------------------------------------------------------------
+    //==================================================================================================================
     /**
      * @brief Reset the field values to a specified value (default is zero).
      * @param value the value to reset the field to (default is zero)
@@ -146,7 +168,7 @@ public:
 
     /**
      * @brief Update the field with a new vector of values.
-     * @param newV new values to update the field with
+     * @param newV the new values to update the field with
      */
     void update(std::vector<Scalar> newV);
 
@@ -160,20 +182,13 @@ public:
      * @brief Add another field to this field element-wise.
      * @param other the other field to add
      */
-    void add(Field &other);
+    void add(const Field &other);
 
     /**
      * @brief Multiply all elements in the field by a scalar value.
      * @param value the scalar value to multiply by
      */
     void multiply(Scalar value);
-
-private:
-    /// Pointer to the grid information (dimensions and spacing).
-    std::shared_ptr<const Grid> p_grid;
-
-    /// Vector storing the field values in a flattened, row-major indexed 1D array.
-    std::vector<Scalar> m_v;
 };
 
 
@@ -181,143 +196,125 @@ private:
  * @brief Class representing a 3D vector field defined on a 3D grid.
  */
 class VectorField {
-    using Scalar = Field::Scalar;
 public:
+    using Scalar = Field::Scalar;
+
+private:
+    /// The reference to the grid information (dimensions and spacing).
+    std::reference_wrapper<const Grid> grid_;
+    /// The components of the vector field (x, y, z).
+    std::array<Field, AXIS_COUNT> components_;
+
+public:
+    //==================================================================================================================
+    //--- Setup --------------------------------------------------------------------------------------------------------
+    //==================================================================================================================
+    explicit VectorField(const Grid &grid)
+            : grid_(grid),
+              components_({Field(grid, GridStaggering::FACE_CENTERED, Axis::X),
+                           Field(grid, GridStaggering::FACE_CENTERED, Axis::Y),
+                           Field(grid, GridStaggering::FACE_CENTERED, Axis::Z)}
+              ) {}
+
     /**
-     * @brief Getter for the pointer to the grid information.
+     * @brief Setup the vector field with functions to populate each component (e.g., initial conditions).
+     * @param populateXFunction the function to use for populating the x-component of the vector field
+     * @param populateYFunction the function to use for populating the y-component of the vector field
+     * @param populateZFunction the function to use for populating the z-component of the vector field
+     */
+    void setup(const Functions::Fun &populateXFunction,
+               const Functions::Fun &populateYFunction,
+               const Functions::Fun &populateZFunction) {
+        component(Axis::X).setup(populateXFunction);
+        component(Axis::Y).setup(populateYFunction);
+        component(Axis::Z).setup(populateZFunction);
+    }
+
+    /**
+     * @brief Populates each component of the underlying vector field based on the stored functions in (x,y,z,t).
+     * @param time the time affecting the stored functions in (x,y,z,t)
+     */
+    void populate(double time = 0) {
+        component(Axis::X).populate(time);
+        component(Axis::Y).populate(time);
+        component(Axis::Z).populate(time);
+    }
+
+
+    //==================================================================================================================
+    //--- Grid accessors -----------------------------------------------------------------------------------------------
+    //==================================================================================================================
+    /**
+     * @brief Getter for the reference to the grid information.
      * @return the pointer to the grid information
      */
-    [[nodiscard]] std::shared_ptr<const Grid> getGrid() { return p_grid; }
+    [[nodiscard]] inline const Grid &getGrid() { return grid_; }
 
-    /**
-     * @overload
-     */
-    [[nodiscard]] std::shared_ptr<const Grid> getGrid() const { return p_grid; }
+    /// @overload
+    [[nodiscard]] inline const Grid &getGrid() const { return grid_; }
 
+
+    //==================================================================================================================
+    //--- Data accessors -----------------------------------------------------------------------------------------------
+    //==================================================================================================================
     /**
      * @brief Access the component of the vector field in the specified direction.
      * @param componentDirection the direction (Axis::X, Axis::Y, or Axis::Z)
      * @return the component of the vector field in the specified direction
      */
-    Field &operator()(const Axis componentDirection);
+    [[nodiscard]] inline Field &operator()(Axis componentDirection) {
+        return components_[static_cast<size_t>(componentDirection)];
+    }
 
-    /**
-     * @overload
-     */
-    const Field &operator()(const Axis componentDirection) const;
+    /// @overload
+    [[nodiscard]] inline const Field &operator()(Axis componentDirection) const {
+        return components_[static_cast<size_t>(componentDirection)];
+    }
 
     /**
      * @copydoc VectorField::operator()(Axis)
      *
      * This method is a named alias for the access operator.
      */
-    [[nodiscard]] Field &component(const Axis componentDirection) {
-        return this->operator()(componentDirection);
+    [[nodiscard]] inline Field &component(Axis componentDirection) {
+        return components_[static_cast<size_t>(componentDirection)];
     }
 
-    /**
-     * @overload
-     */
-    [[nodiscard]] const Field &
-    component(const Axis componentDirection) const {
-        return this->operator()(componentDirection);
+    /// @overload
+    [[nodiscard]] inline const Field &component(Axis componentDirection) const {
+        return components_[static_cast<size_t>(componentDirection)];
     }
 
     /**
      * @brief Access the component value of the vector field in the specified direction at the given position.
      * @param direction the direction (Axis::X, Axis::Y, or Axis::Z)
-     * @param i x-index
-     * @param j y-index
-     * @param k z-index
+     * @param i the x-index
+     * @param j the y-index
+     * @param k the z-index
      * @return the component value of the vector field in the specified direction at position (i,j,k)
      */
-    Scalar &operator()(const Axis componentDirection, const size_t i, const size_t j, const size_t k);
+    [[nodiscard]] Scalar &operator()(Axis componentDirection, size_t i, size_t j, size_t k);
 
-    /**
-     * @overload
-     */
-    const Scalar &operator()(const Axis componentDirection, const size_t i, const size_t j, const size_t k) const;
+    /// @overload
+    [[nodiscard]] const Scalar &operator()(Axis componentDirection, size_t i, size_t j, size_t k) const;
 
     /**
      * @copydoc VectorField::operator()(Axis, size_t, size_t, size_t)
      *
      * This method is a named alias for the access operator.
      */
-    [[nodiscard]] Scalar &value(const Axis componentDirection, const size_t i, const size_t j, const size_t k) {
+    [[nodiscard]] Scalar &value(Axis componentDirection, size_t i, size_t j, size_t k) {
         return this->operator()(componentDirection, i, j, k);
     }
 
-    /**
-     * @overload
-     */
-    [[nodiscard]] const Scalar &
-    value(const Axis componentDirection, const size_t i, const size_t j, const size_t k) const {
+    /// @overload
+    [[nodiscard]] const Scalar &value(Axis componentDirection, size_t i, size_t j, size_t k) const {
         return this->operator()(componentDirection, i, j, k);
     }
 
-    /**
-     * @deprecated
-     * @brief Access the x-component of the vector field.
-     * @return the x-component of the vector field
-     */
-    Field &x() { return m_x; }
 
-    /**
-     * @deprecated
-     * @brief Access the x-component value of the vector field at the given position.
-     * @param i x-index
-     * @param j y-index
-     * @param k z-index
-     * @return the x-component value of the vector field at position (i,j,k)
-     */
-    Scalar &x(const size_t i, const size_t j, const size_t k) { return m_x(i, j, k); }
+    //======= Operations ===============================================================================================
 
-    /**
-     * @deprecated
-     * @brief Access the y-component of the vector field.
-     * @return the y-component of the vector field
-     */
-    Field &y() { return m_y; }
-
-
-    /**
-     * @deprecated
-     * @brief Access the y-component value of the vector field at the given position.
-     * @param i x-index
-     * @param j y-index
-     * @param k z-index
-     * @return the y-component value of the vector field at position (i,j,k)
-     */
-    Scalar &y(const size_t &i, const size_t &j, const size_t &k) { return m_y(i, j, k); }
-
-    /**
-     * @deprecated
-     * @brief Access the z-component of the vector field.
-     * @return the z-component of the vector field
-     */
-    Field &z() { return m_z; }
-
-    /**
-     * @deprecated
-     * @brief Access the z-component value of the vector field at the given position.
-     * @param i x-index
-     * @param j y-index
-     * @param k z-index
-     * @return the z-component value of the vector field at position (i,j,k)
-     */
-    Scalar &z(const size_t i, const size_t j, const size_t k) { return m_z(i, j, k); }
-
-    /**
-     * @brief Setup the vector field with initial values for each component
-     * matching a given grid.
-     * @param gridPtr the pointer to the grid information
-     * @param initialX the initial values to populate the x-component with
-     * @param initialY the initial values to populate the y-component with
-     * @param initialZ the initial values to populate the z-component with
-     */
-    void setup(std::shared_ptr<const Grid> gridPtr, std::vector<Scalar> initialX,
-               std::vector<Scalar> initialY,
-               std::vector<Scalar> initialZ);
 
     /**
      * @brief Update the vector field with new vectors for each component.
@@ -325,8 +322,7 @@ public:
      * @param newY new values to update the vector field with in the y-direction
      * @param newZ new values to update the vector field with in the z-direction
      */
-    void update(std::vector<Scalar> newX, std::vector<Scalar> newY,
-                std::vector<Scalar> newZ);
+    void update(std::vector<Scalar> newX, std::vector<Scalar> newY, std::vector<Scalar> newZ);
 
     /**
      * @brief Add a scalar value to all components of the vector field.
@@ -338,23 +334,13 @@ public:
      * @brief Add another vector field to this vector field element-wise.
      * @param other the other vector field to add
      */
-    void add(VectorField &other);
+    void add(const VectorField &other);
 
     /**
      * @brief Multiply all components of the vector field by a scalar value.
      * @param value the scalar value to multiply by
      */
     void multiply(Scalar value);
-
-private:
-    /// Pointer to the grid information (dimensions and spacing).
-    std::shared_ptr<const Grid> p_grid;
-    /// X-component of the vector field.
-    Field m_x;
-    /// Y-component of the vector field.
-    Field m_y;
-    /// Z-component of the vector field.
-    Field m_z;
 };
 
 #endif // NSBSOLVER_FIELDS_HPP
