@@ -38,9 +38,8 @@ private:
       
     /**
      * @brief Construct temporary fields to proceed in computations
-     * @param Grid pointer
      */
-    void initializeWorkspaceFields(std::shared_ptr<const Grid> gridPtr);
+    void initializeWorkspaceFields();
 
 
 

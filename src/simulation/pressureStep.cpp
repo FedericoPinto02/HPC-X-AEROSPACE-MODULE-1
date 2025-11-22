@@ -28,18 +28,17 @@ std::vector<double> PressureStep::solveSystem(LinearSys& sys, BoundaryType bType
 
 PressureStep::PressureStep(SimulationData& simData, ParallelizationSettings& parallel) : data_(simData), parallel_(parallel)
 {
-    initializeWorkspaceFields(data_.gridPtr);
+    initializeWorkspaceFields();
 }
 
 
 
-void PressureStep::initializeWorkspaceFields(std::shared_ptr<const Grid> gridPtr)
+void PressureStep::initializeWorkspaceFields()
 {
-    std::vector<Field::Scalar> zeros(gridPtr->size(), 0.0);
-    psi.setup(gridPtr, zeros);
-    phi.setup(gridPtr, zeros);
-    pcr.setup(gridPtr, zeros);
-    divU.setup(gridPtr, zeros);
+    psi.setup(data_.grid);
+    phi.setup(data_.grid);
+    pcr.setup(data_.grid);
+    divU.setup(data_.grid);
 }
 
 
@@ -57,8 +56,8 @@ void PressureStep::run()
     // ------------------------------------------
     {
     normalAxis = Axis::X;   // x = psi, rhs = divU/dt
-    size_t nSystem = data_.gridPtr->Ny * data_.gridPtr->Nz; // number of linear systems to solve
-    size_t sysDimension = data_.gridPtr->Nx; // dimension of linear system to solve
+    size_t nSystem = data_.grid.Ny * data_.grid.Nz; // number of linear systems to solve
+    size_t sysDimension = data_.grid.Nx; // dimension of linear system to solve
     // when solving Psi we fill linsys with dxx derivatives
 
     LinearSys mySystem(sysDimension, BoundaryType::Normal);
@@ -70,9 +69,9 @@ void PressureStep::run()
     double inv_dt = 1.0 / data_.dt;
 
     // iStart = 0;   
-    for (size_t j = 0; j < data_.gridPtr->Ny; j++)
+    for (size_t j = 0; j < data_.grid.Ny; j++)
     {
-        for (size_t k = 0; k < data_.gridPtr->Nz; k++)
+        for (size_t k = 0; k < data_.grid.Nz; k++)
         {
             // jStart = j;
             // kStart = k;
@@ -104,17 +103,17 @@ void PressureStep::run()
     // ------------------------------------------
     {
     normalAxis = Axis::Y;   // x = phi, rhs = psi
-    size_t nSystem = data_.gridPtr->Nx * data_.gridPtr->Nz; // number of linear systems to solve
-    size_t sysDimension = data_.gridPtr->Ny; // dimension of linear system to solve
+    size_t nSystem = data_.grid.Nx * data_.grid.Nz; // number of linear systems to solve
+    size_t sysDimension = data_.grid.Ny; // dimension of linear system to solve
     // when solving Phi we fill linsys with dyy derivatives
 
     LinearSys mySystem(sysDimension, BoundaryType::Normal);
     std::vector<double> rhs(sysDimension);      
 
     // jStart = 0;
-    for (size_t i = 0; i < data_.gridPtr->Nx; i++)
+    for (size_t i = 0; i < data_.grid.Nx; i++)
     {
-        for (size_t k = 0; k < data_.gridPtr->Nz; k++)
+        for (size_t k = 0; k < data_.grid.Nz; k++)
         {
             // iStart = i;
             // kStart = k;
@@ -145,17 +144,17 @@ void PressureStep::run()
     // ------------------------------------------
     {
     normalAxis = Axis::Z;   // x = pcr, rhs = phi
-    size_t nSystem = data_.gridPtr->Nx * data_.gridPtr->Ny; // number of linear systems to solve
-    size_t sysDimension = data_.gridPtr->Nz; // dimension of linear system to solve
+    size_t nSystem = data_.grid.Nx * data_.grid.Ny; // number of linear systems to solve
+    size_t sysDimension = data_.grid.Nz; // dimension of linear system to solve
     // when solving Pcr we fill linsys with dzz derivatives
 
     LinearSys mySystem(sysDimension, BoundaryType::Normal);
     std::vector<double> rhs(sysDimension);      
 
     // kStart = 0;
-    for (size_t j = 0; j < data_.gridPtr->Ny; j++)
+    for (size_t j = 0; j < data_.grid.Ny; j++)
     {
-        for (size_t i = 0; i < data_.gridPtr->Nx; i++)
+        for (size_t i = 0; i < data_.grid.Nx; i++)
         {
             // jStart = j;
             // iStart = i;

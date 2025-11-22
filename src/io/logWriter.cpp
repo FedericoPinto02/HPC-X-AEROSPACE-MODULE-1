@@ -47,10 +47,10 @@ void LogWriter::printSimulationHeader(const InputData &input, const SimulationDa
 
     // GRID INFO
     s << "[GRID CONFIGURATION]\n"
-      << "  Dimensions : " << simData.Nx << " x " << simData.Ny << " x " << simData.Nz << "\n"
-      << "  Domain Size: " << simData.Lx << " x " << simData.Ly << " x " << simData.Lz << "\n"
-      << "  Spacing    : " << "dx=" << simData.dx << ", dy=" << simData.dy << ", dz=" << simData.dz << "\n"
-      << "  Total Cells: " << (simData.Nx * simData.Ny * simData.Nz) << "\n\n";
+      << "  Dimensions : " << simData.grid.Nx << " x " << simData.grid.Ny << " x " << simData.grid.Nz << "\n"
+      << "  Domain Size: " << simData.grid.Lx << " x " << simData.grid.Ly << " x " << simData.grid.Lz << "\n"
+      << "  Spacing    : " << "dx=" << simData.grid.dx << ", dy=" << simData.grid.dy << ", dz=" << simData.grid.dz << "\n"
+      << "  Total Cells: " << (simData.grid.size()) << "\n\n";
 
     // TIME
     s << "[TIME SETTINGS]\n"

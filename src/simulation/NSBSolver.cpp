@@ -61,15 +61,8 @@ void NSBSolver::solve()
         simData.currStep++;
         simData.currTime += simData.dt;
 
-        Initializer::updateVectorFieldWithTemporalFunc(
-            simData.currTime,
-            simData.uBoundNew,
-            simData.bcu, simData.bcv, simData.bcw);
-
-        Initializer::updateVectorFieldWithTemporalFunc(
-            simData.currTime,
-            simData.f,
-            simData.fx, simData.fy, simData.fz);
+        simData.uBoundNew.populate(simData.currTime);
+        simData.f.populate(simData.currTime);
 
         // 2. Physics Steps (Timed)
         auto start = std::chrono::high_resolution_clock::now();
@@ -98,7 +91,7 @@ void NSBSolver::solve()
     std::clock_t end_cpu_time = std::clock();
     double total_cpu_time_sec = static_cast<double>(end_cpu_time - start_cpu_time) / CLOCKS_PER_SEC;
 
-    const unsigned int total_cells = simData.Nx * simData.Ny * simData.Nz;
+    const unsigned int total_cells = simData.grid.size();
     double steps_times_cells = simData.totalSteps * total_cells;
     double mean_cpu_time_per_cell_timestep = total_cpu_time_sec / steps_times_cells;
 

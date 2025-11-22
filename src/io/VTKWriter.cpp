@@ -5,8 +5,8 @@
 #include <cstdio>
 
 VTKWriter::VTKWriter(const OutputSettings &outputSettings, const SimulationData &simData)
-    : Nx_(simData.Nx), Ny_(simData.Ny), Nz_(simData.Nz),
-      dx_(simData.dx), dy_(simData.dy), dz_(simData.dz),
+    : Nx_(simData.grid.Nx), Ny_(simData.grid.Ny), Nz_(simData.grid.Nz),
+      dx_(simData.grid.dx), dy_(simData.grid.dy), dz_(simData.grid.dz),
       enabled_(outputSettings.enabled),
       outputFrequency_(outputSettings.outputFrequency),
       basePrefix_(outputSettings.dir + "/" + outputSettings.baseFilename)
@@ -87,9 +87,9 @@ void VTKWriter::write_legacy(const std::string &filename,
 
     // VECTORS velocity
     out << "VECTORS velocity double\n";
-    const auto &vx = velocity->x();
-    const auto &vy = velocity->y();
-    const auto &vz = velocity->z();
+    const auto &vx = velocity->component(Axis::X);
+    const auto &vy = velocity->component(Axis::Y);
+    const auto &vz = velocity->component(Axis::Z);
 
     for (int k = 0; k < Nz_; ++k)
     {
