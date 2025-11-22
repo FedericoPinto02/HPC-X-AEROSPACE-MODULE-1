@@ -30,28 +30,36 @@ struct Grid {
     /// Grid spacing in each direction (derived from physical sizes and number of grid points).
     double dx, dy, dz;
 
+    Grid() {
+        Nx = Ny = Nz = 10;
+        dx = dy = dz = 1.0;
+        Lx = dx * (static_cast<double>(Nx) + 0.5);
+        Ly = dy * (static_cast<double>(Ny) + 0.5);
+        Lz = dz * (static_cast<double>(Nz) + 0.5);
+    }
+
     /**
      * @brief Constructor to initialize the grid with given physical sizes and number of points.
-     * @param Lx_ the physical size of the grid in the X direction
-     * @param Ly_ the physical size of the grid in the Y direction
-     * @param Lz_ the physical size of the grid in the Z direction
      * @param Nx_ the number of grid points in the X direction
      * @param Ny_ the number of grid points in the Y direction
      * @param Nz_ the number of grid points in the Z direction
+     * @param dx_ the grid spacing in the X direction
+     * @param dy_ the grid spacing in the Y direction
+     * @param dz_ the grid spacing in the Z direction
      */
-    Grid(double Lx_, double Ly_, double Lz_, size_t Nx_, size_t Ny_, size_t Nz_)
-            : Lx(Lx_), Ly(Ly_), Lz(Lz_),
-              Nx(Nx_), Ny(Ny_), Nz(Nz_) {
-        if (Lx <= 0.0 || Ly <= 0.0 || Lz <= 0.0) {
-            throw std::runtime_error("Grid physical sizes must be positive.");
-        }
+    Grid(size_t Nx_, size_t Ny_, size_t Nz_, double dx_, double dy_, double dz_)
+            : Nx(Nx_), Ny(Ny_), Nz(Nz_), dx(dx_), dy(dy_), dz(dz_) {
         if (Nx <= 0 || Ny <= 0 || Nz <= 0) {
             throw std::runtime_error("Grid dimensions must be positive.");
         }
-        dx = Lx / static_cast<double>(Nx);
-        dy = Ly / static_cast<double>(Ny);
-        dz = Lz / static_cast<double>(Nz);
+        if (dx <= 0.0 || dy <= 0.0 || dz <= 0.0) {
+            throw std::runtime_error("Grid spacing must be positive.");
+        }
+        Lx = dx * (static_cast<double>(Nx) + 0.5);
+        Ly = dy * (static_cast<double>(Ny) + 0.5);
+        Lz = dz * (static_cast<double>(Nz) + 0.5);
     }
+
 
     /**
      * @brief Getter for the total number of grid points.
