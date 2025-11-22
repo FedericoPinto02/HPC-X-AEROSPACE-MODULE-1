@@ -37,7 +37,7 @@ private:
     double dx_, dy_, dz_;
     bool enabled_;
     int outputFrequency_;
-    std::string baseprefix_;
+    std::string basePrefix_;
 
     /**
      * @brief Internal method to write a scalar field and a vector field to a legacy VTK file.

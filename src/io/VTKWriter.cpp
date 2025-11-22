@@ -10,7 +10,7 @@ VTKWriter::VTKWriter(const OutputSettings &outputSettings, const SimulationData 
       dx_(simData.dx), dy_(simData.dy), dz_(simData.dz),
       enabled_(outputSettings.enabled),
       outputFrequency_(outputSettings.outputFrequency),
-      baseprefix_(outputSettings.dir + "/" + outputSettings.baseFilename)
+      basePrefix_(outputSettings.dir + "/" + outputSettings.baseFilename)
 {
     if (Nx_ <= 0 || Ny_ <= 0 || Nz_ <= 0)
         throw std::invalid_argument("VTKWriter: grid dimensions must be positive");
@@ -34,7 +34,7 @@ bool VTKWriter::write_timestep_if_needed(size_t currStep,
     // Preparazione dei dati e del nome del file
     int step = static_cast<int>(currStep);
     char buf[256];
-    std::snprintf(buf, sizeof(buf), "%s_%04d.vtk", baseprefix_.c_str(), step);
+    std::snprintf(buf, sizeof(buf), "%s_%04d.vtk", basePrefix_.c_str(), step);
     std::string filename = std::string(buf);
 
     // Creazione delle copie per la scrittura (come faceva la logica esterna)

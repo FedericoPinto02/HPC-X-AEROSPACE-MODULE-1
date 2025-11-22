@@ -5,14 +5,17 @@
 LogWriter::LogWriter(const LoggingSettings &logSettings)
     : logToFile_(logSettings.logToFile),
       logToConsole_(logSettings.logToConsole),
+      logDir_(logSettings.dir),
       filename_(logSettings.filename)
 {
     if (logToFile_) {
-        file_.open(filename_, std::ios::out | std::ios::trunc);
-        if (!file_.is_open()) {
-            std::cerr << "[ERROR] Could not open log file.\n";
-            logToFile_ = false;
-        }
+      std::string fullPath = logDir_ + "/" + filename_;
+      file_.open(fullPath, std::ios::out | std::ios::trunc);
+      
+      if (!file_.is_open()) {
+          std::cerr << "[ERROR] Could not open log file.\n";
+          logToFile_ = false;
+      }
     }
 }
 

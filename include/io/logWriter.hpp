@@ -25,6 +25,7 @@ public:
 private:
     bool logToFile_;
     bool logToConsole_;
+    std::string logDir_;
     std::string filename_;
     std::ofstream file_;
 
