@@ -42,20 +42,16 @@ struct InputData {
     ParallelizationSettings parallelization;
 };
 
-/**
- * @brief Class responsible for reading and parsing input configuration files.
- */
-class InputReader {
-public:
-    InputReader() = default;
+
+namespace InputReader {
 
     /**
      * @brief Read and parse input data from a JSON configuration file.
      * @param filename path to the configuration file
      * @return InputData structure containing all parsed data
-     * @throws std::runtime_error if file cannot be opened or parsed
      */
     InputData read(const std::string& filename);
-};
+
+}
 
 #endif // INPUTREADER_HPP

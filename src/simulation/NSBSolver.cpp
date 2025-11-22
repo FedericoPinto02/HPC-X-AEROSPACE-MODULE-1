@@ -19,32 +19,27 @@
 NSBSolver::NSBSolver(const std::string& configFile) 
     : configFile(configFile) {}
 
-    
+
 void NSBSolver::setup() {
 
-    // Read input
-    InputReader reader;
-    input = reader.read(configFile);
-
-    // Logger
-    logger = std::make_unique<LogWriter>(input.logging);
+    // Read input file
+    input = InputReader::read(configFile);
     
     // Init SimulationData
     simData = Initializer::setup(input);
 
-    ParallelizationSettings parallel;
-    parallel.schurDomains = input.parallelization.schurDomains;
-
-    // Steps
-    viscousStep  = std::make_unique<ViscousStep>(simData, parallel);
-    pressureStep = std::make_unique<PressureStep>(simData, parallel);
-
-    // Writer
-    vtkWriter = std::make_unique<VTKWriter>(input.output, simData);
-
-    // Store settings
+    // Init store settings
     outputSettings  = input.output;
     loggingSettings = input.logging;
+    parallelizationSettings = input.parallelization;
+
+    // Init Steps
+    viscousStep  = std::make_unique<ViscousStep>(simData, parallelizationSettings);
+    pressureStep = std::make_unique<PressureStep>(simData, parallelizationSettings);
+
+    // Init Logger and Writer
+    logger = std::make_unique<LogWriter>(loggingSettings);
+    vtkWriter = std::make_unique<VTKWriter>(outputSettings, simData);
 
     // Logging
     logger->printSimulationHeader(input, simData);

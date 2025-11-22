@@ -2,11 +2,11 @@
 
 #include <iostream>
 #include <cmath>
-#include <algorithm> // std::fill
+#include <algorithm>
 
 
 // =========================================================
-// 1. Inizializzazione Campi Scalari (Field)
+// 1. Scalar Fields Initialization
 // =========================================================
 
 Field Initializer::initializeFieldFromSpatialFunc(
@@ -35,7 +35,7 @@ Field Initializer::initializeFieldFromTemporalFunc(
 }
 
 // =========================================================
-// 2. Inizializzazione Campi Vettoriali (VectorField)
+// 2. Vector Fields Initialization
 // =========================================================
 
 VectorField Initializer::initializeVectorFieldFromSpatialFunc(
@@ -48,9 +48,9 @@ VectorField Initializer::initializeVectorFieldFromSpatialFunc(
     size_t size = grid->size();
     vec.setup(
         grid, 
-        std::vector<double>(size, 0.0), // Componente X inizializzata a zero
-        std::vector<double>(size, 0.0), // Componente Y inizializzata a zero
-        std::vector<double>(size, 0.0)  // Componente Z inizializzata a zero
+        std::vector<double>(size, 0.0), // X component initialized to zero
+        std::vector<double>(size, 0.0), // Y component initialized to zero
+        std::vector<double>(size, 0.0)  // Z component initialized to zero
     );
     vec(Axis::X).populate(func_u, FieldOffset::FACE_CENTERED, Axis::X);
     vec(Axis::Y).populate(func_v, FieldOffset::FACE_CENTERED, Axis::Y);
@@ -70,9 +70,9 @@ VectorField Initializer::initializeVectorFieldFromTemporalFunc(
     size_t size = grid->size();
     vec.setup(
         grid, 
-        std::vector<double>(size, 0.0), // Componente X inizializzata a zero
-        std::vector<double>(size, 0.0), // Componente Y inizializzata a zero
-        std::vector<double>(size, 0.0)  // Componente Z inizializzata a zero
+        std::vector<double>(size, 0.0), // X component initialized to zero
+        std::vector<double>(size, 0.0), // Y component initialized to zero
+        std::vector<double>(size, 0.0)  // Z component initialized to zero
     );
     vec(Axis::X).populate(time, func_u, FieldOffset::FACE_CENTERED, Axis::X);
     vec(Axis::Y).populate(time, func_v, FieldOffset::FACE_CENTERED, Axis::Y);
@@ -82,7 +82,7 @@ VectorField Initializer::initializeVectorFieldFromTemporalFunc(
 }
 
 // =========================================================
-// 3. Aggiornamento Campi (Update)
+// 3. Fields Update
 // =========================================================
 
 void Initializer::updateVectorFieldWithTemporalFunc(
@@ -106,7 +106,7 @@ SimulationData Initializer::setup(const InputData& inputData) {
     SimulationData sim;
     double t0 = 0.0;
 
-    // --- Grid / mesh ---
+    // --- Grid ---
     sim.Nx = static_cast<size_t>(inputData.mesh.nx);
     sim.Ny = static_cast<size_t>(inputData.mesh.ny);
     sim.Nz = static_cast<size_t>(inputData.mesh.nz);
@@ -148,7 +148,7 @@ SimulationData Initializer::setup(const InputData& inputData) {
 
     sim.k = initializeFieldFromSpatialFunc(grid, k_func);
 
-    // Salva le funzioni temporali di Boundary Condition in simData
+    // --- BC functions ---
     sim.bcu = ConfigFuncs::bcu_func;
     sim.bcv = ConfigFuncs::bcv_func;
     sim.bcw = ConfigFuncs::bcw_func;
@@ -156,7 +156,7 @@ SimulationData Initializer::setup(const InputData& inputData) {
     sim.uBoundNew = initializeVectorFieldFromTemporalFunc(t0, grid, sim.bcu, sim.bcv, sim.bcw);
     sim.uBoundOld = sim.uBoundNew;
 
-    // Salva le funzioni temporali delle Forze in simData
+    // --- Force functions ---
     sim.fx = ConfigFuncs::fx_func;
     sim.fy = ConfigFuncs::fy_func;
     sim.fz = ConfigFuncs::fz_func;

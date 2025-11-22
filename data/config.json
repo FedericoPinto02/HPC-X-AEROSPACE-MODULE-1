@@ -1,6 +1,6 @@
 {
   "mesh": {
-    "nx": 30,
+    "nx": 60,
     "ny": 60,
     "nz": 60,
     "dx": 0.09917355371,
@@ -25,7 +25,7 @@
   "output": {
     "enabled": true,
     "dir": "../output",
-    "base_filename": "simulation_output30",
+    "base_filename": "simulation_output",
     "output_frequency": 30
   },
 
