@@ -9,27 +9,23 @@
 // =========================================================
 
 Field Initializer::initializeFieldFromSpatialFunc(
-    const std::shared_ptr<Grid> &grid,
-    const SpatialFunc &func)
-{
+        const Grid &grid,
+        const Functions::Func &func
+) {
     Field field;
-    size_t size = grid->size();
-    field.setup(grid, std::vector<double>(size, 0.0));
-    field.populate(func, FieldOffset::CELL_CENTERED);
-
+    field.setup(grid, func);
+    field.populate();
     return field;
 }
 
 Field Initializer::initializeFieldFromTemporalFunc(
-    const double time,
-    const std::shared_ptr<Grid> &grid,
-    const TemporalFunc &func)
-{
+        const double time,
+        const Grid &grid,
+        const Functions::Func &func
+) {
     Field field;
-    size_t size = grid->size();
-    field.setup(grid, std::vector<double>(size, 0.0));
-    field.populate(time, func, FieldOffset::CELL_CENTERED);
-
+    field.setup(grid, func);
+    field.populate(time);
     return field;
 }
 
@@ -38,84 +34,45 @@ Field Initializer::initializeFieldFromTemporalFunc(
 // =========================================================
 
 VectorField Initializer::initializeVectorFieldFromSpatialFunc(
-    const std::shared_ptr<Grid> &grid,
-    const SpatialFunc &func_u,
-    const SpatialFunc &func_v,
-    const SpatialFunc &func_w)
-{
+        const Grid &grid,
+        const Functions::Func &func_u,
+        const Functions::Func &func_v,
+        const Functions::Func &func_w
+) {
     VectorField vec;
-    size_t size = grid->size();
-    vec.setup(
-        grid,
-        std::vector<double>(size, 0.0), // X component initialized to zero
-        std::vector<double>(size, 0.0), // Y component initialized to zero
-        std::vector<double>(size, 0.0)  // Z component initialized to zero
-    );
-    vec(Axis::X).populate(func_u, FieldOffset::FACE_CENTERED, Axis::X);
-    vec(Axis::Y).populate(func_v, FieldOffset::FACE_CENTERED, Axis::Y);
-    vec(Axis::Z).populate(func_w, FieldOffset::FACE_CENTERED, Axis::Z);
-
+    vec.setup(grid, func_u, func_v, func_w);
+    vec.populate();
     return vec;
 }
 
 VectorField Initializer::initializeVectorFieldFromTemporalFunc(
-    const double time,
-    const std::shared_ptr<Grid> &grid,
-    const TemporalFunc &func_u,
-    const TemporalFunc &func_v,
-    const TemporalFunc &func_w)
-{
+        const double time,
+        const Grid &grid,
+        const Functions::Func &func_u,
+        const Functions::Func &func_v,
+        const Functions::Func &func_w) {
     VectorField vec;
-    size_t size = grid->size();
-    vec.setup(
-        grid,
-        std::vector<double>(size, 0.0), // X component initialized to zero
-        std::vector<double>(size, 0.0), // Y component initialized to zero
-        std::vector<double>(size, 0.0)  // Z component initialized to zero
-    );
-    vec(Axis::X).populate(time, func_u, FieldOffset::FACE_CENTERED, Axis::X);
-    vec(Axis::Y).populate(time, func_v, FieldOffset::FACE_CENTERED, Axis::Y);
-    vec(Axis::Z).populate(time, func_w, FieldOffset::FACE_CENTERED, Axis::Z);
-
+    vec.setup(grid, func_u, func_v, func_w);
+    vec.populate(time);
     return vec;
 }
 
-// =========================================================
-// 3. Fields Update
-// =========================================================
-
-void Initializer::updateVectorFieldWithTemporalFunc(
-    const double time,
-    VectorField &vec,
-    const TemporalFunc &func_u,
-    const TemporalFunc &func_v,
-    const TemporalFunc &func_w)
-{
-    vec(Axis::X).populate(time, func_u, FieldOffset::FACE_CENTERED, Axis::X);
-    vec(Axis::Y).populate(time, func_v, FieldOffset::FACE_CENTERED, Axis::Y);
-    vec(Axis::Z).populate(time, func_w, FieldOffset::FACE_CENTERED, Axis::Z);
-}
 
 // =========================================================
 // setup
 // =========================================================
-SimulationData Initializer::setup(const InputData &inputData)
-{
+SimulationData Initializer::setup(const InputData &inputData) {
     SimulationData sim;
-    double t0 = 0.0;
 
     // --- Grid ---
-    sim.Nx = static_cast<size_t>(inputData.mesh.nx);
-    sim.Ny = static_cast<size_t>(inputData.mesh.ny);
-    sim.Nz = static_cast<size_t>(inputData.mesh.nz);
-    sim.dx = inputData.mesh.dx;
-    sim.dy = inputData.mesh.dy;
-    sim.dz = inputData.mesh.dz;
-    sim.Lx = (sim.Nx + 0.5) * sim.dx;
-    sim.Ly = (sim.Ny + 0.5) * sim.dy;
-    sim.Lz = (sim.Nz + 0.5) * sim.dz;
+    Grid grid(static_cast<size_t>(inputData.mesh.nx),
+              static_cast<size_t>(inputData.mesh.ny),
+              static_cast<size_t>(inputData.mesh.nz),
+              inputData.mesh.dx, inputData.mesh.dy, inputData.mesh.dz);
+    sim.grid = grid;
 
     // --- Time ---
+    double t0 = 0.0;
     sim.dt = inputData.time.dt;
     sim.currTime = t0;
     sim.totalSimTime = inputData.time.t_end;
@@ -125,15 +82,11 @@ SimulationData Initializer::setup(const InputData &inputData)
     // --- Physics ---
     sim.nu = inputData.physics.nu;
 
-    // --- Build Grid object ---
-    auto grid = std::make_shared<Grid>(sim.Nx, sim.Ny, sim.Nz, sim.dx, sim.dy, sim.dz);
-    sim.gridPtr = grid; // temporary
-
     // --- Initial fields ---
-    TemporalFunc ui_func = ConfigFuncs::u_init_func;
-    TemporalFunc vi_func = ConfigFuncs::v_init_func;
-    TemporalFunc wi_func = ConfigFuncs::w_init_func;
-    TemporalFunc pi_func = ConfigFuncs::p_init_func;
+    Functions::Func ui_func = ConfigFuncs::u_init_func;
+    Functions::Func vi_func = ConfigFuncs::v_init_func;
+    Functions::Func wi_func = ConfigFuncs::w_init_func;
+    Functions::Func pi_func = ConfigFuncs::p_init_func;
 
     sim.u = initializeVectorFieldFromTemporalFunc(t0, grid, ui_func, vi_func, wi_func);
     sim.eta = sim.u;
@@ -142,8 +95,7 @@ SimulationData Initializer::setup(const InputData &inputData)
     sim.p = initializeFieldFromTemporalFunc(t0, grid, pi_func);
 
     // --- Permeability ---
-    SpatialFunc k_func = ConfigFuncs::k_func;
-
+    Functions::Func k_func = ConfigFuncs::k_func;
     sim.k = initializeFieldFromSpatialFunc(grid, k_func);
 
     // --- BC functions ---
