@@ -6,16 +6,21 @@
 
 using json = nlohmann::json;
 
-InputData InputReader::read(const std::string& filename) {
+InputData InputReader::read(const std::string &filename)
+{
     std::ifstream inputFile(filename);
-    if (!inputFile.is_open()) {
+    if (!inputFile.is_open())
+    {
         throw std::runtime_error("Could not open input file: " + filename);
     }
 
     json jsonData;
-    try {
+    try
+    {
         inputFile >> jsonData;
-    } catch (const json::exception& e) {
+    }
+    catch (const json::exception &e)
+    {
         throw std::runtime_error("JSON parsing error: " + std::string(e.what()));
     }
 
@@ -24,7 +29,8 @@ InputData InputReader::read(const std::string& filename) {
     // ----------------------------
     // Mesh
     // ----------------------------
-    try {
+    try
+    {
         data.mesh.nx = jsonData["mesh"]["nx"];
         data.mesh.ny = jsonData["mesh"]["ny"];
         data.mesh.nz = jsonData["mesh"]["nz"];
@@ -32,66 +38,84 @@ InputData InputReader::read(const std::string& filename) {
         data.mesh.dy = jsonData["mesh"]["dy"];
         data.mesh.dz = jsonData["mesh"]["dz"];
         data.mesh.input_for_manufactured_solution = jsonData["mesh"]["input_for_manufactured_solution"];
-    } catch (const json::exception& e) {
+    }
+    catch (const json::exception &e)
+    {
         throw std::runtime_error("Error parsing 'mesh' section: " + std::string(e.what()));
     }
 
     // ----------------------------
     // Time
     // ----------------------------
-    try {
+    try
+    {
         data.time.dt = jsonData["time"]["dt"];
         data.time.t_end = jsonData["time"]["t_end"];
-    } catch (const json::exception& e) {
+    }
+    catch (const json::exception &e)
+    {
         throw std::runtime_error("Error parsing 'time' section: " + std::string(e.what()));
     }
 
     // ----------------------------
     // Physics
     // ----------------------------
-    try {
+    try
+    {
         data.physics.nu = jsonData["physics"]["nu"];
-    } catch (const json::exception& e) {
+    }
+    catch (const json::exception &e)
+    {
         throw std::runtime_error("Error parsing 'physics' section: " + std::string(e.what()));
     }
 
     // ----------------------------
     // Output
     // ----------------------------
-    try {
+    try
+    {
         data.output.enabled = jsonData["output"]["enabled"];
         data.output.dir = jsonData["output"]["dir"];
         data.output.baseFilename = jsonData["output"]["base_filename"];
         data.output.outputFrequency = jsonData["output"]["output_frequency"];
-    } catch (const json::exception& e) {
+    }
+    catch (const json::exception &e)
+    {
         throw std::runtime_error("Error parsing 'output' section: " + std::string(e.what()));
     }
 
     // ----------------------------
     // Logging
     // ----------------------------
-    try {
+    try
+    {
         data.logging.logToFile = jsonData["logging"]["log_to_file"];
         data.logging.logToConsole = jsonData["logging"]["log_to_console"];
         data.logging.dir = jsonData["logging"]["dir"];
         data.logging.filename = jsonData["logging"]["filename"];
-    } catch (const json::exception& e) {
+    }
+    catch (const json::exception &e)
+    {
         throw std::runtime_error("Error parsing 'logging' section: " + std::string(e.what()));
     }
 
     // ----------------------------
     // Parallelization
     // ----------------------------
-    try {
+    try
+    {
         data.parallelization.schurDomains = jsonData["parallelization"]["schur_domains"];
-    } catch (const json::exception& e) {
+    }
+    catch (const json::exception &e)
+    {
         throw std::runtime_error("Error parsing 'parallelization' section: " + std::string(e.what()));
     }
 
     // ----------------------------
     // Manufactured Solution Overrides
     // ----------------------------
-    if (data.mesh.input_for_manufactured_solution) {
+    if (data.mesh.input_for_manufactured_solution)
+    {
         // Set Characteristic Length L equal to kinematic viscosity nu.
         // This ensures that the Reynolds number Re = (U * L) / nu is exactly 1 (assuming U ~ 1).
         double L = data.physics.nu;

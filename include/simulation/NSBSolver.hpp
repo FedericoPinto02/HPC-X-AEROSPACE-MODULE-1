@@ -1,5 +1,4 @@
-#ifndef NBSOLVER_NSBSOLVER_HPP
-#define NBSOLVER_NSBSOLVER_HPP
+#pragma once
 
 #include <memory>
 #include <string>
@@ -16,9 +15,10 @@
 /**
  * @brief Class responsible for solving the Navier-Stokes-Brinkman equations.
  */
-class NSBSolver {
+class NSBSolver
+{
 public:
-    explicit NSBSolver(const std::string& configFile);
+    explicit NSBSolver(const std::string &configFile);
 
     void setup();
     void solve();
@@ -36,5 +36,3 @@ private:
     std::unique_ptr<VTKWriter> vtkWriter;
     std::unique_ptr<LogWriter> logger;
 };
-
-#endif //NBSOLVER_NSBSOLVER_HPP

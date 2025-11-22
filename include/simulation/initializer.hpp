@@ -1,5 +1,4 @@
-#ifndef NSBSOLVER_INITIALIZER_HPP
-#define NSBSOLVER_INITIALIZER_HPP
+#pragma once
 
 #include <memory>
 #include <string>
@@ -11,48 +10,45 @@
 #include "simulation/SimulationContext.hpp"
 
 using TemporalFunc = std::function<double(double, double, double, double)>;
-using SpatialFunc  = std::function<double(double, double, double)>;
+using SpatialFunc = std::function<double(double, double, double)>;
 
-namespace Initializer {
+namespace Initializer
+{
 
     /**
      * @brief Setup and initialize the SimulationData from input data.
      */
-    SimulationData setup(const InputData& inputData);
+    SimulationData setup(const InputData &inputData);
 
     // ---------------------------------------------------------------------
     // Scalar Fields Initialization
     // ---------------------------------------------------------------------
-    
+
     Field initializeFieldFromSpatialFunc(
-        const std::shared_ptr<Grid>& grid, 
-        const SpatialFunc& func
-    );
+        const std::shared_ptr<Grid> &grid,
+        const SpatialFunc &func);
 
     Field initializeFieldFromTemporalFunc(
         const double time,
-        const std::shared_ptr<Grid>& grid, 
-        const TemporalFunc& func
-    );
+        const std::shared_ptr<Grid> &grid,
+        const TemporalFunc &func);
 
     // ---------------------------------------------------------------------
     // Vector Fields Initialization
     // ---------------------------------------------------------------------
 
     VectorField initializeVectorFieldFromSpatialFunc(
-        const std::shared_ptr<Grid>& grid,
-        const SpatialFunc& func_u,
-        const SpatialFunc& func_v,
-        const SpatialFunc& func_w
-    );
+        const std::shared_ptr<Grid> &grid,
+        const SpatialFunc &func_u,
+        const SpatialFunc &func_v,
+        const SpatialFunc &func_w);
 
     VectorField initializeVectorFieldFromTemporalFunc(
         const double time,
-        const std::shared_ptr<Grid>& grid,
-        const TemporalFunc& func_u,
-        const TemporalFunc& func_v,
-        const TemporalFunc& func_w
-    );
+        const std::shared_ptr<Grid> &grid,
+        const TemporalFunc &func_u,
+        const TemporalFunc &func_v,
+        const TemporalFunc &func_w);
 
     // ---------------------------------------------------------------------
     // Field Update
@@ -60,12 +56,9 @@ namespace Initializer {
 
     void updateVectorFieldWithTemporalFunc(
         const double time,
-        VectorField& vec,
-        const TemporalFunc& func_u,
-        const TemporalFunc& func_v,
-        const TemporalFunc& func_w
-    );
+        VectorField &vec,
+        const TemporalFunc &func_u,
+        const TemporalFunc &func_v,
+        const TemporalFunc &func_w);
 
 };
-
-#endif // NSBSOLVER_INITIALIZER_HPP

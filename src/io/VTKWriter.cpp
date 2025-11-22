@@ -4,7 +4,6 @@
 #include <stdexcept>
 #include <cstdio>
 
-
 VTKWriter::VTKWriter(const OutputSettings &outputSettings, const SimulationData &simData)
     : Nx_(simData.Nx), Ny_(simData.Ny), Nz_(simData.Nz),
       dx_(simData.dx), dy_(simData.dy), dz_(simData.dz),
@@ -16,39 +15,40 @@ VTKWriter::VTKWriter(const OutputSettings &outputSettings, const SimulationData 
         throw std::invalid_argument("VTKWriter: grid dimensions must be positive");
 }
 
-
 bool VTKWriter::write_timestep_if_needed(size_t currStep,
                                          const Field &pressure,
                                          const VectorField &velocity)
 {
-    // 1. Controllo Abilitazione
-    if (!enabled_) {
+    // 1. Check if enabled
+    if (!enabled_)
+    {
         return false;
     }
 
-    // 2. Controllo Frequenza
-    if (currStep == 0 || (currStep % outputFrequency_ != 0)) {
+    // 2. Check frequency
+    if (currStep == 0 || (currStep % outputFrequency_ != 0))
+    {
         return false;
     }
 
-    // Preparazione dei dati e del nome del file
+    // Prepare data and filename
     int step = static_cast<int>(currStep);
     char buf[256];
     std::snprintf(buf, sizeof(buf), "%s_%04d.vtk", basePrefix_.c_str(), step);
     std::string filename = std::string(buf);
 
-    // Creazione delle copie per la scrittura (come faceva la logica esterna)
-    // Questo è cruciale per prevenire data race se si usasse un thread per la scrittura
+    // Create copies for writing (as done by external logic previously)
+    // This is crucial to prevent data races if a thread were used for writing
     auto pressure_ptr = std::make_shared<Field>(pressure);
     auto velocity_ptr = std::make_shared<VectorField>(velocity);
 
-    // Scrittura
+    // Perform writing
     write_legacy(filename, pressure_ptr, velocity_ptr);
 
-    return true; // File scritto con successo
+    return true; // File written successfully
 }
 
-// Metodo write_legacy (rimane invariato)
+// write_legacy method (remains unchanged)
 void VTKWriter::write_legacy(const std::string &filename,
                              const std::shared_ptr<Field> &pressure,
                              const std::shared_ptr<VectorField> &velocity) const
@@ -74,9 +74,12 @@ void VTKWriter::write_legacy(const std::string &filename,
     out << "LOOKUP_TABLE default\n";
     out << std::setprecision(12);
 
-    for (int k = 0; k < Nz_; ++k) {
-        for (int j = 0; j < Ny_; ++j) {
-            for (int i = 0; i < Nx_; ++i) {
+    for (int k = 0; k < Nz_; ++k)
+    {
+        for (int j = 0; j < Ny_; ++j)
+        {
+            for (int i = 0; i < Nx_; ++i)
+            {
                 out << (*pressure)(i, j, k) << "\n";
             }
         }
@@ -88,10 +91,13 @@ void VTKWriter::write_legacy(const std::string &filename,
     const auto &vy = velocity->y();
     const auto &vz = velocity->z();
 
-    for (int k = 0; k < Nz_; ++k) {
-        for (int j = 0; j < Ny_; ++j) {
-            for (int i = 0; i < Nx_; ++i) {
-                out << vx(i,j,k) << " " << vy(i,j,k) << " " << vz(i,j,k) << "\n";
+    for (int k = 0; k < Nz_; ++k)
+    {
+        for (int j = 0; j < Ny_; ++j)
+        {
+            for (int i = 0; i < Nx_; ++i)
+            {
+                out << vx(i, j, k) << " " << vy(i, j, k) << " " << vz(i, j, k) << "\n";
             }
         }
     }

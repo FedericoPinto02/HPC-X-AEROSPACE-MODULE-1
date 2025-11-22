@@ -4,32 +4,31 @@
 #include <cmath>
 #include <algorithm>
 
-
 // =========================================================
 // 1. Scalar Fields Initialization
 // =========================================================
 
 Field Initializer::initializeFieldFromSpatialFunc(
-    const std::shared_ptr<Grid>& grid, 
-    const SpatialFunc& func
-) {
+    const std::shared_ptr<Grid> &grid,
+    const SpatialFunc &func)
+{
     Field field;
     size_t size = grid->size();
     field.setup(grid, std::vector<double>(size, 0.0));
-    field.populate(func, FieldOffset::CELL_CENTERED); 
+    field.populate(func, FieldOffset::CELL_CENTERED);
 
     return field;
 }
 
 Field Initializer::initializeFieldFromTemporalFunc(
     const double time,
-    const std::shared_ptr<Grid>& grid, 
-    const TemporalFunc& func
-) {
+    const std::shared_ptr<Grid> &grid,
+    const TemporalFunc &func)
+{
     Field field;
     size_t size = grid->size();
     field.setup(grid, std::vector<double>(size, 0.0));
-    field.populate(time, func, FieldOffset::CELL_CENTERED); 
+    field.populate(time, func, FieldOffset::CELL_CENTERED);
 
     return field;
 }
@@ -39,15 +38,15 @@ Field Initializer::initializeFieldFromTemporalFunc(
 // =========================================================
 
 VectorField Initializer::initializeVectorFieldFromSpatialFunc(
-    const std::shared_ptr<Grid>& grid,
-    const SpatialFunc& func_u,
-    const SpatialFunc& func_v,
-    const SpatialFunc& func_w
-) {
+    const std::shared_ptr<Grid> &grid,
+    const SpatialFunc &func_u,
+    const SpatialFunc &func_v,
+    const SpatialFunc &func_w)
+{
     VectorField vec;
     size_t size = grid->size();
     vec.setup(
-        grid, 
+        grid,
         std::vector<double>(size, 0.0), // X component initialized to zero
         std::vector<double>(size, 0.0), // Y component initialized to zero
         std::vector<double>(size, 0.0)  // Z component initialized to zero
@@ -61,15 +60,15 @@ VectorField Initializer::initializeVectorFieldFromSpatialFunc(
 
 VectorField Initializer::initializeVectorFieldFromTemporalFunc(
     const double time,
-    const std::shared_ptr<Grid>& grid,
-    const TemporalFunc& func_u,
-    const TemporalFunc& func_v,
-    const TemporalFunc& func_w
-) {
+    const std::shared_ptr<Grid> &grid,
+    const TemporalFunc &func_u,
+    const TemporalFunc &func_v,
+    const TemporalFunc &func_w)
+{
     VectorField vec;
     size_t size = grid->size();
     vec.setup(
-        grid, 
+        grid,
         std::vector<double>(size, 0.0), // X component initialized to zero
         std::vector<double>(size, 0.0), // Y component initialized to zero
         std::vector<double>(size, 0.0)  // Z component initialized to zero
@@ -87,22 +86,21 @@ VectorField Initializer::initializeVectorFieldFromTemporalFunc(
 
 void Initializer::updateVectorFieldWithTemporalFunc(
     const double time,
-    VectorField& vec,
-    const TemporalFunc& func_u,
-    const TemporalFunc& func_v,
-    const TemporalFunc& func_w
-) {
+    VectorField &vec,
+    const TemporalFunc &func_u,
+    const TemporalFunc &func_v,
+    const TemporalFunc &func_w)
+{
     vec(Axis::X).populate(time, func_u, FieldOffset::FACE_CENTERED, Axis::X);
     vec(Axis::Y).populate(time, func_v, FieldOffset::FACE_CENTERED, Axis::Y);
     vec(Axis::Z).populate(time, func_w, FieldOffset::FACE_CENTERED, Axis::Z);
 }
 
-
-
 // =========================================================
 // setup
 // =========================================================
-SimulationData Initializer::setup(const InputData& inputData) {
+SimulationData Initializer::setup(const InputData &inputData)
+{
     SimulationData sim;
     double t0 = 0.0;
 

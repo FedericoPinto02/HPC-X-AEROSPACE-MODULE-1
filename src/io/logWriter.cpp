@@ -8,20 +8,25 @@ LogWriter::LogWriter(const LoggingSettings &logSettings)
       logDir_(logSettings.dir),
       filename_(logSettings.filename)
 {
-    if (logToFile_) {
-      std::string fullPath = logDir_ + "/" + filename_;
-      file_.open(fullPath, std::ios::out | std::ios::trunc);
-      
-      if (!file_.is_open()) {
-          std::cerr << "[ERROR] Could not open log file.\n";
-          logToFile_ = false;
-      }
+    if (logToFile_)
+    {
+        std::string fullPath = logDir_ + "/" + filename_;
+        file_.open(fullPath, std::ios::out | std::ios::trunc);
+
+        if (!file_.is_open())
+        {
+            std::cerr << "[ERROR] Could not open log file.\n";
+            logToFile_ = false;
+        }
     }
 }
 
-void LogWriter::write(const std::string& msg) {
-  if (logToConsole_) std::cout << msg;
-  if (logToFile_ && file_.is_open()) file_ << msg << std::flush;
+void LogWriter::write(const std::string &msg)
+{
+    if (logToConsole_)
+        std::cout << msg;
+    if (logToFile_ && file_.is_open())
+        file_ << msg << std::flush;
 }
 
 void LogWriter::printSimulationHeader(const InputData &input, const SimulationData &simData)
@@ -33,7 +38,8 @@ void LogWriter::printSimulationHeader(const InputData &input, const SimulationDa
     s << separator(60, '#') << "\n";
 
     // SIMULATION MODE
-    if (input.mesh.input_for_manufactured_solution) {
+    if (input.mesh.input_for_manufactured_solution)
+    {
         s << "[SIMULATION MODE]\n"
           << "  Type       : MANUFACTURED SOLUTION (Validation)\n"
           << "  Note       : Grid overridden to isotropic, L = nu (Re = 1)\n\n";
@@ -57,7 +63,7 @@ void LogWriter::printSimulationHeader(const InputData &input, const SimulationDa
       << "  Schur Domains  : " << input.parallelization.schurDomains << "\n"
       << "  Output File    : " << input.output.baseFilename << "\n"
       << "  Log File       : " << input.logging.filename << "\n\n";
-    
+
     s << separator() << "\n";
 
     write(s.str());
@@ -65,47 +71,50 @@ void LogWriter::printSimulationHeader(const InputData &input, const SimulationDa
 
 // --- TABELLA DEI PASSI ---
 
-void LogWriter::printStepHeader() {
+void LogWriter::printStepHeader()
+{
     std::ostringstream s;
-    s << std::left 
-      << std::setw(8)  << "STEP"
-      << std::setw(12) << "TIME [s]" 
+    s << std::left
+      << std::setw(8) << "STEP"
+      << std::setw(12) << "TIME [s]"
       << "STATUS" << "\n";
     s << separator(60, '-');
     write(s.str());
 }
 
-void LogWriter::printStepProgress(int step, double time, double dt, double elapsedSec, bool isOutputStep) 
+void LogWriter::printStepProgress(int step, double time, double dt, double elapsedSec, bool isOutputStep)
 {
     std::ostringstream s;
-    
+
     // Usiamo fixed e setprecision per allineare i numeri
-    s << std::left 
+    s << std::left
       << std::setw(8) << step
       << std::fixed << std::setprecision(3) << std::setw(12) << elapsedSec;
 
-    if (isOutputStep) {
+    if (isOutputStep)
+    {
         s << "[VTK SAVED]";
     }
     s << "\n";
-      
+
     write(s.str());
 }
 
 void LogWriter::printFinalSummary(
-    double totalCpuTimeSec, 
-    double meanCpuTimePerCellTimestep, 
-    unsigned int totalSteps, 
-    const unsigned int totalCells) 
+    double totalCpuTimeSec,
+    double meanCpuTimePerCellTimestep,
+    unsigned int totalSteps,
+    const unsigned int totalCells)
 {
     std::ostringstream s;
-    
-    s << "\n" << separator(60, '=');
+
+    s << "\n"
+      << separator(60, '=');
     s << "   SIMULATION SUMMARY & PERFORMANCE METRICS   \n";
     s << separator(60, '=') << "\n";
 
     s << std::fixed << std::setprecision(6);
-    
+
     // I. Dati generali
     s << "[GENERAL STATS]\n"
       << std::setw(30) << std::left << "Total Timesteps Completed:" << totalSteps << "\n"
@@ -115,16 +124,17 @@ void LogWriter::printFinalSummary(
     s << "[PERFORMANCE TIMING]\n"
       << std::setw(30) << std::left << "Total CPU Time (solve loop):" << totalCpuTimeSec << " s\n"
       << std::setw(30) << std::left << "Avg CPU Time per Timestep:" << (totalCpuTimeSec / totalSteps) << " s\n";
-    
+
     // III. Metrica chiave
-    s << "\n" << separator(60, '*');
+    s << "\n"
+      << separator(60, '*');
     s << std::scientific << std::setprecision(4); // Utilizza notazione scientifica per la metrica
-    
+
     s << "[TARGET METRIC]\n"
-      << std::setw(30) << std::left << "CPU Time / (Steps * Cells):" 
+      << std::setw(30) << std::left << "CPU Time / (Steps * Cells):"
       << meanCpuTimePerCellTimestep << " s\n";
-      
+
     s << separator(60, '*') << "\n";
-    
+
     write(s.str());
 }

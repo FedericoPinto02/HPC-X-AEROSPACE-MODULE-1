@@ -17,25 +17,25 @@
 #include "simulation/viscousStep.hpp"
 #include "simulation/initializer.hpp"
 
-NSBSolver::NSBSolver(const std::string& configFile) 
+NSBSolver::NSBSolver(const std::string &configFile)
     : configFile(configFile) {}
 
-
-void NSBSolver::setup() {
+void NSBSolver::setup()
+{
 
     // Read input file
     input = InputReader::read(configFile);
-    
+
     // Init SimulationData
     simData = Initializer::setup(input);
 
     // Init store settings
-    outputSettings  = input.output;
+    outputSettings = input.output;
     loggingSettings = input.logging;
     parallelizationSettings = input.parallelization;
 
     // Init Steps
-    viscousStep  = std::make_unique<ViscousStep>(simData, parallelizationSettings);
+    viscousStep = std::make_unique<ViscousStep>(simData, parallelizationSettings);
     pressureStep = std::make_unique<PressureStep>(simData, parallelizationSettings);
 
     // Init Logger and Writer
@@ -46,8 +46,8 @@ void NSBSolver::setup() {
     logger->printSimulationHeader(input, simData);
 }
 
-
-void NSBSolver::solve() {
+void NSBSolver::solve()
+{
 
     logger->printStepHeader();
 
@@ -59,7 +59,7 @@ void NSBSolver::solve() {
         // 1. Update Time & Fields
         simData.uBoundOld = simData.uBoundNew;
         simData.currStep++;
-        simData.currTime += simData.dt; 
+        simData.currTime += simData.dt;
 
         Initializer::updateVectorFieldWithTemporalFunc(
             simData.currTime,
@@ -72,28 +72,27 @@ void NSBSolver::solve() {
             simData.fx, simData.fy, simData.fz);
 
         // 2. Physics Steps (Timed)
-        auto start = std::chrono::high_resolution_clock::now(); 
-        
+        auto start = std::chrono::high_resolution_clock::now();
+
         viscousStep->run();
         pressureStep->run();
-        
+
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = end - start;
 
         // 3. Output
         bool vtkWritten = vtkWriter->write_timestep_if_needed(
-                            simData.currStep, 
-                            simData.p, 
-                            simData.u);
+            simData.currStep,
+            simData.p,
+            simData.u);
 
         // 4. Logging Progress (Tabular)
         logger->printStepProgress(
-                simData.currStep,
-                simData.currTime,
-                simData.dt,
-                elapsed.count(),
-                vtkWritten
-            );
+            simData.currStep,
+            simData.currTime,
+            simData.dt,
+            elapsed.count(),
+            vtkWritten);
     }
 
     std::clock_t end_cpu_time = std::clock();
@@ -104,9 +103,8 @@ void NSBSolver::solve() {
     double mean_cpu_time_per_cell_timestep = total_cpu_time_sec / steps_times_cells;
 
     logger->printFinalSummary(
-        total_cpu_time_sec, 
+        total_cpu_time_sec,
         mean_cpu_time_per_cell_timestep,
         simData.totalSteps,
-        total_cells
-    );
+        total_cells);
 }
