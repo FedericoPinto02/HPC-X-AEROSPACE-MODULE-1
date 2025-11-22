@@ -41,8 +41,17 @@ struct Grid {
      */
     Grid(double Lx_, double Ly_, double Lz_, size_t Nx_, size_t Ny_, size_t Nz_)
             : Lx(Lx_), Ly(Ly_), Lz(Lz_),
-              Nx(Nx_), Ny(Ny_), Nz(Nz_),
-              dx(Lx / (double) Nx), dy(Ly / (double) Ny), dz(Lz / (double) Nz) {}
+              Nx(Nx_), Ny(Ny_), Nz(Nz_) {
+        if (Lx <= 0.0 || Ly <= 0.0 || Lz <= 0.0) {
+            throw std::runtime_error("Grid physical sizes must be positive.");
+        }
+        if (Nx <= 0 || Ny <= 0 || Nz <= 0) {
+            throw std::runtime_error("Grid dimensions must be positive.");
+        }
+        dx = Lx / static_cast<double>(Nx);
+        dy = Ly / static_cast<double>(Ny);
+        dz = Lz / static_cast<double>(Nz);
+    }
 
     /**
      * @brief Getter for the total number of grid points.
