@@ -1,5 +1,6 @@
 build/
 output/
+results/
 
 # Ignora i file di configurazione dell'editor
 .vscode/
