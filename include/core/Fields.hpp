@@ -20,18 +20,18 @@ public:
     using Scalar = double;
 
 private:
-    /// The reference to the grid information.
-    std::reference_wrapper<const Grid> grid_;
+    /// The pointer to the grid information.
+    const Grid *grid_;
     /// The offset of the field in the staggered grid.
-    const GridStaggering offset_;
+    GridStaggering offset_;
     /// The axis where to apply the offset in the staggered grid.
-    const Axis offsetAxis_;
+    Axis offsetAxis_;
 
     /// Vector storing the field values in a flattened, row-major indexed 1D array.
     std::vector<Scalar> data_;
 
     /// The function used for populating the field.
-    Functions::Fun populateFunction_;
+    Functions::Func populateFunction_;
 
 
     /**
@@ -42,7 +42,7 @@ private:
      * @return the corresponding 1D index
      */
     [[nodiscard]] inline size_t idx(size_t i, size_t j, size_t k) const {
-        return (k * grid_.get().Ny + j) * grid_.get().Nx + i;
+        return (k * grid_->Ny + j) * grid_->Nx + i;
     }
 
 
@@ -59,20 +59,23 @@ public:
     //==================================================================================================================
     //--- Setup --------------------------------------------------------------------------------------------------------
     //==================================================================================================================
-    explicit Field(const Grid &grid,
-                   GridStaggering offset = GridStaggering::CELL_CENTERED,
-                   Axis offsetAxis = Axis::X)
-            : grid_(grid), offset_(offset), offsetAxis_(offsetAxis),
-              populateFunction_(Functions::ZERO),
-              data_(grid.size(), Scalar(0)) {
-    }
-
     /**
      * @brief Setup the field with a function to populate it (e.g., initial condition).
+     * @param grid the pointer to the grid information
      * @param populateFunction the function to use for populating the field
+     * @param offset the offset of the field in the staggered grid
+     * @param offsetAxis the axis where to apply the offset in the staggered grid
      */
-    void setup(const Functions::Fun &populateFunction) {
+    void setup(
+            const Grid &grid,
+            const Functions::Func &populateFunction = Functions::ZERO,
+            GridStaggering offset = GridStaggering::CELL_CENTERED,
+            Axis offsetAxis = Axis::X
+    ) {
+        grid_ = &grid;
         populateFunction_ = populateFunction;
+        offset_ = offset;
+        offsetAxis_ = offsetAxis;
     }
 
     /**
@@ -86,13 +89,13 @@ public:
     //--- Grid accessors -----------------------------------------------------------------------------------------------
     //==================================================================================================================
     /**
-     * @brief Getter for the reference to the grid information.
+     * @brief Getter for the grid information.
      * @return the pointer to the grid information
      */
-    [[nodiscard]] inline const Grid &getGrid() { return grid_; }
+    [[nodiscard]] inline const Grid &getGrid() { return *grid_; }
 
     /// @overload
-    [[nodiscard]] inline const Grid &getGrid() const { return grid_; }
+    [[nodiscard]] inline const Grid &getGrid() const { return *grid_; }
 
 
     //==================================================================================================================
@@ -200,8 +203,8 @@ public:
     using Scalar = Field::Scalar;
 
 private:
-    /// The reference to the grid information (dimensions and spacing).
-    std::reference_wrapper<const Grid> grid_;
+    /// The pointer to the grid information (dimensions and spacing).
+    const Grid *grid_;
     /// The components of the vector field (x, y, z).
     std::array<Field, AXIS_COUNT> components_;
 
@@ -209,25 +212,21 @@ public:
     //==================================================================================================================
     //--- Setup --------------------------------------------------------------------------------------------------------
     //==================================================================================================================
-    explicit VectorField(const Grid &grid)
-            : grid_(grid),
-              components_({Field(grid, GridStaggering::FACE_CENTERED, Axis::X),
-                           Field(grid, GridStaggering::FACE_CENTERED, Axis::Y),
-                           Field(grid, GridStaggering::FACE_CENTERED, Axis::Z)}
-              ) {}
-
     /**
      * @brief Setup the vector field with functions to populate each component (e.g., initial conditions).
+     * @param grid the pointer to the grid information
      * @param populateXFunction the function to use for populating the x-component of the vector field
      * @param populateYFunction the function to use for populating the y-component of the vector field
      * @param populateZFunction the function to use for populating the z-component of the vector field
      */
-    void setup(const Functions::Fun &populateXFunction,
-               const Functions::Fun &populateYFunction,
-               const Functions::Fun &populateZFunction) {
-        component(Axis::X).setup(populateXFunction);
-        component(Axis::Y).setup(populateYFunction);
-        component(Axis::Z).setup(populateZFunction);
+    void setup(const Grid &grid,
+               const Functions::Func &populateXFunction = Functions::ZERO,
+               const Functions::Func &populateYFunction = Functions::ZERO,
+               const Functions::Func &populateZFunction = Functions::ZERO) {
+        grid_ = &grid;
+        component(Axis::X).setup(grid, populateXFunction);
+        component(Axis::Y).setup(grid, populateYFunction);
+        component(Axis::Z).setup(grid, populateZFunction);
     }
 
     /**
@@ -245,13 +244,13 @@ public:
     //--- Grid accessors -----------------------------------------------------------------------------------------------
     //==================================================================================================================
     /**
-     * @brief Getter for the reference to the grid information.
+     * @brief Getter for the grid information.
      * @return the pointer to the grid information
      */
-    [[nodiscard]] inline const Grid &getGrid() { return grid_; }
+    [[nodiscard]] inline const Grid &getGrid() { return *grid_; }
 
     /// @overload
-    [[nodiscard]] inline const Grid &getGrid() const { return grid_; }
+    [[nodiscard]] inline const Grid &getGrid() const { return *grid_; }
 
 
     //==================================================================================================================
