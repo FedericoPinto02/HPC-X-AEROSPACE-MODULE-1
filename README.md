@@ -1,120 +1,84 @@
-# HPC-X-AEROSPACE-MODULE-1
+# HPC-X-AEROSPACE-MODULE-1: NSBSolver (Navier–Stokes–Brinkman Solver)
 
-## 🧩 Workflow Draft
+NSBSolver is a high-performance Computational Fluid Dynamics (CFD) module designed to solve the **incompressible Navier–Stokes–Brinkman equations**.
 
-### Main Execution Flow
-```text
-main
- ├─ input.read()
- ├─ initializer.setup()
- └─ timeIntegrator.run()
-```
+The solver utilizes a **Fractional-Step Projection Method** for time integration and features a custom **Domain Decomposition** linear solver based on the **Schur Complement method** to handle large-scale linear systems sequentially.
 
-### Time Integration Loop
-```text
-timeIntegrator
- └─ timeIntegrator.run()
-     ├─ for each timeStep
-     │   ├─ viscousStep.run()
-     │   ├─ pressureStep.run()
-     │   └─ log.write()
-```
+---
 
-### Solver Computational Steps
+## 🛠️ Quick Start
 
-#### Viscous Step
-```text
-viscousStep
- └─ viscousStep.run()
-     ├─ viscousStep.computeG()             # parallel
-     ├─ viscousStep.computeXi()            # parallel
-     └─ for each velocity linsys           # parallel
-         ├─ viscousStep.linsys.fillSys()   # keep parallel
-         └─ linsys.solve()                 # keep parallel
-```
+### Prerequisites
+* **C++ Compiler**: C++17 compliant (GCC, Clang).
+* **CMake**: Version 3.10 or higher.
 
-#### Pressure Step
-```text
-pressureStep
- └─ pressureStep.run()
-     ├─ for each pressure linsys           # parallel
-     │   ├─ pressureStep.linsys.fillSys()  # keep parallel
-     │   └─ linsys.solve()                 # keep parallel
-     └─ pressureStep.updatePressure()      # parallel
-```
+### Building and Running
+Use the provided helper scripts to compile and run the simulation:
 
-### Utility and Support Modules
-```text
-linsys
- ├─ objs: triMatrix, unknown, known
- ├─ linsys.solve()
- └─ linsys.fillSys()
+```bash
+# 1. Build the project
+./build.sh
 
-derivatives
- ├─ derivatives.laplacian()
- ├─ derivatives.gradient()
- └─ derivatives.divergence()
+# 2. Run the simulation
+# Ensure data/config.json is configured properly before running
+./run.sh
 
-initializer
- └─ initializer.setup()
-
-input
- └─ input.read()
-
-log
- └─ log.write()
+# 3. Run Tests
+# Executes unit tests for derivatives, linear solvers, and physics steps
+./test.sh
 ```
 
 ---
 
-## 🧱 Program Structure Draft
-> Files marked with `$$` are currently empty placeholders.
+## 🚀 Key Features
+
+### Core Physics
+* **Governing Equations**: Incompressible Navier–Stokes–Brinkman.
+* **Domain Types**: Handles transitions between pure fluid (Navier-Stokes) and porous media (Brinkman/Darcy) via variable permeability fields.
+
+### Numerical Method
+* **Spatial Discretization**: Finite Difference Method (FDM) on a Staggered Grid.
+* **Time Integration**: Fractional-step Projection Method:
+    1.  **Viscous Step**: Solves the momentum equation.
+    2.  **Pressure Step**: Solves the Poisson equation.
+
+---
+
+
+## 📂 Project Structure
 
 ```text
 .
-├── build
-│   └── cmake_file $$
-├── CMakeLists.txt $$
-├── data
-│   └── config.in $$
-├── include
-│   ├── core
-│   │   ├── mesh.hpp $$
-│   │   ├── physicalField.hpp
-│   │   └── TridiagMat.hpp
-│   ├── io
-│   │   ├── inputReader.hpp $$
-│   │   └── logWriter.hpp $$
-│   ├── numerics
-│   │   ├── derivatives.hpp $$
-│   │   └── linearsys.hpp $$
-│   └── simulation
-│       ├── initializer.hpp $$
-│       ├── pressureStep.hpp $$
-│       ├── timeIntegrator.hpp $$
-│       └── viscousStep.hpp $$
-├── LICENSE
-├── README.md
-├── results
-│   └── results.out $$
-└── src
-    ├── core
-    │   ├── mesh.cpp $$
-    │   ├── physicalField.cpp $$ → write .cpp
-    │   └── TridiagMat.cpp $$ → write .cpp
-    ├── io
-    │   ├── inputReader.cpp $$
-    │   └── logWriter.cpp $$
-    ├── main.cpp $$
-    ├── numerics
-    │   ├── derivatives.cpp $$
-    │   ├── linearsys.cpp $$
-    │   ├── thomas.cpp → to merge into linearsys.cpp
-    │   └── thomas_test.cpp → to merge into linearsys.cpp
-    └── simulation
-        ├── initializer.cpp $$
-        ├── pressureStep.cpp $$
-        ├── timeIntegrator.cpp $$
-        └── viscousStep.cpp $$
-└── tests
+├── data/                       # Configuration
+│   ├── config.json             # Runtime parameters
+│   └── configFunctions.hpp     # Boundary Condition definitions
+├── include/
+│   ├── core/                   # Mesh, Fields, TridiagMat
+│   ├── io/                     # VTKWriter, InputReader, LogWriter
+│   ├── numerics/               # LinearSys, SchurSequentialSolver, Derivatives
+│   └── simulation/             # NSBSolver, ViscousStep, PressureStep
+├── src/                        # Source implementation
+├── tests/                      # Unit testing suite
+└── output/                     # VTK simulation results
+```
+
+---
+
+## 🧩 Workflow Architecture
+
+The simulation is orchestrated by the `NSBSolver` class, which manages the lifecycle of the simulation data and the time-stepping loop.
+
+### Main Execution Flow
+
+```text
+main()
+ └─ NSBSolver solver("config.json")
+     ├─ setup()
+     │   ├─ InputReader::read()          # Parse JSON
+     │   ├─ Initializer::setup()         # Allocate Grids, Fields, and BCs
+     │
+     └─ solve()                          # Main Time Loop
+         ├─ ViscousStep::run()           # Predictor
+         ├─ PressureStep::run()          # Corrector
+         └─ VTKWriter::write()           # Visualization export
 ```
