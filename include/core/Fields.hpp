@@ -76,6 +76,7 @@ public:
         populateFunction_ = populateFunction;
         offset_ = offset;
         offsetAxis_ = offsetAxis;
+        data_.resize(grid.size(), Scalar(0));
     }
 
     /**
@@ -168,12 +169,6 @@ public:
      * @param value the value to reset the field to (default is zero)
      */
     void reset(Scalar value = Scalar(0));
-
-    /**
-     * @brief Update the field with a new vector of values.
-     * @param newV the new values to update the field with
-     */
-    void update(std::vector<Scalar> newV);
 
     /**
      * @brief Add a scalar value to all elements in the field.
@@ -312,17 +307,9 @@ public:
     }
 
 
-    //======= Operations ===============================================================================================
-
-
-    /**
-     * @brief Update the vector field with new vectors for each component.
-     * @param newX new values to update the vector field with in the x-direction
-     * @param newY new values to update the vector field with in the y-direction
-     * @param newZ new values to update the vector field with in the z-direction
-     */
-    void update(std::vector<Scalar> newX, std::vector<Scalar> newY, std::vector<Scalar> newZ);
-
+    //==================================================================================================================
+    //--- Operations ---------------------------------------------------------------------------------------------------
+    //==================================================================================================================
     /**
      * @brief Add a scalar value to all components of the vector field.
      * @param value the scalar value to add

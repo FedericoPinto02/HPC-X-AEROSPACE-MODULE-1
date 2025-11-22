@@ -2,137 +2,101 @@
 #include "core/Mesh.hpp"
 #include <stdexcept>
 
-void Derivatives::computeGradient(const Field &field, VectorField &gradient) const{
-    computeDx(field, gradient.x());
-    computeDy(field, gradient.y());
-    computeDz(field, gradient.z());
-    // todo - may be optimized in terms of locality: tiling ??
+void Derivatives::computeGradient(const Field &field, VectorField &gradient) const {
+    computeDx(field, gradient(Axis::X));
+    computeDy(field, gradient(Axis::Y));
+    computeDz(field, gradient(Axis::Z));
 }
 
-void Derivatives::computeDx(const Field &field, Field &dx) const{
-    
-    std::shared_ptr<const Grid> grid = field.getGrid();
-    const size_t Nx = grid->Nx;
-    const size_t Ny = grid->Ny;
-    const size_t Nz = grid->Nz;
-    const double mul = 1.0/grid->dx;
+void Derivatives::computeDx(const Field &field, Field &dx) const {
+    const auto &grid = field.getGrid();
+    const double mul = 1.0 / grid.dx;
 
-
-    for (size_t k=0 ; k<Nz ; k++)
-    
-      {  for (size_t j=0 ; j<Ny ; j++)
-            {for (size_t i=0 ; i<(Nx-1) ; i++)
-                {
-                    double dfdx = 0.0;
-                    dfdx = (field(i + 1, j, k) - field(i, j, k))*mul;
-                    dx(i,j,k) = dfdx;
-                }
-                dx(Nx-1,j,k) = 0.0;}}
+    for (size_t k = 0; k < grid.Nz; k++) {
+        for (size_t j = 0; j < grid.Ny; j++) {
+            for (size_t i = 0; i < (grid.Nx - 1); i++) {
+                dx(i, j, k) = (field(i + 1, j, k) - field(i, j, k)) * mul;
+            }
+            dx(grid.Nx - 1, j, k) = 0.0;
+        }
+    }
 }
 
-void Derivatives::computeDy(const Field &field, Field &dy) const{
+void Derivatives::computeDy(const Field &field, Field &dy) const {
+    const auto &grid = field.getGrid();
+    const double mul = 1.0 / grid.dy;
 
-    std::shared_ptr<const Grid> grid = field.getGrid();
-    const size_t Nx = grid->Nx;
-    const size_t Ny = grid->Ny;
-    const size_t Nz = grid->Nz;
-    const double mul = 1.0/grid->dy;
-
-    for (size_t k=0 ; k<Nz ; k++)
-        for (size_t i=0 ; i<Nx ; i++)
-            {for (size_t j=0 ; j<(Ny-1) ; j++)
-                {
-                    double dfdy = 0.0;
-                    dfdy = (field(i, j + 1, k) - field(i, j, k)) * mul;
-                    dy(i,j,k) = dfdy;
-                }
-                dy(i,Ny-1,k) = 0.0;}
+    for (size_t k = 0; k < grid.Nz; k++) {
+        for (size_t i = 0; i < grid.Nx; i++) {
+            for (size_t j = 0; j < (grid.Ny - 1); j++) {
+                dy(i, j, k) = (field(i, j + 1, k) - field(i, j, k)) * mul;
+            }
+            dy(i, grid.Ny - 1, k) = 0.0;
+        }
+    }
 }
 
-void Derivatives::computeDz(const Field &field, Field &dz) const{
-  
-    std::shared_ptr<const Grid> grid = field.getGrid();
-    const size_t Nx = grid->Nx;
-    const size_t Ny = grid->Ny;
-    const size_t Nz = grid->Nz;
-    const double mul = 1.0/grid->dz;
+void Derivatives::computeDz(const Field &field, Field &dz) const {
+    const auto &grid = field.getGrid();
+    const double mul = 1.0 / grid.dz;
 
-    for (size_t i=0 ; i<Nx ; i++)
-        for (size_t j=0 ; j<Ny ; j++)
-            {for (size_t k=0 ; k<(Nz-1) ; k++)
-                {
-                    double dfdz = 0.0;
-                    dfdz = (field(i, j, k+1) - field(i, j, k)) * mul;
-                    dz(i,j,k) = dfdz;
-                }
-                dz(i,j,Nz-1) = 0.0;}
+    for (size_t i = 0; i < grid.Nx; i++) {
+        for (size_t j = 0; j < grid.Ny; j++) {
+            for (size_t k = 0; k < (grid.Nz - 1); k++) {
+                dz(i, j, k) = (field(i, j, k + 1) - field(i, j, k)) * mul;
+            }
+            dz(i, j, grid.Nz - 1) = 0.0;
+        }
+    }
 }
 
 
-void Derivatives::computeDxDiv(const Field &field, Field &dx) const{
-    
-    std::shared_ptr<const Grid> grid = field.getGrid();
-    const size_t Nx = grid->Nx;
-    const size_t Ny = grid->Ny;
-    const size_t Nz = grid->Nz;
-    const double mul = 1.0/grid->dx;
+void Derivatives::computeDxDiv(const Field &field, Field &dx) const {
+    const auto &grid = field.getGrid();
+    const double mul = 1.0 / grid.dx;
 
-
-    for (size_t k=0 ; k<Nz ; k++)
-    
-      {  for (size_t j=0 ; j<Ny ; j++)
-            {for (size_t i=1 ; i<Nx ; i++)
-                {
-                    double dfdx = 0.0;
-                    dfdx = (field(i, j, k) - field(i - 1, j, k))*mul;
-                    dx(i,j,k) = dfdx;
-                }
-                dx(0,j,k) = 0.0;}}
+    for (size_t k = 0; k < grid.Nz; k++) {
+        for (size_t j = 0; j < grid.Ny; j++) {
+            for (size_t i = 1; i < grid.Nx; i++) {
+                dx(i, j, k) = (field(i, j, k) - field(i - 1, j, k)) * mul;
+            }
+            dx(0, j, k) = 0.0;
+        }
+    }
 }
 
-void Derivatives::computeDyDiv(const Field &field, Field &dy) const{
+void Derivatives::computeDyDiv(const Field &field, Field &dy) const {
+    const auto &grid = field.getGrid();
+    const double mul = 1.0 / grid.dy;
 
-    std::shared_ptr<const Grid> grid = field.getGrid();
-    const size_t Nx = grid->Nx;
-    const size_t Ny = grid->Ny;
-    const size_t Nz = grid->Nz;
-    const double mul = 1.0/grid->dy;
-
-    for (size_t k=0 ; k<Nz ; k++)
-        for (size_t i=0 ; i<Nx ; i++)
-            {for (size_t j=1 ; j<Ny ; j++)
-                {
-                    double dfdy = 0.0;
-                    dfdy = (field(i, j, k) - field(i, j - 1, k)) * mul;
-                    dy(i,j,k) = dfdy;
-                }
-                dy(i,0,k) = 0.0;}
+    for (size_t k = 0; k < grid.Nz; k++) {
+        for (size_t i = 0; i < grid.Nx; i++) {
+            for (size_t j = 1; j < grid.Ny; j++) {
+                dy(i, j, k) = (field(i, j, k) - field(i, j - 1, k)) * mul;
+            }
+            dy(i, 0, k) = 0.0;
+        }
+    }
 }
 
-void Derivatives::computeDzDiv(const Field &field, Field &dz) const{
-  
-    std::shared_ptr<const Grid> grid = field.getGrid();
-    const size_t Nx = grid->Nx;
-    const size_t Ny = grid->Ny;
-    const size_t Nz = grid->Nz;
-    const double mul = 1.0/grid->dz;
+void Derivatives::computeDzDiv(const Field &field, Field &dz) const {
+    const auto &grid = field.getGrid();
+    const double mul = 1.0 / grid.dz;
 
-    for (size_t i=0 ; i<Nx ; i++)
-        for (size_t j=0 ; j<Ny ; j++)
-            {for (size_t k=1 ; k<Nz ; k++)
-                {
-                    double dfdz = 0.0;
-                    dfdz = (field(i, j, k) - field(i, j, k - 1)) * mul;
-                    dz(i,j,k) = dfdz;
-                }
-                dz(i,j,0) = 0.0;}
+    for (size_t i = 0; i < grid.Nx; i++) {
+        for (size_t j = 0; j < grid.Ny; j++) {
+            for (size_t k = 1; k < grid.Nz; k++) {
+                dz(i, j, k) = (field(i, j, k) - field(i, j, k - 1)) * mul;
+            }
+            dz(i, j, 0) = 0.0;
+        }
+    }
 }
 
 
-void Derivatives::computeDivergence(const VectorField &field, Field &divergence) const{
+void Derivatives::computeDivergence(const VectorField &field, Field &divergence) const {
     Field tmp;
-    tmp.setup(field.getGrid(),
-                std::vector<Field::Scalar>(field.getGrid()->size(), 0.0));
+    tmp.setup(divergence.getGrid());
 
     divergence.reset();
     computeDxDiv(field(Axis::X), tmp);
@@ -143,130 +107,59 @@ void Derivatives::computeDivergence(const VectorField &field, Field &divergence)
     divergence.add(tmp);
 }
 
-void Derivatives::computeHessianDiag(const Field &field, VectorField &hessianDiag) const{
-    computeDxx(field, hessianDiag.x());
-    computeDyy(field, hessianDiag.y());
-    computeDzz(field, hessianDiag.z());
-    // todo - may be optimized in terms of locality: tiling ??
+void Derivatives::computeHessianDiag(const Field &field, VectorField &hessianDiag) const {
+    computeDxx(field, hessianDiag(Axis::X));
+    computeDyy(field, hessianDiag(Axis::Y));
+    computeDzz(field, hessianDiag(Axis::Z));
 }
 
-void Derivatives::computeDxx(const Field &field, Field &dxx) const{
+void Derivatives::computeDxx(const Field &field, Field &dxx) const {
+    const auto &grid = field.getGrid();
+    const double mul = 1.0 / (grid.dx * grid.dx);
 
-    // safety checks
-    
-    // todo - are they really needed ?? wait profiling
-    if (!field.getGrid()) {
-        throw std::runtime_error("input field has null grid.");
-    }
-    if (!dxx.getGrid()) {
-        throw std::runtime_error("output field (dx) has null grid.");
-    }
-    if (field.getGrid() != dxx.getGrid()) {
-        throw std::runtime_error("field and dx must share the same grid.");
-    }
-    
-    std::shared_ptr<const Grid> grid = field.getGrid();
-    const size_t Nx = grid->Nx;
-    const size_t Ny = grid->Ny;
-    const size_t Nz = grid->Nz;
-    const double mul = 1.0 / (grid->dx * grid->dx);
-
-    if (Nx < 3) {
+    if (grid.Nx < 3) {
         throw std::runtime_error("grid size Nx must be at least 3 to compute second derivative.");
     }
-    if (grid->dx <= 0.0) {
-        throw std::runtime_error("grid spacing dx must be positive.");
-    }
-    if (Nx == 0 || Ny == 0 || Nz == 0) {
-        throw std::runtime_error("grid dimensions must be > 0.");
-    }
 
-    for (size_t k=0 ; k<Nz ; k++)
-        for (size_t j=0 ; j<Ny ; j++)
-            for (size_t i=1 ; i<(Nx-1) ; i++)
-                {
-                    double dfdxx = 0.0;
-                    dfdxx = (field(i + 1, j, k) + field(i - 1, j, k) - 2.0 * field(i, j, k))*mul;
-                    dxx(i,j,k) = dfdxx;
-                }
+    for (size_t k = 0; k < grid.Nz; k++) {
+        for (size_t j = 0; j < grid.Ny; j++) {
+            for (size_t i = 1; i < (grid.Nx - 1); i++) {
+                dxx(i, j, k) = (field(i + 1, j, k) + field(i - 1, j, k) - 2.0 * field(i, j, k)) * mul;
+            }
+        }
+    }
 }
 
-void Derivatives::computeDyy(const Field &field, Field &dyy) const{
+void Derivatives::computeDyy(const Field &field, Field &dyy) const {
+    const auto &grid = field.getGrid();
+    const double mul = 1.0 / (grid.dy * grid.dy);
 
-    // safety checks
-    // todo - are they really needed ?? wait profiling
-    if (!field.getGrid()) {
-        throw std::runtime_error("input field has null grid.");
-    }
-    if (!dyy.getGrid()) {
-        throw std::runtime_error("output field (dy) has null grid.");
-    }
-    if (field.getGrid() != dyy.getGrid()) {
-        throw std::runtime_error("field and dy must share the same grid.");
-    }
-    
-    std::shared_ptr<const Grid> grid = field.getGrid();
-    const size_t Nx = grid->Nx;
-    const size_t Ny = grid->Ny;
-    const size_t Nz = grid->Nz;
-    const double mul = 1.0 / (grid->dy * grid->dy);
-
-    if (Ny < 3) {
+    if (grid.Ny < 3) {
         throw std::runtime_error("grid size Ny must be at least 3 to compute second derivative.");
     }
-    if (grid->dy <= 0.0) {
-        throw std::runtime_error("grid spacing dy must be positive.");
-    }
-    if (Nx == 0 || Ny == 0 || Nz == 0) {
-        throw std::runtime_error("grid dimensions must be > 0.");
-    }
 
-    for (size_t k=0 ; k<Nz ; k++)
-        for (size_t j=1 ; j<(Ny-1) ; j++)
-            for (size_t i=0 ; i<Nx ; i++)
-                {
-                    double dfdyy = 0.0;
-                    dfdyy = (field(i, j+1, k) + field(i, j-1, k) - 2.0 * field(i, j, k))*mul;
-                    dyy(i,j,k) = dfdyy;
-                }
+    for (size_t k = 0; k < grid.Nz; k++) {
+        for (size_t j = 1; j < (grid.Ny - 1); j++) {
+            for (size_t i = 0; i < grid.Nx; i++) {
+                dyy(i, j, k) = (field(i, j + 1, k) + field(i, j - 1, k) - 2.0 * field(i, j, k)) * mul;
+            }
+        }
+    }
 }
 
-void Derivatives::computeDzz(const Field &field, Field &dzz) const{
+void Derivatives::computeDzz(const Field &field, Field &dzz) const {
+    const auto &grid = field.getGrid();
+    const double mul = 1.0 / (grid.dz * grid.dz);
 
-    // safety checks
-    // todo - are they really needed ?? wait profiling
-    if (!field.getGrid()) {
-        throw std::runtime_error("input field has null grid.");
-    }
-    if (!dzz.getGrid()) {
-        throw std::runtime_error("output field (dz) has null grid.");
-    }
-    if (field.getGrid() != dzz.getGrid()) {
-        throw std::runtime_error("field and dz must share the same grid.");
-    }
-    
-    std::shared_ptr<const Grid> grid = field.getGrid();
-    const size_t Nx = grid->Nx;
-    const size_t Ny = grid->Ny;
-    const size_t Nz = grid->Nz;
-    const double mul = 1.0 / (grid->dz * grid->dz);
-
-    if (Nz < 3) {
+    if (grid.Nz < 3) {
         throw std::runtime_error("grid size Nz must be at least 3 to compute second derivative.");
     }
-    if (grid->dz <= 0.0) {
-        throw std::runtime_error("grid spacing dz must be positive.");
-    }
-    if (Nx == 0 || Ny == 0 || Nz == 0) {
-        throw std::runtime_error("grid dimensions must be > 0.");
-    }
 
-    for (size_t k=1 ; k<(Nz-1) ; k++)
-        for (size_t j=0 ; j<Ny ; j++)
-            for (size_t i=0 ; i<Nx ; i++)
-                {
-                    double dfdzz = 0.0;
-                    dfdzz = (field(i, j, k+1) + field(i, j, k-1) - 2.0 * field(i, j, k))*mul;
-                    dzz(i,j,k) = dfdzz;
-                }
+    for (size_t k = 1; k < (grid.Nz - 1); k++) {
+        for (size_t j = 0; j < grid.Ny; j++) {
+            for (size_t i = 0; i < grid.Nx; i++) {
+                dzz(i, j, k) = (field(i, j, k + 1) + field(i, j, k - 1) - 2.0 * field(i, j, k)) * mul;
+            }
+        }
+    }
 }

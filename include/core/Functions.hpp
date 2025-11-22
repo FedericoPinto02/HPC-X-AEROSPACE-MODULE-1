@@ -4,9 +4,9 @@
 #include <functional>
 
 namespace Functions {
-    using Fun = std::function<double(double x, double y, double z, double t)>;
+    using Func = std::function<double(double x, double y, double z, double t)>;
 
-    const Fun ZERO = [](double /*x*/, double /*y*/, double /*z*/, double /*t*/ = 0) {
+    const Func ZERO = [](double /*x*/, double /*y*/, double /*z*/, double /*t*/ = 0) {
         return 0.0;
     };
 } // namespace Functions

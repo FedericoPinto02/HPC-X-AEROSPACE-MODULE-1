@@ -63,14 +63,6 @@ Field::reset(const Field::Scalar value) {
     std::fill(data_.begin(), data_.end(), value);
 }
 
-void
-Field::update(std::vector<Field::Scalar> newV) {
-    if (newV.size() != data_.size()) {
-        throw std::invalid_argument("New vector size does not match field size.");
-    }
-    data_ = std::move(newV);
-}
-
 void Field::add(const Field::Scalar value) {
     for (auto &elem: data_) {
         elem += value;
@@ -115,13 +107,14 @@ const Field::Scalar &VectorField::operator()(Axis componentDirection, size_t i, 
     return component(componentDirection).value(i, j, k);
 }
 
-void VectorField::update(std::vector<Field::Scalar> newX,
+/*void VectorField::update(std::vector<Field::Scalar> newX,
                          std::vector<Field::Scalar> newY,
                          std::vector<Field::Scalar> newZ) {
     component(Axis::X).update(std::move(newX));
     component(Axis::Y).update(std::move(newY));
     component(Axis::Z).update(std::move(newZ));
 }
+ todo - remove */
 
 void VectorField::add(const Field::Scalar value) {
     component(Axis::X).add(value);
