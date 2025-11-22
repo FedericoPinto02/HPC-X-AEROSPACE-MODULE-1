@@ -3,27 +3,93 @@
 
 #include <cstddef>
 
- /** 
- * @brief Struct to hold grid dimensions and spacing information along each direction.
+/**
+ * @brief Enum class representing the three coordinate axes.
  */
-struct Grid {
-    size_t Nx, Ny, Nz; // Number of grid points in each direction
-    double dx, dy, dz; // Grid spacing in each direction
+enum class Axis {
+    X = 0, Y = 1, Z = 2
+};
 
-    Grid(size_t Nx, size_t Ny, size_t Nz, double dx, double dy, double dz)
-            : Nx(Nx), Ny(Ny), Nz(Nz), dx(dx), dy(dy), dz(dz) {};
+const size_t AXIS_COUNT = 3;
+
+/**
+ * @brief Enum describing the (possibly staggered) position of some points in a grid.
+ */
+enum class GridStaggering {
+    CELL_CENTERED, FACE_CENTERED
+};
+
+/**
+* @brief Struct to hold grid dimensions and spacing information along each direction.
+*/
+struct Grid {
+    /// Physical size of the grid in each direction.
+    double Lx, Ly, Lz;
+    /// Number of grid points in each direction.
+    size_t Nx, Ny, Nz;
+    /// Grid spacing in each direction (derived from physical sizes and number of grid points).
+    double dx, dy, dz;
+
+    /**
+     * @brief Constructor to initialize the grid with given physical sizes and number of points.
+     * @param Lx_ the physical size of the grid in the X direction
+     * @param Ly_ the physical size of the grid in the Y direction
+     * @param Lz_ the physical size of the grid in the Z direction
+     * @param Nx_ the number of grid points in the X direction
+     * @param Ny_ the number of grid points in the Y direction
+     * @param Nz_ the number of grid points in the Z direction
+     */
+    Grid(double Lx_, double Ly_, double Lz_, size_t Nx_, size_t Ny_, size_t Nz_)
+            : Lx(Lx_), Ly(Ly_), Lz(Lz_),
+              Nx(Nx_), Ny(Ny_), Nz(Nz_),
+              dx(Lx / (double) Nx), dy(Ly / (double) Ny), dz(Lz / (double) Nz) {}
 
     /**
      * @brief Getter for the total number of grid points.
      * @return the total number of grid points
      */
-    size_t size() { return Nx * Ny * Nz; }
+    [[nodiscard]] constexpr size_t size() { return Nx * Ny * Nz; }
 
     /**
      * @overload
      */
-    size_t size() const { return Nx * Ny * Nz; }
+    [[nodiscard]] constexpr size_t size() const { return Nx * Ny * Nz; }
+
+    /**
+     * @brief Converts a grid index to a physical coordinate along the X-axis, considering staggering.
+     * @param i the x-index
+     * @param offset the staggering offset
+     * @param offsetAxis the axis where to apply the offset
+     * @return the physical x-coordinate
+     */
+    [[nodiscard]] inline double to_x(double i, GridStaggering offset, Axis offsetAxis) const {
+        const auto xOffset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::X) ? 0.5 : 0.0;
+        return (i + xOffset) * dx;
+    }
+
+    /**
+     * @brief Converts a grid index to a physical coordinate along the Y-axis, considering staggering.
+     * @param j the y-index
+     * @param offset the staggering offset
+     * @param offsetAxis the axis where to apply the offset
+     * @return the physical y-coordinate
+     */
+    [[nodiscard]] inline double to_y(double j, GridStaggering offset, Axis offsetAxis) const {
+        const auto yOffset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::Y) ? 0.5 : 0.0;
+        return (j + yOffset) * dy;
+    }
+
+    /**
+     * @brief Converts a grid index to a physical coordinate along the Z-axis, considering staggering.
+     * @param k the z-index
+     * @param offset the staggering offset
+     * @param offsetAxis the axis where to apply the offset
+     * @return the physical z-coordinate
+     */
+    [[nodiscard]] inline double to_z(double k, GridStaggering offset, Axis offsetAxis) const {
+        const auto zOffset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::Z) ? 0.5 : 0.0;
+        return (k + zOffset) * dz;
+    }
 };
-// todo - TBD: Mesh class ?? methods for grid generation ??
 
 #endif // NSBSOLVER_MESH_HPP
