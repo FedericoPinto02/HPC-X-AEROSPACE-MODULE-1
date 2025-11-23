@@ -58,12 +58,12 @@ public:
         const size_t iStart, const size_t jStart, const size_t kStart);
 
     /**
-     * @brief Getter per accedere alla matrice interna (necessario per Schur).
+     * @brief Getter to access the internal matrix (needed for Schur).
      */
     const TridiagMat& getMatrix() const { return matA; }
 
     /**
-     * @brief Getter per accedere al RHS interno (modificato da fillSystem).
+     * @brief Getter to access the internal RHS (modified by fillSystem).
      */
     const std::vector<double>& getRhs() const { return rhsC; }
 

@@ -11,53 +11,53 @@ public:
     SchurSequentialSolver(int globalSize, int numDomains, BoundaryType type);
 
     /**
-     * @brief Fase 0: Pre-processing.
-     * Costruisce le sottomatrici A_ii, estrae i coefficienti di interfaccia
-     * e assembla la matrice di Schur 'S'.
-     * @param A_global La matrice tridiagonale GLOBALE (N x N).
+     * @brief Phase 0: Pre-processing.
+     * Builds the submatrices A_ii, extracts interface coefficients,
+     * and assembles the Schur matrix 'S'.
+     * @param A_global The GLOBAL tridiagonal matrix (N x N).
      */
     void PreProcess(const TridiagMat& A_global);
 
     /**
-     * @brief Fase 1: Solve.
-     * Risolve il sistema A*x = f usando l'algoritmo di Schur.
-     * 'PreProcess' deve essere stato chiamato prima.
-     * @param f_global Il vettore RHS globale (lunghezza N).
-     * @return Il vettore soluzione globale x (lunghezza N).
+     * @brief Phase 1: Solve.
+     * Solves the system A*x = f using the Schur algorithm.
+     * 'PreProcess' must have been called before.
+     * @param f_global The global RHS vector (length N).
+     * @return The global solution vector x (length N).
      */
     std::vector<double> solve(const std::vector<double>& f_global);
 
 
 private:
-    // --- Variabili di Decomposizione ---
-    int nGlobal;           // Dimensione totale N
-    int num_domains;       // Numero di domini P
-    int num_interfaces;    // Numero di interfacce (P-1)
+    // --- Decomposition variables ---
+    int nGlobal;           // Total dimension N
+    int num_domains;       // Number of domains P
+    int num_interfaces;    // Number of interfaces (P-1)
     BoundaryType bType;
 
     std::vector<int> domain_sizes;  
     std::vector<int> domain_starts; 
     std::vector<int> interface_indices; 
 
-    // --- Sistemi Locali e di Schur ---
-    std::vector<LinearSys> localSolvers; // P solutori (per A_ii)
+    // --- Local and Schur systems ---
+    std::vector<LinearSys> localSolvers; // P solvers (for A_ii)
 
-    // schurSolver viene creato SOLO se P >= 3 (num_interfaces >= 2)
-    std::unique_ptr<LinearSys> schurSolver; // <-- MODIFICATO
+    // schurSolver is created ONLY if P >= 3 (num_interfaces >= 2)
+    std::unique_ptr<LinearSys> schurSolver; // <-- MODIFIED
 
-    // schurScalarS viene usato SOLO se P = 2 (num_interfaces = 1)
+    // schurScalarS is used ONLY if P = 2 (num_interfaces = 1)
     double schurScalarS = 0.0;
 
-    // --- Dati delle Matrici di Interfaccia ---
-    // A_ie: collega u_i (interno) a u_e (interfaccia)
-    std::vector<double> A_ie_left;  // [P] coeff. 'a' (subdiag) che connettono a sinistra
-    std::vector<double> A_ie_right; // [P] coeff. 'c' (supdiag) che connettono a destra
+    // --- Interface matrix data ---
+    // A_ie: connects u_i (interior) to u_e (interface)
+    std::vector<double> A_ie_left;  // [P] 'a' (subdiagonal) coefficients that connect to the left
+    std::vector<double> A_ie_right; // [P] 'c' (superdiagonal) coefficients that connect to the right
 
-    // A_ei: collega u_e (interfaccia) a u_i (interno)
-    std::vector<double> A_ei_left;  // [P-1] coeff. 'a' (subdiag) che connettono a sinistra
-    std::vector<double> A_ei_right; // [P-1] coeff. 'c' (supdiag) che connettono a destra
+    // A_ei: connects u_e (interface) to u_i (interior)
+    std::vector<double> A_ei_left;  // [P-1] 'a' (subdiagonal) coefficients that connect to the left
+    std::vector<double> A_ei_right; // [P-1] 'c' (superdiagonal) coefficients that connect to the right
 
-    // --- Funzioni Helper Private ---
+    // --- Private helper functions ---
     std::vector<double> getGlobalSubVector(const std::vector<double>& globalVec, 
                                            int start, int size) const;
     void setGlobalSubVector(std::vector<double>& globalVec, 
