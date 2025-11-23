@@ -408,7 +408,7 @@ void ViscousStep::closeViscousStep()
     rhs_w.front() = 0;
     rhs_w.back() = 0;
 
-    mul = 1.0 / (data_.gridPtr->dy * data_.gridPtr->dy);
+    mul = 1.0 / (data_.grid->dy * data_.grid->dy);
 
     jStart = 0;
     for (i = 1; i < data_.grid->Nx-1; i++)
@@ -680,7 +680,7 @@ void ViscousStep::closeViscousStep()
     rhs_w.front() = 0;
     rhs_w.back() = 0;
 
-    mul = 1.0 / (data_.gridPtr->dz * data_.gridPtr->dz);
+    mul = 1.0 / (data_.grid->dz * data_.grid->dz);
     kStart = 0;
     for (i = 1; i < data_.grid->Nx-1; i++)
     {
