@@ -253,10 +253,18 @@ def plot_convergence(h_values: list, error_data: dict, title: str, save_filename
     plt.close(fig)
 # --- 5. MAIN ANALYSIS LOOP ---
 
-def run_analysis():
+def run_analysis(custom_simulations=None):
     """
     Main function to loop through simulations, compute errors, and plot.
+    If custom_simulations is provided, it uses that list instead of the global SIMULATIONS.
     """
+
+    # Se lo script chiamante ci passa una lista, usiamo quella.
+    # Altrimenti usiamo quella definita all'inizio di questo file.
+    if custom_simulations is not None:
+        sims_to_analyze = custom_simulations
+    else:
+        sims_to_analyze = SIMULATIONS
 
     # Lists to store results
     h_values = []
@@ -267,13 +275,13 @@ def run_analysis():
     # errors_div list removed
 
     print("--- Starting Spatial Convergence Analysis (MMS Staggered) ---")
-    print(f"Analyzing {len(SIMULATIONS)} files. Using DT={DT} to find time from filenames.")
+    print(f"Analyzing {len(sims_to_analyze)} files. Using DT={DT} to find time from filenames.")
     # Print table header (Divergence column removed)
     print(f"{'Nx':>4} | {'h':>10} | {'Time':>10} | {'L2_Err_u':>10} | {'L2_Err_v':>10} | {'L2_Err_w':>10} | {'L2_Err_p':>10}")
     print("-" * 74)
 
     # Ensure simulations are sorted by grid size (nx)
-    sorted_simulations = sorted(SIMULATIONS, key=lambda s: s['nx'])
+    sorted_simulations = sorted(sims_to_analyze, key=lambda s: s['nx'])
 
     for sim in sorted_simulations:
         nx = sim['nx']
