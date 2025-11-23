@@ -4,13 +4,13 @@
 #include <cmath>   
 #include <iostream> 
 
-// --- COSTRUTTORE (MODIFICATO) ---
+// --- CONSTRUCTOR (MODIFIED) ---
 SchurSequentialSolver::SchurSequentialSolver(int globalSize, int numDomains, BoundaryType type)
     : nGlobal(globalSize),
       num_domains(numDomains),
       num_interfaces(numDomains > 0 ? numDomains - 1 : 0),
       bType(type)
-      // schurSolver non è più inizializzato qui nella lista
+      // schurSolver is no longer initialized here in the initializer list
 {
     if (numDomains <= 0) {
         throw std::invalid_argument("Il numero di domini deve essere > 0.");
@@ -19,27 +19,27 @@ SchurSequentialSolver::SchurSequentialSolver(int globalSize, int numDomains, Bou
         throw std::invalid_argument("La dimensione globale non può essere inferiore al numero di domini.");
     }
 
-    // --- Logica di Inizializzazione Riorganizzata ---
+    // --- Initialization logic reorganized ---
 
-    // Caso P = 1 (0 interfacce)
+    // Case P = 1 (0 interfaces)
     if (numDomains == 1) {
         domain_sizes.push_back(nGlobal);
         domain_starts.push_back(0);
         localSolvers.emplace_back(nGlobal, bType);
-        // schurSolver rimane nullptr, non serve
+        // schurSolver remains nullptr, not needed
         return; 
     }
 
-    // --- Casi P > 1 (almeno 1 interfaccia) ---
+    // --- Cases P > 1 (at least 1 interface) ---
 
-    // Inizializza schurSolver SOLO se è un sistema N >= 2
+    // Initialize schurSolver ONLY if it's a system with N >= 2
     if (num_interfaces >= 2) { // P >= 3
         schurSolver = std::make_unique<LinearSys>(num_interfaces, type);
     }
-    // Se P=2 (num_interfaces=1), schurSolver rimane nullptr.
-    // Useremo schurScalarS.
+    // If P=2 (num_interfaces=1), schurSolver remains nullptr.
+    // We'll use schurScalarS.
 
-    // Ridimensiona i vettori
+    // Resize vectors
     domain_sizes.resize(num_domains);
     domain_starts.resize(num_domains);
     interface_indices.resize(num_interfaces);
@@ -48,7 +48,7 @@ SchurSequentialSolver::SchurSequentialSolver(int globalSize, int numDomains, Bou
     A_ei_left.resize(num_interfaces, 0.0);
     A_ei_right.resize(num_interfaces, 0.0);
 
-    // Logica di decomposizione (invariata, ma ora si applica solo a P > 1)
+    // Decomposition logic (unchanged, but now applies only for P > 1)
     int total_internal_nodes = nGlobal - num_interfaces;
     int base_internal_size = total_internal_nodes / num_domains;
     int remainder = total_internal_nodes % num_domains;
@@ -59,7 +59,7 @@ SchurSequentialSolver::SchurSequentialSolver(int globalSize, int numDomains, Bou
         domain_sizes[p] = n_i;
         domain_starts[p] = current_global_idx;
         
-        localSolvers.emplace_back(n_i, bType); // Crea solver locale
+        localSolvers.emplace_back(n_i, bType); // Create local solver
         
         current_global_idx += n_i; 
 
@@ -75,7 +75,7 @@ void SchurSequentialSolver::PreProcess(const TridiagMat& A_global) {
         throw std::runtime_error("Dimensione A_global non corrisponde a nGlobal.");
     }
 
-    // --- Caso P = 1 ---
+    // --- Case P = 1 ---
     if (num_domains == 1) {
         localSolvers[0].matA.fillMat(
             A_global.getDiag(0), A_global.getDiag(-1), A_global.getDiag(1)
@@ -83,9 +83,9 @@ void SchurSequentialSolver::PreProcess(const TridiagMat& A_global) {
         return;
     }
 
-    // --- Casi P > 1 ---
+    // --- Cases P > 1 ---
     
-    // --- Fase 1a: Estrarre A_ii e coefficienti A_ie ---
+    // --- Phase 1a: Extract A_ii and coefficients A_ie ---
     for (int p = 0; p < num_domains; ++p) {
         int n_i = domain_sizes[p];
         int start = domain_starts[p];
@@ -104,8 +104,8 @@ void SchurSequentialSolver::PreProcess(const TridiagMat& A_global) {
         if (p < num_interfaces) A_ie_right[p] = A_global.supdiag[start + n_i - 1];
     }
 
-    // --- Fase 1b: Estrarre A_ei e diagonale di A_ee ---
-    std::vector<double> S_diag_ee(num_interfaces); // Diagonale di A_ee
+    // --- Phase 1b: Extract A_ei and diagonal of A_ee ---
+    std::vector<double> S_diag_ee(num_interfaces); // Diagonal of A_ee
     for (int k = 0; k < num_interfaces; ++k) {
         int idx = interface_indices[k];
         A_ei_left[k]  = A_global.subdiag[idx - 1]; // a[idx]

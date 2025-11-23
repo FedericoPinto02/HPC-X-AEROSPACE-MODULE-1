@@ -59,7 +59,7 @@ private:
     ParallelizationSettings parallel_;
 
     /**
-     * @brief Wrapper che decide se usare Thoma (P=1) o Schur (P>1).
+     * @brief Wrapper that chooses whether to use Thomas (P=1) or Schur (P>1).
      */
     std::vector<double> solveSystem(LinearSys& sys, BoundaryType bType);
 

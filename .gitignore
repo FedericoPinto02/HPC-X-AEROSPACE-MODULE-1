@@ -1,5 +1,6 @@
 build/
 output/
+results/
 
 # Ignora i file di configurazione dell'editor
 .vscode/
@@ -7,3 +8,7 @@ output/
 # Ignora i file del sistema operativo
 .DS_Store
 Thumbs.db
+
+# Ignora i file Python compilati
+__pycache__/
+*.pyc

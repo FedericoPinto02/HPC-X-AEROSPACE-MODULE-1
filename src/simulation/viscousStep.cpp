@@ -930,11 +930,6 @@ void ViscousStep::closeViscousStep()
 
     } 
 
-
-
-    
-    
-
 }
 
 
