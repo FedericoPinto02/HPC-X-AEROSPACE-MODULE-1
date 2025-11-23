@@ -1,253 +1,163 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include <vector>
-#include <cmath> // For std::sin, std::cos, std::pow
+#include <cmath>
+#include <functional>
 
-// --- Include headers ---
-#include "simulation/pressureStep.hpp" // Object under test
+#include "simulation/pressureStep.hpp"
 #include "simulation/SimulationContext.hpp"
 #include "core/Fields.hpp"
-#include "numerics/derivatives.hpp" // For comparison
+#include "core/Functions.hpp"
+#include "numerics/derivatives.hpp"
 
-
-/**
- * @brief Test Fixture for unit and correctness tests for PressureStep.
- * Uses a 10x10x10 grid with dx=1.0 and non-zero initial conditions.
- */
 class PressureStepTest : public ::testing::Test {
 protected:
-    // Test objects
-     const double dt = 0.1;
-    std::shared_ptr<Grid> grid;
+    const double dt = 0.1;
+
+    // Stack-allocated Grid
+    Grid grid;
+
+    // Context objects
     SimulationData data_;
+    ParallelizationSettings parallel_;
+
     std::unique_ptr<PressureStep> pressureStep;
 
-
-    // --- CONSTRUCTOR ---
     PressureStepTest()
-        : // 1. Create the grid (10x10x10, dx=1.0)
-          grid(std::make_shared<Grid>(10, 10, 10, 1.0, 1.0, 1.0)),
-          // 2. Initialize the data_
-          data_{ grid } // dt=0.1, totalTime=1.0
+            : grid(10, 10, 10, 1.0, 1.0, 1.0),
+              data_{ grid }
     {
-        // Constructor body is empty. SetUp() runs next.
+        data_.dt = dt;
     }
 
-    // --- SETUP ---
-    // Runs before each test in this fixture
     void SetUp() override {
-        
-        std::vector<Field::Scalar> zeros(grid->size(), 0.0);
-        std::vector<Field::Scalar> u_x(grid->size()), u_y(grid->size()), u_z(grid->size());
-        
-        // --- Set Initial Conditions ---
-        
         // 1. Pressure: p(x,y,z) = 0.0
-        //    PressureStep will add 'pcr' to this.
-        std::vector<Field::Scalar> p_field(grid->size(), 0.0);
+        data_.p.setup(grid, Functions::ZERO);
+        data_.p.populate(0.0);
 
         // 2. Velocity: u(x,y,z) = [sin(x), cos(y), sin(z)]
-        //    Whose divergence is: cos(x) - sin(y) + cos(z)
-        for (size_t k = 0; k < grid->Nz; ++k) {
-            for (size_t j = 0; j < grid->Ny; ++j) {
-                for (size_t i = 0; i < grid->Nx; ++i) {
-                    size_t index = i + grid->Nx * (j + grid->Ny * k);
-                    double x = static_cast<double>(i) * grid->dx;
-                    double y = static_cast<double>(j) * grid->dy;
-                    double z = static_cast<double>(k) * grid->dz;
+        auto funcX = [](double x, double, double, double) { return std::sin(x); };
+        auto funcY = [](double, double y, double, double) { return std::cos(y); };
+        auto funcZ = [](double, double, double z, double) { return std::sin(z); };
 
-                    u_x[index] = std::sin(x);
-                    u_y[index] = std::cos(y);
-                    u_z[index] = std::sin(z);
-                }
-            }
-        }
-        
-        // Setup fields in state
-        data_.p.setup(grid, p_field);
-        data_.u.setup(grid, u_x, u_y, u_z); // Current 'u'
-        
-        // Remove unneeded fields (eta, zeta, uOld, etc.)
+        data_.u.setup(grid, funcX, funcY, funcZ);
+        data_.u.populate(0.0);
 
-        // 4. Create the object under test
-        pressureStep = std::make_unique<PressureStep>(data_);
-        
-        // NOTE: Your initializeWorkspaceFields only inits psi and divU.
-        // If phi and pcr are also members, you might need to init them here.
-        // pressureStep->phi.setup(grid, zeros);
-        // pressureStep->pcr.setup(grid, zeros);
+        // 3. Create the object under test
+        // Passing 'parallel_' to match the constructor signature in pressureStep.cpp
+        pressureStep = std::make_unique<PressureStep>(data_, parallel_);
     }
 
-    // --- HELPER METHODS ---
-protected:
     double getDivU(size_t i, size_t j, size_t k) {
-        // Assuming 'divU' is a member (public or friend-accessible)
         return pressureStep->divU(i, j, k);
     }
-    
+
     double getPressure(size_t i, size_t j, size_t k) {
         return data_.p(i, j, k);
     }
 };
-
-
-// --- The Tests ---
 
 TEST_F(PressureStepTest, ConstructorAndInit) {
     ASSERT_NE(pressureStep, nullptr);
 }
 
 TEST_F(PressureStepTest, RunDoesNotCrash) {
-    // This test verifies that the run() function completes without errors
     ASSERT_NO_THROW(pressureStep->run());
 }
 
 TEST_F(PressureStepTest, Run_CalculatesDivU_Correctness) {
-    // This test verifies that the divergence calculated inside run()
-    // is correct.
-    
-    // --- Execution ---
     ASSERT_NO_THROW(pressureStep->run());
 
-    // --- Verify Output (at internal node 5,5,5) ---
     const size_t i = 5, j = 5, k = 5;
-    const double x = i*grid->dx, y = j*grid->dy, z = k*grid->dz;
-    const double dx = grid->dx, dy = grid->dy, dz = grid->dz;
+    const double x = i * grid.dx, y = j * grid.dy, z = k * grid.dz;
+    const double dx = grid.dx, dy = grid.dy, dz = grid.dz;
 
-    // u.x = sin(x) -> d/dx = (sin(x+dx) - sin(x-dx)) / (2*dx)
-    double du_dx = (std::sin(x+dx) - std::sin(x-dx)) / (2.0*dx);
-    // u.y = cos(y) -> d/dy = (cos(y+dy) - cos(y-dy)) / (2*dy)
-    double du_dy = (std::cos(y+dy) - std::cos(y-dy)) / (2.0*dy);
-    // u.z = sin(z) -> d/dz = (sin(z+dz) - sin(z-dz)) / (2*dz)
-    double du_dz = (std::sin(z+dz) - std::sin(z-dz)) / (2.0*dz);
-    
-    // div(u) = du_dx + du_dy + du_dz
+    // The Derivatives class uses Backward Difference for divergence
+    // u.x = sin(x) -> d/dx ~ (sin(x) - sin(x-dx)) / dx
+    double du_dx = (std::sin(x) - std::sin(x - dx)) / dx;
+
+    // u.y = cos(y) -> d/dy ~ (cos(y) - cos(y-dy)) / dy
+    double du_dy = (std::cos(y) - std::cos(y - dy)) / dy;
+
+    // u.z = sin(z) -> d/dz ~ (sin(z) - sin(z-dz)) / dz
+    double du_dz = (std::sin(z) - std::sin(z - dz)) / dz;
+
     double expected_divU = du_dx + du_dy + du_dz;
-    
+
     double divU_computed = getDivU(i, j, k);
     EXPECT_NEAR(divU_computed, expected_divU, 1e-9);
 }
 
 TEST_F(PressureStepTest, Run_WithZeroDivergence_PressureIsUnchanged) {
-    // This test sets u = [0,0,0], which has zero divergence.
-    // The resulting pcr should be 0, and the final pressure
-    // should be equal to the initial pressure.
+    // Setup U = 0, P = 1.0
+    data_.u.setup(grid, Functions::ZERO, Functions::ZERO, Functions::ZERO);
+    data_.u.populate(0.0);
 
-    // --- Setup (Override) ---
-    std::vector<Field::Scalar> zeros(grid->size(), 0.0);
-    std::vector<Field::Scalar> ones(grid->size(), 1.0);
+    data_.p.setup(grid, [](double, double, double, double){ return 1.0; });
+    data_.p.populate(0.0);
 
-    data_.dt = 0.1;
-    
-    // Set P_initial = 1.0
-    data_.p.setup(grid, ones);
-    // Set U = 0
-    data_.u.setup(grid, zeros, zeros, zeros);
+    // Reconstruct with new data
+    pressureStep = std::make_unique<PressureStep>(data_, parallel_);
 
-    // Recreate the test object with the new data_
-    pressureStep = std::make_unique<PressureStep>(data_);
-    // ...potential init of phi/pcr...
-    // pressureStep->phi.setup(grid, zeros);
-    // pressureStep->pcr.setup(grid, zeros);
-
-
-    // --- Execution ---
     pressureStep->run();
 
-    // --- Verification ---
-    // p_final = p_initial + pcr
-    // If div(u) = 0, then pcr should be 0.
-    // p_final should be 1.0
-    
-    double p_final = getPressure(5, 5, 5); // Check one point
+    // If div(u) = 0, pcr should be 0, so p_final == p_initial == 1.0
+    double p_final = getPressure(5, 5, 5);
     EXPECT_NEAR(p_final, 1.0, 1e-9);
-    
-    // Check that divU is actually 0
+
     double divU_computed = getDivU(5, 5, 5);
     EXPECT_NEAR(divU_computed, 0.0, 1e-9);
 }
 
-
-/**
- * @brief Test Fixture for testing solver robustness with polynomial fields.
- */
 class PressureStepRobustnessTest : public ::testing::Test {
 protected:
     const size_t N = 10;
-    std::shared_ptr<Grid> grid;
+    Grid grid;
     SimulationData data_;
+    ParallelizationSettings parallel_;
     std::unique_ptr<PressureStep> pressureStep;
 
     PressureStepRobustnessTest()
-        : // 1. Grid 10x10x10, dx=dy=dz=0.1
-          grid(std::make_shared<Grid>(N, N, N, 0.1, 0.1, 0.1)),
-          // 2. Context: dt=0.01
-          data_{ grid }
-    {}
-
-   void SetUp() override {
-        
-        const size_t totalSize = N * N * N;
-        std::vector<Field::Scalar> p_field(totalSize);
-        std::vector<Field::Scalar> u_x(totalSize), u_y(totalSize), u_z(totalSize);
-
-        // Create non-zero polynomial fields
-        for (size_t k = 0; k < N; ++k) {
-            for (size_t j = 0; j < N; ++j) {
-                for (size_t i = 0; i < N; ++i) {
-                    size_t index = i + N * (j + N * k);
-                    double x = static_cast<double>(i) * grid->dx;
-                    double y = static_cast<double>(j) * grid->dy;
-                    double z = static_cast<double>(k) * grid->dz;
-
-                    // p = x*y + z
-                    p_field[index] = x*y + z;
-                    
-                    // u = [x^2, y^2, z^2] -> div(u) = 2x + 2y + 2z
-                    u_x[index] = x*x;
-                    u_y[index] = y*y;
-                    u_z[index] = z*z;
-                }
-            }
-        }
-
-        // --- Set up the data_ ---
+            : grid(N, N, N, 0.1, 0.1, 0.1),
+              data_{ grid }
+    {
         data_.dt = 0.1;
-        data_.p.setup(grid, p_field);
-        data_.u.setup(grid, u_x, u_y, u_z); // Initial u
-        
-        pressureStep = std::make_unique<PressureStep>(data_);
     }
 
-    // Helper to check for NaN or Inf in a scalar field
+    void SetUp() override {
+        // p = x*y + z
+        auto funcP = [](double x, double y, double z, double) {
+            return x * y + z;
+        };
+        data_.p.setup(grid, funcP);
+        data_.p.populate(0.0);
+
+        // u = [x^2, y^2, z^2]
+        auto funcU_x = [](double x, double, double, double) { return x * x; };
+        auto funcU_y = [](double, double y, double, double) { return y * y; };
+        auto funcU_z = [](double, double, double z, double) { return z * z; };
+
+        data_.u.setup(grid, funcU_x, funcU_y, funcU_z);
+        data_.u.populate(0.0);
+
+        pressureStep = std::make_unique<PressureStep>(data_, parallel_);
+    }
+
     void checkFieldFinite(const Field& field, const std::string& fieldName) {
-        // Assuming Field::Scalar has an operator()
-        
-        for (size_t k = 0; k < grid->Nz; ++k) {
-            for (size_t j = 0; j < grid->Ny; ++j) {
-                for (size_t i = 0; i < grid->Nx; ++i) {
-                     ASSERT_TRUE(std::isfinite(field(i, j, k)))
-                        << "Found NaN or Inf in " << fieldName 
-                        << " at index (" << i << "," << j << "," << k << ")";
+        for (size_t k = 0; k < grid.Nz; ++k) {
+            for (size_t j = 0; j < grid.Ny; ++j) {
+                for (size_t i = 0; i < grid.Nx; ++i) {
+                    ASSERT_TRUE(std::isfinite(field(i, j, k)))
+                                                << "Found NaN or Inf in " << fieldName
+                                                << " at index (" << i << "," << j << "," << k << ")";
                 }
             }
         }
     }
 };
 
-/**
- * @brief Robustness test for the full PressureStep::run()
- *
- * This test uses complex, non-zero polynomial initial conditions
- * and checks that the solver produces valid, finite numbers
- * (i.e., no NaN/Inf) in the final pressure field.
- */
 TEST_F(PressureStepRobustnessTest, Run_WithPolynomialFields_ProducesFiniteOutput)
 {
-    // --- Execution ---
     ASSERT_NO_THROW(pressureStep->run());
-
-    // --- Verification ---
-    // We only check that the final pressure is stable
     checkFieldFinite(data_.p, "data_.p");
 }
