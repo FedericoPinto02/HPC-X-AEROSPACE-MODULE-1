@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
-#set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG") 
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG") 
 
 include(FetchContent)
 
@@ -137,4 +137,40 @@ if (BUILD_TESTS)
     gtest_discover_tests(alltests)
 
     message(STATUS "Building tests - done")
+endif ()
+
+# ========================================================
+# ---- PROFILING -----------------------------------------
+# ========================================================
+# Define profiling-related variables
+
+# Option to enable/disable profiling 
+option(PROFILING "Build the tests" ON)
+message(STATUS "PROFILING option: ${PROFILING}")
+if (PROFILING)
+    message(STATUS "Building with profiling enabled")
+    # Add compiler flags for profiling
+    target_compile_options(NSBSolver PRIVATE -pg)
+    target_link_libraries(NSBSolver PRIVATE -pg)
+    target_compile_options(main PRIVATE -pg)
+    target_link_libraries(main PRIVATE -pg)
+    if (BUILD_TESTS)
+        target_compile_options(alltests PRIVATE -pg)
+        target_link_libraries(alltests PRIVATE -pg)
+    endif ()
+    message(STATUS "Building with profiling enabled - done")
+
+    message(STATUS "Auto-profiling enabled: gmon.out -> profiling.txt")
+
+    add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/.profile.stamp
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/main
+    COMMAND gprof ${CMAKE_CURRENT_BINARY_DIR}/main gmon.out > ${CMAKE_CURRENT_BINARY_DIR}/profiling.txt
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    DEPENDS main
+        )
+
+    add_custom_target(profile
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/.profile.stamp
+        )
 endif ()

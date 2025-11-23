@@ -2,7 +2,7 @@
 set -euo pipefail
 
 BUILD_DIR="build"
-CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF"
+CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DPROFILING=ON"
 
 mkdir -p "$BUILD_DIR"
 pushd "$BUILD_DIR" > /dev/null
