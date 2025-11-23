@@ -30,6 +30,8 @@ protected:
         // Setup SimulationData context
         data_.grid = grid;
         data_.dt = dt;
+
+        parallel_.schurDomains = 1;
     }
 
     void SetUp() override {
@@ -122,6 +124,7 @@ protected:
         grid = std::make_shared<Grid>(N, N, N, 0.1, 0.1, 0.1);
         data_.grid = grid;
         data_.dt = 0.1;
+        parallel_.schurDomains = 1;
     }
 
     void SetUp() override {

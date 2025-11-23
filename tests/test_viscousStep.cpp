@@ -33,6 +33,8 @@ protected:
         data_.dt = dt;
         data_.nu = nu;
         data_.currTime = 0.0;
+
+        parallel_.schurDomains = 1;
     }
 
     void SetUp() override {
@@ -175,6 +177,7 @@ protected:
         data_.dt = 0.1;
         data_.nu = 1.0e-3;
         data_.currTime = 0.0;
+        parallel_.schurDomains = 1;
     }
 
     void SetUp() override {
