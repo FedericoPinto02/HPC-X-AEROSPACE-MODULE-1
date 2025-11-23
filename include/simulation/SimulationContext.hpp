@@ -30,7 +30,7 @@ struct ParallelizationSettings {
 
 struct SimulationData {
     // Grid
-    Grid grid;
+    GridPtr grid;
 
     // Time integration settings
     double dt;

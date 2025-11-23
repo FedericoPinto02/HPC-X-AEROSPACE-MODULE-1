@@ -14,8 +14,8 @@ class PressureStepTest : public ::testing::Test {
 protected:
     const double dt = 0.1;
 
-    // Stack-allocated Grid
-    Grid grid;
+    // Grid managed via shared_ptr to match Field's internal storage requirement
+    std::shared_ptr<Grid> grid;
 
     // Context objects
     SimulationData data_;
@@ -23,19 +23,21 @@ protected:
 
     std::unique_ptr<PressureStep> pressureStep;
 
-    PressureStepTest()
-            : grid(10, 10, 10, 1.0, 1.0, 1.0),
-              data_{ grid }
-    {
+    PressureStepTest() {
+        // Initialize 10x10x10 grid with spacing 1.0
+        grid = std::make_shared<Grid>(10, 10, 10, 1.0, 1.0, 1.0);
+
+        // Setup SimulationData context
+        data_.grid = grid;
         data_.dt = dt;
     }
 
     void SetUp() override {
-        // 1. Pressure: p(x,y,z) = 0.0
+        // Define Pressure: p(x,y,z) = 0.0
         data_.p.setup(grid, Functions::ZERO);
         data_.p.populate(0.0);
 
-        // 2. Velocity: u(x,y,z) = [sin(x), cos(y), sin(z)]
+        // Define Velocity: u(x,y,z) = [sin(x), cos(y), sin(z)]
         auto funcX = [](double x, double, double, double) { return std::sin(x); };
         auto funcY = [](double, double y, double, double) { return std::cos(y); };
         auto funcZ = [](double, double, double z, double) { return std::sin(z); };
@@ -43,8 +45,7 @@ protected:
         data_.u.setup(grid, funcX, funcY, funcZ);
         data_.u.populate(0.0);
 
-        // 3. Create the object under test
-        // Passing 'parallel_' to match the constructor signature in pressureStep.cpp
+        // Create the object under test
         pressureStep = std::make_unique<PressureStep>(data_, parallel_);
     }
 
@@ -69,8 +70,8 @@ TEST_F(PressureStepTest, Run_CalculatesDivU_Correctness) {
     ASSERT_NO_THROW(pressureStep->run());
 
     const size_t i = 5, j = 5, k = 5;
-    const double x = i * grid.dx, y = j * grid.dy, z = k * grid.dz;
-    const double dx = grid.dx, dy = grid.dy, dz = grid.dz;
+    const double x = i * grid->dx, y = j * grid->dy, z = k * grid->dz;
+    const double dx = grid->dx, dy = grid->dy, dz = grid->dz;
 
     // The Derivatives class uses Backward Difference for divergence
     // u.x = sin(x) -> d/dx ~ (sin(x) - sin(x-dx)) / dx
@@ -93,7 +94,7 @@ TEST_F(PressureStepTest, Run_WithZeroDivergence_PressureIsUnchanged) {
     data_.u.setup(grid, Functions::ZERO, Functions::ZERO, Functions::ZERO);
     data_.u.populate(0.0);
 
-    data_.p.setup(grid, [](double, double, double, double){ return 1.0; });
+    data_.p.setup(grid, [](double, double, double, double) { return 1.0; });
     data_.p.populate(0.0);
 
     // Reconstruct with new data
@@ -112,27 +113,26 @@ TEST_F(PressureStepTest, Run_WithZeroDivergence_PressureIsUnchanged) {
 class PressureStepRobustnessTest : public ::testing::Test {
 protected:
     const size_t N = 10;
-    Grid grid;
+    std::shared_ptr<Grid> grid;
     SimulationData data_;
     ParallelizationSettings parallel_;
     std::unique_ptr<PressureStep> pressureStep;
 
-    PressureStepRobustnessTest()
-            : grid(N, N, N, 0.1, 0.1, 0.1),
-              data_{ grid }
-    {
+    PressureStepRobustnessTest() {
+        grid = std::make_shared<Grid>(N, N, N, 0.1, 0.1, 0.1);
+        data_.grid = grid;
         data_.dt = 0.1;
     }
 
     void SetUp() override {
-        // p = x*y + z
+        // Define Pressure: p = x*y + z
         auto funcP = [](double x, double y, double z, double) {
             return x * y + z;
         };
         data_.p.setup(grid, funcP);
         data_.p.populate(0.0);
 
-        // u = [x^2, y^2, z^2]
+        // Define Velocity: u = [x^2, y^2, z^2]
         auto funcU_x = [](double x, double, double, double) { return x * x; };
         auto funcU_y = [](double, double y, double, double) { return y * y; };
         auto funcU_z = [](double, double, double z, double) { return z * z; };
@@ -143,10 +143,10 @@ protected:
         pressureStep = std::make_unique<PressureStep>(data_, parallel_);
     }
 
-    void checkFieldFinite(const Field& field, const std::string& fieldName) {
-        for (size_t k = 0; k < grid.Nz; ++k) {
-            for (size_t j = 0; j < grid.Ny; ++j) {
-                for (size_t i = 0; i < grid.Nx; ++i) {
+    void checkFieldFinite(const Field &field, const std::string &fieldName) {
+        for (size_t k = 0; k < grid->Nz; ++k) {
+            for (size_t j = 0; j < grid->Ny; ++j) {
+                for (size_t i = 0; i < grid->Nx; ++i) {
                     ASSERT_TRUE(std::isfinite(field(i, j, k)))
                                                 << "Found NaN or Inf in " << fieldName
                                                 << " at index (" << i << "," << j << "," << k << ")";
@@ -156,8 +156,7 @@ protected:
     }
 };
 
-TEST_F(PressureStepRobustnessTest, Run_WithPolynomialFields_ProducesFiniteOutput)
-{
+TEST_F(PressureStepRobustnessTest, Run_WithPolynomialFields_ProducesFiniteOutput) {
     ASSERT_NO_THROW(pressureStep->run());
     checkFieldFinite(data_.p, "data_.p");
 }

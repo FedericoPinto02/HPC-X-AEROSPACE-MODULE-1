@@ -15,8 +15,8 @@ protected:
     const double dt = 0.1;
     const double nu = 1.0;
 
-    // Stack-allocated Grid
-    Grid grid;
+    // Grid managed via shared_ptr to match Field's internal storage requirement
+    std::shared_ptr<Grid> grid;
 
     // Context
     SimulationData data_;
@@ -24,61 +24,62 @@ protected:
 
     std::unique_ptr<ViscousStep> viscousStep;
 
-    ViscousStepTest()
-            : grid(10, 10, 10, 1.0, 1.0, 1.0),
-              data_{ grid }
-    {
+    ViscousStepTest() {
+        // Initialize 10x10x10 grid with spacing 1.0
+        grid = std::make_shared<Grid>(10, 10, 10, 1.0, 1.0, 1.0);
+
+        // Setup SimulationData context
+        data_.grid = grid;
         data_.dt = dt;
         data_.nu = nu;
-        data_.currTime = 0.0; // Ensure time is initialized
+        data_.currTime = 0.0;
     }
 
     void SetUp() override {
-        // k = 1.0 everywhere
-        data_.k.setup(grid, [](double,double,double,double){ return 1.0; });
+        // Define constant Permeability k = 1.0
+        data_.k.setup(grid, [](double, double, double, double) { return 1.0; });
         data_.k.populate(0.0);
 
-        // f = [0,0,0]
+        // Define External Force f = [0,0,0]
         data_.f.setup(grid, Functions::ZERO, Functions::ZERO, Functions::ZERO);
         data_.f.populate(0.0);
 
-        // 1. Pressure: p(x,y,z) = x + 2y + 3z
+        // Define Pressure: p(x,y,z) = x + 2y + 3z
         auto funcP = [](double x, double y, double z, double) {
             return x + 2.0 * y + 3.0 * z;
         };
         data_.p.setup(grid, funcP);
         data_.p.populate(0.0);
 
-        // 2. Velocity: u = [sin(x), sin(y), sin(z)]
+        // Define Velocity: u = [sin(x), sin(y), sin(z)]
         auto sinX = [](double x, double, double, double) { return std::sin(x); };
         auto sinY = [](double, double y, double, double) { return std::sin(y); };
         auto sinZ = [](double, double, double z, double) { return std::sin(z); };
         data_.u.setup(grid, sinX, sinY, sinZ);
         data_.u.populate(0.0);
 
-        // 3. Eta: eta = [cos(x), cos(y), cos(z)]
+        // Define Eta (intermediate velocity): eta = [cos(x), cos(y), cos(z)]
         auto cosX = [](double x, double, double, double) { return std::cos(x); };
         auto cosY = [](double, double y, double, double) { return std::cos(y); };
         auto cosZ = [](double, double, double z, double) { return std::cos(z); };
         data_.eta.setup(grid, cosX, cosY, cosZ);
         data_.eta.populate(0.0);
 
-        // 4. Zeta: zeta = [x^2, y^2, z^2]
+        // Define Zeta (intermediate velocity): zeta = [x^2, y^2, z^2]
         auto sqX = [](double x, double, double, double) { return x * x; };
         auto sqY = [](double, double y, double, double) { return y * y; };
         auto sqZ = [](double, double, double z, double) { return z * z; };
         data_.zeta.setup(grid, sqX, sqY, sqZ);
         data_.zeta.populate(0.0);
 
-        // Boundary Fields (Discrete)
+        // Define Boundary Conditions (Discrete Fields)
         data_.uBoundNew.setup(grid, sinX, sinY, sinZ);
         data_.uBoundNew.populate(0.0);
         data_.uBoundOld.setup(grid, sinX, sinY, sinZ);
         data_.uBoundOld.populate(0.0);
 
-        // --- FIX: Initialize Analytical Boundary Functions ---
-        // These are required by LinearSys::fillSystemVelocity (lines 100+)
-        // matching the velocity definitions above.
+        // Define Analytical Boundary Functions
+        // Required for LinearSys solver to evaluate BCs at specific coordinates
         data_.bcu = [](double x, double, double, double) { return std::sin(x); };
         data_.bcv = [](double, double y, double, double) { return std::sin(y); };
         data_.bcw = [](double, double, double z, double) { return std::sin(z); };
@@ -114,26 +115,28 @@ TEST_F(ViscousStepTest, ConstructorAndInit) {
 }
 
 TEST_F(ViscousStepTest, RunDoesNotCrash) {
-    // This call triggers LinearSys::fillSystemVelocity, which calls data_.bcu/v/w
+// Triggers LinearSys::fillSystemVelocity which calls analytical BCs
     ASSERT_NO_THROW(viscousStep->run());
 }
 
 TEST_F(ViscousStepTest, ComputeG_Correctness) {
     const size_t i = 5, j = 5, k_ = 5;
-    const double x = i * grid.dx;
+    const double x = i * grid->dx;
 
     ASSERT_NO_THROW(callComputeG());
 
     double f_term = 0.0;
-    double gradP_term = 1.0;
+    double gradP_term = 1.0; // d/dx(x + 2y + 3z) = 1
     double u_term = (nu / 1.0) * std::sin(x);
 
+// Laplacian approximation
     double dxx_term = std::cos(x + 1.0) - 2.0 * std::cos(x) + std::cos(x - 1.0);
     double dyy_term = 0.0;
     double dzz_term = 0.0;
 
     double deriv_term = nu * (dxx_term + dyy_term + dzz_term);
 
+// Expected G formula from implementation
     double expected_g_x = f_term - gradP_term - u_term * 0.5 + deriv_term * 0.5;
 
     double g_x_computed = getG(Axis::X, i, j, k_);
@@ -142,7 +145,7 @@ TEST_F(ViscousStepTest, ComputeG_Correctness) {
 
 TEST_F(ViscousStepTest, ComputeXi_Correctness) {
     const size_t i = 5, j = 5, k_ = 5;
-    const double x = i * grid.dx;
+    const double x = i * grid->dx;
     double u_val = std::sin(x);
 
     setGConstant(10.0);
@@ -161,56 +164,55 @@ TEST_F(ViscousStepTest, ComputeXi_Correctness) {
 class ViscousStepRobustnessTest : public ::testing::Test {
 protected:
     const size_t N = 10;
-    Grid grid;
+    std::shared_ptr<Grid> grid;
     SimulationData data_;
     ParallelizationSettings parallel_;
     std::unique_ptr<ViscousStep> viscousStep;
 
-    ViscousStepRobustnessTest()
-            : grid(N, N, N, 0.1, 0.1, 0.1),
-              data_{ grid }
-    {
+    ViscousStepRobustnessTest() {
+        grid = std::make_shared<Grid>(N, N, N, 0.1, 0.1, 0.1);
+        data_.grid = grid;
         data_.dt = 0.1;
         data_.nu = 1.0e-3;
         data_.currTime = 0.0;
     }
 
     void SetUp() override {
-        // k = 1.0
-        data_.k.setup(grid, [](double,double,double,double){ return 1.0; });
+        // Define Permeability k = 1.0
+        data_.k.setup(grid, [](double, double, double, double) { return 1.0; });
         data_.k.populate(0.0);
 
-        // f = 10.0
-        auto funcF = [](double,double,double,double){ return 10.0; };
+        // Define Force f = 10.0
+        auto funcF = [](double, double, double, double) { return 10.0; };
         data_.f.setup(grid, funcF, funcF, funcF);
         data_.f.populate(0.0);
 
-        // p = x*y + z
-        data_.p.setup(grid, [](double x, double y, double z, double){ return x * y + z; });
+        // Define Pressure p = x*y + z
+        data_.p.setup(grid, [](double x, double y, double z, double) { return x * y + z; });
         data_.p.populate(0.0);
 
-        // u = [x^2, y^2, z^2]
-        auto sqX = [](double x, double, double, double){ return x*x; };
-        auto sqY = [](double, double y, double, double){ return y*y; };
-        auto sqZ = [](double, double, double z, double){ return z*z; };
+        // Define Velocity u = [x^2, y^2, z^2]
+        auto sqX = [](double x, double, double, double) { return x * x; };
+        auto sqY = [](double, double y, double, double) { return y * y; };
+        auto sqZ = [](double, double, double z, double) { return z * z; };
         data_.u.setup(grid, sqX, sqY, sqZ);
         data_.u.populate(0.0);
 
-        // eta = [y^2, z^2, x^2]
+        // Define Eta = [y^2, z^2, x^2]
         data_.eta.setup(grid, sqY, sqZ, sqX);
         data_.eta.populate(0.0);
 
-        // zeta = [z^2, x^2, y^2]
+        // Define Zeta = [z^2, x^2, y^2]
         data_.zeta.setup(grid, sqZ, sqX, sqY);
         data_.zeta.populate(0.0);
 
-        // BCs
+        // Define Discrete Boundary Conditions
         data_.uBoundNew.setup(grid, sqX, sqY, sqZ);
         data_.uBoundNew.populate(0.0);
         data_.uBoundOld.setup(grid, sqX, sqY, sqZ);
         data_.uBoundOld.populate(0.0);
 
-        // --- FIX: Initialize Analytical Boundary Functions ---
+        // Define Analytical Boundary Functions
         data_.bcu = sqX;
         data_.bcv = sqY;
         data_.bcw = sqZ;
@@ -218,10 +220,10 @@ protected:
         viscousStep = std::make_unique<ViscousStep>(data_, parallel_);
     }
 
-    void checkFieldFinite(const Field& field, const std::string& fieldName) {
-        for (size_t k = 0; k < grid.Nz; ++k) {
-            for (size_t j = 0; j < grid.Ny; ++j) {
-                for (size_t i = 0; i < grid.Nx; ++i) {
+    void checkFieldFinite(const Field &field, const std::string &fieldName) {
+        for (size_t k = 0; k < grid->Nz; ++k) {
+            for (size_t j = 0; j < grid->Ny; ++j) {
+                for (size_t i = 0; i < grid->Nx; ++i) {
                     ASSERT_TRUE(std::isfinite(field(i, j, k)))
                                                 << "Found NaN or Inf in " << fieldName
                                                 << " at index (" << i << "," << j << "," << k << ")";
@@ -231,8 +233,7 @@ protected:
     }
 };
 
-TEST_F(ViscousStepRobustnessTest, Run_WithPolynomialFields_ProducesFiniteOutput)
-{
+TEST_F(ViscousStepRobustnessTest, Run_WithPolynomialFields_ProducesFiniteOutput) {
     ASSERT_NO_THROW(viscousStep->run());
 
     checkFieldFinite(data_.eta(Axis::X), "eta(X)");

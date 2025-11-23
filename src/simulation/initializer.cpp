@@ -9,7 +9,7 @@
 // =========================================================
 
 Field Initializer::initializeFieldFromSpatialFunc(
-        const Grid &grid,
+        const GridPtr &grid,
         const Functions::Func &func
 ) {
     Field field;
@@ -20,7 +20,7 @@ Field Initializer::initializeFieldFromSpatialFunc(
 
 Field Initializer::initializeFieldFromTemporalFunc(
         const double time,
-        const Grid &grid,
+        const GridPtr &grid,
         const Functions::Func &func
 ) {
     Field field;
@@ -34,7 +34,7 @@ Field Initializer::initializeFieldFromTemporalFunc(
 // =========================================================
 
 VectorField Initializer::initializeVectorFieldFromSpatialFunc(
-        const Grid &grid,
+        const GridPtr &grid,
         const Functions::Func &func_u,
         const Functions::Func &func_v,
         const Functions::Func &func_w
@@ -47,7 +47,7 @@ VectorField Initializer::initializeVectorFieldFromSpatialFunc(
 
 VectorField Initializer::initializeVectorFieldFromTemporalFunc(
         const double time,
-        const Grid &grid,
+        const GridPtr &grid,
         const Functions::Func &func_u,
         const Functions::Func &func_v,
         const Functions::Func &func_w) {
@@ -65,10 +65,11 @@ SimulationData Initializer::setup(const InputData &inputData) {
     SimulationData sim;
 
     // --- Grid ---
-    Grid grid(static_cast<size_t>(inputData.mesh.nx),
-              static_cast<size_t>(inputData.mesh.ny),
-              static_cast<size_t>(inputData.mesh.nz),
-              inputData.mesh.dx, inputData.mesh.dy, inputData.mesh.dz);
+    GridPtr grid = std::make_shared<const Grid>(
+            static_cast<size_t>(inputData.mesh.nx),
+            static_cast<size_t>(inputData.mesh.ny),
+            static_cast<size_t>(inputData.mesh.nz),
+            inputData.mesh.dx, inputData.mesh.dy, inputData.mesh.dz);
     sim.grid = grid;
 
     // --- Time ---

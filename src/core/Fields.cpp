@@ -46,12 +46,12 @@ Field::valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int o
 }
 
 void Field::populate(double time) {
-    for (auto k = 0; k < grid_->Nz; ++k) {
-        for (auto j = 0; j < grid_->Ny; ++j) {
-            for (auto i = 0; i < grid_->Nx; ++i) {
-                auto x = grid_->to_x(i, offset_, offsetAxis_);
-                auto y = grid_->to_y(j, offset_, offsetAxis_);
-                auto z = grid_->to_z(k, offset_, offsetAxis_);
+    for (auto k = 0; k < gridPtr_->Nz; ++k) {
+        for (auto j = 0; j < gridPtr_->Ny; ++j) {
+            for (auto i = 0; i < gridPtr_->Nx; ++i) {
+                auto x = gridPtr_->to_x(i, offset_, offsetAxis_);
+                auto y = gridPtr_->to_y(j, offset_, offsetAxis_);
+                auto z = gridPtr_->to_z(k, offset_, offsetAxis_);
                 data_[idx(i, j, k)] = populateFunction_(x, y, z, time);
             }
         }
@@ -73,9 +73,9 @@ void Field::add(const Field::Scalar value) {
 }
 
 void Field::add(const Field &other) {
-    if (other.getGrid().Nx != grid_->Nx
-        || other.getGrid().Ny != grid_->Ny
-        || other.getGrid().Nz != grid_->Nz) {
+    if (other.getGrid().Nx != gridPtr_->Nx
+        || other.getGrid().Ny != gridPtr_->Ny
+        || other.getGrid().Nz != gridPtr_->Nz) {
         throw std::invalid_argument("Fields sizes do not match.");
     }
     for (size_t i = 0; i < data_.size(); ++i) {

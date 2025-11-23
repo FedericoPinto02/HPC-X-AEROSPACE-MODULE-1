@@ -91,7 +91,7 @@ void NSBSolver::solve()
     std::clock_t end_cpu_time = std::clock();
     double total_cpu_time_sec = static_cast<double>(end_cpu_time - start_cpu_time) / CLOCKS_PER_SEC;
 
-    const unsigned int total_cells = simData.grid.size();
+    const unsigned int total_cells = simData.grid->size();
     double steps_times_cells = simData.totalSteps * total_cells;
     double mean_cpu_time_per_cell_timestep = total_cpu_time_sec / steps_times_cells;
 

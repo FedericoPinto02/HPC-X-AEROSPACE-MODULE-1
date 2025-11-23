@@ -21,7 +21,7 @@ public:
 
 private:
     /// The pointer to the grid information.
-    const Grid *grid_;
+    GridPtr gridPtr_;
     /// The offset of the field in the staggered grid.
     GridStaggering offset_;
     /// The axis where to apply the offset in the staggered grid.
@@ -42,7 +42,7 @@ private:
      * @return the corresponding 1D index
      */
     [[nodiscard]] inline size_t idx(size_t i, size_t j, size_t k) const {
-        return (k * grid_->Ny + j) * grid_->Nx + i;
+        return (k * gridPtr_->Ny + j) * gridPtr_->Nx + i;
     }
 
 
@@ -67,16 +67,16 @@ public:
      * @param offsetAxis the axis where to apply the offset in the staggered grid
      */
     void setup(
-            const Grid &grid,
+            const GridPtr &grid,
             const Functions::Func &populateFunction = Functions::ZERO,
             GridStaggering offset = GridStaggering::CELL_CENTERED,
             Axis offsetAxis = Axis::X
     ) {
-        grid_ = &grid;
+        gridPtr_ = grid;
         populateFunction_ = populateFunction;
         offset_ = offset;
         offsetAxis_ = offsetAxis;
-        data_.resize(grid.size(), Scalar(0));
+        data_.resize(gridPtr_->size(), Scalar(0));
     }
 
     /**
@@ -93,10 +93,10 @@ public:
      * @brief Getter for the grid information.
      * @return the pointer to the grid information
      */
-    [[nodiscard]] inline const Grid &getGrid() { return *grid_; }
+    [[nodiscard]] inline const Grid &getGrid() { return *gridPtr_; }
 
     /// @overload
-    [[nodiscard]] inline const Grid &getGrid() const { return *grid_; }
+    [[nodiscard]] inline const Grid &getGrid() const { return *gridPtr_; }
 
 
     //==================================================================================================================
@@ -199,7 +199,7 @@ public:
 
 private:
     /// The pointer to the grid information (dimensions and spacing).
-    const Grid *grid_;
+    GridPtr gridPtr_;
     /// The components of the vector field (x, y, z).
     std::array<Field, AXIS_COUNT> components_;
 
@@ -214,11 +214,11 @@ public:
      * @param populateYFunction the function to use for populating the y-component of the vector field
      * @param populateZFunction the function to use for populating the z-component of the vector field
      */
-    void setup(const Grid &grid,
+    void setup(const GridPtr &grid,
                const Functions::Func &populateXFunction = Functions::ZERO,
                const Functions::Func &populateYFunction = Functions::ZERO,
                const Functions::Func &populateZFunction = Functions::ZERO) {
-        grid_ = &grid;
+        gridPtr_ = grid;
         component(Axis::X).setup(grid, populateXFunction);
         component(Axis::Y).setup(grid, populateYFunction);
         component(Axis::Z).setup(grid, populateZFunction);
@@ -242,10 +242,10 @@ public:
      * @brief Getter for the grid information.
      * @return the pointer to the grid information
      */
-    [[nodiscard]] inline const Grid &getGrid() { return *grid_; }
+    [[nodiscard]] inline const Grid &getGrid() { return *gridPtr_; }
 
     /// @overload
-    [[nodiscard]] inline const Grid &getGrid() const { return *grid_; }
+    [[nodiscard]] inline const Grid &getGrid() const { return *gridPtr_; }
 
 
     //==================================================================================================================

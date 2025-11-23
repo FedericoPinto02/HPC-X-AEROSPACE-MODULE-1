@@ -132,8 +132,8 @@ void ViscousStep::closeViscousStep()
     // ------------------------------------------
     {
     normalAxis = Axis::X;
-    size_t nSystem = data_.grid.Ny * data_.grid.Nz; // number of linear systems to solve
-    size_t sysDimension = data_.grid.Nx; // dimension of linear system to solve
+    size_t nSystem = data_.grid->Ny * data_.grid->Nz; // number of linear systems to solve
+    size_t sysDimension = data_.grid->Nx; // dimension of linear system to solve
     size_t j, k;
     // when solving Eta we fill linsys with dxx derivatives
     // Eta.u is then solved exploiting normal Dirichlet boundary conditions
@@ -154,9 +154,9 @@ void ViscousStep::closeViscousStep()
     rhs_w.back() = 0;
 
     iStart = 0;
-    for (j = 1; j < data_.grid.Ny-1; j++)
+    for (j = 1; j < data_.grid->Ny-1; j++)
     {
-        for (k = 1; k < data_.grid.Nz-1; k++)
+        for (k = 1; k < data_.grid->Nz-1; k++)
         {
             jStart = j;
             kStart = k;
@@ -168,7 +168,7 @@ void ViscousStep::closeViscousStep()
                 gamma = data_.dt * data_.nu * 0.5 / beta; // get gamma coefficient for each point
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
-                mul = 1.0 / (data_.grid.dx * data_.grid.dx);
+                mul = 1.0 / (data_.grid->dx * data_.grid->dx);
                 deriv_u = (data_.eta(Axis::X, i + 1, j, k) + data_.eta(Axis::X, i - 1, j, k) - 2.0 * data_.eta(Axis::X, i, j, k))*mul;
                 deriv_v = (data_.eta(Axis::Y, i + 1, j, k) + data_.eta(Axis::Y, i - 1, j, k) - 2.0 * data_.eta(Axis::Y, i, j, k))*mul;
                 deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k))*mul;
@@ -214,7 +214,7 @@ void ViscousStep::closeViscousStep()
     // Here Eta.w is computed with tangent b.c while Eta.u and Eta.v come directly from boundary conditions.
     k = 0;
     iStart = 0;
-    for (j = 1; j < data_.grid.Ny - 1; j++)
+    for (j = 1; j < data_.grid->Ny - 1; j++)
     {
         jStart = j;
         kStart = k;
@@ -224,7 +224,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dx * data_.grid.dx);
+            mul = 1.0 / (data_.grid->dx * data_.grid->dx);
             deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k)) * mul;
             rhs_w[i] = xi(Axis::Z, i, j, k) - gamma * deriv_w;
         }
@@ -245,8 +245,8 @@ void ViscousStep::closeViscousStep()
     }
     // Special case, k = Nz-1
     // Here Eta.v is computed with tangent b.c while Eta.u, Eta.w come directly from boundary conditions.
-    k = data_.grid.Nz - 1;
-    for (j = 1; j < data_.grid.Ny - 1; j++)
+    k = data_.grid->Nz - 1;
+    for (j = 1; j < data_.grid->Ny - 1; j++)
     {
         for (size_t i = 1; i < sysDimension - 1; i++)
         {
@@ -255,7 +255,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dx * data_.grid.dx);
+            mul = 1.0 / (data_.grid->dx * data_.grid->dx);
             deriv_v = (data_.eta(Axis::Y, i + 1, j, k) + data_.eta(Axis::Y, i - 1, j, k) - 2.0 * data_.eta(Axis::Y, i, j, k))*mul;
             rhs_v[i] = xi(Axis::Y, i,j,k) - gamma * deriv_v;
         }
@@ -277,7 +277,7 @@ void ViscousStep::closeViscousStep()
     // Special case, j = 1/2 (=0)
     // Here Eta.v is computed with tangent b.c while Eta.u and Eta.w come directly from boundary conditions.
     j = 0;
-    for (k = 1; k < data_.grid.Nz - 1; k++)
+    for (k = 1; k < data_.grid->Nz - 1; k++)
     {
         for (size_t i = 1; i < sysDimension - 1; i++)
         {
@@ -286,7 +286,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dx * data_.grid.dx);
+            mul = 1.0 / (data_.grid->dx * data_.grid->dx);
             deriv_v = (data_.eta(Axis::Y, i + 1, j, k) + data_.eta(Axis::Y, i - 1, j, k) - 2.0 * data_.eta(Axis::Y, i, j, k)) * mul;
             rhs_v[i] = xi(Axis::Y, i, j, k) - gamma * deriv_v;
         }
@@ -307,8 +307,8 @@ void ViscousStep::closeViscousStep()
     }
     // Special case, j = Ny-1
     // Here Eta.w is computed with tangent b.c while Eta.u, Eta.v come directly from boundary conditions.
-    j = data_.grid.Ny - 1;
-    for (k = 1; k < data_.grid.Nz - 1; k++)
+    j = data_.grid->Ny - 1;
+    for (k = 1; k < data_.grid->Nz - 1; k++)
     {
         for (size_t i = 1; i < sysDimension - 1; i++)
         {
@@ -317,7 +317,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dx * data_.grid.dx);
+            mul = 1.0 / (data_.grid->dx * data_.grid->dx);
             deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k))*mul;
             rhs_w[i] = xi(Axis::Z, i,j,k) - gamma * deriv_w;
         }
@@ -338,7 +338,7 @@ void ViscousStep::closeViscousStep()
     }
     // --- Handle Corner Lines (where j and k are boundaries) ---
     // For these lines, no solver is run. We apply boundary conditions directly.
-    // Note: sysDimension == data_.grid.Nx here.
+    // Note: sysDimension == data_.grid->Nx here.
 
     // Special case: Corner j = 0, k = 0
     j = 0;
@@ -351,8 +351,8 @@ void ViscousStep::closeViscousStep()
     }
 
     // Special case: Corner j = Ny-1, k = Nz-1
-    j = data_.grid.Ny - 1;
-    k = data_.grid.Nz - 1;
+    j = data_.grid->Ny - 1;
+    k = data_.grid->Nz - 1;
     for (size_t i = 0; i < sysDimension; i++)
     {
         data_.eta(Axis::X, i, j, k) = data_.uBoundNew(Axis::X, i, j, k);
@@ -362,7 +362,7 @@ void ViscousStep::closeViscousStep()
 
     // Special case: Corner j = 0, k = Nz-1
     j = 0;
-    k = data_.grid.Nz - 1;
+    k = data_.grid->Nz - 1;
     for (size_t i = 0; i < sysDimension; i++)
     {
         data_.eta(Axis::X, i, j, k) = data_.uBoundNew(Axis::X, i, j, k);
@@ -371,7 +371,7 @@ void ViscousStep::closeViscousStep()
     }
 
     // Special case: Corner j = Ny-1, k = 0
-    j = data_.grid.Ny - 1;
+    j = data_.grid->Ny - 1;
     k = 0;
     for (size_t i = 0; i < sysDimension; i++)
     {
@@ -391,8 +391,8 @@ void ViscousStep::closeViscousStep()
     // ------------------------------------------
     {
     normalAxis = Axis::Y;
-    size_t nSystem = data_.grid.Nx * data_.grid.Nz; // number of linear systems to solve
-    size_t sysDimension = data_.grid.Ny; // dimension of linear system to solve
+    size_t nSystem = data_.grid->Nx * data_.grid->Nz; // number of linear systems to solve
+    size_t sysDimension = data_.grid->Ny; // dimension of linear system to solve
     size_t i, k;
     // when solving Zeta we fill linsys with dyy derivatives
     // Zeta.v is then solved exploiting normal Dirichlet boundary conditions
@@ -413,9 +413,9 @@ void ViscousStep::closeViscousStep()
 
 
     jStart = 0;
-    for (i = 1; i < data_.grid.Nx-1; i++)
+    for (i = 1; i < data_.grid->Nx-1; i++)
     {
-        for (k = 1; k < data_.grid.Nz-1; k++)
+        for (k = 1; k < data_.grid->Nz-1; k++)
         {
             iStart = i;
             kStart = k;
@@ -427,7 +427,7 @@ void ViscousStep::closeViscousStep()
                 gamma = data_.dt * data_.nu * 0.5 / beta; // get gamma coefficient for each point
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
-                mul = 1.0 / (data_.grid.dy * data_.grid.dy);
+                mul = 1.0 / (data_.grid->dy * data_.grid->dy);
                 deriv_u = (data_.zeta(Axis::X, i, j + 1, k) + data_.zeta(Axis::X, i, j - 1, k) - 2.0 * data_.zeta(Axis::X, i, j, k))*mul;
                 deriv_v = (data_.zeta(Axis::Y, i, j + 1, k) + data_.zeta(Axis::Y, i, j - 1, k) - 2.0 * data_.zeta(Axis::Y, i, j, k))*mul;
                 deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k))*mul;
@@ -478,7 +478,7 @@ void ViscousStep::closeViscousStep()
     // Special case, k = 0 (Z-min boundary)
     // Solve for Zeta.w (normal to Z), set Zeta.u, Zeta.v (tangents) from uBoundNew.
     k = 0;
-    for (i = 1; i < data_.grid.Nx - 1; i++)
+    for (i = 1; i < data_.grid->Nx - 1; i++)
     {
         iStart = i;
         kStart = k;
@@ -487,7 +487,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dy * data_.grid.dy);
+            mul = 1.0 / (data_.grid->dy * data_.grid->dy);
             deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k)) * mul;
             // Note: rhs uses eta, as it's the input to this step
             rhs_w[j] = data_.eta(Axis::Z, i, j, k) - gamma * deriv_w;
@@ -511,8 +511,8 @@ void ViscousStep::closeViscousStep()
 
     // Special case, k = Nz-1 (Z-max boundary)
     // Solve for Zeta.u (tangents to Z), set Zeta.w, Zeta.v (normal) from uBoundNew.
-    k = data_.grid.Nz - 1;
-    for (i = 1; i < data_.grid.Nx - 1; i++)
+    k = data_.grid->Nz - 1;
+    for (i = 1; i < data_.grid->Nx - 1; i++)
     {
         iStart = i;
         kStart = k;
@@ -521,7 +521,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dy * data_.grid.dy);
+            mul = 1.0 / (data_.grid->dy * data_.grid->dy);
             deriv_u = (data_.zeta(Axis::X, i, j + 1, k) + data_.zeta(Axis::X, i, j - 1, k) - 2.0 * data_.zeta(Axis::X, i, j, k)) * mul;
             rhs_u[j] = data_.eta(Axis::X, i, j, k) - gamma * deriv_u;
         }
@@ -546,7 +546,7 @@ void ViscousStep::closeViscousStep()
     // Special case, i = 0 (X-min boundary)
     // Solve for Zeta.u (normal to X), set Zeta.v, Zeta.w (tangents) from uBoundNew.
     i = 0;
-    for (k = 1; k < data_.grid.Nz - 1; k++)
+    for (k = 1; k < data_.grid->Nz - 1; k++)
     {
         iStart = i;
         kStart = k;
@@ -555,7 +555,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dy * data_.grid.dy);
+            mul = 1.0 / (data_.grid->dy * data_.grid->dy);
             deriv_u = (data_.zeta(Axis::X, i, j + 1, k) + data_.zeta(Axis::X, i, j - 1, k) - 2.0 * data_.zeta(Axis::X, i, j, k)) * mul;
             rhs_u[j] = data_.eta(Axis::X, i, j, k) - gamma * deriv_u;
         }
@@ -578,8 +578,8 @@ void ViscousStep::closeViscousStep()
 
     // Special case, i = Nx-1 (X-max boundary)
     // Solve for Zeta.v (tangents to X), set Zeta.u,Zeta.w (normal) from uBoundNew.
-    i = data_.grid.Nx - 1;
-    for (k = 1; k < data_.grid.Nz - 1; k++)
+    i = data_.grid->Nx - 1;
+    for (k = 1; k < data_.grid->Nz - 1; k++)
     {
         iStart = i;
         kStart = k;
@@ -588,7 +588,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dy * data_.grid.dy);
+            mul = 1.0 / (data_.grid->dy * data_.grid->dy);
             deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k)) * mul;
             rhs_v[j] = data_.eta(Axis::Y, i, j, k) - gamma * deriv_v;
             rhs_w[j] = data_.eta(Axis::Z, i, j, k) - gamma * deriv_w;
@@ -613,7 +613,7 @@ void ViscousStep::closeViscousStep()
 
     // --- Handle Corner Lines (where i and k are boundaries) ---
     // For these lines, no solver is run. We apply boundary conditions directly.
-    // Note: sysDimension == data_.grid.Ny here.
+    // Note: sysDimension == data_.grid->Ny here.
 
     // Special case: Corner i = 0, k = 0
     i = 0;
@@ -626,8 +626,8 @@ void ViscousStep::closeViscousStep()
     }
 
     // Special case: Corner i = Nx-1, k = Nz-1
-    i = data_.grid.Nx - 1;
-    k = data_.grid.Nz - 1;
+    i = data_.grid->Nx - 1;
+    k = data_.grid->Nz - 1;
     for (size_t j = 0; j < sysDimension; j++) // Loop is over j
     {
         data_.zeta(Axis::X, i, j, k) = data_.uBoundNew(Axis::X, i, j, k);
@@ -637,7 +637,7 @@ void ViscousStep::closeViscousStep()
 
     // Special case: Corner i = 0, k = Nz-1
     i = 0;
-    k = data_.grid.Nz - 1;
+    k = data_.grid->Nz - 1;
     for (size_t j = 0; j < sysDimension; j++) // Loop is over j
     {
         data_.zeta(Axis::X, i, j, k) = data_.uBoundNew(Axis::X, i, j, k);
@@ -646,7 +646,7 @@ void ViscousStep::closeViscousStep()
     }
 
     // Special case: Corner i = Nx-1, k = 0
-    i = data_.grid.Nx - 1;
+    i = data_.grid->Nx - 1;
     k = 0;
     for (size_t j = 0; j < sysDimension; j++) // Loop is over j
     {
@@ -667,8 +667,8 @@ void ViscousStep::closeViscousStep()
     // ------------------------------------------
     {
     normalAxis = Axis::Z;
-    size_t nSystem = data_.grid.Nx * data_.grid.Ny; // number of linear systems to solve
-    size_t sysDimension = data_.grid.Nz; // dimension of linear system to solve
+    size_t nSystem = data_.grid->Nx * data_.grid->Ny; // number of linear systems to solve
+    size_t sysDimension = data_.grid->Nz; // dimension of linear system to solve
     size_t i, j;
     // when solving U we fill linsys with dzz derivatives
     // U.w is then solved exploiting normal Dirichlet boundary conditions
@@ -689,9 +689,9 @@ void ViscousStep::closeViscousStep()
 
 
     kStart = 0;
-    for (i = 1; i < data_.grid.Nx-1; i++)
+    for (i = 1; i < data_.grid->Nx-1; i++)
     {
-        for (j = 1; j < data_.grid.Ny-1; j++)
+        for (j = 1; j < data_.grid->Ny-1; j++)
         {
             iStart = i;
             jStart = j;
@@ -703,7 +703,7 @@ void ViscousStep::closeViscousStep()
                 gamma = data_.dt * data_.nu * 0.5 / beta; // get gamma coefficient for each point
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
-                mul = 1.0 / (data_.grid.dz * data_.grid.dz);
+                mul = 1.0 / (data_.grid->dz * data_.grid->dz);
                 deriv_u = (data_.u(Axis::X, i, j, k + 1) + data_.u(Axis::X, i, j, k - 1) - 2.0 * data_.u(Axis::X, i, j, k))*mul;
                 deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k))*mul;
                 deriv_w = (data_.u(Axis::Z, i, j, k + 1) + data_.u(Axis::Z, i, j, k - 1) - 2.0 * data_.u(Axis::Z, i, j, k))*mul;
@@ -753,7 +753,7 @@ void ViscousStep::closeViscousStep()
     // Special case, j = 0 (Y-min boundary)
     // Solve for U.v (normal to Y), set U.u, U.w (tangents) from uBoundNew.
     j = 0;
-    for (i = 1; i < data_.grid.Nx - 1; i++)
+    for (i = 1; i < data_.grid->Nx - 1; i++)
     {
         iStart = i;
         jStart = j;
@@ -762,7 +762,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dz * data_.grid.dz);
+            mul = 1.0 / (data_.grid->dz * data_.grid->dz);
             deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k)) * mul;
             // Note: rhs uses zeta, as it's the input to this step
             rhs_v[k] = data_.zeta(Axis::Y, i, j, k) - gamma * deriv_v;
@@ -786,8 +786,8 @@ void ViscousStep::closeViscousStep()
 
     // Special case, j = Ny-1 (Y-max boundary)
     // Solve for U.u (tangents to Y), set U.v, U.w (normal) from uBoundNew.
-    j = data_.grid.Ny - 1;
-    for (i = 1; i < data_.grid.Nx - 1; i++)
+    j = data_.grid->Ny - 1;
+    for (i = 1; i < data_.grid->Nx - 1; i++)
     {
         iStart = i;
         jStart = j;
@@ -796,7 +796,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dz * data_.grid.dz);
+            mul = 1.0 / (data_.grid->dz * data_.grid->dz);
             deriv_u = (data_.u(Axis::X, i, j, k + 1) + data_.u(Axis::X, i, j, k - 1) - 2.0 * data_.u(Axis::X, i, j, k)) * mul;
             rhs_u[k] = data_.zeta(Axis::X, i, j, k) - gamma * deriv_u;
         }
@@ -820,7 +820,7 @@ void ViscousStep::closeViscousStep()
     // Special case, i = 0 (X-min boundary)
     // Solve for U.u (normal to X), set U.v, U.w (tangents) from uBoundNew.
     i = 0;
-    for (j = 1; j < data_.grid.Ny - 1; j++)
+    for (j = 1; j < data_.grid->Ny - 1; j++)
     {
         iStart = i;
         jStart = j;
@@ -829,7 +829,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dz * data_.grid.dz);
+            mul = 1.0 / (data_.grid->dz * data_.grid->dz);
             deriv_u = (data_.u(Axis::X, i, j, k + 1) + data_.u(Axis::X, i, j, k - 1) - 2.0 * data_.u(Axis::X, i, j, k)) * mul;
             rhs_u[k] = data_.zeta(Axis::X, i, j, k) - gamma * deriv_u;
         }
@@ -852,8 +852,8 @@ void ViscousStep::closeViscousStep()
 
     // Special case, i = Nx-1 (X-max boundary)
     // Solve for U.v (tangents to X), set U.u, U.w  (normal) from uBoundNew.
-    i = data_.grid.Nx - 1;
-    for (j = 1; j < data_.grid.Ny - 1; j++)
+    i = data_.grid->Nx - 1;
+    for (j = 1; j < data_.grid->Ny - 1; j++)
     {
         iStart = i;
         jStart = j;
@@ -862,7 +862,7 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            mul = 1.0 / (data_.grid.dz * data_.grid.dz);
+            mul = 1.0 / (data_.grid->dz * data_.grid->dz);
             deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k)) * mul;
             rhs_v[k] = data_.zeta(Axis::Y, i, j, k) - gamma * deriv_v;
         }
@@ -886,7 +886,7 @@ void ViscousStep::closeViscousStep()
 
     // --- Handle Corner Lines (where i and j are boundaries) ---
     // For these lines, no solver is run. We apply boundary conditions directly.
-    // Note: sysDimension == data_.grid.Nz here.
+    // Note: sysDimension == data_.grid->Nz here.
 
     // Special case: Corner i = 0, j = 0
     i = 0;
@@ -899,8 +899,8 @@ void ViscousStep::closeViscousStep()
     }
 
     // Special case: Corner i = Nx-1, j = Ny-1
-    i = data_.grid.Nx - 1;
-    j = data_.grid.Ny - 1;
+    i = data_.grid->Nx - 1;
+    j = data_.grid->Ny - 1;
     for (size_t k = 0; k < sysDimension; k++) // Loop is over k
     {
         data_.u(Axis::X, i, j, k) = data_.uBoundNew(Axis::X, i, j, k);
@@ -910,7 +910,7 @@ void ViscousStep::closeViscousStep()
 
     // Special case: Corner i = 0, j = Ny-1
     i = 0;
-    j = data_.grid.Ny - 1;
+    j = data_.grid->Ny - 1;
     for (size_t k = 0; k < sysDimension; k++) // Loop is over k
     {
         data_.u(Axis::X, i, j, k) = data_.uBoundNew(Axis::X, i, j, k);
@@ -919,7 +919,7 @@ void ViscousStep::closeViscousStep()
     }
 
     // Special case: Corner i = Nx-1, j = 0
-    i = data_.grid.Nx - 1;
+    i = data_.grid->Nx - 1;
     j = 0;
     for (size_t k = 0; k < sysDimension; k++) // Loop is over k
     {

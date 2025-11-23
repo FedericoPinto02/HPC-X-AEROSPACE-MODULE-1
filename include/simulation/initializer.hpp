@@ -22,12 +22,12 @@ namespace Initializer {
     // ---------------------------------------------------------------------
 
     Field initializeFieldFromSpatialFunc(
-            const Grid &grid,
+            const GridPtr &grid,
             const Functions::Func &func);
 
     Field initializeFieldFromTemporalFunc(
             const double time,
-            const Grid &grid,
+            const GridPtr &grid,
             const Functions::Func &func);
 
     // ---------------------------------------------------------------------
@@ -35,14 +35,14 @@ namespace Initializer {
     // ---------------------------------------------------------------------
 
     VectorField initializeVectorFieldFromSpatialFunc(
-            const Grid &grid,
+            const GridPtr &grid,
             const Functions::Func &func_u,
             const Functions::Func &func_v,
             const Functions::Func &func_w);
 
     VectorField initializeVectorFieldFromTemporalFunc(
             const double time,
-            const Grid &grid,
+            const GridPtr &grid,
             const Functions::Func &func_u,
             const Functions::Func &func_v,
             const Functions::Func &func_w);

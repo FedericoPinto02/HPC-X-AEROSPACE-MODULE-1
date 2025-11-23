@@ -5,8 +5,8 @@
 #include <cstdio>
 
 VTKWriter::VTKWriter(const OutputSettings &outputSettings, const SimulationData &simData)
-    : Nx_(simData.grid.Nx), Ny_(simData.grid.Ny), Nz_(simData.grid.Nz),
-      dx_(simData.grid.dx), dy_(simData.grid.dy), dz_(simData.grid.dz),
+    : Nx_(simData.grid->Nx), Ny_(simData.grid->Ny), Nz_(simData.grid->Nz),
+      dx_(simData.grid->dx), dy_(simData.grid->dy), dz_(simData.grid->dz),
       enabled_(outputSettings.enabled),
       outputFrequency_(outputSettings.outputFrequency),
       basePrefix_(outputSettings.dir + "/" + outputSettings.baseFilename)

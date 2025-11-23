@@ -12,16 +12,15 @@ enum class Axis {
 
 const size_t AXIS_COUNT = 3;
 
-/**
- * @brief Enum describing the (possibly staggered) position of some points in a grid.
- */
+/// Enum describing the (possibly staggered) position of some points in a grid.
 enum class GridStaggering {
     CELL_CENTERED, FACE_CENTERED
 };
 
-/**
-* @brief Struct to hold grid dimensions and spacing information along each direction.
-*/
+/// Shared pointer type for Grid struct.
+using GridPtr = std::shared_ptr<const struct Grid>;
+
+/// Struct to hold grid dimensions and spacing information along each direction.
 struct Grid {
     /// Physical size of the grid in each direction.
     double Lx, Ly, Lz;

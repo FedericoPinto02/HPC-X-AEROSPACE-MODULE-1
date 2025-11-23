@@ -2,6 +2,7 @@
 #include <vector>
 #include <cmath>
 #include <functional>
+#include <memory>
 
 #include "core/Fields.hpp"
 #include "numerics/derivatives.hpp"
@@ -13,11 +14,13 @@ protected:
     const size_t Nx = 10, Ny = 10, Nz = 10;
     const double dx = 0.5, dy = 0.5, dz = 0.5;
 
-    // Stack-allocated Grid
-    const Grid grid;
+    // Grid managed via shared_ptr
+    std::shared_ptr<Grid> grid;
     Derivatives deriv;
 
-    DerivativesTest() : grid(Nx, Ny, Nz, dx, dy, dz) {}
+    void SetUp() override {
+        grid = std::make_shared<Grid>(Nx, Ny, Nz, dx, dy, dz);
+    }
 
     // Helper to quickly setup and populate a field with a lambda
     Field createField(Functions::Func func) {
@@ -50,11 +53,13 @@ TEST_F(DerivativesTest, Laplacian_Consistency) {
     // Ideally: Div(Grad(f)) == Laplacian(f)
     // In your implementation:
     // Grad is Forward Difference. Div is Backward Difference.
-    // Forward + Backward == Central Difference, which is exactly your Hessian implementation.
+    // Forward + Backward on a staggered grid results in a Central Difference stencil
+    // for the second derivative, which matches your Hessian implementation.
 
+    //
     // f(x,y,z) = x^3 + y^3 + z^3
     auto func = [](double x, double y, double z, double) {
-        return x*x*x + y*y*y + z*z*z;
+        return x * x * x + y * y * y + z * z * z;
     };
     Field field = createField(func);
 
@@ -93,7 +98,7 @@ TEST_F(DerivativesTest, Laplacian_Consistency) {
 TEST_F(DerivativesTest, Gradient_ForwardDifference_Accuracy) {
     // f(x,y,z) = x^2 + y^2 + z^2
     Field field = createField([](double x, double y, double z, double) {
-        return x*x + y*y + z*z;
+        return x * x + y * y + z * z;
     });
 
     VectorField grad = createEmptyVectorField();
@@ -134,9 +139,9 @@ TEST_F(DerivativesTest, Gradient_Boundaries_AreZero) {
 TEST_F(DerivativesTest, Divergence_BackwardDifference_Accuracy) {
     // u = (x, 2y, 3z)
     VectorField vec = createEmptyVectorField();
-    vec.component(Axis::X).setup(grid, [](double x, double, double, double){ return x; });
-    vec.component(Axis::Y).setup(grid, [](double, double y, double, double){ return 2.0*y; });
-    vec.component(Axis::Z).setup(grid, [](double, double, double z, double){ return 3.0*z; });
+    vec.component(Axis::X).setup(grid, [](double x, double, double, double) { return x; });
+    vec.component(Axis::Y).setup(grid, [](double, double y, double, double) { return 2.0 * y; });
+    vec.component(Axis::Z).setup(grid, [](double, double, double z, double) { return 3.0 * z; });
     vec.populate(0.0);
 
     Field div = createEmptyField();
@@ -173,7 +178,7 @@ TEST_F(DerivativesTest, Divergence_Boundaries_AreZero) {
 TEST_F(DerivativesTest, Hessian_CentralDifference_ExactForCubic) {
     // f(x,y,z) = x^3 + y^3 + z^3
     Field field = createField([](double x, double y, double z, double) {
-        return x*x*x + y*y*y + z*z*z;
+        return x * x * x + y * y * y + z * z * z;
     });
 
     VectorField hessian = createEmptyVectorField();
@@ -202,7 +207,8 @@ TEST_F(DerivativesTest, Hessian_CentralDifference_ExactForCubic) {
 // ============================================================================
 
 TEST_F(DerivativesTest, Throws_IfGridIsTooSmall) {
-    Grid tinyGrid(2, 2, 2, 1.0, 1.0, 1.0); // Too small for 2nd derivative (needs 3 points)
+    // Too small for 2nd derivative (needs 3 points)
+    auto tinyGrid = std::make_shared<Grid>(2, 2, 2, 1.0, 1.0, 1.0);
     Field field;
     field.setup(tinyGrid);
     Field result;
@@ -214,5 +220,6 @@ TEST_F(DerivativesTest, Throws_IfGridIsTooSmall) {
 }
 
 TEST_F(DerivativesTest, Throws_IfGridIsNegative) {
-    EXPECT_THROW(Grid(10, 10, 10, -0.1, 1.0, 1.0), std::runtime_error);
+    // Constructor logic validation via make_shared
+    EXPECT_THROW(std::make_shared<Grid>(10, 10, 10, -0.1, 1.0, 1.0), std::runtime_error);
 }

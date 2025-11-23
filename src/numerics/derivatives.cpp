@@ -95,10 +95,10 @@ void Derivatives::computeDzDiv(const Field &field, Field &dz) const {
 
 
 void Derivatives::computeDivergence(const VectorField &field, Field &divergence) const {
-    Field tmp;
-    tmp.setup(divergence.getGrid());
-
+    Field tmp = divergence;
+    tmp.reset();
     divergence.reset();
+
     computeDxDiv(field(Axis::X), tmp);
     divergence.add(tmp);
     computeDyDiv(field(Axis::Y), tmp);
