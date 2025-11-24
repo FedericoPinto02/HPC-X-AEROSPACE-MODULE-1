@@ -261,7 +261,7 @@ void ViscousStep::closeViscousStep()
         }
     }
     // Special case, k = Nz-1
-    // Here Eta.v is computed with tangent b.c while Eta.u, Eta.w come directly from boundary conditions.
+    // Here Eta.u, Eta.v are computed with tangent b.c while , Eta.w comes directly from boundary conditions.
     k = data_.grid->Nz - 1;
     for (j = 1; j < data_.grid->Ny - 1; j++)
     {
@@ -272,9 +272,19 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
+            deriv_u = (data_.eta(Axis::X, i + 1, j, k) + data_.eta(Axis::X, i - 1, j, k) - 2.0 * data_.eta(Axis::X, i, j, k))*mul;
+            rhs_u[i] = xi(Axis::X, i,j,k) - gamma * deriv_u;
+
             deriv_v = (data_.eta(Axis::Y, i + 1, j, k) + data_.eta(Axis::Y, i - 1, j, k) - 2.0 * data_.eta(Axis::Y, i, j, k))*mul;
             rhs_v[i] = xi(Axis::Y, i,j,k) - gamma * deriv_v;
         }
+            mySystem_u.setRhs(rhs_u);
+
+            mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::X, iStart, jStart, kStart);
+            // mySystem_v.ThomaSolver();
+            // std::vector<double> unknown_v = mySystem_v.getSolution();
+            unknown_u = solveSystem(mySystem_u, BoundaryType::Normal);
+
             mySystem_v.setRhs(rhs_v);
 
             mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::X, iStart, jStart, kStart);
@@ -284,7 +294,7 @@ void ViscousStep::closeViscousStep()
 
         for (size_t i = 0; i < sysDimension; i++)
         {
-            data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+            data_.eta(Axis::X, i, j, k) = unknown_u[i];
             data_.eta(Axis::Y, i, j, k) = unknown_v[i];
             data_.eta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
         }
@@ -321,7 +331,7 @@ void ViscousStep::closeViscousStep()
         }
     }
     // Special case, j = Ny-1
-    // Here Eta.w is computed with tangent b.c while Eta.u, Eta.v come directly from boundary conditions.
+    // Here Eta.u, Eta.w are computed with tangent b.c while Eta.v comes directly from boundary conditions.
     j = data_.grid->Ny - 1;
     for (k = 1; k < data_.grid->Nz - 1; k++)
     {
@@ -332,10 +342,19 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
+            deriv_u = (data_.eta(Axis::X, i + 1, j, k) + data_.eta(Axis::X, i - 1, j, k) - 2.0 * data_.eta(Axis::X, i, j, k))*mul;
+            rhs_u[i] = xi(Axis::X, i,j,k) - gamma * deriv_u;
+
             deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k))*mul;
             rhs_w[i] = xi(Axis::Z, i,j,k) - gamma * deriv_w;
         }
-            
+            mySystem_u.setRhs(rhs_u);
+
+            mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::X, iStart, jStart, kStart);
+            // mySystem_v.ThomaSolver();
+            // std::vector<double> unknown_v = mySystem_v.getSolution();
+            unknown_u = solveSystem(mySystem_u, BoundaryType::Normal);
+
             mySystem_w.setRhs(rhs_w);
 
             mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::X, iStart, jStart, kStart);
@@ -345,7 +364,7 @@ void ViscousStep::closeViscousStep()
 
         for (size_t i = 0; i < sysDimension; i++)
         {
-            data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+            data_.eta(Axis::X, i, j, k) = unknown_u[i];
             data_.eta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
             data_.eta(Axis::Z, i, j, k) = unknown_w[i];
         }
@@ -367,34 +386,74 @@ void ViscousStep::closeViscousStep()
     // Special case: Corner j = Ny-1, k = Nz-1
     j = data_.grid->Ny - 1;
     k = data_.grid->Nz - 1;
+    for (size_t i = 1; i < sysDimension - 1; i++)
+    {
+        jStart = j;
+        kStart = k;
+        porosity = data_.k(i, j, k);
+        beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+        gamma = data_.dt * data_.nu * 0.5 / beta;
+        deriv_u = (data_.eta(Axis::X, i + 1, j, k) + data_.eta(Axis::X, i - 1, j, k) - 2.0 * data_.eta(Axis::X, i, j, k)) * mul;
+        rhs_u[i] = xi(Axis::X, i, j, k) - gamma * deriv_u;
+    }
+    mySystem_u.setRhs(rhs_u);
+    mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::X, iStart, jStart, kStart);
+    unknown_u = solveSystem(mySystem_u, BoundaryType::Normal);
+
     for (size_t i = 0; i < sysDimension; i++)
     {
-        data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
-        data_.eta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
-        data_.eta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
+        data_.eta(Axis::X, i, j, k) = unknown_u[i];
+        data_.eta(Axis::Y, i, j, k) = data_.bcv(i * dx, (j + 0.5) * dy, k * dz, t);
+        data_.eta(Axis::Z, i, j, k) = data_.bcw(i * dx, j * dy, (k + 0.5) * dz, t);
     }
 
     // Special case: Corner j = 0, k = Nz-1
     j = 0;
     k = data_.grid->Nz - 1;
+    for (size_t i = 1; i < sysDimension - 1; i++)
+    {
+        jStart = j;
+        kStart = k;
+        porosity = data_.k(i, j, k);
+        beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+        gamma = data_.dt * data_.nu * 0.5 / beta;
+        deriv_v = (data_.eta(Axis::Y, i + 1, j, k) + data_.eta(Axis::Y, i - 1, j, k) - 2.0 * data_.eta(Axis::Y, i, j, k)) * mul;
+        rhs_v[i] = xi(Axis::Y, i, j, k) - gamma * deriv_v;
+    }
+    mySystem_v.setRhs(rhs_v);
+    mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::X, iStart, jStart, kStart);
+    unknown_v = solveSystem(mySystem_v, BoundaryType::Tangent);
+
     for (size_t i = 0; i < sysDimension; i++)
     {
         data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
-        data_.eta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.eta(Axis::Y, i, j, k) = unknown_v[i];
         data_.eta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
     // Special case: Corner j = Ny-1, k = 0
     j = data_.grid->Ny - 1;
     k = 0;
+    for (size_t i = 1; i < sysDimension - 1; i++)
+    {
+        jStart = j;
+        kStart = k;
+        porosity = data_.k(i, j, k);
+        beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+        gamma = data_.dt * data_.nu * 0.5 / beta;
+        deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k)) * mul;
+        rhs_w[i] = xi(Axis::Z, i, j, k) - gamma * deriv_w;
+    }
+    mySystem_w.setRhs(rhs_w);
+    mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::X, iStart, jStart, kStart);
+    unknown_w = solveSystem(mySystem_w, BoundaryType::Tangent);
+
     for (size_t i = 0; i < sysDimension; i++)
     {
-        data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
-        data_.eta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
-        data_.eta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
+        data_.eta(Axis::X, i, j, k) = data_.bcu((i + 0.5) * dx, j * dy, k * dz, t);
+        data_.eta(Axis::Y, i, j, k) = data_.bcv(i * dx, (j + 0.5) * dy, k * dz, t);
+        data_.eta(Axis::Z, i, j, k) = unknown_w[i];
     }
-
-
     }
    
 
@@ -531,7 +590,7 @@ void ViscousStep::closeViscousStep()
     }
 
     // Special case, k = Nz-1 (Z-max boundary)
-    // Solve for Zeta.u (tangents to Z), set Zeta.w, Zeta.v (normal) from uBoundNew.
+    // Solve for Zeta.u, Zeta.v  (tangents to Z), set Zeta.w, (normal) from uBoundNew.
     k = data_.grid->Nz - 1;
     for (i = 1; i < data_.grid->Nx - 1; i++)
     {
@@ -544,21 +603,23 @@ void ViscousStep::closeViscousStep()
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_u = (data_.zeta(Axis::X, i, j + 1, k) + data_.zeta(Axis::X, i, j - 1, k) - 2.0 * data_.zeta(Axis::X, i, j, k)) * mul;
             rhs_u[j] = data_.eta(Axis::X, i, j, k) - gamma * deriv_u;
+            deriv_v = (data_.zeta(Axis::Y, i, j + 1, k) + data_.zeta(Axis::Y, i, j - 1, k) - 2.0 * data_.zeta(Axis::Y, i, j, k)) * mul;
+            rhs_v[j] = data_.eta(Axis::Y, i, j, k) - gamma * deriv_v;
         }
 
         mySystem_u.setRhs(rhs_u);
         mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Y, iStart, jStart, kStart);
-        //mySystem_u.ThomaSolver();
-        //std::vector<double> unknown_u = mySystem_u.getSolution();
         unknown_u = solveSystem(mySystem_u, BoundaryType::Tangent);
+
+        mySystem_v.setRhs(rhs_v);
+        mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Y, iStart, jStart, kStart);
+        unknown_v = solveSystem(mySystem_v, BoundaryType::Normal);
 
 
         for (size_t j = 0; j < sysDimension; j++)
         {
-            // Set tangents from solver
             data_.zeta(Axis::X, i, j, k) = unknown_u[j];
-            data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
-            // Set normal from boundary conditions
+            data_.zeta(Axis::Y, i, j, k) = unknown_v[j];
             data_.zeta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
         }
     }
@@ -566,7 +627,7 @@ void ViscousStep::closeViscousStep()
     // Special case, i = 0 (X-min boundary)
     // Solve for Zeta.u (normal to X), set Zeta.v, Zeta.w (tangents) from uBoundNew.
     i = 0;
-    for (k = 1; k < data_.grid->Nz - 1; k++)
+    for (k = 1; k < data_.grid->Nz; k++)
     {
         iStart = i;
         kStart = k;
@@ -577,6 +638,7 @@ void ViscousStep::closeViscousStep()
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_u = (data_.zeta(Axis::X, i, j + 1, k) + data_.zeta(Axis::X, i, j - 1, k) - 2.0 * data_.zeta(Axis::X, i, j, k)) * mul;
             rhs_u[j] = data_.eta(Axis::X, i, j, k) - gamma * deriv_u;
+            
         }
 
         mySystem_u.setRhs(rhs_u);
@@ -607,23 +669,23 @@ void ViscousStep::closeViscousStep()
             porosity = data_.k(i, j, k);
             beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
-            deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k)) * mul;
+            deriv_v = (data_.zeta(Axis::Y, i, j + 1, k) + data_.zeta(Axis::Y, i, j - 1, k) - 2.0 * data_.zeta(Axis::Y, i, j, k)) * mul;
             rhs_v[j] = data_.eta(Axis::Y, i, j, k) - gamma * deriv_v;
+            deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k)) * mul;
             rhs_w[j] = data_.eta(Axis::Z, i, j, k) - gamma * deriv_w;
         }
+        mySystem_v.setRhs(rhs_v);
+        mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Y, iStart, jStart, kStart);
+        unknown_v = solveSystem(mySystem_v, BoundaryType::Normal);
 
         mySystem_w.setRhs(rhs_w);
         mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Y, iStart, jStart, kStart);
-        //mySystem_w.ThomaSolver();
-        //std::vector<double> unknown_w = mySystem_w.getSolution();
         unknown_w = solveSystem(mySystem_w, BoundaryType::Tangent);
 
         for (size_t j = 0; j < sysDimension; j++)
         {
-            // Set normal from boundary conditions
             data_.zeta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
-            // Set tangents from solver
-            data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+            data_.zeta(Axis::Y, i, j, k) = unknown_v[j];
             data_.zeta(Axis::Z, i, j, k) = unknown_w[j];
         }
     }
@@ -646,31 +708,68 @@ void ViscousStep::closeViscousStep()
     // Special case: Corner i = Nx-1, k = Nz-1
     i = data_.grid->Nx - 1;
     k = data_.grid->Nz - 1;
+    for (size_t j = 1; j < sysDimension - 1; j++)
+    {
+        porosity = data_.k(i, j, k);
+        beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+        gamma = data_.dt * data_.nu * 0.5 / beta;
+        deriv_v = (data_.zeta(Axis::Y, i, j + 1, k) + data_.zeta(Axis::Y, i, j - 1, k) - 2.0 * data_.zeta(Axis::Y, i, j, k)) * mul;
+        rhs_v[j] = data_.eta(Axis::Y, i, j, k) - gamma * deriv_v;
+    }
+    mySystem_v.setRhs(rhs_v);
+    mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Y, iStart, jStart, kStart);
+    unknown_v = solveSystem(mySystem_v, BoundaryType::Normal);
+
     for (size_t j = 0; j < sysDimension; j++) // Loop is over j
     {
-        data_.zeta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
-        data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
-        data_.zeta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
+        data_.zeta(Axis::X, i, j, k) = data_.bcu((i + 0.5) * dx, j * dy, k * dz, t);
+        data_.zeta(Axis::Y, i, j, k) = unknown_v[j];
+        data_.zeta(Axis::Z, i, j, k) = data_.bcw(i * dx, j * dy, (k + 0.5) * dz, t);
     }
 
     // Special case: Corner i = 0, k = Nz-1
     i = 0;
     k = data_.grid->Nz - 1;
+    for (size_t j = 1; j < sysDimension - 1; j++)
+    {
+        porosity = data_.k(i, j, k);
+        beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+        gamma = data_.dt * data_.nu * 0.5 / beta;
+        deriv_u = (data_.zeta(Axis::X, i, j + 1, k) + data_.zeta(Axis::X, i, j - 1, k) - 2.0 * data_.zeta(Axis::X, i, j, k)) * mul;
+        rhs_u[j] = data_.eta(Axis::X, i, j, k) - gamma * deriv_u;
+    }
+
+    mySystem_u.setRhs(rhs_u);
+    mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Y, iStart, jStart, kStart);
+    unknown_u = solveSystem(mySystem_u, BoundaryType::Tangent);
+
     for (size_t j = 0; j < sysDimension; j++) // Loop is over j
     {
-        data_.zeta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
-        data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
-        data_.zeta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
+        data_.zeta(Axis::X, i, j, k) = unknown_u[j];
+        data_.zeta(Axis::Y, i, j, k) = data_.bcv(i * dx, (j + 0.5) * dy, k * dz, t);
+        data_.zeta(Axis::Z, i, j, k) = data_.bcw(i * dx, j * dy, (k + 0.5) * dz, t);
     }
 
     // Special case: Corner i = Nx-1, k = 0
     i = data_.grid->Nx - 1;
     k = 0;
+    for (size_t j = 1; j < sysDimension - 1; j++)
+        {
+            porosity = data_.k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            gamma = data_.dt * data_.nu * 0.5 / beta;
+            deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k)) * mul;
+            rhs_w[j] = data_.eta(Axis::Z, i, j, k) - gamma * deriv_w;
+        }
+        mySystem_w.setRhs(rhs_w);
+        mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Y, iStart, jStart, kStart);
+        unknown_w = solveSystem(mySystem_w, BoundaryType::Tangent);
+
     for (size_t j = 0; j < sysDimension; j++) // Loop is over j
     {
         data_.zeta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
         data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
-        data_.zeta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
+        data_.zeta(Axis::Z, i, j, k) = unknown_w[j];
     }
 
 
@@ -800,11 +899,9 @@ void ViscousStep::closeViscousStep()
 
         for (size_t k = 0; k < sysDimension; k++)
         {
-            // Set tangents from boundary conditions
             data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
-            data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
-            // Set normal from solver
             data_.u(Axis::Y, i, j, k) = unknown_v[k];
+            data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
         }
     }
 
@@ -822,21 +919,24 @@ void ViscousStep::closeViscousStep()
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_u = (data_.u(Axis::X, i, j, k + 1) + data_.u(Axis::X, i, j, k - 1) - 2.0 * data_.u(Axis::X, i, j, k)) * mul;
             rhs_u[k] = data_.zeta(Axis::X, i, j, k) - gamma * deriv_u;
+            deriv_w = (data_.u(Axis::Z, i, j, k + 1) + data_.u(Axis::Z, i, j, k - 1) - 2.0 * data_.u(Axis::Z, i, j, k)) * mul;
+            rhs_w[k] = data_.zeta(Axis::Z, i, j, k) - gamma * deriv_w;
         }
 
         mySystem_u.setRhs(rhs_u);
         mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Z, iStart, jStart, kStart);
-        //mySystem_u.ThomaSolver();
-        //std::vector<double> unknown_u = mySystem_u.getSolution();
         unknown_u = solveSystem(mySystem_u, BoundaryType::Tangent);
+
+        mySystem_w.setRhs(rhs_w);
+        mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Z, iStart, jStart, kStart);
+        unknown_w = solveSystem(mySystem_w, BoundaryType::Normal);
 
         for (size_t k = 0; k < sysDimension; k++)
         {
             // Set tangents from solver
             data_.u(Axis::X, i, j, k) = unknown_u[k];
-            data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
-            // Set normal from boundary conditions
             data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+            data_.u(Axis::Z, i, j, k) = unknown_w[k];
             
         }
     }
@@ -867,7 +967,6 @@ void ViscousStep::closeViscousStep()
         {
             // Set normal from solver
             data_.u(Axis::X, i, j, k) = unknown_u[k];
-            // Set tangents from boundary conditions
             data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
             data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
         }
@@ -887,21 +986,23 @@ void ViscousStep::closeViscousStep()
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k)) * mul;
             rhs_v[k] = data_.zeta(Axis::Y, i, j, k) - gamma * deriv_v;
+            deriv_w = (data_.u(Axis::Z, i, j, k + 1) + data_.u(Axis::Z, i, j, k - 1) - 2.0 * data_.u(Axis::Z, i, j, k)) * mul;
+            rhs_w[k] = data_.zeta(Axis::Z, i, j, k) - gamma * deriv_w;
         }
 
         mySystem_v.setRhs(rhs_v);
         mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Z, iStart, jStart, kStart);
-        //mySystem_v.ThomaSolver();
-        //std::vector<double> unknown_v = mySystem_v.getSolution();
         unknown_v = solveSystem(mySystem_v, BoundaryType::Tangent);
+        mySystem_w.setRhs(rhs_w);
+        mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Z, iStart, jStart, kStart);
+        unknown_w = solveSystem(mySystem_w, BoundaryType::Normal);
 
         for (size_t k = 0; k < sysDimension; k++)
         {
             // Set normal from boundary conditions
             data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
-            // Set tangents from solver
             data_.u(Axis::Y, i, j, k) = unknown_v[k];
-            data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
+            data_.u(Axis::Z, i, j, k) = unknown_w[k];
         }
     }
 
@@ -917,46 +1018,76 @@ void ViscousStep::closeViscousStep()
     {
         data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
         data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
-        data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
+        data_.u(Axis::Z, i, j, k) = data_.bcw(i * dx, j * dy, (k + 0.5) * dz, t);
     }
 
     // Special case: Corner i = Nx-1, j = Ny-1
     i = data_.grid->Nx - 1;
     j = data_.grid->Ny - 1;
+    for (size_t k = 1; k < sysDimension - 1; k++)
+    {
+        porosity = data_.k(i, j, k);
+        beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+        gamma = data_.dt * data_.nu * 0.5 / beta;
+        deriv_w = (data_.u(Axis::Z, i, j, k + 1) + data_.u(Axis::Z, i, j, k - 1) - 2.0 * data_.u(Axis::Z, i, j, k)) * mul;
+        rhs_w[k] = data_.zeta(Axis::Z, i, j, k) - gamma * deriv_w;
+    }
+
+    mySystem_w.setRhs(rhs_w);
+    mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::Z, iStart, jStart, kStart);
+    unknown_w = solveSystem(mySystem_w, BoundaryType::Normal);
+
     for (size_t k = 0; k < sysDimension; k++) // Loop is over k
     {
-        data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
-        data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
-        data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
+        data_.u(Axis::X, i, j, k) = data_.bcu((i + 0.5) * dx, j * dy, k * dz, t);
+        data_.u(Axis::Y, i, j, k) = data_.bcv(i * dx, (j + 0.5) * dy, k * dz, t);
+        data_.u(Axis::Z, i, j, k) = unknown_w[k];
     }
 
     // Special case: Corner i = 0, j = Ny-1
     i = 0;
     j = data_.grid->Ny - 1;
+    for (size_t k = 1; k < sysDimension - 1; k++)
+    {
+        porosity = data_.k(i, j, k);
+        beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+        gamma = data_.dt * data_.nu * 0.5 / beta;
+        deriv_u = (data_.u(Axis::X, i, j, k + 1) + data_.u(Axis::X, i, j, k - 1) - 2.0 * data_.u(Axis::X, i, j, k)) * mul;
+        rhs_u[k] = data_.zeta(Axis::X, i, j, k) - gamma * deriv_u;
+    }
+
+    mySystem_u.setRhs(rhs_u);
+    mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::Z, iStart, jStart, kStart);
+    unknown_u = solveSystem(mySystem_u, BoundaryType::Tangent);
+
     for (size_t k = 0; k < sysDimension; k++) // Loop is over k
     {
-        data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
-        data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
-        data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
+        data_.u(Axis::X, i, j, k) = unknown_u[k];
+        data_.u(Axis::Y, i, j, k) = data_.bcv(i * dx, (j + 0.5) * dy, k * dz, t);
+        data_.u(Axis::Z, i, j, k) = data_.bcw(i * dx, j * dy, (k + 0.5) * dz, t);
     }
 
     // Special case: Corner i = Nx-1, j = 0
     i = data_.grid->Nx - 1;
     j = 0;
-    for (size_t k = 0; k < sysDimension; k++) // Loop is over k
+    for (size_t k = 1; k < sysDimension - 1; k++)
     {
-        data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
-        data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
-        data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
+        porosity = data_.k(i, j, k);
+        beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+        gamma = data_.dt * data_.nu * 0.5 / beta;
+        deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k)) * mul;
+        rhs_v[k] = data_.zeta(Axis::Y, i, j, k) - gamma * deriv_v;
     }
 
-    } 
+    mySystem_v.setRhs(rhs_v);
+    mySystem_v.fillSystemVelocity(data_, xi, Axis::Y, Axis::Z, iStart, jStart, kStart);
+    unknown_v = solveSystem(mySystem_v, BoundaryType::Tangent);
 
+    for (size_t k = 0; k < sysDimension; k++) // Loop is over k
+    {
+        data_.u(Axis::X, i, j, k) = data_.bcu((i + 0.5) * dx, j * dy, k * dz, t);
+        data_.u(Axis::Y, i, j, k) = unknown_v[k];
+        data_.u(Axis::Z, i, j, k) = data_.bcw(i * dx, j * dy, (k + 0.5) * dz, t);
+    }
+    }
 }
-
-
-
-
-
-
-
