@@ -255,8 +255,8 @@ void ViscousStep::closeViscousStep()
 
         for (size_t i = 0; i < sysDimension; i++)
         {
-            data_.eta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-            data_.eta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
+            data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+            data_.eta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
             data_.eta(Axis::Z, i, j, k) = unknown_w[i];
         }
     }
@@ -284,9 +284,9 @@ void ViscousStep::closeViscousStep()
 
         for (size_t i = 0; i < sysDimension; i++)
         {
-            data_.eta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
+            data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
             data_.eta(Axis::Y, i, j, k) = unknown_v[i];
-            data_.eta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+            data_.eta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
         }
     }
 
@@ -315,9 +315,9 @@ void ViscousStep::closeViscousStep()
 
         for (size_t i = 0; i < sysDimension; i++)
         {
-            data_.eta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
+            data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
             data_.eta(Axis::Y, i, j, k) = unknown_v[i];
-            data_.eta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+            data_.eta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
         }
     }
     // Special case, j = Ny-1
@@ -345,8 +345,8 @@ void ViscousStep::closeViscousStep()
 
         for (size_t i = 0; i < sysDimension; i++)
         {
-            data_.eta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-            data_.eta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
+            data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+            data_.eta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
             data_.eta(Axis::Z, i, j, k) = unknown_w[i];
         }
     }
@@ -359,9 +359,9 @@ void ViscousStep::closeViscousStep()
     k = 0; 
     for (size_t i = 0; i < sysDimension; i++)
     {
-        data_.eta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.eta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.eta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.eta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.eta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
     // Special case: Corner j = Ny-1, k = Nz-1
@@ -369,9 +369,9 @@ void ViscousStep::closeViscousStep()
     k = data_.grid->Nz - 1;
     for (size_t i = 0; i < sysDimension; i++)
     {
-        data_.eta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.eta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.eta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.eta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.eta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
     // Special case: Corner j = 0, k = Nz-1
@@ -379,9 +379,9 @@ void ViscousStep::closeViscousStep()
     k = data_.grid->Nz - 1;
     for (size_t i = 0; i < sysDimension; i++)
     {
-        data_.eta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.eta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.eta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.eta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.eta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
     // Special case: Corner j = Ny-1, k = 0
@@ -389,9 +389,9 @@ void ViscousStep::closeViscousStep()
     k = 0;
     for (size_t i = 0; i < sysDimension; i++)
     {
-        data_.eta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.eta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.eta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.eta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.eta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
 
@@ -523,8 +523,8 @@ void ViscousStep::closeViscousStep()
         for (size_t j = 0; j < sysDimension; j++)
         {
             // Set tangents from boundary conditions
-            data_.zeta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-            data_.zeta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
+            data_.zeta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+            data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
             // Set normal from solver
             data_.zeta(Axis::Z, i, j, k) = unknown_w[j];
         }
@@ -557,9 +557,9 @@ void ViscousStep::closeViscousStep()
         {
             // Set tangents from solver
             data_.zeta(Axis::X, i, j, k) = unknown_u[j];
-            data_.zeta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
+            data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
             // Set normal from boundary conditions
-            data_.zeta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+            data_.zeta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
         }
     }
 
@@ -590,8 +590,8 @@ void ViscousStep::closeViscousStep()
             // Set normal from solver
             data_.zeta(Axis::X, i, j, k) = unknown_u[j];
             // Set tangents from boundary conditions
-            data_.zeta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-            data_.zeta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+            data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+            data_.zeta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
         }
     }
 
@@ -621,9 +621,9 @@ void ViscousStep::closeViscousStep()
         for (size_t j = 0; j < sysDimension; j++)
         {
             // Set normal from boundary conditions
-            data_.zeta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
+            data_.zeta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
             // Set tangents from solver
-            data_.zeta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
+            data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
             data_.zeta(Axis::Z, i, j, k) = unknown_w[j];
         }
     }
@@ -638,9 +638,9 @@ void ViscousStep::closeViscousStep()
     k = 0;
     for (size_t j = 0; j < sysDimension; j++) // Loop is over j
     {
-        data_.zeta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.zeta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.zeta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.zeta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.zeta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
     // Special case: Corner i = Nx-1, k = Nz-1
@@ -648,9 +648,9 @@ void ViscousStep::closeViscousStep()
     k = data_.grid->Nz - 1;
     for (size_t j = 0; j < sysDimension; j++) // Loop is over j
     {
-        data_.zeta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.zeta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.zeta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.zeta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.zeta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
     // Special case: Corner i = 0, k = Nz-1
@@ -658,9 +658,9 @@ void ViscousStep::closeViscousStep()
     k = data_.grid->Nz - 1;
     for (size_t j = 0; j < sysDimension; j++) // Loop is over j
     {
-        data_.zeta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.zeta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.zeta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.zeta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.zeta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
     // Special case: Corner i = Nx-1, k = 0
@@ -668,9 +668,9 @@ void ViscousStep::closeViscousStep()
     k = 0;
     for (size_t j = 0; j < sysDimension; j++) // Loop is over j
     {
-        data_.zeta(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.zeta(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.zeta(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.zeta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.zeta(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.zeta(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
 
@@ -801,8 +801,8 @@ void ViscousStep::closeViscousStep()
         for (size_t k = 0; k < sysDimension; k++)
         {
             // Set tangents from boundary conditions
-            data_.u(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-            data_.u(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+            data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+            data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
             // Set normal from solver
             data_.u(Axis::Y, i, j, k) = unknown_v[k];
         }
@@ -834,9 +834,9 @@ void ViscousStep::closeViscousStep()
         {
             // Set tangents from solver
             data_.u(Axis::X, i, j, k) = unknown_u[k];
-            data_.u(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+            data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
             // Set normal from boundary conditions
-            data_.u(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
+            data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
             
         }
     }
@@ -868,8 +868,8 @@ void ViscousStep::closeViscousStep()
             // Set normal from solver
             data_.u(Axis::X, i, j, k) = unknown_u[k];
             // Set tangents from boundary conditions
-            data_.u(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-            data_.u(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+            data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+            data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
         }
     }
 
@@ -898,10 +898,10 @@ void ViscousStep::closeViscousStep()
         for (size_t k = 0; k < sysDimension; k++)
         {
             // Set normal from boundary conditions
-            data_.u(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
+            data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
             // Set tangents from solver
             data_.u(Axis::Y, i, j, k) = unknown_v[k];
-            data_.u(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+            data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
         }
     }
 
@@ -915,9 +915,9 @@ void ViscousStep::closeViscousStep()
     j = 0;
     for (size_t k = 0; k < sysDimension; k++) // Loop is over k
     {
-        data_.u(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.u(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.u(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
     // Special case: Corner i = Nx-1, j = Ny-1
@@ -925,9 +925,9 @@ void ViscousStep::closeViscousStep()
     j = data_.grid->Ny - 1;
     for (size_t k = 0; k < sysDimension; k++) // Loop is over k
     {
-        data_.u(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.u(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.u(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
     // Special case: Corner i = 0, j = Ny-1
@@ -935,9 +935,9 @@ void ViscousStep::closeViscousStep()
     j = data_.grid->Ny - 1;
     for (size_t k = 0; k < sysDimension; k++) // Loop is over k
     {
-        data_.u(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.u(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.u(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
     // Special case: Corner i = Nx-1, j = 0
@@ -945,9 +945,9 @@ void ViscousStep::closeViscousStep()
     j = 0;
     for (size_t k = 0; k < sysDimension; k++) // Loop is over k
     {
-        data_.u(Axis::X, i, j, k) = data_.bcu(t, (i+0.5)*dx, j*dy, k*dz);
-        data_.u(Axis::Y, i, j, k) = data_.bcv(t, i*dx, (j+0.5)*dy, k*dz);
-        data_.u(Axis::Z, i, j, k) = data_.bcw(t, i*dx, j*dy, (k+0.5)*dz);
+        data_.u(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
+        data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
+        data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
     } 
