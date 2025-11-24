@@ -1,5 +1,5 @@
-#ifndef NSBSOLVER_MESH_HPP
-#define NSBSOLVER_MESH_HPP
+#ifndef NSBSOLVER_GRID_HPP
+#define NSBSOLVER_GRID_HPP
 
 #include <cstddef>
 
@@ -101,4 +101,4 @@ struct Grid {
     }
 };
 
-#endif // NSBSOLVER_MESH_HPP
+#endif // NSBSOLVER_GRID_HPP

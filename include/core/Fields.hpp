@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "core/Mesh.hpp"
+#include "core/Grid.hpp"
 #include "core/Functions.hpp"
 
 

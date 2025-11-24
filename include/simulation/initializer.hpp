@@ -5,7 +5,7 @@
 
 #include "../data/configFunctions.hpp"
 #include "io/inputReader.hpp"
-#include "core/Mesh.hpp"
+#include "core/Grid.hpp"
 #include "core/Fields.hpp"
 #include "simulation/SimulationContext.hpp"
 

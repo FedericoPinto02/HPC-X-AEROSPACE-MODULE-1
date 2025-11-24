@@ -6,7 +6,7 @@
 
 #include "core/Fields.hpp"
 #include "numerics/derivatives.hpp"
-#include "core/Mesh.hpp"
+#include "core/Grid.hpp"
 
 class DerivativesTest : public ::testing::Test {
 protected:
