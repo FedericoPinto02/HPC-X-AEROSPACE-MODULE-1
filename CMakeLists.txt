@@ -149,16 +149,28 @@ endif ()
 option(PROFILING "Build the tests" ON)
 message(STATUS "PROFILING option: ${PROFILING}")
 if (PROFILING)
-    message(STATUS "Building with profiling enabled")
-    # Add compiler flags for profiling
-    target_compile_options(NSBSolver PRIVATE -pg)
-    target_link_libraries(NSBSolver PRIVATE -pg)
-    target_compile_options(main PRIVATE -pg)
-    target_link_libraries(main PRIVATE -pg)
-    if (BUILD_TESTS)
-        target_compile_options(alltests PRIVATE -pg)
-        target_link_libraries(alltests PRIVATE -pg)
+    if (APPLE)
+        # macOS: gprof non supportato. Abilita simboli per Instruments.
+        message(STATUS "  -> macOS detected: Enabling Debug Symbols & Frame Pointer for Instruments.")
+        set(PROFILING_FLAGS "-g" "-fno-omit-frame-pointer")
+    else ()
+        # Linux: Usa gprof standard
+        message(STATUS "  -> Linux detected: Enabling '-pg' for gprof.")
+        set(PROFILING_FLAGS "-pg")
     endif ()
+
+    target_compile_options(NSBSolver PRIVATE ${PROFILING_FLAGS})
+    target_link_libraries(NSBSolver PRIVATE ${PROFILING_FLAGS})
+    
+    target_compile_options(main PRIVATE ${PROFILING_FLAGS})
+    target_link_libraries(main PRIVATE ${PROFILING_FLAGS})
+
+    if (BUILD_TESTS)
+        target_compile_options(alltests PRIVATE ${PROFILING_FLAGS})
+        target_link_libraries(alltests PRIVATE ${PROFILING_FLAGS})
+    endif ()
+     
+
     message(STATUS "Building with profiling enabled - done")
 
     message(STATUS "Auto-profiling enabled: gmon.out -> profiling.txt")
