@@ -295,39 +295,37 @@ void LinearSys::fillSystemVelocity(
     }
 }
 
-
 void LinearSys::ThomaSolver() {
-    /*
-    Solves the tridiagonal system Ax = f using the Thomas algorithm.
-    a: sub-diagonal (a[0] is not used)
-    b: main diagonal
-    c: super-diagonal (c[n-1] is not used)
-    f: right-hand side
-    x: solution vector (to be computed)
-    All vectors are of size n, except a and c which are of size n-1.
-    A compatibility check is performed to ensure the dimensions are correct.
-    */
+    // Solves Ax = f using Thomas algorithm.
+    const int size = matA.getSize();
+    
+    // Get diagonal vectors: 'a' by reference (unmodified), 'b' and 'c' as working copies.
+    const std::vector<double>& a_ref = matA.getDiag(-1); // Reference (no copy needed)
+    std::vector<double> b_work = matA.getDiag(0);        // Working copy for denominators
+    std::vector<double> c_work = matA.getDiag(1);        // Working copy for c' coefficients
 
-    // Compatibility check
+    // Forward Sweep (Elimination)
+    if (std::abs(b_work[0]) < 1e-18) 
+        { throw std::runtime_error("LinearSys::ThomaSolver failed: Zero pivot detected at the start of elimination."); }
+    
+    c_work[0] /= b_work[0];
+    rhsC[0] /= b_work[0];
 
-    std::vector<double> b = matA.getDiag(0);
-    std::vector<double> a = matA.getDiag(-1);
-    std::vector<double> c = matA.getDiag(1);
-    int size = matA.getSize();
-
-    c[0] /= b[0];
-    rhsC[0] /= b[0];
-    for (unsigned int i = 1; i < size; i++) {
-        b[i] = b[i] - a[i - 1] * c[i - 1];
-        rhsC[i] = rhsC[i] - a[i - 1] * rhsC[i - 1];
-        if (i < size - 1) // needed because of c dimensions (n-1)
-            c[i] /= b[i];
-        rhsC[i] /= b[i];
+    for (unsigned int i = 1; i < size; ++i) {
+        double denominator = b_work[i] - a_ref[i - 1] * c_work[i - 1];
+        if (std::abs(denominator) < 1e-18) { /* Handle zero pivot */ }
+        
+        rhsC[i] = (rhsC[i] - a_ref[i - 1] * rhsC[i - 1]) / denominator;
+        
+        if (i < size - 1) { 
+            c_work[i] = c_work[i] / denominator;
+        }
     }
 
-    // Backward Sweep
+    // Backward Sweep (Substitution)
     unknownX[size - 1] = rhsC[size - 1];
-    for (int i = size - 2; i >= 0; i--) {
-        unknownX[i] = rhsC[i] - c[i] * unknownX[i + 1];
+    
+    for (int i = size - 2; i >= 0; --i) {
+        unknownX[i] = rhsC[i] - c_work[i] * unknownX[i + 1];
     }
-};
+}
