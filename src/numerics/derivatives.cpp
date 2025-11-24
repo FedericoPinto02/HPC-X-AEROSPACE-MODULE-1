@@ -12,13 +12,23 @@ void Derivatives::computeDx(const Field &field, Field &dx) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dx;
 
-    for (size_t k = 0; k < grid.Nz; k++) {
-        for (size_t j = 0; j < grid.Ny; j++) {
-            for (size_t i = 0; i < (grid.Nx - 1); i++) {
-                dx(i, j, k) = (field(i + 1, j, k) - field(i, j, k)) * mul;
-            }
-            dx(grid.Nx - 1, j, k) = 0.0;
+    const size_t Nx = grid.Nx;
+    // Flatten Y and Z dimensions into a single 'xLine' count
+    const size_t totalXLines = grid.Ny * grid.Nz;
+
+    // Iterate over every x-line in the volume
+    for (size_t xLine = 0; xLine < totalXLines; ++xLine) {
+        const size_t xLineOffset = xLine * Nx;
+
+        // 1. Compute the derivative for the whole x-line
+        // Linear index iteration: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
+        for (size_t i = 0; i < Nx - 1; ++i) {
+            size_t idx = xLineOffset + i;
+            dx[idx] = (field[idx + 1] - field[idx]) * mul;
         }
+
+        // 2. Handle Boundary Condition: the last point of the row cannot compute a forward difference
+        dx[xLineOffset + Nx - 1] = 0.0;
     }
 }
 
