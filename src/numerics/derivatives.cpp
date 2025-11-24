@@ -20,14 +20,14 @@ void Derivatives::computeDx(const Field &field, Field &dx) const {
     for (size_t xLine = 0; xLine < totalXLines; ++xLine) {
         const size_t xLineOffset = xLine * Nx;
 
-        // 1. Compute the derivative for the whole x-line
+        // 1. Compute the derivative for each, whole x-line (last x-elements excluded)
         // Linear index iteration: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
         for (size_t i = 0; i < Nx - 1; ++i) {
             size_t idx = xLineOffset + i;
             dx[idx] = (field[idx + 1] - field[idx]) * mul;
         }
 
-        // 2. Handle Boundary Condition: the last point of the row cannot compute a forward difference
+        // 2. Handle Boundary Condition: the last point of the x-line cannot compute a forward difference
         dx[xLineOffset + Nx - 1] = 0.0;
     }
 }
@@ -36,12 +36,37 @@ void Derivatives::computeDy(const Field &field, Field &dy) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dy;
 
-    for (size_t k = 0; k < grid.Nz; k++) {
-        for (size_t i = 0; i < grid.Nx; i++) {
-            for (size_t j = 0; j < (grid.Ny - 1); j++) {
-                dy(i, j, k) = (field(i, j + 1, k) - field(i, j, k)) * mul;
+    const size_t Nx = grid.Nx;
+    const size_t Ny = grid.Ny;
+    const size_t Nz = grid.Nz;
+
+    // The distance in memory between (i, j, k) and (i, j+1, k)
+    //  i.e., field[idx + strideY] is physically the neighbor "above" in Y w.r.t. field[idx]
+    const size_t strideY = Nx;
+
+    // Iterate over all XY-planes (at each vertical level k)
+    for (size_t k = 0; k < Nz; ++k) {
+        const size_t xyPlaneOffset = k * Ny * Nx; // skip an entire XY plane for each k-level
+
+        // 1. Compute the derivative for each, whole XY-plane (last y-elements excluded)
+        // Still iterate over each x-line, with linear indexes: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
+        for (size_t j = 0; j < Ny - 1; ++j) {
+            // Calculate the starting linear index of the current x-line
+            const size_t xLineStart = xyPlaneOffset + (j * Nx);
+
+            // Striding ensures we are reading/writing contiguous memory blocks in an efficient way
+            //  ~ "take the whole contiguous row j+1, and subtract the contiguous row j"
+            for (size_t i = 0; i < Nx; ++i) {
+                size_t idx = xLineStart + i;
+                dy[idx] = (field[idx + strideY] - field[idx]) * mul;
             }
-            dy(i, grid.Ny - 1, k) = 0.0;
+        }
+
+        // 2. Handle Boundary Condition: the last point of each y-line cannot compute a forward difference
+        //  i.e., the whole last x-line of the XY-plane
+        const size_t lastXLineStart = xyPlaneOffset + ((Ny - 1) * Nx);
+        for (size_t i = 0; i < Nx; ++i) {
+            dy[lastXLineStart + i] = 0.0;
         }
     }
 }
@@ -174,28 +199,28 @@ void Derivatives::computeDzz(const Field &field, Field &dzz) const {
     }
 }
 
-double Derivatives::Dxx_local(const Field& f, size_t i, size_t j, size_t k) const {
-    const auto& grid = f.getGrid();
+double Derivatives::Dxx_local(const Field &f, size_t i, size_t j, size_t k) const {
+    const auto &grid = f.getGrid();
     const double mul = 1.0 / (grid.dx * grid.dx);
 
     if (i == 0 || i == grid.Nx - 1) return 0.0; // o BC
 
-    return (f(i+1,j,k) + f(i-1,j,k) - 2.0 * f(i,j,k)) * mul;
+    return (f(i + 1, j, k) + f(i - 1, j, k) - 2.0 * f(i, j, k)) * mul;
 }
 
-double Derivatives::Dyy_local(const Field& f, size_t i, size_t j, size_t k) const {
-    const auto& grid = f.getGrid();
+double Derivatives::Dyy_local(const Field &f, size_t i, size_t j, size_t k) const {
+    const auto &grid = f.getGrid();
     const double mul = 1.0 / (grid.dy * grid.dy);
 
     if (j == 0 || j == grid.Ny - 1) return 0.0; // o BC
 
-    return (f(i,j+1,k) + f(i,j-1,k) - 2.0 * f(i,j,k)) * mul;
+    return (f(i, j + 1, k) + f(i, j - 1, k) - 2.0 * f(i, j, k)) * mul;
 }
 
-double Derivatives::Dzz_local(const Field& f, size_t i, size_t j, size_t k) const {
-    const auto& grid = f.getGrid();
+double Derivatives::Dzz_local(const Field &f, size_t i, size_t j, size_t k) const {
+    const auto &grid = f.getGrid();
     const double mul = 1.0 / (grid.dz * grid.dz);
 
     if (k == 0 || k == grid.Nz - 1) return 0.0; // o BC
-    return (f(i,j,k+1) + f(i,j,k-1) - 2.0 * f(i,j,k)) * mul;
+    return (f(i, j, k + 1) + f(i, j, k - 1) - 2.0 * f(i, j, k)) * mul;
 }
