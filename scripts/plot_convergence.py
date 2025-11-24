@@ -275,7 +275,7 @@ def run_analysis(custom_simulations=None):
     # errors_div list removed
 
     print("--- Starting Spatial Convergence Analysis (MMS Staggered) ---")
-    print(f"Analyzing {len(sims_to_analyze)} files. Using DT={DT} to find time from filenames.")
+    print(f"Analyzing {len(sims_to_analyze)} files. ")
     # Print table header (Divergence column removed)
     print(f"{'Nx':>4} | {'h':>10} | {'Time':>10} | {'L2_Err_u':>10} | {'L2_Err_v':>10} | {'L2_Err_w':>10} | {'L2_Err_p':>10}")
     print("-" * 74)
@@ -285,12 +285,13 @@ def run_analysis(custom_simulations=None):
 
     for sim in sorted_simulations:
         nx = sim['nx']
+        dt = sim['dt']
         filepath = sim['file']
 
         # Calculate CURRENT_TIME for this specific file
         try:
             step_number = get_step_from_filename(filepath)
-            current_time = step_number * DT
+            current_time = step_number * dt
 
         except ValueError as e:
             print(f"ERROR: {e}", file=sys.stderr)

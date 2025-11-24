@@ -21,7 +21,9 @@ OUTPUT_DIR = "../output/"              # Output directory (must match JSON)
 EXPECTED_LAST_STEP = 30  # t_end / dt = 0.03 / 0.001 = 30
 
 # Resolutions to test (Nx)
-NX_VALUES = [20, 25, 30, 35, 40, 45, 50] 
+NX_VALUES = [20,  30, 40, 50, 60, 70, 80, 150] 
+DT_VALUES = [6/(x+0.5)/(6/20.5) * 0.001  for x in NX_VALUES]
+
 
 def main():
     # 1. Read the original config
@@ -49,7 +51,8 @@ def main():
     try:
         # --- PHASE 1: RUN SIMULATIONS ---
         for i, nx in enumerate(NX_VALUES):
-            print(f"\n[Run {i+1}/{len(NX_VALUES)}] Processing Nx = {nx}...")
+            dt = DT_VALUES[i]
+            print(f"\n[Run {i+1}/{len(NX_VALUES)}] Processing Nx = {nx}, dt = {dt}...")
 
             # A. Create a DEEP COPY of the original config
             current_config = copy.deepcopy(original_config)
@@ -57,6 +60,8 @@ def main():
             # B. Apply modifications
             # 1. Set Nx
             current_config['mesh']['nx'] = nx
+            # set time
+            current_config['time']['dt'] = dt
             # 2. Force manufactured solution flag
             current_config['mesh']['input_for_manufactured_solution'] = True
             # 3. Modify base filename
@@ -89,6 +94,7 @@ def main():
                 print(f"  > Verified output: {expected_filename}")
                 simulation_data_for_plot.append({
                     "nx": nx,
+                    "dt": dt,
                     "file": full_path
                 })
             else:
