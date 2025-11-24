@@ -5,7 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG") 
+set(CMAKE_CXX_FLAGS_RELEASE
+   "-O3 -DNDEBUG -march=native -flto -funroll-loops -fno-math-errno")
+set(CMAKE_EXE_LINKER_FLAGS "-flto")
 
 include(FetchContent)
 
