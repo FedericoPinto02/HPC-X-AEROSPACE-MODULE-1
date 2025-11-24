@@ -5,7 +5,7 @@
 #include <stdexcept> // Required for std::runtime_error
 
 // Include necessary class definitions
-#include "core/Mesh.hpp"     // For Grid
+#include "core/Grid.hpp"     // For Grid
 #include "core/Fields.hpp"   // For Field and VectorField
 #include "numerics/LinearSys.hpp" // The class we are testing
 

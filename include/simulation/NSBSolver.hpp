@@ -8,7 +8,7 @@
 #include "io/logWriter.hpp"
 #include "simulation/pressureStep.hpp"
 #include "simulation/viscousStep.hpp"
-#include "core/Mesh.hpp"
+#include "core/Grid.hpp"
 #include "core/Fields.hpp"
 #include "simulation/SimulationContext.hpp"
 

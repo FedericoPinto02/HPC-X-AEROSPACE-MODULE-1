@@ -1,5 +1,5 @@
-#ifndef NSBSOLVER_MESH_HPP
-#define NSBSOLVER_MESH_HPP
+#ifndef NSBSOLVER_GRID_HPP
+#define NSBSOLVER_GRID_HPP
 
 #include <cstddef>
 
@@ -29,13 +29,6 @@ struct Grid {
     /// Grid spacing in each direction (derived from physical sizes and number of grid points).
     double dx, dy, dz;
 
-    Grid() {
-        Nx = Ny = Nz = 10;
-        dx = dy = dz = 1.0;
-        Lx = dx * (static_cast<double>(Nx) + 0.5);
-        Ly = dy * (static_cast<double>(Ny) + 0.5);
-        Lz = dz * (static_cast<double>(Nz) + 0.5);
-    }
 
     /**
      * @brief Constructor to initialize the grid with given physical sizes and number of points.
@@ -108,4 +101,4 @@ struct Grid {
     }
 };
 
-#endif // NSBSOLVER_MESH_HPP
+#endif // NSBSOLVER_GRID_HPP

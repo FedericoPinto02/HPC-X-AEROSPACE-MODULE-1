@@ -6,7 +6,7 @@
 
 #include "core/Fields.hpp"
 #include "numerics/derivatives.hpp"
-#include "core/Mesh.hpp"
+#include "core/Grid.hpp"
 
 class DerivativesTest : public ::testing::Test {
 protected:
@@ -23,7 +23,7 @@ protected:
     }
 
     // Helper to quickly setup and populate a field with a lambda
-    Field createField(Functions::Func func) {
+    Field createField(Func func) {
         Field f;
         f.setup(grid, func);
         f.populate(0.0);
@@ -122,7 +122,7 @@ TEST_F(DerivativesTest, Gradient_ForwardDifference_Accuracy) {
 }
 
 TEST_F(DerivativesTest, Gradient_Boundaries_AreZero) {
-    Field field = createField(Functions::ZERO); // Content doesn't matter for boundary check
+    Field field = createField(ZERO_FUNC); // Content doesn't matter for boundary check
     VectorField grad = createEmptyVectorField();
     deriv.computeGradient(field, grad);
 

@@ -41,7 +41,7 @@ add_library(NSBSolver
         # ${SOURCE_FILES} ${HEADER_FILES}   todo - use it when all files actually compile !
         # Explicit header files
         include/core/Fields.hpp
-        include/core/Mesh.hpp
+        include/core/Grid.hpp
         include/core/TridiagMat.hpp
         include/io/inputReader.hpp
         include/io/VTKWriter.hpp

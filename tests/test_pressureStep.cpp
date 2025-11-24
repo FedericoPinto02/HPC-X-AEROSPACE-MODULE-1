@@ -7,7 +7,6 @@
 #include "simulation/pressureStep.hpp"
 #include "simulation/SimulationContext.hpp"
 #include "core/Fields.hpp"
-#include "core/Functions.hpp"
 #include "numerics/derivatives.hpp"
 
 class PressureStepTest : public ::testing::Test {
@@ -36,7 +35,7 @@ protected:
 
     void SetUp() override {
         // Define Pressure: p(x,y,z) = 0.0
-        data_.p.setup(grid, Functions::ZERO);
+        data_.p.setup(grid, ZERO_FUNC);
         data_.p.populate(0.0);
 
         // Define Velocity: u(x,y,z) = [sin(x), cos(y), sin(z)]
@@ -93,7 +92,7 @@ TEST_F(PressureStepTest, Run_CalculatesDivU_Correctness) {
 
 TEST_F(PressureStepTest, Run_WithZeroDivergence_PressureIsUnchanged) {
     // Setup U = 0, P = 1.0
-    data_.u.setup(grid, Functions::ZERO, Functions::ZERO, Functions::ZERO);
+    data_.u.setup(grid, ZERO_FUNC, ZERO_FUNC, ZERO_FUNC);
     data_.u.populate(0.0);
 
     data_.p.setup(grid, [](double, double, double, double) { return 1.0; });

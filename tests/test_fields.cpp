@@ -1,5 +1,4 @@
 #include "core/Fields.hpp"
-#include "core/Functions.hpp"
 #include <cmath>
 #include <gtest/gtest.h>
 #include <memory>
@@ -21,7 +20,7 @@ protected:
         grid = std::make_shared<Grid>(Nx, Ny, Nz, dx, dy, dz);
 
         // Initialize with zero function by default
-        testField.setup(grid, Functions::ZERO);
+        testField.setup(grid, ZERO_FUNC);
         testField.populate(0.0);
     }
 };
@@ -32,7 +31,7 @@ TEST_F(FieldTestFixture, GetGrid_ReturnsCorrectAddress) {
 }
 
 TEST_F(FieldTestFixture, Setup_WithFunctions_ZeroDefault) {
-    testField.setup(grid, Functions::ZERO);
+    testField.setup(grid, ZERO_FUNC);
     testField.populate(0.0);
 
     // Check corners
@@ -111,7 +110,7 @@ TEST_F(FieldTestFixture, Add_Field_MismatchThrows) {
     auto wrongGrid = std::make_shared<Grid>(Nx + 1, Ny, Nz, 1.0, 1.0, 1.0);
     Field wrongField;
 
-    wrongField.setup(wrongGrid, Functions::ZERO);
+    wrongField.setup(wrongGrid, ZERO_FUNC);
     wrongField.populate(0.0);
 
     // Expect error when adding fields from different grids

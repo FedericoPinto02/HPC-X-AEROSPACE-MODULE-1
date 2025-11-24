@@ -50,9 +50,9 @@ struct SimulationData {
     // Boundary conditions
     VectorField uBoundOld;
     VectorField uBoundNew;
-    Functions::Func bcu;
-    Functions::Func bcv;
-    Functions::Func bcw;
+    Func bcu;
+    Func bcv;
+    Func bcw;
 
     // Kinematic viscosity of the fluid
     double nu;
@@ -62,9 +62,9 @@ struct SimulationData {
 
     // Body force acting on the medium
     VectorField f;
-    Functions::Func fx;
-    Functions::Func fy;
-    Functions::Func fz;
+    Func fx;
+    Func fy;
+    Func fz;
 };
 
 #endif //NSBSOLVER_SIMULATIONCONTEXT_HPP

@@ -8,9 +8,12 @@
 #include <stdexcept>
 #include <vector>
 
-#include "core/Mesh.hpp"
-#include "core/Functions.hpp"
+#include "core/Grid.hpp"
 
+using Func = std::function<double(double x, double y, double z, double t)>;
+const Func ZERO_FUNC = [](double /*x*/, double /*y*/, double /*z*/, double /*t*/ = 0) {
+    return 0.0;
+};
 
 /**
  * @brief Class representing a scalar field defined on a 3D grid.
@@ -31,7 +34,7 @@ private:
     std::vector<Scalar> data_;
 
     /// The function used for populating the field.
-    Functions::Func populateFunction_;
+    Func populateFunction_;
 
 
     /**
@@ -68,7 +71,7 @@ public:
      */
     void setup(
             const GridPtr &grid,
-            const Functions::Func &populateFunction = Functions::ZERO,
+            const Func &populateFunction = ZERO_FUNC,
             GridStaggering offset = GridStaggering::CELL_CENTERED,
             Axis offsetAxis = Axis::X
     ) {
@@ -215,9 +218,9 @@ public:
      * @param populateZFunction the function to use for populating the z-component of the vector field
      */
     void setup(const GridPtr &grid,
-               const Functions::Func &populateXFunction = Functions::ZERO,
-               const Functions::Func &populateYFunction = Functions::ZERO,
-               const Functions::Func &populateZFunction = Functions::ZERO) {
+               const Func &populateXFunction = ZERO_FUNC,
+               const Func &populateYFunction = ZERO_FUNC,
+               const Func &populateZFunction = ZERO_FUNC) {
         gridPtr_ = grid;
         component(Axis::X).setup(grid, populateXFunction);
         component(Axis::Y).setup(grid, populateYFunction);
