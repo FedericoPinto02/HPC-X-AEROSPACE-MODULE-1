@@ -3,7 +3,6 @@ project(NSBSolver)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 set(CMAKE_CXX_FLAGS_RELEASE
    "-O3 -DNDEBUG -march=native -flto -funroll-loops -fno-math-errno")
@@ -22,14 +21,6 @@ include(FetchContent)
 set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(PROJECT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(PROJECT_EXTERN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/extern) # for nlohmann/json
-
-# Fetch MuParser source code automatically
-# FetchContent_Declare(
-#         muparserx
-#         GIT_REPOSITORY https://github.com/beltoforion/muparserx.git
-#         GIT_TAG v4.0.12
-# )
-# FetchContent_MakeAvailable(muparserx)
 
 # todo - use it when all files actually compile ! (allow WIP files not to be compiled and break everything :D)
 # file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/*.cpp)
@@ -68,15 +59,10 @@ add_library(NSBSolver
         src/simulation/NSBSolver.cpp
 
 )
-# Include owned headers, external headers and muparserx headers.
+# Include owned headers and external headers.
 target_include_directories(NSBSolver PUBLIC
         ${PROJECT_INCLUDE_DIR}
         ${PROJECT_EXTERN_DIR}
-        # ${muparserx_SOURCE_DIR}/parser
-)
-# Link muparserx library for internal use only
-target_link_libraries(NSBSolver PRIVATE 
-                                # muparserx
 )
 
 
@@ -100,7 +86,7 @@ target_link_libraries(main PRIVATE NSBSolver)
 set(PROJECT_TESTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
 # Option to enable/disable building tests
-option(BUILD_TESTS "Build the tests" OFF)
+option(BUILD_TESTS "Build the tests" ON)
 message(STATUS "BUILD_TESTS option: ${BUILD_TESTS}")
 
 # Fetch GoogleTest source code automatically
@@ -149,16 +135,28 @@ endif ()
 option(PROFILING "Build the tests" ON)
 message(STATUS "PROFILING option: ${PROFILING}")
 if (PROFILING)
-    message(STATUS "Building with profiling enabled")
-    # Add compiler flags for profiling
-    target_compile_options(NSBSolver PRIVATE -pg)
-    target_link_libraries(NSBSolver PRIVATE -pg)
-    target_compile_options(main PRIVATE -pg)
-    target_link_libraries(main PRIVATE -pg)
-    if (BUILD_TESTS)
-        target_compile_options(alltests PRIVATE -pg)
-        target_link_libraries(alltests PRIVATE -pg)
+    if (APPLE)
+        # macOS: gprof non supportato. Abilita simboli per Instruments.
+        message(STATUS "  -> macOS detected: Enabling Debug Symbols & Frame Pointer for Instruments.")
+        set(PROFILING_FLAGS "-g" "-fno-omit-frame-pointer")
+    else ()
+        # Linux: Usa gprof standard
+        message(STATUS "  -> Linux detected: Enabling '-pg' for gprof.")
+        set(PROFILING_FLAGS "-pg")
     endif ()
+
+    target_compile_options(NSBSolver PRIVATE ${PROFILING_FLAGS})
+    target_link_libraries(NSBSolver PRIVATE ${PROFILING_FLAGS})
+    
+    target_compile_options(main PRIVATE ${PROFILING_FLAGS})
+    target_link_libraries(main PRIVATE ${PROFILING_FLAGS})
+
+    if (BUILD_TESTS)
+        target_compile_options(alltests PRIVATE ${PROFILING_FLAGS})
+        target_link_libraries(alltests PRIVATE ${PROFILING_FLAGS})
+    endif ()
+     
+
     message(STATUS "Building with profiling enabled - done")
 
     message(STATUS "Auto-profiling enabled: gmon.out -> profiling.txt")

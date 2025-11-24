@@ -12,3 +12,5 @@ Thumbs.db
 # Ignora i file Python compilati
 __pycache__/
 *.pyc
+
+gmon.out

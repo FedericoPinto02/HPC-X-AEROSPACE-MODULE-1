@@ -31,7 +31,7 @@ protected:
     // --- Fields required for testing ---
     Field testField;    // Used for fillSystemPressure
     Field porosity;     // Used for fillSystemVelocity
-    VectorField eta, xi, uBoundNew, uBoundOld; // Used for fillSystemVelocity
+    VectorField eta, xi; // Used for fillSystemVelocity
 
     /**
      * @brief Sets up all required objects before each test.
@@ -59,12 +59,6 @@ protected:
 
         std::vector<Field::Scalar> xi_x = vecDataX, xi_y = vecDataY, xi_z = vecDataZ;
         xi.setup(gridPtr, xi_x, xi_y, xi_z);
-
-        std::vector<Field::Scalar> new_x = vecDataX, new_y = vecDataY, new_z = vecDataZ;
-        uBoundNew.setup(gridPtr, new_x, new_y, new_z);
-
-        std::vector<Field::Scalar> old_x = vecDataX, old_y = vecDataY, old_z = vecDataZ;
-        uBoundOld.setup(gridPtr, old_x, old_y, old_z);
     }
 
     /**

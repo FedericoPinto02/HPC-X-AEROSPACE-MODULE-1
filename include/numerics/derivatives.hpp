@@ -93,6 +93,52 @@ public:
      * @param dzz the output field to store the second derivative in z-direction
      */
     void computeDzz(const Field &field, Field &dzz) const;
+
+    /**
+     * @brief Compute the local second derivative ∂²f/∂x² at a single grid point.
+     *
+     * Evaluates the second–order central finite difference at coordinates (i,j,k):
+     * ( f(i+1,j,k) + f(i-1,j,k) − 2 f(i,j,k) ) / dx².
+     * Performs minimal boundary checking: if @p i is on the domain boundary, returns 0.0.
+     *
+     * @param f The input scalar field.
+     * @param i Grid index in the x–direction.
+     * @param j Grid index in the y–direction.
+     * @param k Grid index in the z–direction.
+     * @return The second derivative ∂²f/∂x² at (i,j,k).
+     */
+    double Dxx_local(const Field& f, size_t i, size_t j, size_t k) const;
+
+    /**
+     * @brief Compute the local second derivative ∂²f/∂y² at a single grid point.
+     *
+     * Evaluates the second–order central finite difference at coordinates (i,j,k):
+     * ( f(i,j+1,k) + f(i,j-1,k) − 2 f(i,j,k) ) / dy².
+     * Performs minimal boundary checking: if @p j is on the domain boundary, returns 0.0.
+     *
+     * @param f The input scalar field.
+     * @param i Grid index in the x–direction.
+     * @param j Grid index in the y–direction.
+     * @param k Grid index in the z–direction.
+     * @return The second derivative ∂²f/∂y² at (i,j,k).
+     */
+    double Dyy_local(const Field& f, size_t i, size_t j, size_t k) const;
+
+    /**
+     * @brief Compute the local second derivative ∂²f/∂z² at a single grid point.
+     *
+     * Evaluates the second–order central finite difference at coordinates (i,j,k):
+     * ( f(i,j,k+1) + f(i,j,k-1) − 2 f(i,j,k) ) / dz².
+     * Performs minimal boundary checking: if @p k is on the domain boundary, returns 0.0.
+     *
+     * @param f The input scalar field.
+     * @param i Grid index in the x–direction.
+     * @param j Grid index in the y–direction.
+     * @param k Grid index in the z–direction.
+     * @return The second derivative ∂²f/∂z² at (i,j,k).
+     */
+    double Dzz_local(const Field& f, size_t i, size_t j, size_t k) const;
+
 };
 
 #endif // NSBSOLVER_DERIVATIVES_HPP

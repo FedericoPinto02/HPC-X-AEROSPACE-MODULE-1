@@ -3,7 +3,7 @@
 # Exit immediately if a command exits with a non-zero status.
 # Questo previene che lo script continui se 'cmake' fallisce.
 set -e
-
+CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DPROFILING=ON"
 # --- 1. Define build directory ---
 BUILD_DIR="build"
 
@@ -23,7 +23,7 @@ cd $BUILD_DIR
 # --- 5. Run CMake (Configure/Prepare) ---
 # Il '..' dice a cmake di cercare CMakeLists.txt nella cartella genitore
 echo "--- Running CMake... ---"
-cmake ..
+cmake .. ${CMAKE_FLAGS}
 
 # --- 6. Run Make (Compile/Build) ---
 echo "--- Running Make... ---"

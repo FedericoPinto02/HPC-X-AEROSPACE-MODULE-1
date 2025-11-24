@@ -73,12 +73,6 @@ protected:
         data_.zeta.setup(grid, sqX, sqY, sqZ);
         data_.zeta.populate(0.0);
 
-        // Define Boundary Conditions (Discrete Fields)
-        data_.uBoundNew.setup(grid, sinX, sinY, sinZ);
-        data_.uBoundNew.populate(0.0);
-        data_.uBoundOld.setup(grid, sinX, sinY, sinZ);
-        data_.uBoundOld.populate(0.0);
-
         // Define Analytical Boundary Functions
         // Required for LinearSys solver to evaluate BCs at specific coordinates
         data_.bcu = [](double x, double, double, double) { return std::sin(x); };
@@ -207,12 +201,6 @@ protected:
         // Define Zeta = [z^2, x^2, y^2]
         data_.zeta.setup(grid, sqZ, sqX, sqY);
         data_.zeta.populate(0.0);
-
-        // Define Discrete Boundary Conditions
-        data_.uBoundNew.setup(grid, sqX, sqY, sqZ);
-        data_.uBoundNew.populate(0.0);
-        data_.uBoundOld.setup(grid, sqX, sqY, sqZ);
-        data_.uBoundOld.populate(0.0);
 
         // Define Analytical Boundary Functions
         data_.bcu = sqX;
