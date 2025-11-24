@@ -1,5 +1,6 @@
 import json
 import subprocess
+import math
 import os
 import sys
 import copy  # Necessary for deep copying nested dictionaries
@@ -18,11 +19,27 @@ OUTPUT_DIR = "../output/"              # Output directory (must match JSON)
 
 # Time parameters to calculate expected filename suffix (e.g., _0030.vtk)
 # Ensure these match the JSON logic.
-EXPECTED_LAST_STEP = 30  # t_end / dt = 0.03 / 0.001 = 30
 
 # Resolutions to test (Nx)
-NX_VALUES = [20,  30, 40, 50, 60, 70, 80, 150] 
-DT_VALUES = [6/(x+0.5)/(6/20.5) * 0.001  for x in NX_VALUES]
+
+# Setup 
+NX_VALUES = [20, 30, 40, 50, 60, 70, 80, 150]
+NX_VALUES = [20, 30, 40, 50]
+t_end = 0.03
+DT_VALUES = []
+EXPECTED_LAST_STEP = []
+
+for x in NX_VALUES:
+    raw_dt = (6/(x+0.5)) *0.001  /(6/(20+0.5))
+    
+    n_steps_float = t_end / raw_dt
+    
+    n_steps = math.ceil(n_steps_float)
+    
+    exact_dt = t_end / n_steps
+    
+    DT_VALUES.append(exact_dt)
+    EXPECTED_LAST_STEP.append(n_steps)
 
 
 def main():
@@ -52,6 +69,7 @@ def main():
         # --- PHASE 1: RUN SIMULATIONS ---
         for i, nx in enumerate(NX_VALUES):
             dt = DT_VALUES[i]
+            lastStep = EXPECTED_LAST_STEP[i]
             print(f"\n[Run {i+1}/{len(NX_VALUES)}] Processing Nx = {nx}, dt = {dt}...")
 
             # A. Create a DEEP COPY of the original config
@@ -62,12 +80,14 @@ def main():
             current_config['mesh']['nx'] = nx
             # set time
             current_config['time']['dt'] = dt
+            current_config['time']['t_end'] = t_end
             # 2. Force manufactured solution flag
             current_config['mesh']['input_for_manufactured_solution'] = True
             # 3. Modify base filename
             # This lets C++ save directly as "n80_simulation_output_0030.vtk"
             base_name = f"n{nx}_simulation_output"
             current_config['output']['base_filename'] = base_name
+            current_config['output']['output_frequency'] = lastStep # Output only at the end
 
             # C. Overwrite config.json on disk
             with open(CONFIG_PATH, 'w') as f:
@@ -87,7 +107,8 @@ def main():
                 print("  > Simulation completed successfully.")
 
             # E. Verify output existence
-            expected_filename = f"{base_name}_{EXPECTED_LAST_STEP:04d}.vtk"
+
+            expected_filename = f"{base_name}_{lastStep:04d}.vtk"
             full_path = os.path.join(OUTPUT_DIR, expected_filename)
 
             if os.path.exists(full_path):
@@ -95,6 +116,7 @@ def main():
                 simulation_data_for_plot.append({
                     "nx": nx,
                     "dt": dt,
+                    "t_end": t_end,
                     "file": full_path
                 })
             else:

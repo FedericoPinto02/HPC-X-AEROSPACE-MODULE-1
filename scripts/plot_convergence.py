@@ -286,6 +286,7 @@ def run_analysis(custom_simulations=None):
     for sim in sorted_simulations:
         nx = sim['nx']
         dt = sim['dt']
+        t_end = sim['t_end']
         filepath = sim['file']
 
         # Calculate CURRENT_TIME for this specific file
@@ -297,6 +298,8 @@ def run_analysis(custom_simulations=None):
             print(f"ERROR: {e}", file=sys.stderr)
             print("Skipping this data point.", file=sys.stderr)
             continue
+
+        current_time = t_end
 
         # Calculate grid size
         # h = L / (N + 0.5)
