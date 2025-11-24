@@ -7,7 +7,6 @@
 #include "simulation/viscousStep.hpp"
 #include "simulation/SimulationContext.hpp"
 #include "core/Fields.hpp"
-#include "core/Functions.hpp"
 #include "numerics/derivatives.hpp"
 
 class ViscousStepTest : public ::testing::Test {
@@ -43,7 +42,7 @@ protected:
         data_.k.populate(0.0);
 
         // Define External Force f = [0,0,0]
-        data_.f.setup(grid, Functions::ZERO, Functions::ZERO, Functions::ZERO);
+        data_.f.setup(grid, ZERO_FUNC, ZERO_FUNC, ZERO_FUNC);
         data_.f.populate(0.0);
 
         // Define Pressure: p(x,y,z) = x + 2y + 3z

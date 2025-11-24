@@ -21,30 +21,20 @@ namespace Initializer {
     // Scalar Fields Initialization
     // ---------------------------------------------------------------------
 
-    Field initializeFieldFromSpatialFunc(
-            const GridPtr &grid,
-            const Functions::Func &func);
-
-    Field initializeFieldFromTemporalFunc(
+    Field initializeFieldFromFunc(
             const double time,
             const GridPtr &grid,
-            const Functions::Func &func);
+            const Func &func);
 
     // ---------------------------------------------------------------------
     // Vector Fields Initialization
     // ---------------------------------------------------------------------
 
-    VectorField initializeVectorFieldFromSpatialFunc(
-            const GridPtr &grid,
-            const Functions::Func &func_u,
-            const Functions::Func &func_v,
-            const Functions::Func &func_w);
-
-    VectorField initializeVectorFieldFromTemporalFunc(
+    VectorField initializeVectorFieldFromFunc(
             const double time,
             const GridPtr &grid,
-            const Functions::Func &func_u,
-            const Functions::Func &func_v,
-            const Functions::Func &func_w);
+            const Func &func_u,
+            const Func &func_v,
+            const Func &func_w);
 
 };

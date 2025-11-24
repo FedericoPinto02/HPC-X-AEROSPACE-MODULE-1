@@ -8,20 +8,10 @@
 // 1. Scalar Fields Initialization
 // =========================================================
 
-Field Initializer::initializeFieldFromSpatialFunc(
-        const GridPtr &grid,
-        const Functions::Func &func
-) {
-    Field field;
-    field.setup(grid, func);
-    field.populate();
-    return field;
-}
-
-Field Initializer::initializeFieldFromTemporalFunc(
+Field Initializer::initializeFieldFromFunc(
         const double time,
         const GridPtr &grid,
-        const Functions::Func &func
+        const Func &func
 ) {
     Field field;
     field.setup(grid, func);
@@ -33,24 +23,12 @@ Field Initializer::initializeFieldFromTemporalFunc(
 // 2. Vector Fields Initialization
 // =========================================================
 
-VectorField Initializer::initializeVectorFieldFromSpatialFunc(
-        const GridPtr &grid,
-        const Functions::Func &func_u,
-        const Functions::Func &func_v,
-        const Functions::Func &func_w
-) {
-    VectorField vec;
-    vec.setup(grid, func_u, func_v, func_w);
-    vec.populate();
-    return vec;
-}
-
-VectorField Initializer::initializeVectorFieldFromTemporalFunc(
+VectorField Initializer::initializeVectorFieldFromFunc(
         const double time,
         const GridPtr &grid,
-        const Functions::Func &func_u,
-        const Functions::Func &func_v,
-        const Functions::Func &func_w) {
+        const Func &func_u,
+        const Func &func_v,
+        const Func &func_w) {
     VectorField vec;
     vec.setup(grid, func_u, func_v, func_w);
     vec.populate(time);
@@ -84,27 +62,27 @@ SimulationData Initializer::setup(const InputData &inputData) {
     sim.nu = inputData.physics.nu;
 
     // --- Initial fields ---
-    Functions::Func ui_func = ConfigFuncs::u_init_func;
-    Functions::Func vi_func = ConfigFuncs::v_init_func;
-    Functions::Func wi_func = ConfigFuncs::w_init_func;
-    Functions::Func pi_func = ConfigFuncs::p_init_func;
+    Func ui_func = ConfigFuncs::u_init_func;
+    Func vi_func = ConfigFuncs::v_init_func;
+    Func wi_func = ConfigFuncs::w_init_func;
+    Func pi_func = ConfigFuncs::p_init_func;
 
-    sim.u = initializeVectorFieldFromTemporalFunc(t0, grid, ui_func, vi_func, wi_func);
+    sim.u = initializeVectorFieldFromFunc(t0, grid, ui_func, vi_func, wi_func);
     sim.eta = sim.u;
     sim.zeta = sim.u;
 
-    sim.p = initializeFieldFromTemporalFunc(t0, grid, pi_func);
+    sim.p = initializeFieldFromFunc(t0, grid, pi_func);
 
     // --- Permeability ---
-    Functions::Func k_func = ConfigFuncs::k_func;
-    sim.k = initializeFieldFromSpatialFunc(grid, k_func);
+    Func k_func = ConfigFuncs::k_func;
+    sim.k = initializeFieldFromFunc(t0, grid, k_func);
 
     // --- BC functions ---
     sim.bcu = ConfigFuncs::bcu_func;
     sim.bcv = ConfigFuncs::bcv_func;
     sim.bcw = ConfigFuncs::bcw_func;
 
-    sim.uBoundNew = initializeVectorFieldFromTemporalFunc(t0, grid, sim.bcu, sim.bcv, sim.bcw);
+    sim.uBoundNew = initializeVectorFieldFromFunc(t0, grid, sim.bcu, sim.bcv, sim.bcw);
     sim.uBoundOld = sim.uBoundNew;
 
     // --- Force functions ---
@@ -112,7 +90,7 @@ SimulationData Initializer::setup(const InputData &inputData) {
     sim.fy = ConfigFuncs::fy_func;
     sim.fz = ConfigFuncs::fz_func;
 
-    sim.f = initializeVectorFieldFromTemporalFunc(t0, grid, sim.fx, sim.fy, sim.fz);
+    sim.f = initializeVectorFieldFromFunc(t0, grid, sim.fx, sim.fy, sim.fz);
 
     return sim;
 }
