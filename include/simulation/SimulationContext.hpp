@@ -48,8 +48,6 @@ struct SimulationData {
     Field p;
 
     // Boundary conditions
-    VectorField uBoundOld;
-    VectorField uBoundNew;
     Func bcu;
     Func bcv;
     Func bcw;

@@ -147,10 +147,42 @@ void LinearSys::fillSystemVelocity(
 
             diag.back() = 1.0; // the other is aready initialized to zero
             diag.front() = 1.0;
+            std::function<double(double t, double x, double y, double z)> bc;
+            double xOff = 0.0, yOff = 0.0, zOff = 0.0;
+            switch (fieldComponent) {
+                case Axis::X:
+                    bc = simData.bcu;
+                    xOff = 0.5;
+                    break;
 
-            rhsC.back() = simData.uBoundNew(fieldComponent)
-                    .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, matA.getSize() - 1);
+                case Axis::Y:
+                    bc = simData.bcv;
+                    yOff = 0.5;
+                    break;
+
+                case Axis::Z:
+                    bc = simData.bcw;
+                    zOff = 0.5;
+                    break;
+                default:
+                    break;
+            }   
+            
+            switch (derivativeDirection) {
+                case Axis::X:
+                    rhsC.back() = bc(simData.currTime, (iStart + xOff + matA.getSize() - 1) * grid.dx, (jStart + yOff) * grid.dy, (kStart + zOff) * grid.dz);
+                    break;
+
+                case Axis::Y:
+                     rhsC.back() = bc(simData.currTime, (iStart + xOff) * grid.dx, (jStart + yOff + matA.getSize() - 1) * grid.dy, (kStart + zOff) * grid.dz);
+                    break;
+
+                case Axis::Z:
+                     rhsC.back() = bc(simData.currTime, (iStart + xOff) * grid.dx, (jStart + yOff) * grid.dy, (kStart + zOff + matA.getSize() - 1) * grid.dz);
+                    break;
+                default:
+                    break;
+            }   
 
             break;
         }
@@ -164,9 +196,6 @@ void LinearSys::fillSystemVelocity(
             diag.back() = 1 + 3 * gamma * dCoef;
             subdiag.back() = -gamma * dCoef;
 
-            rhsC.front() = simData.uBoundNew(fieldComponent)
-                    .valueWithOffset(iStart, jStart, kStart,
-                                     derivativeDirection, 0);
 
             std::function<double(double t, double x, double y, double z)> bc;
             double xOff = 0.0, yOff = 0.0, zOff = 0.0;
@@ -187,7 +216,9 @@ void LinearSys::fillSystemVelocity(
                     break;
                 default:
                     break;
-            }
+            }   
+            rhsC.front() = bc(simData.currTime, (iStart + xOff) * grid.dx, (jStart + yOff) * grid.dy, (kStart + zOff) * grid.dz);
+            
 
             switch (derivativeDirection) {
                 case Axis::X:

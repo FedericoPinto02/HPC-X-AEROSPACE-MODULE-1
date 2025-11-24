@@ -57,11 +57,9 @@ void NSBSolver::solve()
     for (unsigned int i = 1; i < simData.totalSteps + 1; i++)
     {
         // 1. Update Time & Fields
-        simData.uBoundOld = simData.uBoundNew;
         simData.currStep++;
         simData.currTime += simData.dt;
 
-        simData.uBoundNew.populate(simData.currTime);
         simData.f.populate(simData.currTime);
 
         // 2. Physics Steps (Timed)

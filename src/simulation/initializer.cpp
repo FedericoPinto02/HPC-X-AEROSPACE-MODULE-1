@@ -82,8 +82,6 @@ SimulationData Initializer::setup(const InputData &inputData) {
     sim.bcv = ConfigFuncs::bcv_func;
     sim.bcw = ConfigFuncs::bcw_func;
 
-    sim.uBoundNew = initializeVectorFieldFromFunc(t0, grid, sim.bcu, sim.bcv, sim.bcw);
-    sim.uBoundOld = sim.uBoundNew;
 
     // --- Force functions ---
     sim.fx = ConfigFuncs::fx_func;

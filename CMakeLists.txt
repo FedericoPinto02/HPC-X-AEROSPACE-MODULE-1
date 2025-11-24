@@ -100,7 +100,7 @@ target_link_libraries(main PRIVATE NSBSolver)
 set(PROJECT_TESTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
 # Option to enable/disable building tests
-option(BUILD_TESTS "Build the tests" ON)
+option(BUILD_TESTS "Build the tests" OFF)
 message(STATUS "BUILD_TESTS option: ${BUILD_TESTS}")
 
 # Fetch GoogleTest source code automatically
