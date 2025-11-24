@@ -36,19 +36,6 @@ private:
     /// The function used for populating the field.
     Func populateFunction_;
 
-
-    /**
-     * @brief Computes the linear index for 3D access in row-major order.
-     * @param i the x-index
-     * @param j the y-index
-     * @param k the z-index
-     * @return the corresponding 1D index
-     */
-    [[nodiscard]] inline size_t idx(size_t i, size_t j, size_t k) const {
-        return (k * gridPtr_->Ny + j) * gridPtr_->Nx + i;
-    }
-
-
 public:
     /// @deprecated - Use [idx] instead.
     std::vector<Field::Scalar> &getData() { return data_; }
@@ -105,6 +92,17 @@ public:
     //==================================================================================================================
     //--- Data accessors -----------------------------------------------------------------------------------------------
     //==================================================================================================================
+    /**
+     * @brief Computes the linear index for 3D access in row-major order.
+     * @param i the x-index
+     * @param j the y-index
+     * @param k the z-index
+     * @return the corresponding 1D index
+     */
+    [[nodiscard]] inline size_t idx(size_t i, size_t j, size_t k) const {
+        return (k * gridPtr_->Ny + j) * gridPtr_->Nx + i;
+    }
+
     /**
      * @brief Access the value in the field at given linear index.
      * @param index the linear index
