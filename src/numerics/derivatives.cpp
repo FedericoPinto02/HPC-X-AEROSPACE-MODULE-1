@@ -3,12 +3,12 @@
 #include <stdexcept>
 
 void Derivatives::computeGradient(const Field &field, VectorField &gradient) const {
-    computeDx(field, gradient(Axis::X));
-    computeDy(field, gradient(Axis::Y));
-    computeDz(field, gradient(Axis::Z));
+    computeDx_fwd(field, gradient(Axis::X));
+    computeDy_fwd(field, gradient(Axis::Y));
+    computeDz_fwd(field, gradient(Axis::Z));
 }
 
-void Derivatives::computeDx(const Field &field, Field &dx) const {
+void Derivatives::computeDx_fwd(const Field &field, Field &dx) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dx;
 
@@ -32,7 +32,7 @@ void Derivatives::computeDx(const Field &field, Field &dx) const {
     }
 }
 
-void Derivatives::computeDy(const Field &field, Field &dy) const {
+void Derivatives::computeDy_fwd(const Field &field, Field &dy) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dy;
 
@@ -71,7 +71,7 @@ void Derivatives::computeDy(const Field &field, Field &dy) const {
     }
 }
 
-void Derivatives::computeDz(const Field &field, Field &dz) const {
+void Derivatives::computeDz_fwd(const Field &field, Field &dz) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dz;
 
@@ -104,7 +104,7 @@ void Derivatives::computeDz(const Field &field, Field &dz) const {
 }
 
 
-void Derivatives::computeDxDiv(const Field &field, Field &dx) const {
+void Derivatives::computeDx_bwd(const Field &field, Field &dx) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dx;
 
@@ -118,7 +118,7 @@ void Derivatives::computeDxDiv(const Field &field, Field &dx) const {
     }
 }
 
-void Derivatives::computeDyDiv(const Field &field, Field &dy) const {
+void Derivatives::computeDy_bwd(const Field &field, Field &dy) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dy;
 
@@ -132,7 +132,7 @@ void Derivatives::computeDyDiv(const Field &field, Field &dy) const {
     }
 }
 
-void Derivatives::computeDzDiv(const Field &field, Field &dz) const {
+void Derivatives::computeDz_bwd(const Field &field, Field &dz) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dz;
 
@@ -152,11 +152,11 @@ void Derivatives::computeDivergence(const VectorField &field, Field &divergence)
     tmp.reset();
     divergence.reset();
 
-    computeDxDiv(field(Axis::X), tmp);
+    computeDx_bwd(field(Axis::X), tmp);
     divergence.add(tmp);
-    computeDyDiv(field(Axis::Y), tmp);
+    computeDy_bwd(field(Axis::Y), tmp);
     divergence.add(tmp);
-    computeDzDiv(field(Axis::Z), tmp);
+    computeDz_bwd(field(Axis::Z), tmp);
     divergence.add(tmp);
 }
 
