@@ -3,12 +3,12 @@
 #include <stdexcept>
 
 void Derivatives::computeGradient(const Field &field, VectorField &gradient) const {
-    computeDx(field, gradient(Axis::X));
-    computeDy(field, gradient(Axis::Y));
-    computeDz(field, gradient(Axis::Z));
+    computeDx_fwd(field, gradient(Axis::X));
+    computeDy_fwd(field, gradient(Axis::Y));
+    computeDz_fwd(field, gradient(Axis::Z));
 }
 
-void Derivatives::computeDx(const Field &field, Field &dx) const {
+void Derivatives::computeDx_fwd(const Field &field, Field &dx) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dx;
 
@@ -32,7 +32,7 @@ void Derivatives::computeDx(const Field &field, Field &dx) const {
     }
 }
 
-void Derivatives::computeDy(const Field &field, Field &dy) const {
+void Derivatives::computeDy_fwd(const Field &field, Field &dy) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dy;
 
@@ -49,14 +49,14 @@ void Derivatives::computeDy(const Field &field, Field &dy) const {
         const size_t xyPlaneOffset = k * Ny * Nx; // skip an entire XY plane for each k-level
 
         // 1. Compute the derivative for each, whole XY-plane (last y-elements excluded)
-        // Still iterate over each x-line, with linear indexes: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
         for (size_t j = 0; j < Ny - 1; ++j) {
             // Calculate the starting linear index of the current x-line
             const size_t xLineStart = xyPlaneOffset + (j * Nx);
 
-            // Striding ensures we are reading/writing contiguous memory blocks in an efficient way
-            //  ~ "take the whole contiguous row j+1, and subtract the contiguous row j"
+            // Still iterate over each x-line, with linear indexes: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
             for (size_t i = 0; i < Nx; ++i) {
+                // Striding ensures we are reading/writing contiguous memory blocks in an efficient way
+                //  ~ "take the whole contiguous row j+1, and subtract the contiguous row j"
                 size_t idx = xLineStart + i;
                 dy[idx] = (field[idx + strideY] - field[idx]) * mul;
             }
@@ -71,22 +71,40 @@ void Derivatives::computeDy(const Field &field, Field &dy) const {
     }
 }
 
-void Derivatives::computeDz(const Field &field, Field &dz) const {
+void Derivatives::computeDz_fwd(const Field &field, Field &dz) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dz;
 
-    for (size_t i = 0; i < grid.Nx; i++) {
-        for (size_t j = 0; j < grid.Ny; j++) {
-            for (size_t k = 0; k < (grid.Nz - 1); k++) {
-                dz(i, j, k) = (field(i, j, k + 1) - field(i, j, k)) * mul;
-            }
-            dz(i, j, grid.Nz - 1) = 0.0;
+    const size_t Nx = grid.Nx;
+    const size_t Ny = grid.Ny;
+    const size_t Nz = grid.Nz;
+
+    // The distance in memory between (i, j, k) and (i, j, k+1)
+    //  i.e., field[idx + strideZ] is physically the neighbor "above" in Z w.r.t. field[idx]
+    const size_t strideZ = Nx * Ny; // stride is one full XY plane
+
+    // Iterate over all XY-planes (at each vertical level k, last z-elements excluded)
+    for (size_t k = 0; k < Nz - 1; ++k) {
+        const size_t xyPlaneOffset = k * strideZ; // skip an entire XY plane for each k-level
+
+        // 1. Compute the derivative for each, whole XY-plane (flattened: each point, one by one)
+        for (size_t p = 0; p < strideZ; ++p) {
+            // Striding ensures we are reading/writing contiguous memory blocks in an efficient way
+            //  ~ "take the whole contiguous row z+1, and subtract the contiguous row z"
+            size_t idx = xyPlaneOffset + p;
+            dz[idx] = (field[idx + strideZ] - field[idx]) * mul;
         }
+    }
+
+    // 2. Handle Boundary Condition: the last point of each z-line cannot compute a forward difference
+    const size_t lastPlaneOffset = (Nz - 1) * strideZ;
+    for (size_t p = 0; p < strideZ; ++p) {
+        dz[lastPlaneOffset + p] = 0.0;
     }
 }
 
 
-void Derivatives::computeDxDiv(const Field &field, Field &dx) const {
+void Derivatives::computeDx_bwd(const Field &field, Field &dx) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dx;
 
@@ -100,7 +118,7 @@ void Derivatives::computeDxDiv(const Field &field, Field &dx) const {
     }
 }
 
-void Derivatives::computeDyDiv(const Field &field, Field &dy) const {
+void Derivatives::computeDy_bwd(const Field &field, Field &dy) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dy;
 
@@ -114,7 +132,7 @@ void Derivatives::computeDyDiv(const Field &field, Field &dy) const {
     }
 }
 
-void Derivatives::computeDzDiv(const Field &field, Field &dz) const {
+void Derivatives::computeDz_bwd(const Field &field, Field &dz) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dz;
 
@@ -134,11 +152,11 @@ void Derivatives::computeDivergence(const VectorField &field, Field &divergence)
     tmp.reset();
     divergence.reset();
 
-    computeDxDiv(field(Axis::X), tmp);
+    computeDx_bwd(field(Axis::X), tmp);
     divergence.add(tmp);
-    computeDyDiv(field(Axis::Y), tmp);
+    computeDy_bwd(field(Axis::Y), tmp);
     divergence.add(tmp);
-    computeDzDiv(field(Axis::Z), tmp);
+    computeDz_bwd(field(Axis::Z), tmp);
     divergence.add(tmp);
 }
 

@@ -46,13 +46,19 @@ Field::valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int o
 }
 
 void Field::populate(double time) {
-    for (auto k = 0; k < gridPtr_->Nz; ++k) {
-        for (auto j = 0; j < gridPtr_->Ny; ++j) {
-            for (auto i = 0; i < gridPtr_->Nx; ++i) {
+    const size_t Nx = gridPtr_->Nx;
+    const size_t Ny = gridPtr_->Ny;
+    const size_t Nz = gridPtr_->Nz;
+
+    for (auto k = 0; k < Nz; ++k) {
+        const size_t kOffset = k * Nx * Ny;
+        for (auto j = 0; j < Ny; ++j) {
+            const size_t jOffset = j * Nx;
+            for (auto i = 0; i < Nx; ++i) {
                 auto x = gridPtr_->to_x(i, offset_, offsetAxis_);
                 auto y = gridPtr_->to_y(j, offset_, offsetAxis_);
                 auto z = gridPtr_->to_z(k, offset_, offsetAxis_);
-                data_[idx(i, j, k)] = populateFunction_(x, y, z, time);
+                data_[kOffset + jOffset + i] = populateFunction_(x, y, z, time);
             }
         }
     }

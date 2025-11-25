@@ -22,42 +22,42 @@ public:
      * @param field the input scalar field
      * @param dx the output field to store the derivative in x-direction
      */
-    void computeDx(const Field &field, Field &dx) const;
+    void computeDx_fwd(const Field &field, Field &dx) const;
 
     /**
      * @brief Compute the derivative of a scalar field in the y-direction (forward difference).
      * @param field the input scalar field
      * @param dy the output field to store the derivative in y-direction
      */
-    void computeDy(const Field &field, Field &dy) const;
+    void computeDy_fwd(const Field &field, Field &dy) const;
 
     /**
      * @brief Compute the derivative of a scalar field in the z-direction (forward difference).
      * @param field the input scalar field
      * @param dz the output field to store the derivative in z-direction
      */
-    void computeDz(const Field &field, Field &dz) const;
+    void computeDz_fwd(const Field &field, Field &dz) const;
 
     /**
      * @brief Compute the derivative of a scalar field in the x-direction (backward difference).
      * @param field the input vector field
      * @param dx the output field to store the derivative in x-direction
      */
-    void computeDxDiv(const Field &field, Field &dx) const;
+    void computeDx_bwd(const Field &field, Field &dx) const;
 
     /**
      * @brief Compute the derivative of a scalar field in the y-direction (backward difference).
      * @param field the input vector field
      * @param dy the output field to store the derivative in y-direction
      */
-    void computeDyDiv(const Field &field, Field &dy) const;
+    void computeDy_bwd(const Field &field, Field &dy) const;
 
     /**
      * @brief Compute the derivative of a scalar field in the z-direction (backward difference).
      * @param field the input vector field
      * @param dz the output field to store the derivative in z-direction
      */
-    void computeDzDiv(const Field &field, Field &dz) const;
+    void computeDz_bwd(const Field &field, Field &dz) const;
 
     /**
      * @brief Compute the divergence of a vector field (backward difference).
@@ -107,7 +107,7 @@ public:
      * @param k Grid index in the z–direction.
      * @return The second derivative ∂²f/∂x² at (i,j,k).
      */
-    double Dxx_local(const Field& f, size_t i, size_t j, size_t k) const;
+    double Dxx_local(const Field &f, size_t i, size_t j, size_t k) const;
 
     /**
      * @brief Compute the local second derivative ∂²f/∂y² at a single grid point.
@@ -122,7 +122,7 @@ public:
      * @param k Grid index in the z–direction.
      * @return The second derivative ∂²f/∂y² at (i,j,k).
      */
-    double Dyy_local(const Field& f, size_t i, size_t j, size_t k) const;
+    double Dyy_local(const Field &f, size_t i, size_t j, size_t k) const;
 
     /**
      * @brief Compute the local second derivative ∂²f/∂z² at a single grid point.
@@ -137,7 +137,7 @@ public:
      * @param k Grid index in the z–direction.
      * @return The second derivative ∂²f/∂z² at (i,j,k).
      */
-    double Dzz_local(const Field& f, size_t i, size_t j, size_t k) const;
+    double Dzz_local(const Field &f, size_t i, size_t j, size_t k) const;
 
 };
 
