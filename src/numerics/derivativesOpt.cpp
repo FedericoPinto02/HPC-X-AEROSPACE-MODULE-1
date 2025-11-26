@@ -12,13 +12,23 @@ void Derivatives::computeDx_fwd(const Field &field, Field &dx) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dx;
 
-    for (size_t k = 0; k < grid.Nz; k++) {
-        for (size_t j = 0; j < grid.Ny; j++) {
-            for (size_t i = 0; i < (grid.Nx - 1); i++) {
-                dx(i, j, k) = (field(i + 1, j, k) - field(i, j, k)) * mul;
-            }
-            dx(grid.Nx - 1, j, k) = 0.0;
+    const size_t Nx = grid.Nx;
+    // Flatten Y and Z dimensions into a single 'xLine' count
+    const size_t totalXLines = grid.Ny * grid.Nz;
+
+    // Iterate over every x-line in the volume
+    for (size_t xLine = 0; xLine < totalXLines; ++xLine) {
+        const size_t xLineOffset = xLine * Nx;
+
+        // 1. Compute the derivative for each, whole x-line (last x-elements excluded)
+        // Linear index iteration: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
+        for (size_t i = 0; i < Nx - 1; ++i) {
+            size_t idx = xLineOffset + i;
+            dx[idx] = (field[idx + 1] - field[idx]) * mul;
         }
+
+        // 2. Handle Boundary Condition: the last point of the x-line cannot compute a forward difference
+        dx[xLineOffset + Nx - 1] = 0.0;
     }
 }
 
@@ -26,12 +36,37 @@ void Derivatives::computeDy_fwd(const Field &field, Field &dy) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dy;
 
-    for (size_t k = 0; k < grid.Nz; k++) {
-        for (size_t i = 0; i < grid.Nx; i++) {
-            for (size_t j = 0; j < (grid.Ny - 1); j++) {
-                dy(i, j, k) = (field(i, j + 1, k) - field(i, j, k)) * mul;
+    const size_t Nx = grid.Nx;
+    const size_t Ny = grid.Ny;
+    const size_t Nz = grid.Nz;
+
+    // The distance in memory between (i, j, k) and (i, j+1, k)
+    //  i.e., field[idx + strideY] is physically the neighbor "above" in Y w.r.t. field[idx]
+    const size_t strideY = Nx;
+
+    // Iterate over all XY-planes (at each vertical level k)
+    for (size_t k = 0; k < Nz; ++k) {
+        const size_t xyPlaneOffset = k * Ny * Nx; // skip an entire XY plane for each k-level
+
+        // 1. Compute the derivative for each, whole XY-plane (last y-elements excluded)
+        for (size_t j = 0; j < Ny - 1; ++j) {
+            // Calculate the starting linear index of the current x-line
+            const size_t xLineStart = xyPlaneOffset + (j * Nx);
+
+            // Still iterate over each x-line, with linear indexes: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
+            for (size_t i = 0; i < Nx; ++i) {
+                // Striding ensures we are reading/writing contiguous memory blocks in an efficient way
+                //  ~ "take the whole contiguous row j+1, and subtract the contiguous row j"
+                size_t idx = xLineStart + i;
+                dy[idx] = (field[idx + strideY] - field[idx]) * mul;
             }
-            dy(i, grid.Ny - 1, k) = 0.0;
+        }
+
+        // 2. Handle Boundary Condition: the last point of each y-line cannot compute a forward difference
+        //  i.e., the whole last x-line of the XY-plane
+        const size_t lastXLineStart = xyPlaneOffset + ((Ny - 1) * Nx);
+        for (size_t i = 0; i < Nx; ++i) {
+            dy[lastXLineStart + i] = 0.0;
         }
     }
 }
@@ -40,13 +75,31 @@ void Derivatives::computeDz_fwd(const Field &field, Field &dz) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dz;
 
-    for (size_t i = 0; i < grid.Nx; i++) {
-        for (size_t j = 0; j < grid.Ny; j++) {
-            for (size_t k = 0; k < (grid.Nz - 1); k++) {
-                dz(i, j, k) = (field(i, j, k + 1) - field(i, j, k)) * mul;
-            }
-            dz(i, j, grid.Nz - 1) = 0.0;
+    const size_t Nx = grid.Nx;
+    const size_t Ny = grid.Ny;
+    const size_t Nz = grid.Nz;
+
+    // The distance in memory between (i, j, k) and (i, j, k+1)
+    //  i.e., field[idx + strideZ] is physically the neighbor "above" in Z w.r.t. field[idx]
+    const size_t strideZ = Nx * Ny; // stride is one full XY plane
+
+    // Iterate over all XY-planes (at each vertical level k, last z-elements excluded)
+    for (size_t k = 0; k < Nz - 1; ++k) {
+        const size_t xyPlaneOffset = k * strideZ; // skip an entire XY plane for each k-level
+
+        // 1. Compute the derivative for each, whole XY-plane (flattened: each point, one by one)
+        for (size_t p = 0; p < strideZ; ++p) {
+            // Striding ensures we are reading/writing contiguous memory blocks in an efficient way
+            //  ~ "take the whole contiguous row z+1, and subtract the contiguous row z"
+            size_t idx = xyPlaneOffset + p;
+            dz[idx] = (field[idx + strideZ] - field[idx]) * mul;
         }
+    }
+
+    // 2. Handle Boundary Condition: the last point of each z-line cannot compute a forward difference
+    const size_t lastPlaneOffset = (Nz - 1) * strideZ;
+    for (size_t p = 0; p < strideZ; ++p) {
+        dz[lastPlaneOffset + p] = 0.0;
     }
 }
 
