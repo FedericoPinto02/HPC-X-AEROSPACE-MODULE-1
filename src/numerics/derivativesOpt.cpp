@@ -212,11 +212,6 @@ void Derivatives::computeDivergence(const VectorField &field, Field &divergence)
     // todo - could be further optimized to avoid time-interleaved addition, reset and temporary field allocation
 }
 
-void Derivatives::computeHessianDiag(const Field &field, VectorField &hessianDiag) const {
-    computeDxx(field, hessianDiag(Axis::X));
-    computeDyy(field, hessianDiag(Axis::Y));
-    computeDzz(field, hessianDiag(Axis::Z));
-}
 
 void Derivatives::computeDxx(const VectorField &field, VectorField &dxx) const {
     const double *fx_ptr = field(Axis::X).getData().data();

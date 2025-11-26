@@ -107,11 +107,6 @@ void Derivatives::computeDivergence(const VectorField &field, Field &divergence)
     divergence.add(tmp);
 }
 
-void Derivatives::computeHessianDiag(const Field &field, VectorField &hessianDiag) const {
-    computeDxx(field, hessianDiag(Axis::X));
-    computeDyy(field, hessianDiag(Axis::Y));
-    computeDzz(field, hessianDiag(Axis::Z));
-}
 
 void Derivatives::computeDxx(const VectorField &field, VectorField &dxx) const {
     computeDxx(field(Axis::X), dxx(Axis::X));

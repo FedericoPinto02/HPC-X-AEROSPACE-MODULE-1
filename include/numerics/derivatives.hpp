@@ -10,6 +10,9 @@
  */
 class Derivatives {
 public:
+    //==================================================================================================================
+    //--- First-order forward differences ------------------------------------------------------------------------------
+    //==================================================================================================================
     /**
      * @brief Compute the gradient of a scalar field (forward difference).
      * @param field the input scalar field
@@ -38,6 +41,9 @@ public:
      */
     void computeDz_fwd(const Field &field, Field &dz) const;
 
+    //==================================================================================================================
+    //--- First-order backward differences -----------------------------------------------------------------------------
+    //==================================================================================================================
     /**
      * @brief Compute the derivative of a scalar field in the x-direction (backward difference).
      * @param field the input vector field
@@ -66,13 +72,9 @@ public:
      */
     void computeDivergence(const VectorField &field, Field &divergence) const;
 
-    /**
-     * @brief Compute the diagonal of the Hessian matrix of a scalar field.
-     * @param field the input scalar field
-     * @param hessianDiag the output vector field to store the Hessian diagonal components
-     */
-    void computeHessianDiag(const Field &field, VectorField &hessianDiag) const;
-
+    //==================================================================================================================
+    //--- Second-order centered differences ----------------------------------------------------------------------------
+    //==================================================================================================================
     /**
      * @brief Compute the second derivative of a vector field in the x-direction.
      * @param field the input vector field
