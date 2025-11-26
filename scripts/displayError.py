@@ -17,8 +17,8 @@ ERROR_DIR = os.path.join(OUTPUT_DIR, "error_analysis")
 
 # Simulation Parameters
 NX = 50
-DT = 0.001
-T_END = 0.1
+DT = 0.00001
+T_END = 0.002
 OUTPUT_FREQ = 1
 DOMAIN_LEN_X = 6.0
 

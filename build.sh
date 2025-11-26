@@ -3,7 +3,7 @@
 # Exit immediately if a command exits with a non-zero status.
 # Questo previene che lo script continui se 'cmake' fallisce.
 set -e
-CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DPROFILING=ON"
+CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DPROFILING=ON"
 # --- 1. Define build directory ---
 BUILD_DIR="build"
 
@@ -25,9 +25,9 @@ cd $BUILD_DIR
 echo "--- Running CMake... ---"
 cmake .. ${CMAKE_FLAGS}
 
-# --- 6. Run Make (Compile/Build) ---
-echo "--- Running Make... ---"
-make
+# --- 6. Run Make (Compile/Build) in parallel ---
+echo "--- Running Make in parallel... ---"
+make -j$(nproc)
 
 echo "--- Build complete! ---"
 echo "You can now run your executable from within the '$BUILD_DIR' directory."

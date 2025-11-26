@@ -21,7 +21,7 @@ OUTPUT_DIR = "../output/"              # Output directory (must match JSON)
 EXPECTED_LAST_STEP = 30  # t_end / dt = 0.03 / 0.001 = 30
 
 # Resolutions to test (Nx)
-NX_VALUES = [20, 25, 30] 
+NX_VALUES = [20, 25, 30, 35, 40, 45, 50, 60, 80] 
 
 def main():
     # 1. Read the original config

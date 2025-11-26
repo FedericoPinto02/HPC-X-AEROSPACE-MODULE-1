@@ -105,7 +105,25 @@ void Derivatives::computeDivergence(const VectorField &field, Field &divergence)
     divergence.add(tmp);
     computeDzDiv(field(Axis::Z), tmp);
     divergence.add(tmp);
+
+    const auto &grid = divergence.getGrid();
+    std::vector<double> mx(grid.Nx), my(grid.Ny), mz(grid.Nz);
+
+    for (size_t i = 0; i < grid.Nx; i++) mx[i] = (i != 0);
+    for (size_t j = 0; j < grid.Ny; j++) my[j] = (j != 0);
+    for (size_t k = 0; k < grid.Nz; k++) mz[k] = (k != 0);
+
+    for (size_t k = 0; k < grid.Nz; k++) {
+        const double mk = mz[k];
+        for (size_t j = 0; j < grid.Ny; j++) {
+            const double mj = mk * my[j];
+            for (size_t i = 0; i < grid.Nx; i++) {
+                divergence(i,j,k) *= mj * mx[i]; // zero planes i=0,j=0,k=0
+            }
+        }
+    }
 }
+
 
 void Derivatives::computeHessianDiag(const Field &field, VectorField &hessianDiag) const {
     computeDxx(field, hessianDiag(Axis::X));
