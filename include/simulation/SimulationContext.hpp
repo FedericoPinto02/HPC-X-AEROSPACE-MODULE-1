@@ -46,6 +46,7 @@ struct SimulationData {
 
     // Pressure field
     Field p;
+    Field predictor;
 
     // Boundary conditions
     Func bcu;

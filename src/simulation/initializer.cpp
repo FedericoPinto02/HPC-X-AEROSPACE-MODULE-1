@@ -72,6 +72,7 @@ SimulationData Initializer::setup(const InputData &inputData) {
     sim.zeta = sim.u;
 
     sim.p = initializeFieldFromFunc(t0, grid, pi_func);
+    sim.predictor = initializeFieldFromFunc(t0, grid, pi_func);
 
     // --- Permeability ---
     Func k_func = ConfigFuncs::k_func;

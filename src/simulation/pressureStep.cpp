@@ -174,17 +174,30 @@ void PressureStep::run()
             std::vector<Field::Scalar> solution = solveSystem(mySystem, BoundaryType::Normal);
             for (size_t k = 0; k < sysDimension; k++)
             {
-                pcr(i, j, k) = solution[k];
+                pcr(i, j, k) = 1.0 * solution[k];
             }
            
         }
     }
     }
 
-    // Add pressure corrector contribution
-    data_.p.add( pcr );
+    // Add pressure corrector contribution and rotational correction
+    // Write pressure predictor
+    double chi = 1;
+    double Re = 1;
+    double factor = chi / Re;
 
+    for (size_t k = 0; k < data_.grid->Nz; k++) {
+    for (size_t j = 0; j < data_.grid->Ny; j++) {
+        for (size_t i = 0; i < data_.grid->Nx; i++) {
+            
+            data_.p(i, j, k) += pcr(i, j, k) - factor * divU(i, j, k);
+            data_.predictor(i,j,k) = data_.p(i, j, k) + pcr(i, j, k);
+        }
+    }
+    
    
+}
 }
 
 

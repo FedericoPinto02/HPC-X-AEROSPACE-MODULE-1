@@ -55,12 +55,12 @@ void ViscousStep::computeG()
     auto& eta = data_.eta;
     auto& zeta = data_.zeta;
     auto& u = data_.u;
-    auto& p = data_.p;
+    auto& predictor = data_.predictor;
     auto& k_data = data_.k.getData(); // k cant be 0!!!
     double nu_val = data_.nu;
     
     Derivatives derive;
-    derive.computeGradient(p, gradP);
+    derive.computeGradient(predictor, gradP);
     
 
     // Recepie
