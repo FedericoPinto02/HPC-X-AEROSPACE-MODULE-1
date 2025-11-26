@@ -38,8 +38,8 @@ protected:
 
     void SetUp() override {
         // Define constant Permeability k = 1.0
-        data_.k.setup(grid, [](double, double, double, double) { return 1.0; });
-        data_.k.populate(0.0);
+        data_.inv_k.setup(grid, [](double, double, double, double) { return 1.0; });
+        data_.inv_k.populate(0.0);
 
         // Define External Force f = [0,0,0]
         data_.f.setup(grid, ZERO_FUNC, ZERO_FUNC, ZERO_FUNC);
@@ -175,8 +175,8 @@ protected:
 
     void SetUp() override {
         // Define Permeability k = 1.0
-        data_.k.setup(grid, [](double, double, double, double) { return 1.0; });
-        data_.k.populate(0.0);
+        data_.inv_k.setup(grid, [](double, double, double, double) { return 1.0; });
+        data_.inv_k.populate(0.0);
 
         // Define Force f = 10.0
         auto funcF = [](double, double, double, double) { return 10.0; };

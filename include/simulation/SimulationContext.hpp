@@ -55,8 +55,9 @@ struct SimulationData {
     // Kinematic viscosity of the fluid
     double nu;
 
-    // Permeability of the (porous) medium (solid: very low; fluid: very high)
-    Field k;
+    // Inverse of the permeability of the (porous) medium (solid: very low; fluid: very high)
+    //  (prefer multiplication with inv_k over division by k)
+    Field inv_k;
 
     // Body force acting on the medium
     VectorField f;

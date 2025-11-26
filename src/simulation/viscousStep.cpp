@@ -56,7 +56,7 @@ void ViscousStep::computeG()
     auto& zeta = data_.zeta;
     auto& u = data_.u;
     auto& p = data_.p;
-    auto& k_data = data_.k.getData(); // k cant be 0!!!
+    auto& inv_k_data = data_.inv_k.getData(); // k cant be 0!!!
     double nu_val = data_.nu;
     
     Derivatives derive;
@@ -65,7 +65,7 @@ void ViscousStep::computeG()
     derive.computeDyy(zeta, dyyZeta);
     derive.computeDzz(u, dzzU);
 
-    // Recepie
+    // Recipie
     // g = f  -grad(p)  -nu/k *u * 0.5  +nu*(dxx eta + dyy zeta + dzz u) * 0.5
 
     // Let me cook
@@ -83,7 +83,7 @@ void ViscousStep::computeG()
         {
             g_data[i] = f_data[i]
                         - gradP_data[i]
-                        - nu_val * u_data[i] / k_data[i] * 0.5
+                        - nu_val * u_data[i] * inv_k_data[i] * 0.5
                         + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]) * 0.5;
         }
     }
@@ -93,11 +93,11 @@ void ViscousStep::computeXi()
 {
     // Ingredients list
     auto& u = data_.u;
-    auto& k_data = data_.k.getData();  // k cant be 0!!!
+    auto& inv_k_data = data_.inv_k.getData();  // k cant be 0!!!
     double nu_val = data_.nu;
     double dt_val = data_.dt;
    
-    // Recepie
+    // Recipie
     // beta = 1+ dt*nu /2/k
     // xi = u + dt/beta * g
 
@@ -112,7 +112,7 @@ void ViscousStep::computeXi()
         {
             xi_data[i] = u_data[i]
                         + dt_val * g_data[i]
-                        / (1 + dt_val * nu_val * 0.5 / k_data[i]);
+                        / (1 + dt_val * nu_val * 0.5 * inv_k_data[i]);
         }
     }
 }
@@ -123,7 +123,7 @@ void ViscousStep::closeViscousStep()
     const double dy = data_.grid->dy;
     const double dz = data_.grid->dz;
     const double t = data_.currTime;
-    double porosity, beta, gamma, mul, deriv_u, deriv_v, deriv_w;
+    double inv_porosity, beta, gamma, mul, deriv_u, deriv_v, deriv_w;
     size_t iStart, jStart, kStart;
     // solve on the face orthogonal to normalAxis
     Axis normalAxis;
@@ -175,8 +175,8 @@ void ViscousStep::closeViscousStep()
 
             for (size_t i = 1; i < sysDimension-1; i++)
             {
-                porosity = data_.k(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta; // get gamma coefficient for each point
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
@@ -232,8 +232,8 @@ void ViscousStep::closeViscousStep()
 
         for (size_t i = 1; i < sysDimension - 1; i++)
         {
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k)) * mul;
             rhs_w[i] = xi(Axis::Z, i, j, k) - gamma * deriv_w;
@@ -262,8 +262,8 @@ void ViscousStep::closeViscousStep()
         {
             jStart = j;
             kStart = k;
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_v = (data_.eta(Axis::Y, i + 1, j, k) + data_.eta(Axis::Y, i - 1, j, k) - 2.0 * data_.eta(Axis::Y, i, j, k))*mul;
             rhs_v[i] = xi(Axis::Y, i,j,k) - gamma * deriv_v;
@@ -292,8 +292,8 @@ void ViscousStep::closeViscousStep()
         {
             jStart = j;
             kStart = k;
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_v = (data_.eta(Axis::Y, i + 1, j, k) + data_.eta(Axis::Y, i - 1, j, k) - 2.0 * data_.eta(Axis::Y, i, j, k)) * mul;
             rhs_v[i] = xi(Axis::Y, i, j, k) - gamma * deriv_v;
@@ -322,8 +322,8 @@ void ViscousStep::closeViscousStep()
         {
             jStart = j;
             kStart = k;
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k))*mul;
             rhs_w[i] = xi(Axis::Z, i,j,k) - gamma * deriv_w;
@@ -438,8 +438,8 @@ void ViscousStep::closeViscousStep()
 
             for (size_t j = 1; j < sysDimension-1; j++)
             {
-                porosity = data_.k(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta; // get gamma coefficient for each point
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
@@ -499,8 +499,8 @@ void ViscousStep::closeViscousStep()
         kStart = k;
         for (size_t j = 1; j < sysDimension - 1; j++)
         {
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k)) * mul;
             // Note: rhs uses eta, as it's the input to this step
@@ -532,8 +532,8 @@ void ViscousStep::closeViscousStep()
         kStart = k;
         for (size_t j = 1; j < sysDimension - 1; j++)
         {
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_u = (data_.zeta(Axis::X, i, j + 1, k) + data_.zeta(Axis::X, i, j - 1, k) - 2.0 * data_.zeta(Axis::X, i, j, k)) * mul;
             rhs_u[j] = data_.eta(Axis::X, i, j, k) - gamma * deriv_u;
@@ -565,8 +565,8 @@ void ViscousStep::closeViscousStep()
         kStart = k;
         for (size_t j = 1; j < sysDimension - 1; j++)
         {
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_u = (data_.zeta(Axis::X, i, j + 1, k) + data_.zeta(Axis::X, i, j - 1, k) - 2.0 * data_.zeta(Axis::X, i, j, k)) * mul;
             rhs_u[j] = data_.eta(Axis::X, i, j, k) - gamma * deriv_u;
@@ -597,8 +597,8 @@ void ViscousStep::closeViscousStep()
         kStart = k;
         for (size_t j = 1; j < sysDimension - 1; j++)
         {
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k)) * mul;
             rhs_v[j] = data_.eta(Axis::Y, i, j, k) - gamma * deriv_v;
@@ -717,8 +717,8 @@ void ViscousStep::closeViscousStep()
 
             for (size_t k = 1; k < sysDimension-1; k++)
             {
-                porosity = data_.k(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta; // get gamma coefficient for each point
                 // Question, if the grid is staggered, can I consider just a value of porosity for each velocity component in the grid point??
 
@@ -777,8 +777,8 @@ void ViscousStep::closeViscousStep()
         jStart = j;
         for (size_t k = 1; k < sysDimension - 1; k++)
         {
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k)) * mul;
             // Note: rhs uses zeta, as it's the input to this step
@@ -810,8 +810,8 @@ void ViscousStep::closeViscousStep()
         jStart = j;
         for (size_t k = 1; k < sysDimension - 1; k++)
         {
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_u = (data_.u(Axis::X, i, j, k + 1) + data_.u(Axis::X, i, j, k - 1) - 2.0 * data_.u(Axis::X, i, j, k)) * mul;
             rhs_u[k] = data_.zeta(Axis::X, i, j, k) - gamma * deriv_u;
@@ -843,8 +843,8 @@ void ViscousStep::closeViscousStep()
         jStart = j;
         for (size_t k = 1; k < sysDimension - 1; k++)
         {
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_u = (data_.u(Axis::X, i, j, k + 1) + data_.u(Axis::X, i, j, k - 1) - 2.0 * data_.u(Axis::X, i, j, k)) * mul;
             rhs_u[k] = data_.zeta(Axis::X, i, j, k) - gamma * deriv_u;
@@ -875,8 +875,8 @@ void ViscousStep::closeViscousStep()
         jStart = j;
         for (size_t k = 1; k < sysDimension - 1; k++)
         {
-            porosity = data_.k(i, j, k);
-            beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+            inv_porosity = data_.inv_k(i, j, k);
+            beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
             gamma = data_.dt * data_.nu * 0.5 / beta;
             deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k)) * mul;
             rhs_v[k] = data_.zeta(Axis::Y, i, j, k) - gamma * deriv_v;

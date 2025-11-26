@@ -74,8 +74,12 @@ SimulationData Initializer::setup(const InputData &inputData) {
     sim.p = initializeFieldFromFunc(t0, grid, pi_func);
 
     // --- Permeability ---
-    Func k_func = ConfigFuncs::k_func;
-    sim.k = initializeFieldFromFunc(t0, grid, k_func);
+    Func inv_k_func = [](double x, double y, double z, double t) {
+        const double INV_K_MAX_PENALIZATION = 1e10; // i.e., applied to k < 1e-10
+        const double inv_k_val = 1 / ConfigFuncs::k_func(x, y, z, t);
+        return inv_k_val >= INV_K_MAX_PENALIZATION ? INV_K_MAX_PENALIZATION : inv_k_val;
+    };
+    sim.inv_k = initializeFieldFromFunc(t0, grid, inv_k_func);
 
     // --- BC functions ---
     sim.bcu = ConfigFuncs::bcu_func;
