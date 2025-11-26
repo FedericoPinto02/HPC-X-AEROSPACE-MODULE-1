@@ -10,7 +10,7 @@ void Derivatives::computeGradient(const Field &field, VectorField &gradient) con
 
 void Derivatives::computeDx_fwd(const Field &field, Field &dx) const {
     const auto &grid = field.getGrid();
-    const double mul = 1.0 / grid.dx;
+    const double inv_dx = 1.0 / grid.dx;
 
     const size_t Nx = grid.Nx;
     // Flatten Y and Z dimensions into a single 'xLine' count
@@ -24,7 +24,7 @@ void Derivatives::computeDx_fwd(const Field &field, Field &dx) const {
         // Linear index iteration: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
         for (size_t i = 0; i < Nx - 1; ++i) {
             size_t idx = xLineOffset + i;
-            dx[idx] = (field[idx + 1] - field[idx]) * mul;
+            dx[idx] = (field[idx + 1] - field[idx]) * inv_dx;
         }
 
         // 2. Handle Boundary Condition: the last point of the x-line cannot compute a forward difference
@@ -34,7 +34,7 @@ void Derivatives::computeDx_fwd(const Field &field, Field &dx) const {
 
 void Derivatives::computeDy_fwd(const Field &field, Field &dy) const {
     const auto &grid = field.getGrid();
-    const double mul = 1.0 / grid.dy;
+    const double inv_dy = 1.0 / grid.dy;
 
     const size_t Nx = grid.Nx;
     const size_t Ny = grid.Ny;
@@ -58,7 +58,7 @@ void Derivatives::computeDy_fwd(const Field &field, Field &dy) const {
                 // Striding ensures we are reading/writing contiguous memory blocks in an efficient way
                 //  ~ "take the whole contiguous row j+1, and subtract the contiguous row j"
                 size_t idx = xLineStart + i;
-                dy[idx] = (field[idx + strideY] - field[idx]) * mul;
+                dy[idx] = (field[idx + strideY] - field[idx]) * inv_dy;
             }
         }
 
@@ -73,7 +73,7 @@ void Derivatives::computeDy_fwd(const Field &field, Field &dy) const {
 
 void Derivatives::computeDz_fwd(const Field &field, Field &dz) const {
     const auto &grid = field.getGrid();
-    const double mul = 1.0 / grid.dz;
+    const double inv_dz = 1.0 / grid.dz;
 
     const size_t Nx = grid.Nx;
     const size_t Ny = grid.Ny;
@@ -92,7 +92,7 @@ void Derivatives::computeDz_fwd(const Field &field, Field &dz) const {
             // Striding ensures we are reading/writing contiguous memory blocks in an efficient way
             //  ~ "take the whole contiguous row z+1, and subtract the contiguous row z"
             size_t idx = xyPlaneOffset + p;
-            dz[idx] = (field[idx + strideZ] - field[idx]) * mul;
+            dz[idx] = (field[idx + strideZ] - field[idx]) * inv_dz;
         }
     }
 
