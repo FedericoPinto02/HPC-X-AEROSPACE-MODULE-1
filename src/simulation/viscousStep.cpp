@@ -93,6 +93,33 @@ void ViscousStep::computeG()
                         - nu_val * u_data[i] / k_data[i] * 0.5
                         + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]) * 0.5;
         }
+
+        const auto &grid = *data_.grid;
+        std::vector<double> mx(grid.Nx), my(grid.Ny), mz(grid.Nz);
+
+        for (size_t i = 0; i < grid.Nx; i++)
+            mx[i] = (i > 0 && i < grid.Nx - 1) ? 1.0 : 0.0;
+        for (size_t j = 0; j < grid.Ny; j++)
+            my[j] = (j > 0 && j < grid.Ny - 1) ? 1.0 : 0.0;
+        for (size_t k = 0; k < grid.Nz; k++)
+            mz[k] = (k > 0 && k < grid.Nz - 1) ? 1.0 : 0.0;
+
+        for (Axis axis : {Axis::X, Axis::Y, Axis::Z})
+        {
+            for (size_t k = 0; k < grid.Nz; k++)
+            {
+                const double mk = mz[k];
+
+                for (size_t j = 0; j < grid.Ny; j++)
+                {
+                    const double mj = mk * my[j];
+                    for (size_t i = 0; i < grid.Nx; i++)
+                    {
+                        g(axis, i, j, k) *= mj * mx[i];
+                    }
+                }
+            }
+        }
     }
 }
 
