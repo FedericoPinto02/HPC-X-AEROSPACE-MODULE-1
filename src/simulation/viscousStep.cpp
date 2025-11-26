@@ -61,17 +61,15 @@ void ViscousStep::computeG()
     
     Derivatives derive;
     derive.computeGradient(p, gradP);
-    
+    derive.computeDxx(eta, dxxEta);
+    derive.computeDyy(zeta, dyyZeta);
+    derive.computeDzz(u, dzzU);
 
     // Recepie
     // g = f  -grad(p)  -nu/k *u * 0.5  +nu*(dxx eta + dyy zeta + dzz u) * 0.5
 
     // Let me cook
     for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
-
-        derive.computeDxx(eta(axis), dxxEta(axis));
-        derive.computeDyy(zeta(axis), dyyZeta(axis));
-        derive.computeDzz(u(axis), dzzU(axis));
 
         auto& f_data = data_.f(axis).getData();
         auto& u_data = data_.u(axis).getData();
