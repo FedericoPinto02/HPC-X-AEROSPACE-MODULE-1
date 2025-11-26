@@ -92,27 +92,26 @@ void ViscousStep::computeG()
 void ViscousStep::computeXi()
 {
     // Ingredients list
-    auto& u = data_.u;
-    auto& inv_k_data = data_.inv_k.getData();  // k cant be 0!!!
-    double nu_val = data_.nu;
+    auto inv_k_data = data_.inv_k.getData().data();  // k cant be 0!!!
     double dt_val = data_.dt;
-   
+    double dt_nu_over_2_val = dt_val * data_.nu * 0.5;
+
     // Recipie
     // beta = 1+ dt*nu /2/k
     // xi = u + dt/beta * g
 
     // Let me cook
-    for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
+    for (Axis axis : {Axis::X, Axis::Y, Axis::Z})
+    {
+        auto u_data = data_.u(axis).getData().data();
+        auto g_data = g(axis).getData().data();
+        auto xi_data = xi(axis).getData().data();
 
-        auto& u_data = data_.u(axis).getData();
-        auto& g_data = g(axis).getData();
-        auto& xi_data = xi(axis).getData();
-
-        for (size_t i = 0; i < u_data.size(); i++)
+        for (size_t i = 0; i < xi.getGrid().size(); i++)
         {
             xi_data[i] = u_data[i]
                         + dt_val * g_data[i]
-                        / (1 + dt_val * nu_val * 0.5 * inv_k_data[i]);
+                        / (1 + dt_nu_over_2_val * inv_k_data[i]);
         }
     }
 }
