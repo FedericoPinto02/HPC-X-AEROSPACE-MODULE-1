@@ -183,9 +183,10 @@ void PressureStep::run()
 
     // Add pressure corrector contribution and rotational correction
     // Write pressure predictor
-    double chi = 1;
+    double chi = 0.0;
     double Re = 1;
-    double factor = chi / Re;
+    double nu = data_.nu;
+    double factor = chi * nu;
 
     for (size_t k = 0; k < data_.grid->Nz; k++) {
     for (size_t j = 0; j < data_.grid->Ny; j++) {

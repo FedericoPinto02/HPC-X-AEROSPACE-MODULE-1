@@ -53,7 +53,7 @@ public:
      * @brief Fill the linear system for Velocity variables
      */
     void fillSystemVelocity(
-        const SimulationData& simData, const VectorField& xi,
+        const SimulationData& simData, const VectorField& eta, const VectorField& xi,
         const Axis fieldComponent, const Axis derivativeDirection,
         const size_t iStart, const size_t jStart, const size_t kStart);
 

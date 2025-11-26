@@ -61,7 +61,7 @@ void LinearSys::fillSystemPressure(const Field &phi, const Axis direction) {
 }
 
 void LinearSys::fillSystemVelocity(
-        const SimulationData &simData, const VectorField &xi,
+        const SimulationData &simData, const VectorField &eta, const VectorField &xi,
         const Axis fieldComponent, const Axis derivativeDirection,
         const size_t iStart, const size_t jStart, const size_t kStart) {
 
@@ -76,7 +76,7 @@ void LinearSys::fillSystemVelocity(
 
     // Need to complete RHS, once onto the switch case!
 
-    const Grid &grid = simData.eta.getGrid();
+    const Grid &grid = eta.getGrid();
     double dCoef = 0;
     switch (derivativeDirection) {
         case Axis::X:
@@ -228,11 +228,11 @@ void LinearSys::fillSystemVelocity(
                                                      derivativeDirection, matA.getSize() - 1) +
 
                             -gamma * dCoef *
-                            simData.eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
+                            eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
                                                                         matA.getSize() - 2) +
 
                             3.0 * gamma * dCoef *
-                            simData.eta(fieldComponent)
+                            eta(fieldComponent)
                                     .valueWithOffset(iStart, jStart, kStart,
                                                      derivativeDirection, matA.getSize() - 1) +
                             -2.0 * gamma * dCoef *  // uOld
@@ -249,10 +249,10 @@ void LinearSys::fillSystemVelocity(
                             xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
                                                                matA.getSize() - 1) +
                             -gamma * dCoef *
-                            simData.eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
+                            eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
                                                                         matA.getSize() - 2) +
                             3.0 * gamma * dCoef *
-                            simData.eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
+                            eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
                                                                         matA.getSize() - 1) +
 
 
@@ -270,10 +270,10 @@ void LinearSys::fillSystemVelocity(
                             xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
                                                                matA.getSize() - 1) +
                             -gamma * dCoef *
-                            simData.eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
+                            eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
                                                                         matA.getSize() - 2) +
                             3.0 * gamma * dCoef *
-                            simData.eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
+                            eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
                                                                         matA.getSize() - 1) +
 
                             -2.0 * gamma * dCoef * bc((iStart + xOff) * grid.dx,
