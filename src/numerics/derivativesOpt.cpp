@@ -218,6 +218,142 @@ void Derivatives::computeHessianDiag(const Field &field, VectorField &hessianDia
     computeDzz(field, hessianDiag(Axis::Z));
 }
 
+void Derivatives::computeDxx(const VectorField &field, VectorField &dxx) const {
+    const double *fx_ptr = field(Axis::X).getData().data();
+    const double *fy_ptr = field(Axis::Y).getData().data();
+    const double *fz_ptr = field(Axis::Z).getData().data();
+    double *dfx_dxx_ptr = dxx(Axis::X).getData().data();
+    double *dfy_dxx_ptr = dxx(Axis::Y).getData().data();
+    double *dfz_dxx_ptr = dxx(Axis::Z).getData().data();
+
+    const auto &grid = field.getGrid();
+    const double inv_dxx = 1.0 / (grid.dx * grid.dx);
+
+    const size_t Nx = grid.Nx;
+    if (grid.Ny < 3) {
+        throw std::runtime_error("Grid size Ny must be at least 3 to compute second derivative.");
+    }
+
+    // Flatten Y and Z dimensions into a single 'xLine' count
+    const size_t totalXLines = grid.Ny * grid.Nz;
+
+    // Iterate over every x-line in the volume
+    for (size_t xLine = 0; xLine < totalXLines; ++xLine) {
+        const size_t xLineOffset = xLine * Nx;
+
+        // 1. Compute the derivative for each, whole x-line (first and last x-elements excluded)
+        // Linear index iteration: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
+        for (size_t i = 1; i < Nx - 1; ++i) {
+            size_t idx = xLineOffset + i;
+            dfx_dxx_ptr[idx] = (fx_ptr[idx + 1] + fx_ptr[idx - 1] - 2.0 * fx_ptr[idx]) * inv_dxx;
+            dfy_dxx_ptr[idx] = (fy_ptr[idx + 1] + fy_ptr[idx - 1] - 2.0 * fy_ptr[idx]) * inv_dxx;
+            dfz_dxx_ptr[idx] = (fz_ptr[idx + 1] + fz_ptr[idx - 1] - 2.0 * fz_ptr[idx]) * inv_dxx;
+        }
+
+        // 2. Handle Boundary Condition: the first and last points of the x-line cannot compute a centered difference
+        dfx_dxx_ptr[xLineOffset] = 0.0;
+        dfx_dxx_ptr[xLineOffset + Nx - 1] = 0.0;
+        dfy_dxx_ptr[xLineOffset] = 0.0;
+        dfy_dxx_ptr[xLineOffset + Nx - 1] = 0.0;
+        dfz_dxx_ptr[xLineOffset] = 0.0;
+        dfz_dxx_ptr[xLineOffset + Nx - 1] = 0.0;
+    }
+}
+
+void Derivatives::computeDyy(const VectorField &field, VectorField &dyy) const {
+    const double *fx_ptr = field(Axis::X).getData().data();
+    const double *fy_ptr = field(Axis::Y).getData().data();
+    const double *fz_ptr = field(Axis::Z).getData().data();
+    double *dfx_dyy_ptr = dyy(Axis::X).getData().data();
+    double *dfy_dyy_ptr = dyy(Axis::Y).getData().data();
+    double *dfz_dyy_ptr = dyy(Axis::Z).getData().data();
+
+    const auto &grid = field.getGrid();
+    const double inv_dyy = 1.0 / (grid.dy * grid.dy);
+
+    const size_t Nx = grid.Nx;
+    const size_t Ny = grid.Ny;
+    const size_t Nz = grid.Nz;
+    if (grid.Ny < 3) {
+        throw std::runtime_error("Grid size Nz must be at least 3 to compute second derivative.");
+    }
+
+    // The distance in memory between (i, j-1, k) and (i, j, k), (i, j, k) and (i, j+1, k)
+    const size_t strideY = Nx;
+
+    // Iterate over all XY-planes (at each vertical level k)
+    for (size_t k = 0; k < Nz; ++k) {
+        const size_t xyPlaneOffset = k * Ny * Nx; // skip an entire XY plane for each k-level
+
+        // 1. Compute the derivative for each, whole XY-plane (first and last y-elements excluded)
+        for (size_t j = 1; j < Ny - 1; ++j) {
+            const size_t xLineStart = xyPlaneOffset + (j * Nx);
+
+            // Still iterate over each x-line, with linear indexes: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
+            for (size_t i = 0; i < Nx; ++i) {
+                size_t idx = xLineStart + i;
+                dfx_dyy_ptr[idx] = (fx_ptr[idx + strideY] + fx_ptr[idx - strideY] - 2.0 * fx_ptr[idx]) * inv_dyy;
+                dfy_dyy_ptr[idx] = (fy_ptr[idx + strideY] + fy_ptr[idx - strideY] - 2.0 * fy_ptr[idx]) * inv_dyy;
+                dfz_dyy_ptr[idx] = (fz_ptr[idx + strideY] + fz_ptr[idx - strideY] - 2.0 * fz_ptr[idx]) * inv_dyy;
+            }
+        }
+
+        // 2. Handle Boundary Condition: the first and last points of each y-line cannot compute a centered difference
+        //  i.e., the whole first and last x-lines of the XY-plane
+        const size_t lastXLineStart = xyPlaneOffset + ((Ny - 1) * Nx);
+        std::fill(dfx_dyy_ptr + xyPlaneOffset, dfx_dyy_ptr + xyPlaneOffset + Nx, 0.0);      // first x-line
+        std::fill(dfx_dyy_ptr + lastXLineStart, dfx_dyy_ptr + lastXLineStart + Nx, 0.0);    // last x-line
+        std::fill(dfy_dyy_ptr + xyPlaneOffset, dfy_dyy_ptr + xyPlaneOffset + Nx, 0.0);      // first x-line
+        std::fill(dfy_dyy_ptr + lastXLineStart, dfy_dyy_ptr + lastXLineStart + Nx, 0.0);    // last x-line
+        std::fill(dfz_dyy_ptr + xyPlaneOffset, dfz_dyy_ptr + xyPlaneOffset + Nx, 0.0);      // first x-line
+        std::fill(dfz_dyy_ptr + lastXLineStart, dfz_dyy_ptr + lastXLineStart + Nx, 0.0);    // last x-line
+    }
+}
+
+void Derivatives::computeDzz(const VectorField &field, VectorField &dzz) const {
+    const double *fx_ptr = field(Axis::X).getData().data();
+    const double *fy_ptr = field(Axis::Y).getData().data();
+    const double *fz_ptr = field(Axis::Z).getData().data();
+    double *dfx_dzz_ptr = dzz(Axis::X).getData().data();
+    double *dfy_dzz_ptr = dzz(Axis::Y).getData().data();
+    double *dfz_dzz_ptr = dzz(Axis::Z).getData().data();
+
+    const auto &grid = field.getGrid();
+    const double inv_dzz = 1.0 / (grid.dz * grid.dz);
+
+    const size_t Nx = grid.Nx;
+    const size_t Ny = grid.Ny;
+    const size_t Nz = grid.Nz;
+    if (grid.Nz < 3) {
+        throw std::runtime_error("Grid size Nz must be at least 3 to compute second derivative.");
+    }
+
+    // The distance in memory between (i, j, k-1) and (i, j, k), (i, j, k) and (i, j, k+1)
+    const size_t strideZ = Nx * Ny; // stride is one full XY plane
+
+    // Iterate over all XY-planes (at each vertical level k, first and last z-elements excluded)
+    for (size_t k = 1; k < Nz - 1; ++k) {
+        const size_t xyPlaneOffset = k * strideZ; // skip an entire XY plane for each k-level
+
+        // 1. Compute the derivative for each, whole XY-plane (flattened: each point, one by one)
+        for (size_t p = 0; p < strideZ; ++p) {
+            size_t idx = xyPlaneOffset + p;
+            dfx_dzz_ptr[idx] = (fx_ptr[idx + strideZ] + fx_ptr[idx - strideZ] - 2.0 * fx_ptr[idx]) * inv_dzz;
+            dfy_dzz_ptr[idx] = (fy_ptr[idx + strideZ] + fy_ptr[idx - strideZ] - 2.0 * fy_ptr[idx]) * inv_dzz;
+            dfz_dzz_ptr[idx] = (fz_ptr[idx + strideZ] + fz_ptr[idx - strideZ] - 2.0 * fz_ptr[idx]) * inv_dzz;
+        }
+    }
+
+    // 2. Handle Boundary Condition: the first and last points of each z-line cannot compute a centered difference
+    const size_t lastXyPlaneOffset = (Nz - 1) * strideZ;
+    std::fill(dfx_dzz_ptr, dfx_dzz_ptr + strideZ, 0.0);                                         // first XY-plane
+    std::fill(dfx_dzz_ptr + lastXyPlaneOffset, dfx_dzz_ptr + lastXyPlaneOffset + strideZ, 0.0); // last XY-plane
+    std::fill(dfy_dzz_ptr, dfy_dzz_ptr + strideZ, 0.0);                                         // first XY-plane
+    std::fill(dfy_dzz_ptr + lastXyPlaneOffset, dfy_dzz_ptr + lastXyPlaneOffset + strideZ, 0.0); // last XY-plane
+    std::fill(dfz_dzz_ptr, dfz_dzz_ptr + strideZ, 0.0);                                         // first XY-plane
+    std::fill(dfz_dzz_ptr + lastXyPlaneOffset, dfz_dzz_ptr + lastXyPlaneOffset + strideZ, 0.0); // last XY-plane
+}
+
 void Derivatives::computeDxx(const Field &field, Field &dxx) const {
     const auto &grid = field.getGrid();
     const double inv_dxx = 1.0 / (grid.dx * grid.dx);
@@ -314,7 +450,7 @@ void Derivatives::computeDzz(const Field &field, Field &dzz) const {
     // 2. Handle Boundary Condition: the first and last points of each z-line cannot compute a centered difference
     const size_t lastXyPlaneOffset = (Nz - 1) * strideZ;
     for (size_t p = 0; p < strideZ; ++p) {
-        dzz[p] = 0.0;                   // first XY-plane
+        dzz[p] = 0.0;                     // first XY-plane
         dzz[lastXyPlaneOffset + p] = 0.0; // last XY-plane
     }
 }
