@@ -42,8 +42,13 @@ void NSBSolver::setup()
     logger = std::make_unique<LogWriter>(loggingSettings);
     vtkWriter = std::make_unique<VTKWriter>(outputSettings, simData);
 
+    bool vtkWritten = vtkWriter->write_timestep_if_needed(
+            simData.currStep,
+            simData.p,
+            simData.u);
+
     // Logging
-    logger->printSimulationHeader(input, simData);
+    logger->printSimulationHeader(input, simData, vtkWritten);
 }
 
 void NSBSolver::solve()
