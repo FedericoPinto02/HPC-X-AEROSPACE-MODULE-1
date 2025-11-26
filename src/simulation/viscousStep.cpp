@@ -52,39 +52,35 @@ void ViscousStep::initializeWorkspaceFields()
 void ViscousStep::computeG()
 {
     // Ingredients list
-    auto& eta = data_.eta;
-    auto& zeta = data_.zeta;
-    auto& u = data_.u;
-    auto& p = data_.p;
-    auto& inv_k_data = data_.inv_k.getData(); // k cant be 0!!!
-    double nu_val = data_.nu;
-    
+    auto inv_k_data = data_.inv_k.getData().data(); // k cant be 0!!!
+    double nu_over_2 = data_.nu * 0.5;
+
     Derivatives derive;
-    derive.computeGradient(p, gradP);
-    derive.computeDxx(eta, dxxEta);
-    derive.computeDyy(zeta, dyyZeta);
-    derive.computeDzz(u, dzzU);
+    derive.computeGradient(data_.p, gradP);
+    derive.computeDxx(data_.eta, dxxEta);
+    derive.computeDyy(data_.zeta, dyyZeta);
+    derive.computeDzz(data_.u, dzzU);
 
     // Recipie
-    // g = f  -grad(p)  -nu/k *u * 0.5  +nu*(dxx eta + dyy zeta + dzz u) * 0.5
+    // g = f  - grad(p)  - nu/k * u * 0.5  + nu * (dxx eta + dyy zeta + dzz u) * 0.5
+    //   = f  - grad(p)  + nu*0.5 [ - 1/k * u  + dxx eta + dyy zeta + dzz u]
 
     // Let me cook
-    for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
+    for (Axis axis: {Axis::X, Axis::Y, Axis::Z})
+    {
+        auto f_data = data_.f(axis).getData().data();
+        auto u_data = data_.u(axis).getData().data();
+        auto gradP_data = gradP(axis).getData().data();
+        auto dxx_data = dxxEta(axis).getData().data();
+        auto dyy_data = dyyZeta(axis).getData().data();
+        auto dzz_data = dzzU(axis).getData().data();
+        auto g_data = g(axis).getData().data();
 
-        auto& f_data = data_.f(axis).getData();
-        auto& u_data = data_.u(axis).getData();
-        auto& gradP_data = gradP(axis).getData();
-        auto& dxx_data = dxxEta(axis).getData();
-        auto& dyy_data = dyyZeta(axis).getData();
-        auto& dzz_data = dzzU(axis).getData();
-        auto& g_data = g(axis).getData();
-
-        for (size_t i = 0; i < u_data.size(); i++)
+        for (size_t i = 0; i < g.getGrid().size(); i++)
         {
             g_data[i] = f_data[i]
                         - gradP_data[i]
-                        - nu_val * u_data[i] * inv_k_data[i] * 0.5
-                        + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]) * 0.5;
+                        + nu_over_2 * (dxx_data[i] + dyy_data[i] + dzz_data[i] - u_data[i] * inv_k_data[i]);
         }
     }
 }
@@ -101,7 +97,7 @@ void ViscousStep::computeXi()
     // xi = u + dt/beta * g
 
     // Let me cook
-    for (Axis axis : {Axis::X, Axis::Y, Axis::Z})
+    for (Axis axis: {Axis::X, Axis::Y, Axis::Z})
     {
         auto u_data = data_.u(axis).getData().data();
         auto g_data = g(axis).getData().data();
@@ -117,7 +113,7 @@ void ViscousStep::computeXi()
 }
 
 void ViscousStep::closeViscousStep()
-{   
+{
     const double dx = data_.grid->dx;
     const double dy = data_.grid->dy;
     const double dz = data_.grid->dz;
@@ -126,7 +122,7 @@ void ViscousStep::closeViscousStep()
     size_t iStart, jStart, kStart;
     // solve on the face orthogonal to normalAxis
     Axis normalAxis;
-    
+
 
     // ------------------------------------------
     // Solve Eta --------------------------------
@@ -189,7 +185,7 @@ void ViscousStep::closeViscousStep()
             }
 
             mySystem_u.setRhs(rhs_u);
-            
+
             mySystem_u.fillSystemVelocity(data_, xi, Axis::X, Axis::X, iStart, jStart, kStart);
             // mySystem_u.ThomaSolver();
             // std::vector<double> unknown_u = mySystem_u.getSolution();
@@ -210,7 +206,7 @@ void ViscousStep::closeViscousStep()
             // mySystem_w.ThomaSolver();
             // std::vector<double> unknown_w = mySystem_w.getSolution();
             unknown_w = solveSystem(mySystem_w, BoundaryType::Tangent);
-            
+
             for (size_t i = 0; i < sysDimension; i++)
             {
                 data_.eta(Axis::X, i, j, k) = unknown_u[i];
@@ -327,7 +323,7 @@ void ViscousStep::closeViscousStep()
             deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k))*mul;
             rhs_w[i] = xi(Axis::Z, i,j,k) - gamma * deriv_w;
         }
-            
+
             mySystem_w.setRhs(rhs_w);
 
             mySystem_w.fillSystemVelocity(data_, xi, Axis::Z, Axis::X, iStart, jStart, kStart);
@@ -348,7 +344,7 @@ void ViscousStep::closeViscousStep()
 
     // Special case: Corner j = 0, k = 0
     j = 0;
-    k = 0; 
+    k = 0;
     for (size_t i = 0; i < sysDimension; i++)
     {
         data_.eta(Axis::X, i, j, k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, t);
@@ -388,7 +384,7 @@ void ViscousStep::closeViscousStep()
 
 
     }
-   
+
 
 
 
@@ -473,7 +469,7 @@ void ViscousStep::closeViscousStep()
             // mySystem_w.ThomaSolver();
             //std::vector<double> unknown_w = mySystem_w.getSolution();
             unknown_w = solveSystem(mySystem_w, BoundaryType::Tangent);
-            
+
             for (size_t j = 0; j < sysDimension; j++)
             {
                 data_.zeta(Axis::X, i, j, k) = unknown_u[j];
@@ -752,7 +748,7 @@ void ViscousStep::closeViscousStep()
             //mySystem_w.ThomaSolver();
             //std::vector<double> unknown_w = mySystem_w.getSolution();
             unknown_w = solveSystem(mySystem_w, BoundaryType::Normal);
-            
+
             for (size_t k = 0; k < sysDimension; k++)
             {
                 data_.u(Axis::X, i, j, k) = unknown_u[k];
@@ -829,7 +825,7 @@ void ViscousStep::closeViscousStep()
             data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
             // Set normal from boundary conditions
             data_.u(Axis::Y, i, j, k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, t);
-            
+
         }
     }
 
@@ -942,7 +938,7 @@ void ViscousStep::closeViscousStep()
         data_.u(Axis::Z, i, j, k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, t);
     }
 
-    } 
+    }
 
 }
 
