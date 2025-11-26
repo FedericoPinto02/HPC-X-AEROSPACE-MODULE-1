@@ -69,14 +69,9 @@ void ViscousStep::computeG()
     // Let me cook
     for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
 
-        for ( size_t k=0; k < data_.grid->Nz; k++)
-            for ( size_t j=0; j < data_.grid->Ny; j++)
-                for ( size_t i=0; i < data_.grid->Nx; i++)
-                {
-                    dxxEta(axis, i, j, k) = derive.Dxx_local(eta(axis), i, j, k);
-                    dyyZeta(axis, i, j, k) = derive.Dyy_local(zeta(axis), i, j, k);
-                    dzzU(axis, i, j, k) = derive.Dzz_local(u(axis), i, j, k);
-                }
+        derive.computeDxx(eta(axis), dxxEta(axis));
+        derive.computeDyy(zeta(axis), dyyZeta(axis));
+        derive.computeDzz(u(axis), dzzU(axis));
 
         auto& f_data = data_.f(axis).getData();
         auto& u_data = data_.u(axis).getData();
