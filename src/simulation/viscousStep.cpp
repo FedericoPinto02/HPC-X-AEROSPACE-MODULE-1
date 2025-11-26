@@ -61,22 +61,15 @@ void ViscousStep::computeG()
     
     Derivatives derive;
     derive.computeGradient(p, gradP);
-    
+    derive.computeDxx(eta, dxxEta);
+    derive.computeDyy(zeta, dyyZeta);
+    derive.computeDzz(u, dzzU);
 
     // Recepie
     // g = f  -grad(p)  -nu/k *u * 0.5  +nu*(dxx eta + dyy zeta + dzz u) * 0.5
 
     // Let me cook
     for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
-
-        for ( size_t k=0; k < data_.grid->Nz; k++)
-            for ( size_t j=0; j < data_.grid->Ny; j++)
-                for ( size_t i=0; i < data_.grid->Nx; i++)
-                {
-                    dxxEta(axis, i, j, k) = derive.Dxx_local(eta(axis), i, j, k);
-                    dyyZeta(axis, i, j, k) = derive.Dyy_local(zeta(axis), i, j, k);
-                    dzzU(axis, i, j, k) = derive.Dzz_local(u(axis), i, j, k);
-                }
 
         auto& f_data = data_.f(axis).getData();
         auto& u_data = data_.u(axis).getData();

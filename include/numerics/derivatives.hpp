@@ -10,6 +10,9 @@
  */
 class Derivatives {
 public:
+    //==================================================================================================================
+    //--- First-order forward differences ------------------------------------------------------------------------------
+    //==================================================================================================================
     /**
      * @brief Compute the gradient of a scalar field (forward difference).
      * @param field the input scalar field
@@ -38,6 +41,9 @@ public:
      */
     void computeDz_fwd(const Field &field, Field &dz) const;
 
+    //==================================================================================================================
+    //--- First-order backward differences -----------------------------------------------------------------------------
+    //==================================================================================================================
     /**
      * @brief Compute the derivative of a scalar field in the x-direction (backward difference).
      * @param field the input vector field
@@ -66,12 +72,29 @@ public:
      */
     void computeDivergence(const VectorField &field, Field &divergence) const;
 
+    //==================================================================================================================
+    //--- Second-order centered differences ----------------------------------------------------------------------------
+    //==================================================================================================================
     /**
-     * @brief Compute the diagonal of the Hessian matrix of a scalar field.
-     * @param field the input scalar field
-     * @param hessianDiag the output vector field to store the Hessian diagonal components
+     * @brief Compute the second derivative of a vector field in the x-direction.
+     * @param field the input vector field
+     * @param dxx the output vector field to store the second derivative in x-direction
      */
-    void computeHessianDiag(const Field &field, VectorField &hessianDiag) const;
+    void computeDxx(const VectorField &field, VectorField &dxx) const;
+
+    /**
+     * @brief Compute the second derivative of a vector field in the y-direction.
+     * @param field the input vector field
+     * @param dyy the output vector field to store the second derivative in y-direction
+     */
+    void computeDyy(const VectorField &field, VectorField &dyy) const;
+
+    /**
+     * @brief Compute the second derivative of a vector field in the z-direction.
+     * @param field the input vector field
+     * @param dzz the output vector field to store the second derivative in z-direction
+     */
+    void computeDzz(const VectorField &field, VectorField &dzz) const;
 
     /**
      * @brief Compute the second derivative of a scalar field in the x-direction.
