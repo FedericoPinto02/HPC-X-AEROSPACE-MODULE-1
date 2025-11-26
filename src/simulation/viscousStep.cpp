@@ -52,8 +52,8 @@ void ViscousStep::initializeWorkspaceFields()
 void ViscousStep::computeG()
 {
     // Ingredients list
-    auto inv_k_data = data_.inv_k.getData().data(); // k cant be 0!!!
-    double nu_over_2 = data_.nu * 0.5;
+    const auto inv_k_data = data_.inv_k.getData().data(); // k cant be 0!!!
+    const double nu_over_2 = data_.nu * 0.5;
 
     Derivatives derive;
     derive.computeGradient(data_.p, gradP);
@@ -68,12 +68,12 @@ void ViscousStep::computeG()
     // Let me cook
     for (Axis axis: {Axis::X, Axis::Y, Axis::Z})
     {
-        auto f_data = data_.f(axis).getData().data();
-        auto u_data = data_.u(axis).getData().data();
-        auto gradP_data = gradP(axis).getData().data();
-        auto dxx_data = dxxEta(axis).getData().data();
-        auto dyy_data = dyyZeta(axis).getData().data();
-        auto dzz_data = dzzU(axis).getData().data();
+        const auto f_data = data_.f(axis).getData().data();
+        const auto u_data = data_.u(axis).getData().data();
+        const auto gradP_data = gradP(axis).getData().data();
+        const auto dxx_data = dxxEta(axis).getData().data();
+        const auto dyy_data = dyyZeta(axis).getData().data();
+        const auto dzz_data = dzzU(axis).getData().data();
         auto g_data = g(axis).getData().data();
 
         for (size_t i = 0; i < g.getGrid().size(); i++)
@@ -88,9 +88,9 @@ void ViscousStep::computeG()
 void ViscousStep::computeXi()
 {
     // Ingredients list
-    auto inv_k_data = data_.inv_k.getData().data();  // k cant be 0!!!
-    double dt_val = data_.dt;
-    double dt_nu_over_2_val = dt_val * data_.nu * 0.5;
+    const auto inv_k_data = data_.inv_k.getData().data();  // k cant be 0!!!
+    const double dt_val = data_.dt;
+    const double dt_nu_over_2_val = dt_val * data_.nu * 0.5;
 
     // Recipie
     // beta = 1+ dt*nu /2/k
@@ -99,8 +99,8 @@ void ViscousStep::computeXi()
     // Let me cook
     for (Axis axis: {Axis::X, Axis::Y, Axis::Z})
     {
-        auto u_data = data_.u(axis).getData().data();
-        auto g_data = g(axis).getData().data();
+        const auto u_data = data_.u(axis).getData().data();
+        const auto g_data = g(axis).getData().data();
         auto xi_data = xi(axis).getData().data();
 
         for (size_t i = 0; i < xi.getGrid().size(); i++)
