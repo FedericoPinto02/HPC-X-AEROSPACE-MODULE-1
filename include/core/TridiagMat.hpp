@@ -1,4 +1,5 @@
 #pragma once
+
 #include <cmath>
 #include <stdexcept>
 #include <vector>
@@ -6,19 +7,18 @@
 class TridiagMat {
 
   friend class SchurSequentialSolver;
-  
+
   private:
     std::vector<double> diag;
     std::vector<double> subdiag;
     std::vector<double> supdiag;
-    const unsigned int size;
 
   public:
     /**
      * @brief Constructor.
      * @param n Size of the matrix (n x n)
      */
-    TridiagMat(int n);
+    explicit TridiagMat(size_t n);
 
     /**
      * @brief Fill the matrix.
@@ -32,33 +32,33 @@ class TridiagMat {
     /**
      * @brief Get the matrix size
      */
-    const unsigned int getSize() const { return size; };
+    [[nodiscard]] inline size_t getSize() const { return diag.size(); }
 
     /**
      * @brief Get the (i,j) element of the matrix
      */
-    double getElement(int i, int j) const;
+    [[nodiscard]] double getElement(size_t i, size_t j) const;
 
     /**
      * @brief Get the whole diagonal, subdiagonal or supdiagonal
      * @param w number indicating sub (-1), diag (0) or sup (1)
      */
-    std::vector<double> &getDiag(int w) ;
+    [[nodiscard]] std::vector<double> &getDiag(int w);
 
     /**
      * @overload
      */
-    std::vector<double> getDiag(int w) const ;
+    [[nodiscard]] std::vector<double> getDiag(int w) const;
 
     /**
      * @brief Get the first element from the diagonal w
      * @param w number indicating sub (-1), main (0) or sup (1) diagonal
      */
-    double getFirstElementFromDiag(int w) const;
+    [[nodiscard]] double getFirstElementFromDiag(int w) const;
 
     /**
      * @brief Get the last element from the diagonal w
      * @param w number indicating sub (-1), main (0) or sup (1) diagonal
      */
-    double getLastElementFromDiag(int w) const;
+    [[nodiscard]] double getLastElementFromDiag(int w) const;
 };
