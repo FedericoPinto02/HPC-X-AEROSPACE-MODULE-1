@@ -9,7 +9,7 @@
 
 
 /**
- * @brief Handles all pressure step maniplation.
+ * @brief Handles all pressure step manipulation.
  * This class does not own data but regulates the workflow.
  */
 class PressureStep
@@ -19,14 +19,13 @@ class PressureStep
 public:
 
     /**
-     * @brief Constructor
-     * @param contex Contains all simulation data
+     * @brief Constructor.
+     * @param simData the simulation data
+     * @param parallel the parallelization settings
      */
     PressureStep(SimulationData& simData, ParallelizationSettings& parallel);
 
-    /**
-     * @brief Run pressure step.
-     */
+    /// Run the pressure step: pressure correction computation by splitting direction and pressure update.
     void run();
 
 private:
@@ -43,6 +42,7 @@ private:
      * @brief Assembles the tridiagonal matrix for 1D line solver.
      *
      * The tridiagonal stencil is [-1/delta^2, 1 + 2/delta^2, -1/delta^2].
+     * The matrix is identical at each line, so this function only needs to be called once per direction.
      * @param delta the grid spacing in the line direction
      * @param sys the LinearSys object to assemble the matrix for
      */

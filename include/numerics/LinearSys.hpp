@@ -44,12 +44,6 @@ public:
 
 
     /**
-     * @brief Fill the linear system for Pressure variables
-     */
-    void fillSystemPressure(const Field& phi, const Axis direction);
-
-
-    /**
      * @brief Fill the linear system for Velocity variables
      */
     void fillSystemVelocity(
