@@ -14,14 +14,16 @@ import matplotlib.pyplot as plt
 EXECUTABLE = "../build/main"
 CONFIG_FILE = "../data/config.json"
 OUTPUT_DIR = "../output/"
-# Save inside a folder named 'errorPlots' in the current directory (scripts)
+
+# Save plots and text data inside a folder named 'errorPlots' in the current directory (scripts)
 ERROR_DIR = "errorPlots"
+# Save error field VTKs in a subdirectory of output
 ERROR_VTK_DIR = os.path.join(OUTPUT_DIR, "ERROR_VTK")
 
 # Simulation Parameters
 NX = 50
-DT = 0.001
-T_END = 0.05
+DT = 0.0001  
+T_END = 0.02
 OUTPUT_FREQ = 1
 DOMAIN_LEN_X = 6.0
 
@@ -55,11 +57,10 @@ def calculate_rms_error(error_field):
 
 def main():
     # 1. Setup directories
-    if os.path.exists(ERROR_DIR):
-        shutil.rmtree(ERROR_DIR)
+    # UPDATED: Removed rmtree to PRESERVE existing plots/data
     os.makedirs(ERROR_DIR, exist_ok=True)
-    if os.path.exists(ERROR_VTK_DIR):
-        shutil.rmtree(ERROR_VTK_DIR)
+    
+    # UPDATED: Removed rmtree to PRESERVE existing error VTKs
     os.makedirs(ERROR_VTK_DIR, exist_ok=True)
 
     # 2. Read and backup original config
@@ -89,7 +90,18 @@ def main():
         with open(CONFIG_FILE, 'w') as f:
             json.dump(conf, f, indent=4)
 
-        # 4. Run Solver
+        # 4. Cleanup OLD simulation files and Run Solver
+        # IMPORTANT: Remove old files with the same base_name in OUTPUT_DIR.
+        # If we don't do this, a short run (20 steps) will see files from a previous long run (200 steps)
+        # and think they are part of the current simulation.
+        print("Cleaning up old simulation files...")
+        for f in os.listdir(OUTPUT_DIR):
+            if f.startswith(base_name) and f.endswith(".vtk"):
+                try:
+                    os.remove(os.path.join(OUTPUT_DIR, f))
+                except OSError:
+                    pass
+
         print("Running solver...")
         ret = subprocess.run([EXECUTABLE], capture_output=True, text=True)
         
@@ -143,7 +155,7 @@ def main():
             err_mag = np.sqrt(err_u**2 + err_v**2 + err_w**2)
             grid.point_data['error_vel_mag'] = err_mag
 
-            # Save to error directory
+            # Save to error VTK directory (separate from main output)
             save_name = f"error_step_{step:05d}.vtk"
             grid.save(os.path.join(ERROR_VTK_DIR, save_name))
 
@@ -168,9 +180,31 @@ def main():
             elif i % 10 == 0:
                 print(f"  Processed step {step} (t={t:.4f})")
 
-        # Plotting L2 norms
+        # 6. Save Data and Plot
         if ENABLE_L2_ANALYSIS and len(l2_history['t']) > 0:
-            print("\nPlotting RMS L2 error norms...")
+            n_steps_plotted = len(l2_history['t'])
+            
+            # --- A. Save Text Data ---
+            txt_filename = f"l2_error_data_Nx{NX}_dt{DT}_Tend{T_END}_steps{n_steps_plotted}.txt"
+            txt_path = os.path.join(ERROR_DIR, txt_filename)
+            
+            print(f"\nSaving numerical data to: {txt_path}")
+            with open(txt_path, 'w') as f:
+                f.write(f"# Error Analysis Data Log\n")
+                f.write(f"# Nx={NX}, dt={DT}, T_end={T_END}, Steps={n_steps_plotted}\n")
+                f.write(f"# {'Time (s)':>12} | {'RMS_u':>14} | {'RMS_v':>14} | {'RMS_w':>14} | {'RMS_p':>14} | {'RMS_Mag':>14}\n")
+                f.write("-" * 105 + "\n")
+                
+                for j in range(len(l2_history['t'])):
+                    f.write(f"  {l2_history['t'][j]:12.6f} | "
+                            f"{l2_history['u'][j]:14.6e} | "
+                            f"{l2_history['v'][j]:14.6e} | "
+                            f"{l2_history['w'][j]:14.6e} | "
+                            f"{l2_history['p'][j]:14.6e} | "
+                            f"{l2_history['mag'][j]:14.6e}\n")
+
+            # --- B. Plotting ---
+            print("Plotting RMS L2 error norms...")
             plt.figure(figsize=(10, 6))
             
             # Use different styles to distinguish overlapping lines (e.g. if u and v errors are identical)
@@ -183,32 +217,31 @@ def main():
             plt.plot(l2_history['t'], l2_history['mag'], label='RMS Error |Vel|', color='black', linewidth=2, alpha=0.4)
             
             plt.xlabel('Time (s)')
-            plt.ylabel('RMS L2 Error')
+            plt.ylabel('RMS L2 Error (Independent of N)')
             plt.yscale('log')
             
             # Update title with detailed simulation parameters
-            n_steps_plotted = len(l2_history['t'])
             plt.title(f'RMS L2 Error Evolution\nNx={NX}, dt={DT}, T_end={T_END}, Steps={n_steps_plotted}')
             
             plt.legend()
             plt.grid(True, which="both", ls="-", alpha=0.5)
             
             # Save plot with discretization details in filename
-            # UPDATED: Included T_END and n_steps_plotted in the filename
             plot_filename = f"l2_error_Nx{NX}_dt{DT}_Tend{T_END}_steps{n_steps_plotted}.png"
             plot_path = os.path.join(ERROR_DIR, plot_filename)
             plt.savefig(plot_path)
             print(f"Plot saved to {plot_path}")
-            plt.show()
+            # plt.show() # Commented out for cleaner script execution
 
-        print(f"\nDone! Error files saved to: {ERROR_DIR}")
-        print("You can now open this folder in ParaView.")
+        print(f"\nDone! Files saved in:")
+        print(f"  - Plots & Data: {ERROR_DIR}")
+        print(f"  - Error VTKs:   {ERROR_VTK_DIR}")
 
     except Exception as e:
         print(f"\nAn error occurred: {e}")
 
     finally:
-        # 6. Restore original config
+        # 7. Restore original config
         print("Restoring original configuration...")
         with open(CONFIG_FILE, 'w') as f:
             f.write(raw_original_content)
