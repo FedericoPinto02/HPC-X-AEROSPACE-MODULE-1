@@ -58,7 +58,12 @@ public:
         const size_t iStart, const size_t jStart, const size_t kStart);
 
     /**
-     * @brief Getter to access the internal matrix (needed for Schur).
+     * @brief Getter to access the internal matrix.
+     */
+    [[nodiscard]] TridiagMat& getMatrix() { return matA; }
+
+    /**
+     * @overload
      */
     [[nodiscard]] const TridiagMat& getMatrix() const { return matA; }
 
