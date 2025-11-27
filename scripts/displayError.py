@@ -22,8 +22,8 @@ ERROR_VTK_DIR = os.path.join(OUTPUT_DIR, "ERROR_VTK")
 
 # Simulation Parameters
 NX = 50
-DT = 0.0001  
-T_END = 0.02
+DT = 0.001  
+T_END = 0.05
 OUTPUT_FREQ = 1
 DOMAIN_LEN_X = 6.0
 

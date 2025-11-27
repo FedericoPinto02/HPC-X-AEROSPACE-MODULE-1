@@ -88,7 +88,7 @@ void ViscousStep::computeG()
 
         for (size_t i = 0; i < u_data.size(); i++)
         {
-            g_data[i] = f_data[i] - gradP_data[i] - nu_val * u_data[i] / k_data[i] * 0.5 + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]) * 0.5;
+            g_data[i] = f_data[i] - gradP_data[i] - nu_val * u_data[i] / k_data[i] + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]);
         }
 
         const auto &grid = *data_.grid;
