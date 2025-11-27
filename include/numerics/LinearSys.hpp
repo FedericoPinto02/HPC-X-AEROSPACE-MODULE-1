@@ -27,7 +27,7 @@ public:
      * @param n Size of the linear system (n x n)
      * @param boundaryType Boundary condition type, Normal or Tangent (set Normal for pressure)
      */
-    LinearSys(int n, BoundaryType boundaryType);
+    LinearSys(size_t n, BoundaryType boundaryType);
 
     /**
      * @brief Sets the right-hand side (rhsC) vector for the solver.
@@ -40,7 +40,7 @@ public:
      * @brief Gets the solution vector (unknownX) computed by the solver.
      * @return A const reference to the solution vector.
      */
-    const std::vector<double>& getSolution() const;
+    [[nodiscard]] const std::vector<double>& getSolution() const;
 
 
     /**
@@ -60,12 +60,12 @@ public:
     /**
      * @brief Getter to access the internal matrix (needed for Schur).
      */
-    const TridiagMat& getMatrix() const { return matA; }
+    [[nodiscard]] const TridiagMat& getMatrix() const { return matA; }
 
     /**
      * @brief Getter to access the internal RHS (modified by fillSystem).
      */
-    const std::vector<double>& getRhs() const { return rhsC; }
+    [[nodiscard]] const std::vector<double>& getRhs() const { return rhsC; }
 
     /**
      * @brief Solve the linear system

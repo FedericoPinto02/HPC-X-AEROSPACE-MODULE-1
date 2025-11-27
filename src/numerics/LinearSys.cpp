@@ -5,11 +5,10 @@
 #include <numerics/derivatives.hpp>
 #include <vector>
 
-LinearSys::LinearSys(int n, BoundaryType boundaryType)
+LinearSys::LinearSys(size_t n, BoundaryType boundaryType)
         : boundaryType(boundaryType), matA(n) {
     unknownX.resize(n, 0.0);
 }
-
 
 void LinearSys::setRhs(const std::vector<double> &newRhs) {
     if (newRhs.size() != matA.getSize()) {
