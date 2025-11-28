@@ -11,14 +11,15 @@ NX_LIST = np.array([20, 30, 40, 50])
 # compared to velocity fields (RMS_u, RMS_v, RMS_w, RMS_Mag).
 RMS_ERRORS = {
     # Velocity components (RMS u, v, w) and Magnitude (RMS Mag)
-    'RMS_u':   np.array([2.432923e-02, 1.721075e-02, 1.388173e-02, 1.199473e-02]),
-    'RMS_v':   np.array([2.993947e-02, 2.723595e-02, 2.598586e-02, 2.528100e-02]),
-    'RMS_w':   np.array([3.356426e-02, 2.946734e-02, 2.746264e-02, 2.630587e-02]),
-    'RMS_Mag': np.array([5.113554e-02, 4.366155e-02, 4.027610e-02, 3.840575e-02]),
+    'RMS_u':   np.array([6.015058e-02, 4.718574e-02, 4.122232e-02, 3.787648e-02]),
+    'RMS_v':   np.array([1.255041e-01, 1.271701e-01, 1.268702e-01, 1.263124e-01]),
+    'RMS_w':   np.array([1.126325e-01, 1.132682e-01, 1.116860e-01, 1.101379e-01]),
+    'RMS_Mag': np.array([1.790404e-01, 1.767156e-01, 1.739801e-01, 1.718133e-01]),
 
     # Pressure error (RMS p)
-    'RMS_p':   np.array([5.655246e-01, 4.360795e-01, 3.705250e-01, 3.319145e-01]),
+    'RMS_p':   np.array([1.673516e+00, 1.253976e+00, 1.025882e+00, 8.947853e-01]),
 }
+
 
 
 # Grid spacing h is proportional to 1/NX (assuming a fixed domain length L=1)

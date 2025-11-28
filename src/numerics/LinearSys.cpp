@@ -193,8 +193,8 @@ void LinearSys::fillSystemVelocity(
                     iStart, jStart, kStart, derivativeDirection, matA.getSize() - 1);
             double beta = 1 + (simData.dt * simData.nu * 0.5 / k);
             double gamma = simData.dt * simData.nu * 0.5 / beta;
-            diag.back() = 1 + 3 * gamma * dCoef;
-            subdiag.back() = -gamma * dCoef;
+            diag.back() = 1 + 4.0 * gamma * dCoef;
+            subdiag.back() = -4.0 / 3.0  * gamma * dCoef;
 
 
             std::function<double(double t, double x, double y, double z)> bc;
@@ -225,64 +225,63 @@ void LinearSys::fillSystemVelocity(
                     rhsC.back() =
                             xi(fieldComponent)
                                     .valueWithOffset(iStart, jStart, kStart,
-                                                     derivativeDirection, matA.getSize() - 1) +
+                                                     derivativeDirection, matA.getSize() - 1) 
 
-                            -gamma * dCoef *
+                            + 4.0 /3.0 * gamma * dCoef *
                             eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
-                                                                        matA.getSize() - 2) +
+                                                                        matA.getSize() - 2) 
 
-                            3.0 * gamma * dCoef *
+                            - 4.0 * gamma * dCoef *
                             eta(fieldComponent)
                                     .valueWithOffset(iStart, jStart, kStart,
-                                                     derivativeDirection, matA.getSize() - 1) +
-                            -2.0 * gamma * dCoef *  // uOld
-                            bc((iStart + matA.getSize() - 1) * grid.dx,
+                                                     derivativeDirection, matA.getSize() - 1) 
+                            + 8.0/3.0 * gamma * dCoef *  (
+                            bc((iStart + matA.getSize() - 1.0 + 0.5) * grid.dx,
                                (jStart + yOff) * grid.dy, (kStart + zOff) * grid.dz, simData.currTime - simData.dt) +
 
-                            2.0 * gamma * dCoef *
-                            bc((iStart + matA.getSize() - 1) * grid.dx,
-                               (jStart + yOff) * grid.dy, (kStart + zOff) * grid.dz, simData.currTime);
+                            bc((iStart + matA.getSize() - 1 + 0.5) * grid.dx,
+                               (jStart + yOff) * grid.dy, (kStart + zOff) * grid.dz, simData.currTime) );
                     break;
 
                 case Axis::Y:
                     rhsC.back() =
                             xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
                                                                matA.getSize() - 1) +
-                            -gamma * dCoef *
+                            + 4.0 / 3.0 * gamma * dCoef *
                             eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
                                                                         matA.getSize() - 2) +
-                            3.0 * gamma * dCoef *
+                            - 4.0 * gamma * dCoef *
                             eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
                                                                         matA.getSize() - 1) +
 
 
-                            -2.0 * gamma * dCoef * bc((iStart + xOff) * grid.dx,
-                                                      (jStart + matA.getSize() - 1) * grid.dy,
+                            + 8.0 / 3.0 * gamma * dCoef * 
+                            (bc((iStart + xOff) * grid.dx,
+                                                      (jStart + matA.getSize() - 1.0 + 0.5) * grid.dy,
                                                       (kStart + zOff) * grid.dz, simData.currTime - simData.dt) +
 
-                            2.0 * gamma * dCoef *
                             bc((iStart + xOff) * grid.dx,
-                               (jStart + matA.getSize() - 1) * grid.dy, (kStart + zOff) * grid.dz, simData.currTime);
+                               (jStart + matA.getSize() - 1 + 0.5) * grid.dy, (kStart + zOff) * grid.dz, simData.currTime) );
                     break;
 
                 case Axis::Z:
                     rhsC.back() =
                             xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
-                                                               matA.getSize() - 1) +
-                            -gamma * dCoef *
+                                                               matA.getSize() - 1) 
+                            +4.0 / 3.0 * gamma * dCoef *
                             eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
-                                                                        matA.getSize() - 2) +
-                            3.0 * gamma * dCoef *
+                                                                        matA.getSize() - 2) 
+                            -4.0 * gamma * dCoef *
                             eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
-                                                                        matA.getSize() - 1) +
+                                                                        matA.getSize() - 1) 
 
-                            -2.0 * gamma * dCoef * bc((iStart + xOff) * grid.dx,
+                            + 8.0/3.0 * gamma * dCoef * (
+                            bc((iStart + xOff) * grid.dx,
                                                       (jStart + yOff) * grid.dy,
-                                                      (kStart + matA.getSize() - 1) * grid.dz, simData.currTime - simData.dt) +
+                                                      (kStart + matA.getSize() - 1 + 0.5) * grid.dz, simData.currTime - simData.dt) +
 
-                            2.0 * gamma * dCoef *
                             bc((iStart + xOff) * grid.dx, (jStart + yOff) * grid.dy,
-                               (kStart + matA.getSize() - 1) * grid.dz, simData.currTime);
+                               (kStart + matA.getSize() - 1 + 0.5) * grid.dz, simData.currTime) );
                     break;
                 default:
                     break;

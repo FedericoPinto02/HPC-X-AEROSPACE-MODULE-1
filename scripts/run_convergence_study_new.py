@@ -23,6 +23,8 @@ OUTPUT_DIR = "../output/"              # Output directory (must match JSON)
 # 2. TEMPORAL_ONLY: Fix Nx (fine grid), vary dt. Studies temporal order (Expected O(dt^2)).
 # 3. SPACE_TIME_COUPLED: Vary both (dt ~ 1/Nx). Maintains constant CFL (Expected O(h^2) or O(dt^2)).
 STUDY_MODE = "SPACE_TIME_COUPLED" 
+STUDY_MODE = "SPATIAL_ONLY" 
+STUDY_MODE = "TEMPORAL_ONLY"
 
 # --- BASELINE & RESOLUTION PARAMETERS ---
 BASE_NX = 20           # Reference resolution
@@ -36,7 +38,7 @@ NX_VALUES_FOR_SPATIAL_STUDY = [20, 25, 30, 35, 40, 45, 50, 60, 80]
 # Set used when STUDY_MODE is TEMPORAL_ONLY
 # Multipliers relative to BASE_DT (e.g., 0.5 means dt = 0.0005)
 DT_MULTIPLIERS_FOR_TEMPORAL_STUDY = [1.0, 0.5, 0.25, 0.125, 0.0625]
-FIXED_NX_FOR_TEMPORAL_STUDY = 100
+FIXED_NX_FOR_TEMPORAL_STUDY = 50
 
 
 def calculate_params_for_mode(loop_val, base_dt, study_mode):
