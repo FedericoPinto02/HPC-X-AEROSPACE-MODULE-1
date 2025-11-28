@@ -8,6 +8,10 @@ set(CMAKE_CXX_FLAGS_RELEASE
    "-O3 -DNDEBUG -march=native -flto -funroll-loops -fno-math-errno")
 set(CMAKE_EXE_LINKER_FLAGS "-flto")
 
+# Find MPI
+find_package(MPI REQUIRED)
+message(STATUS "MPI Found: ${MPI_CXX_COMPILER}")
+
 include(FetchContent)
 
 
@@ -33,6 +37,7 @@ add_library(NSBSolver
         # Explicit header files
         include/core/Fields.hpp
         include/core/Grid.hpp
+        include/core/MpiEnv.hpp
         include/core/TridiagMat.hpp
         include/io/inputReader.hpp
         include/io/VTKWriter.hpp
@@ -46,6 +51,7 @@ add_library(NSBSolver
         include/simulation/NSBSolver.hpp
         # Explicit source files
         src/core/Fields.cpp
+        src/core/MpiEnv.cpp
         src/core/TridiagMat.cpp
         src/io/inputReader.cpp
         src/io/VTKWriter.cpp
@@ -65,6 +71,8 @@ target_include_directories(NSBSolver PUBLIC
         ${PROJECT_INCLUDE_DIR}
         ${PROJECT_EXTERN_DIR}
 )
+# Link MPI to the solver library
+target_link_libraries(NSBSolver PUBLIC MPI::MPI_CXX)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
