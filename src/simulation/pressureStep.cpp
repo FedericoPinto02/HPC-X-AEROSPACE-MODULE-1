@@ -187,12 +187,13 @@ void PressureStep::run()
     double Re = 1;
     double nu = data_.nu;
     double factor = chi * nu;
+    double p_baseline = data_.p(0,0,0);
 
     for (size_t k = 0; k < data_.grid->Nz; k++) {
     for (size_t j = 0; j < data_.grid->Ny; j++) {
         for (size_t i = 0; i < data_.grid->Nx; i++) {
             
-            data_.p(i, j, k) += pcr(i, j, k) - factor * divU(i, j, k);
+            data_.p(i, j, k) += pcr(i, j, k) - factor * divU(i, j, k) - p_baseline;
             data_.predictor(i,j,k) = data_.p(i, j, k) + pcr(i, j, k);
         }
     }
