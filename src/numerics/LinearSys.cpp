@@ -236,10 +236,10 @@ void LinearSys::fillSystemVelocity(
                                     .valueWithOffset(iStart, jStart, kStart,
                                                      derivativeDirection, matA.getSize() - 1) 
                             + 8.0/3.0 * gamma * dCoef *  (
-                            bc((iStart + matA.getSize() - 1.0 + 0.5) * grid.dx,
+                            bc((iStart + matA.getSize() -1 + 0.5) * grid.dx,
                                (jStart + yOff) * grid.dy, (kStart + zOff) * grid.dz, simData.currTime - simData.dt) +
 
-                            bc((iStart + matA.getSize() - 1 + 0.5) * grid.dx,
+                            bc((iStart + matA.getSize() -1 + 0.5) * grid.dx,
                                (jStart + yOff) * grid.dy, (kStart + zOff) * grid.dz, simData.currTime) );
                     break;
 
@@ -257,11 +257,11 @@ void LinearSys::fillSystemVelocity(
 
                             + 8.0 / 3.0 * gamma * dCoef * 
                             (bc((iStart + xOff) * grid.dx,
-                                                      (jStart + matA.getSize() - 1.0 + 0.5) * grid.dy,
+                                                      (jStart + matA.getSize() -1 + 0.5) * grid.dy,
                                                       (kStart + zOff) * grid.dz, simData.currTime - simData.dt) +
 
                             bc((iStart + xOff) * grid.dx,
-                               (jStart + matA.getSize() - 1 + 0.5) * grid.dy, (kStart + zOff) * grid.dz, simData.currTime) );
+                               (jStart + matA.getSize() -1 + 0.5) * grid.dy, (kStart + zOff) * grid.dz, simData.currTime) );
                     break;
 
                 case Axis::Z:
@@ -278,10 +278,10 @@ void LinearSys::fillSystemVelocity(
                             + 8.0/3.0 * gamma * dCoef * (
                             bc((iStart + xOff) * grid.dx,
                                                       (jStart + yOff) * grid.dy,
-                                                      (kStart + matA.getSize() - 1 + 0.5) * grid.dz, simData.currTime - simData.dt) +
+                                                      (kStart + matA.getSize() -1 + 0.5) * grid.dz, simData.currTime - simData.dt) +
 
                             bc((iStart + xOff) * grid.dx, (jStart + yOff) * grid.dy,
-                               (kStart + matA.getSize() - 1 + 0.5) * grid.dz, simData.currTime) );
+                               (kStart + matA.getSize() -1 + 0.5) * grid.dz, simData.currTime) );
                     break;
                 default:
                     break;

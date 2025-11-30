@@ -923,7 +923,7 @@ void ViscousStep::closeViscousStep()
         mySystem_v.fillSystemVelocity(data_, data_.u, data_.zeta, Axis::Y, Axis::Z, iStart, jStart, kStart);
         //mySystem_v.ThomaSolver();
         //std::vector<double> unknown_v = mySystem_v.getSolution();
-        unknown_v = solveSystem(mySystem_v, BoundaryType::Normal);
+        unknown_v = solveSystem(mySystem_v, BoundaryType::Tangent);
 
         for (size_t k = 0; k < sysDimension; k++)
         {
