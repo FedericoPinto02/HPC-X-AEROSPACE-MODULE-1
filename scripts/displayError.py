@@ -9,45 +9,40 @@ import sys
 import numpy as np
 import pyvista as pv
 import matplotlib.pyplot as plt
-import time # Time is still useful for tracking total execution time
+from scipy.stats import skew, kurtosis
+import time
 
 # --- USER CONFIGURATION ---
-# Paths are relative to the 'scripts' directory
 EXECUTABLE = "../build/main"
 CONFIG_FILE = "../data/config.json"
 FINAL_OUTPUT_DIR = "../output/"
 
 # Subdirectories for error analysis
 ERROR_DIR = "errorPlots"
+PRESSURE_ANALYSIS_DIR = os.path.join(ERROR_DIR, "pressure_detailed") # New folder
 ERROR_VTK_DIR = os.path.join(FINAL_OUTPUT_DIR, "ERROR_VTK")
 
 # =============================================================================
-# === SIMULATION PARAMETERS (VECTORS) ===
+# === SIMULATION PARAMETERS ===
 # =============================================================================
-# The lists below MUST have the same length (coupled lists mode is mandatory).
-# The script will execute: Run 0 (Nx[0], Dt[0]...), Run 1 (Nx[1], Dt[1]...), etc.
-
-NX_LIST    = [20, 30, 40, 50]
-T_END = 2.0  # Fixed end time for all runs
+NX_LIST    = [30]
+T_END = 0.5 
 
 NX_REF = 50.0
 dx = 6.0 / (NX_REF + 0.5)
 nu = 6
-DT_REF = dx**2 / nu * 0.1  # Stability condition for diffusion equation
+DT_REF = dx**2 / nu * 0.1 
 DT_LIST = [DT_REF * (NX_REF / nx)**2 for nx in NX_LIST]
 
 T_END_LIST = np.full_like(NX_LIST, T_END, dtype=float)
 
 OUTPUT_FREQ = 1
-
-# Other fixed parameters
 DOMAIN_LEN_X = 6.0
 ENABLE_L2_ANALYSIS = True
 
-# Removed Multicore settings, running serially now.
 # =============================================================================
-
-# --- ANALYTICAL SOLUTIONS (Staggered Grid) ---
+# === ANALYTICAL SOLUTIONS ===
+# =============================================================================
 def u_ana(points, t, h): 
     return np.sin(t) * np.sin(points[:,0] + h/2) * np.sin(points[:,1]) * np.sin(points[:,2])
 
@@ -65,19 +60,129 @@ def get_step_from_filename(filename):
     return int(match.group(1)) if match else -1
 
 def calculate_rms_error(error_field):
-    """
-    Calculates the Root Mean Square (RMS) error.
-    RMS = sqrt(mean(error^2))
-    """
     return np.sqrt(np.mean(error_field**2))
 
-def run_single_case(nx, dt, t_end, original_config_content, run_index):
+# =============================================================================
+# === NEW: DETAILED PRESSURE ERROR ANALYSIS ===
+# =============================================================================
+def analyze_pressure_detailed(points, err_p, nx, dt, step, run_id):
     """
-    Runs a single simulation case serially. Modifies the config file, runs the solver, 
-    and restores the config file content afterward.
+    Performs statistical and spatial analysis of pressure error.
+    Splits data into Boundary vs Center and computes directional moments.
     """
+    os.makedirs(PRESSURE_ANALYSIS_DIR, exist_ok=True)
     
-    # Unique identifier for this run
+    # 1. Geometry Setup to distinguish Boundary vs Center
+    # We assume a cubic/rectangular domain. We define "Boundary" as the outer 10%
+    min_coords = np.min(points, axis=0)
+    max_coords = np.max(points, axis=0)
+    lengths = max_coords - min_coords
+    margin = lengths * 0.10 # 10% margin from edges
+    
+    # Create masks
+    mask_x = (points[:,0] < (min_coords[0] + margin[0])) | (points[:,0] > (max_coords[0] - margin[0]))
+    mask_y = (points[:,1] < (min_coords[1] + margin[1])) | (points[:,1] > (max_coords[1] - margin[1]))
+    mask_z = (points[:,2] < (min_coords[2] + margin[2])) | (points[:,2] > (max_coords[2] - margin[2]))
+    
+    mask_boundary = mask_x | mask_y | mask_z
+    mask_center = ~mask_boundary
+    
+    err_p_bnd = err_p[mask_boundary]
+    err_p_ctr = err_p[mask_center]
+    
+    # 2. Statistical Moments
+    stats = {
+        'Global':   [np.mean(err_p), np.std(err_p), skew(err_p), kurtosis(err_p)],
+        'Boundary': [np.mean(err_p_bnd), np.std(err_p_bnd), skew(err_p_bnd), kurtosis(err_p_bnd)],
+        'Center':   [np.mean(err_p_ctr), np.std(err_p_ctr), skew(err_p_ctr), kurtosis(err_p_ctr)]
+    }
+    
+    # Print Report
+    report_file = os.path.join(PRESSURE_ANALYSIS_DIR, f"stats_report_{run_id}.txt")
+    with open(report_file, 'w') as f:
+        f.write(f"PRESSURE ERROR ANALYSIS | Run: {run_id} | Step: {step}\n")
+        f.write("="*80 + "\n")
+        f.write(f"{'Region':<12} | {'Mean':<12} | {'Std Dev':<12} | {'Skewness':<12} | {'Kurtosis':<12}\n")
+        f.write("-" * 80 + "\n")
+        for region, vals in stats.items():
+            f.write(f"{region:<12} | {vals[0]:<12.4e} | {vals[1]:<12.4e} | {vals[2]:<12.4f} | {vals[3]:<12.4f}\n")
+        f.write("-" * 80 + "\n")
+        f.write("NOTE:\n")
+        f.write("  Skewness != 0 implies asymmetry (bias).\n")
+        f.write("  Kurtosis > 3 implies heavy tails (outliers drive the error).\n")
+    
+    # 3. Plotting Histograms
+    plt.figure(figsize=(12, 5))
+    
+    plt.subplot(1, 2, 1)
+    plt.hist(err_p, bins=50, density=True, alpha=0.6, color='gray', label='Global')
+    plt.title(f'Global Pressure Error PDF\nRun {run_id}')
+    plt.xlabel('Error Value (Pa)')
+    plt.ylabel('Density')
+    plt.grid(True, alpha=0.3)
+    
+    plt.subplot(1, 2, 2)
+    plt.hist(err_p_ctr, bins=50, density=True, alpha=0.5, color='blue', label='Center')
+    plt.hist(err_p_bnd, bins=50, density=True, alpha=0.5, color='red', label='Boundary')
+    plt.title('Boundary vs Center Comparison')
+    plt.xlabel('Error Value (Pa)')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.savefig(os.path.join(PRESSURE_ANALYSIS_DIR, f"hist_dist_{run_id}.png"))
+    plt.close()
+
+    # 4. Directional Analysis (Slicing/Binning)
+    # Binning data along axes to see spatial trends
+    n_bins = 20
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+    dirs = ['X', 'Y', 'Z']
+    
+    for i, ax_idx in enumerate([0, 1, 2]):
+        coord = points[:, ax_idx]
+        # Create bins
+        bins = np.linspace(coord.min(), coord.max(), n_bins + 1)
+        centers = (bins[:-1] + bins[1:]) / 2
+        
+        # Digitize coordinates to find which bin they belong to
+        bin_indices = np.digitize(coord, bins) - 1
+        
+        # Calculate mean error and std dev in each bin
+        bin_means = []
+        bin_stds = []
+        
+        for b in range(n_bins):
+            # Select points in this bin
+            mask_bin = bin_indices == b
+            if np.any(mask_bin):
+                bin_vals = err_p[mask_bin]
+                bin_means.append(np.mean(bin_vals))
+                bin_stds.append(np.std(bin_vals))
+            else:
+                bin_means.append(0)
+                bin_stds.append(0)
+        
+        # Plot
+        axes[i].errorbar(centers, bin_means, yerr=bin_stds, fmt='-o', capsize=3, label='Mean Error')
+        axes[i].set_title(f'Mean Error along {dirs[i]}')
+        axes[i].set_xlabel(f'{dirs[i]} Coordinate')
+        axes[i].set_ylabel('Mean Pressure Error')
+        axes[i].grid(True, alpha=0.4)
+        axes[i].axhline(0, color='k', linestyle='--', linewidth=0.8)
+
+    plt.suptitle(f"Directional Error Profiles - Run {run_id}", fontsize=14)
+    plt.savefig(os.path.join(PRESSURE_ANALYSIS_DIR, f"directional_profiles_{run_id}.png"))
+    plt.close()
+    
+    print(f"    --> Detailed pressure analysis saved to: {PRESSURE_ANALYSIS_DIR}")
+
+
+# =============================================================================
+# === MAIN RUN LOOP ===
+# =============================================================================
+
+def run_single_case(nx, dt, t_end, original_config_content, run_index):
     dt_str = str(dt).replace('.', 'p')
     run_id = f"n{nx}_dt{dt_str}"
     
@@ -85,47 +190,35 @@ def run_single_case(nx, dt, t_end, original_config_content, run_index):
     print(f" [Run {run_index+1}] Starting simulation: Nx={nx}, dt={dt}, T_end={t_end}")
     print(f"{'='*60}")
 
-    # 1. Prepare Config and File Paths
     try:
-        # Load the original content from string (safer than reading the file)
         conf = json.loads(original_config_content)
-        
         conf['mesh']['nx'] = nx
         conf['mesh']['input_for_manufactured_solution'] = True
         conf['time']['dt'] = dt
         conf['time']['t_end'] = t_end
-        
         base_name = f"error_{run_id}"
         conf['output']['base_filename'] = base_name
         conf['output']['output_frequency'] = OUTPUT_FREQ
         
-        # Write the modified config back to the main file
         with open(CONFIG_FILE, 'w') as f:
             json.dump(conf, f, indent=4)
 
-        # 2. Cleanup OLD simulation files for THIS specific config
-        print("  -> Cleaning up old simulation files for this config...")
+        # Cleanup
         for f in os.listdir(FINAL_OUTPUT_DIR):
             if f.startswith(base_name) and f.endswith(".vtk"):
-                try:
-                    os.remove(os.path.join(FINAL_OUTPUT_DIR, f))
-                except OSError:
-                    pass
+                try: os.remove(os.path.join(FINAL_OUTPUT_DIR, f))
+                except OSError: pass
 
-        # 3. Run Solver (Executed from the current script directory)
+        # Run Solver
         print("  -> Running solver...")
-        # The solver path is relative to the current script directory
         ret = subprocess.run([EXECUTABLE], capture_output=True, text=True)
-        
         if ret.returncode != 0:
             print("  !!! Solver FAILED. STDERR:")
             print(ret.stderr)
             return None
 
-        # 4. Post-Processing (Analysis)
+        # Post-Processing
         h = DOMAIN_LEN_X / (nx + 0.5)
-        
-        # Filter files for this specific run in the FINAL_OUTPUT_DIR
         all_files = os.listdir(FINAL_OUTPUT_DIR)
         vtk_files = [os.path.join(FINAL_OUTPUT_DIR, f) for f in all_files 
                      if f.startswith(base_name) and f.endswith(".vtk")]
@@ -134,11 +227,10 @@ def run_single_case(nx, dt, t_end, original_config_content, run_index):
         print(f"  -> Processing {len(vtk_files)} timesteps...")
         
         l2_history = {'t': [], 'u': [], 'v': [], 'w': [], 'p': [], 'mag': []} 
-        
         os.makedirs(ERROR_VTK_DIR, exist_ok=True)
         os.makedirs(ERROR_DIR, exist_ok=True)
 
-        for f_path in vtk_files:
+        for i, f_path in enumerate(vtk_files):
             step = get_step_from_filename(os.path.basename(f_path))
             t = step * dt
             
@@ -148,13 +240,11 @@ def run_single_case(nx, dt, t_end, original_config_content, run_index):
             vel = grid.point_data['velocity']
             p = grid.point_data['pressure']
             
-            # Compute analytical solution
             u_ex = u_ana(points, t, h)
             v_ex = v_ana(points, t, h)
             w_ex = w_ana(points, t, h)
             p_ex = p_ana(points, t)
             
-            # Compute point-wise errors
             err_u = vel[:, 0] - u_ex
             err_v = vel[:, 1] - v_ex
             err_w = vel[:, 2] - w_ex
@@ -165,145 +255,58 @@ def run_single_case(nx, dt, t_end, original_config_content, run_index):
             grid.point_data.clear()
             grid.point_data['error_vel_mag'] = err_mag
             grid.point_data['error_p'] = err_p
-            
-            save_name = f"error_{run_id}_step_{step:05d}.vtk"
-            grid.save(os.path.join(ERROR_VTK_DIR, save_name))
+            grid.save(os.path.join(ERROR_VTK_DIR, f"error_{run_id}_step_{step:05d}.vtk"))
             
             if ENABLE_L2_ANALYSIS:
-                # Calculate RMS L2 norms
                 l2_history['t'].append(t)
                 l2_history['u'].append(calculate_rms_error(err_u))
                 l2_history['v'].append(calculate_rms_error(err_v))
                 l2_history['w'].append(calculate_rms_error(err_w))
                 l2_history['p'].append(calculate_rms_error(err_p))
                 l2_history['mag'].append(calculate_rms_error(err_mag))
+            
+            # --- TRIGGER DETAILED PRESSURE ANALYSIS ON THE FINAL TIMESTEP ---
+            is_last_step = (i == len(vtk_files) - 1)
+            if is_last_step:
+                print(f"  -> Performing detailed pressure analysis for step {step}...")
+                analyze_pressure_detailed(points, err_p, nx, dt, step, run_id)
 
-        # --- Save Individual Run Data and Plot ---
+        # Save History Data and Plot
         if l2_history['t']:
-            
-            # A. Save Text Data (All components)
-            txt_filename = f"l2_error_data_Nx{nx}_dt{dt}.txt"
-            txt_path = os.path.join(ERROR_DIR, txt_filename)
-            
+            txt_path = os.path.join(ERROR_DIR, f"l2_error_data_Nx{nx}_dt{dt}.txt")
             with open(txt_path, 'w') as f:
-                f.write(f"# Error Analysis Data Log\n")
-                f.write(f"# Nx={nx}, dt={dt}, T_end={t_end}\n")
-                f.write(f"# {'Time (s)':>12} | {'RMS_u':>14} | {'RMS_v':>14} | {'RMS_w':>14} | {'RMS_p':>14} | {'RMS_Mag':>14}\n")
-                f.write("-" * 105 + "\n")
-                
+                f.write(f"# Nx={nx}, dt={dt}\n# Time | RMS_p\n")
                 for j in range(len(l2_history['t'])):
-                    f.write(f"  {l2_history['t'][j]:12.6f} | "
-                            f"{l2_history['u'][j]:14.6e} | "
-                            f"{l2_history['v'][j]:14.6e} | "
-                            f"{l2_history['w'][j]:14.6e} | "
-                            f"{l2_history['p'][j]:14.6e} | "
-                            f"{l2_history['mag'][j]:14.6e}\n")
+                    f.write(f"{l2_history['t'][j]:.6f} | {l2_history['p'][j]:.6e}\n")
             
-            # B. Plotting (All components vs Time)
             plt.figure(figsize=(10, 6))
-            
-            plt.plot(l2_history['t'], l2_history['u'], label='RMS Error u', linestyle='-', marker='o', markersize=3, alpha=0.8)
-            plt.plot(l2_history['t'], l2_history['v'], label='RMS Error v', linestyle='--', marker='s', markersize=3, alpha=0.8)
-            plt.plot(l2_history['t'], l2_history['w'], label='RMS Error w', linestyle='-.', marker='^', markersize=3, alpha=0.8)
-            plt.plot(l2_history['t'], l2_history['p'], label='RMS Error p', linestyle=':', marker='x', markersize=4, alpha=0.8)
-            plt.plot(l2_history['t'], l2_history['mag'], label='RMS Error |Vel|', color='black', linewidth=2, alpha=0.4)
-            
-            plt.xlabel('Time (s)')
-            plt.ylabel('RMS L2 Error (log scale)')
+            plt.plot(l2_history['t'], l2_history['p'], label='RMS Error p', color='red')
             plt.yscale('log')
-            plt.title(f'RMS L2 Error Evolution (Nx={nx}, dt={dt})')
-            plt.legend()
-            plt.grid(True, which="both", ls="-", alpha=0.5)
-            
-            plot_filename = f"l2_plot_all_Nx{nx}_dt{dt}.png"
-            plt.savefig(os.path.join(ERROR_DIR, plot_filename))
+            plt.title(f'Pressure RMS Error (Nx={nx})')
+            plt.savefig(os.path.join(ERROR_DIR, f"l2_plot_P_Nx{nx}_dt{dt}.png"))
             plt.close()
-            
-            print(f"  -> Plot saved to: {plot_filename} and data to: {txt_filename}")
 
-        # 5. Return results for the final comparison plot
-        return {
-            'nx': nx,
-            'dt': dt,
-            't': l2_history['t'],
-            'mag': l2_history['mag'],
-            'success': True
-        }
+        return {'nx': nx, 'dt': dt, 't': l2_history['t'], 'mag': l2_history['mag'], 'success': True}
 
     except Exception as e:
-        print(f"  !!! An error occurred during run Nx={nx}: {e}")
+        print(f"  !!! Error in Run Nx={nx}: {e}")
         return {'success': False, 'nx': nx, 'dt': dt}
-
     finally:
-        # Restore original config file content
-        with open(CONFIG_FILE, 'w') as f:
-            f.write(original_config_content)
+        with open(CONFIG_FILE, 'w') as f: f.write(original_config_content)
 
 def main():
-    print("--- SERIAL BATCH SIMULATION SCRIPT ---")
-    
-    # 1. Validation
-    if not (len(NX_LIST) == len(DT_LIST) == len(T_END_LIST)):
-        print("ERROR: NX_LIST, DT_LIST, and T_END_LIST must have the same length (coupled mode).")
-        sys.exit(1)
-
-    # 2. Prepare directories
+    print("--- SIMULATION & ANALYSIS ---")
     os.makedirs(FINAL_OUTPUT_DIR, exist_ok=True)
     os.makedirs(ERROR_DIR, exist_ok=True)
-    os.makedirs(ERROR_VTK_DIR, exist_ok=True)
     
-    # 3. Read and store original config content once
     try:
-        with open(CONFIG_FILE, 'r') as f:
-            original_config_content = f.read()
+        with open(CONFIG_FILE, 'r') as f: original_config = f.read()
     except FileNotFoundError:
-        print(f"Error: {CONFIG_FILE} not found.")
-        sys.exit(1)
+        sys.exit("Config file not found.")
 
-    # 4. Run Serially
-    start_time = time.time()
-    results = []
-    
     tasks = list(zip(NX_LIST, DT_LIST, T_END_LIST))
-    
     for i, (nx, dt, tend) in enumerate(tasks):
-        res = run_single_case(nx=nx, dt=dt, t_end=tend, 
-                              original_config_content=original_config_content, 
-                              run_index=i)
-        if res:
-            results.append(res)
-        
-    total_time = time.time() - start_time
-    print(f"\nAll serial simulations completed in {total_time:.2f} seconds.")
-
-    # 5. Aggregate Results and Plot (Comparison Plot: Mag Error only)
-    print("\n--- Generating Final Comparison Plot ---")
-    
-    plt.figure(figsize=(10, 6))
-    
-    for res in results:
-        if not res or not res['success']:
-            # Already printed error message in run_single_case
-            continue
-            
-        nx = res['nx']
-        dt = res['dt']
-        t = res['t']
-        mag = res['mag']
-        
-        # Add to plot (using only magnitude for comparison plot clarity)
-        plt.plot(t, mag, label=f'Nx={nx}, dt={dt}', marker='o', markersize=3, alpha=0.7)
-
-    plt.xlabel('Time (s)')
-    plt.ylabel('RMS Velocity Magnitude Error (log scale)')
-    plt.yscale('log')
-    plt.title('Convergence Analysis (Serial Runs) - Velocity Magnitude Comparison')
-    plt.legend()
-    plt.grid(True, which="both", ls="-", alpha=0.3)
-    
-    final_plot_path = os.path.join(ERROR_DIR, "convergence_comparison_Vmag.png")
-    plt.savefig(final_plot_path)
-    print(f"Comparison plot saved to: {final_plot_path}")
+        run_single_case(nx, dt, tend, original_config, i)
 
 if __name__ == "__main__":
     main()
