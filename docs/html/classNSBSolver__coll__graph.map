@@ -1,10 +1,10 @@
 <map id="NSBSolver" name="NSBSolver">
 <area shape="rect" id="node1" title="Class responsible for solving the Navier&#45;Stokes&#45;Brinkman equations." alt="" coords="618,228,709,255"/>
-<area shape="rect" id="node2" href="$structOutputSettings.html" title=" " alt="" coords="5,5,124,32"/>
+<area shape="rect" id="node2" href="$structOutputSettings.html" title="Structure holding configuration parameters for outputting simulation results." alt="" coords="5,5,124,32"/>
 <area shape="rect" id="node8" href="$structInputData.html" title="Structure to hold all input data from configuration file." alt="" coords="353,139,440,165"/>
-<area shape="rect" id="node3" href="$structLoggingSettings.html" title=" " alt="" coords="765,5,892,32"/>
-<area shape="rect" id="node4" href="$structParallelizationSettings.html" title=" " alt="" coords="540,5,707,32"/>
-<area shape="rect" id="node5" href="$structSimulationData.html" title=" " alt="" coords="991,139,1114,165"/>
+<area shape="rect" id="node3" href="$structLoggingSettings.html" title="Structure holding configuration parameters for simulation logging (console and file)." alt="" coords="765,5,892,32"/>
+<area shape="rect" id="node4" href="$structParallelizationSettings.html" title="Structure holding parameters related to parallel execution and domain decomposition." alt="" coords="540,5,707,32"/>
+<area shape="rect" id="node5" href="$structSimulationData.html" title="Central structure containing all transient data, fields, and physical properties of the running simul..." alt="" coords="991,139,1114,165"/>
 <area shape="rect" id="node6" href="$classField.html" title="Class representing a scalar field defined on a 3D grid." alt="" coords="1063,5,1117,32"/>
 <area shape="rect" id="node7" href="$classVectorField.html" title="Class representing a 3D vector field defined on a 3D grid." alt="" coords="944,5,1039,32"/>
 <area shape="rect" id="node9" href="$structTimeData.html" title="Structure to hold time integration parameters." alt="" coords="388,5,475,32"/>

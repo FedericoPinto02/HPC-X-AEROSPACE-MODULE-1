@@ -1,4 +1,4 @@
 <map id="LinearSys" name="LinearSys">
-<area shape="rect" id="node1" title=" " alt="" coords="8,95,93,121"/>
-<area shape="rect" id="node2" href="$classTridiagMat.html" title=" " alt="" coords="5,5,96,32"/>
+<area shape="rect" id="node1" title="Manages and solves a tridiagonal linear system (Ax = b) used for pressure and velocity steps." alt="" coords="8,95,93,121"/>
+<area shape="rect" id="node2" href="$classTridiagMat.html" title="Class representing a tridiagonal matrix and providing access to its elements." alt="" coords="5,5,96,32"/>
 </map>
