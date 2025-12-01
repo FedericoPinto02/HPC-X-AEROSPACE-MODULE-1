@@ -2,15 +2,18 @@ build/
 output/
 results/
 
-# Ignora i file di configurazione dell'editor
+# Ignore editor configuration files
 .vscode/
 
-# Ignora i file del sistema operativo
+# Ignore operating system files
 .DS_Store
 Thumbs.db
 
-# Ignora i file Python compilati
+# Ignore compiled Python files
 __pycache__/
 *.pyc
+
+# Ignore Doxygen output folder
+/docs/
 
 gmon.out
