@@ -51,6 +51,7 @@ add_library(NSBSolver
         include/simulation/NSBSolver.hpp
         # Explicit source files
         src/core/Fields.cpp
+        src/core/Grid.cpp
         src/core/MpiEnv.cpp
         src/core/TridiagMat.cpp
         src/io/inputReader.cpp
@@ -113,12 +114,13 @@ if (BUILD_TESTS)
 
     # Create executable target for tests
     add_executable(alltests
-             ${PROJECT_TESTS_DIR}/test_tridiag.cpp
-             ${PROJECT_TESTS_DIR}/test_fields.cpp
              ${PROJECT_TESTS_DIR}/test_derivatives.cpp
-             ${PROJECT_TESTS_DIR}/test_viscousStep.cpp
+             ${PROJECT_TESTS_DIR}/test_grid.cpp
+             ${PROJECT_TESTS_DIR}/test_fields.cpp
              ${PROJECT_TESTS_DIR}/test_pressureStep.cpp
+             ${PROJECT_TESTS_DIR}/test_viscousStep.cpp
              ${PROJECT_TESTS_DIR}/test_schurSolver.cpp
+             ${PROJECT_TESTS_DIR}/test_tridiag.cpp
     )
 
     # Link test executable with the libraries to be tested and GoogleTest tests runner

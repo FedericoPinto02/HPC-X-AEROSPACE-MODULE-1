@@ -16,45 +16,72 @@ using GridPtr = std::shared_ptr<const struct Grid>;
 
 /// Struct to hold grid dimensions and spacing information along each direction.
 struct Grid {
-    /// Physical size of the grid in each direction.
-    double Lx, Ly, Lz;
-    /// Number of grid points in each direction.
-    size_t Nx, Ny, Nz;
-    /// Grid spacing in each direction (derived from physical sizes and number of grid points).
+    //==================================================================================================================
+    //--- GLOBAL (DOMAIN) GRID INFO ------------------------------------------------------------------------------------
+    //==================================================================================================================
+    /// Physical lengths of the global grid in each direction.
+    double Lx_glob, Ly_glob, Lz_glob;
+    /// Number of grid points in the global grid in each direction.
+    size_t Nx_glob, Ny_glob, Nz_glob; // as input
+    /// Grid spacing in each direction (constant throughout the domain).
     double dx, dy, dz;
 
+    //==================================================================================================================
+    //--- LOCAL (CHUNK) GRID INFO --------------------------------------------------------------------------------------
+    //==================================================================================================================
+    /// Number of grid points in the local grid chunk in each direction (derived from global info and Cartesian topology).
+    size_t Nx, Ny, Nz; // derived, owned by this rank
+    /// Index-offset in each dimension of this local grid chunk in the global grid.
+    size_t i_start, j_start, k_start;
 
     /**
-     * @brief Constructor to initialize the grid with given physical sizes and number of points.
-     * @param Nx_ the number of grid points in the X direction
-     * @param Ny_ the number of grid points in the Y direction
-     * @param Nz_ the number of grid points in the Z direction
+     * @brief Constructor to initialize the grid in an explicitly sequential environment.
+     * @param Nx_g the total number of global points in the X direction
+     * @param Ny_g the total number of global points in the Y direction
+     * @param Nz_g the total number of global points in the Z direction
      * @param dx_ the grid spacing in the X direction
      * @param dy_ the grid spacing in the Y direction
      * @param dz_ the grid spacing in the Z direction
      */
-    Grid(size_t Nx_, size_t Ny_, size_t Nz_, double dx_, double dy_, double dz_)
-            : Nx(Nx_), Ny(Ny_), Nz(Nz_), dx(dx_), dy(dy_), dz(dz_) {
-        if (Nx <= 0 || Ny <= 0 || Nz <= 0) {
-            throw std::runtime_error("Grid dimensions must be positive.");
-        }
-        if (dx <= 0.0 || dy <= 0.0 || dz <= 0.0) {
-            throw std::runtime_error("Grid spacing must be positive.");
-        }
-        Lx = dx * (static_cast<double>(Nx) + 0.5);
-        Ly = dy * (static_cast<double>(Ny) + 0.5);
-        Lz = dz * (static_cast<double>(Nz) + 0.5);
-    }
-
+    Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
+         double dx_, double dy_, double dz_);
 
     /**
-     * @brief Getter for the total number of grid points.
-     * @return the total number of grid points
+     * @brief Constructor to initialize the grid in a parallel environment.
+     * Automatically decomposes the global domain based on MpiEnv topology.
+     * @param Nx_g the total number of global points in the X direction
+     * @param Ny_g the total number of global points in the Y direction
+     * @param Nz_g the total number of global points in the Z direction
+     * @param dx_ the grid spacing in the X direction
+     * @param dy_ the grid spacing in the Y direction
+     * @param dz_ the grid spacing in the Z direction
+     * @param env the MPI Environment containing topology information
      */
-    [[nodiscard]] constexpr size_t size() { return Nx * Ny * Nz; }
+    Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
+         double dx_, double dy_, double dz_,
+         const MpiEnv &env);
 
     /**
-     * @overload
+     * @brief Decompose the grid along a target dimension, identifying local information of the chunk owned by a process
+     * with a specified coordinate in a Cartesian MPI topology (parallel environment).
+     * The domain decomposition is done in a balanced manner, distributing any remainder points to the first few.
+     * @param N_glob the total number of global points in the target dimension
+     * @param n_procs the number of processes along the target dimension
+     * @param coord the coordinate of the current process along the target dimension
+     * @return a pair containing the number of local points for the target dimension
+     *          and the starting index (offset) for that dimension in the global grid
+     */
+    static std::pair<size_t, size_t> decompose1D(size_t N_glob, int n_procs, int proc_coord);
+
+    /**
+     * @brief Getter for the total number of global grid points.
+     * @return the total number of global grid points
+     */
+    [[nodiscard]] constexpr size_t globalSize() const { return Nx_glob * Ny_glob * Nz_glob; }
+
+    /**
+     * @brief Getter for the total number of local grid points.
+     * @return the total number of local grid points
      */
     [[nodiscard]] constexpr size_t size() const { return Nx * Ny * Nz; }
 
@@ -65,9 +92,10 @@ struct Grid {
      * @param offsetAxis the axis where to apply the offset
      * @return the physical x-coordinate
      */
-    [[nodiscard]] inline double to_x(double i, GridStaggering offset, Axis offsetAxis) const {
-        const auto xOffset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::X) ? 0.5 : 0.0;
-        return (i + xOffset) * dx;
+    [[nodiscard]] inline double to_x(size_t i, GridStaggering offset, Axis offsetAxis) const {
+        const auto i_glob = (double) (i_start + i);
+        const auto i_offset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::X) ? 0.5 : 0.0;
+        return (i_glob + i_offset) * dx;
     }
 
     /**
@@ -77,9 +105,10 @@ struct Grid {
      * @param offsetAxis the axis where to apply the offset
      * @return the physical y-coordinate
      */
-    [[nodiscard]] inline double to_y(double j, GridStaggering offset, Axis offsetAxis) const {
-        const auto yOffset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::Y) ? 0.5 : 0.0;
-        return (j + yOffset) * dy;
+    [[nodiscard]] inline double to_y(size_t j, GridStaggering offset, Axis offsetAxis) const {
+        const auto j_glob = (double) (j_start + j);
+        const auto j_offset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::Y) ? 0.5 : 0.0;
+        return (j_glob + j_offset) * dy;
     }
 
     /**
@@ -89,10 +118,25 @@ struct Grid {
      * @param offsetAxis the axis where to apply the offset
      * @return the physical z-coordinate
      */
-    [[nodiscard]] inline double to_z(double k, GridStaggering offset, Axis offsetAxis) const {
-        const auto zOffset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::Z) ? 0.5 : 0.0;
-        return (k + zOffset) * dz;
+    [[nodiscard]] inline double to_z(size_t k, GridStaggering offset, Axis offsetAxis) const {
+        const auto k_glob = (double) (k_start + k);
+        const auto k_offset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::Z) ? 0.5 : 0.0;
+        return (k_glob + k_offset) * dz;
     }
+
+    /**
+     * @brief Checks if the local grid chunk has the minimum boundary at the specified axis.
+     * @param axis the axis to check (Axis::X, Axis::Y, or Axis::Z)
+     * @return true if the local grid chunk has the minimum boundary at the specified axis, false otherwise
+     */
+    [[nodiscard]] bool hasMinBoundary(Axis axis) const;
+
+    /**
+     * @brief Checks if the local grid chunk has the maximum boundary at the specified axis.
+     * @param axis the axis to check (Axis::X, Axis::Y, or Axis::Z)
+     * @return true if the local grid chunk has the maximum boundary at the specified axis, false otherwise
+     */
+    [[nodiscard]] bool hasMaxBoundary(Axis axis) const;
 };
 
 #endif // NSBSOLVER_GRID_HPP
