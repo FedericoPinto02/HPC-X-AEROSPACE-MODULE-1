@@ -39,7 +39,7 @@ VectorField Initializer::initializeVectorFieldFromFunc(
 // =========================================================
 // setup
 // =========================================================
-SimulationData Initializer::setup(const InputData &inputData) {
+SimulationData Initializer::setup(const InputData &inputData, const MpiEnv &mpi) {
     SimulationData sim;
 
     // --- Grid ---
@@ -47,7 +47,8 @@ SimulationData Initializer::setup(const InputData &inputData) {
             static_cast<size_t>(inputData.mesh.nx),
             static_cast<size_t>(inputData.mesh.ny),
             static_cast<size_t>(inputData.mesh.nz),
-            inputData.mesh.dx, inputData.mesh.dy, inputData.mesh.dz);
+            inputData.mesh.dx, inputData.mesh.dy, inputData.mesh.dz,
+            mpi);
     sim.grid = grid;
 
     // --- Time ---

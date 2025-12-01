@@ -17,17 +17,20 @@
 #include "simulation/viscousStep.hpp"
 #include "simulation/initializer.hpp"
 
-NSBSolver::NSBSolver(const std::string &configFile)
-    : configFile(configFile) {}
+NSBSolver::NSBSolver(const std::string &configFile, MpiEnv &mpi)
+    : configFile(configFile), mpi(mpi)
+    {}
 
 void NSBSolver::setup()
 {
+    // Setup MPI Topology
+    mpi.setupTopology();
 
     // Read input file
     input = InputReader::read(configFile);
 
     // Init SimulationData
-    simData = Initializer::setup(input);
+    simData = Initializer::setup(input, mpi);
 
     // Init store settings
     outputSettings = input.output;

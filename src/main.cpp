@@ -4,9 +4,9 @@
 int main(int argc, char *argv[]) {
     std::string configFile = "../data/config.json";
 
-    MpiEnv mpiEnv(argc, argv);
+    MpiEnv mpi(argc, argv);
 
-    NSBSolver problem(configFile);
+    NSBSolver problem(configFile, mpi);
     problem.setup();
     problem.solve();
 

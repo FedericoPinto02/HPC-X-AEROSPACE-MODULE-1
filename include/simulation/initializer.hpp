@@ -15,7 +15,7 @@ namespace Initializer {
     /**
      * @brief Setup and initialize the SimulationData from input data.
      */
-    SimulationData setup(const InputData &inputData);
+    SimulationData setup(const InputData &inputData, const MpiEnv &mpi);
 
     // ---------------------------------------------------------------------
     // Scalar Fields Initialization

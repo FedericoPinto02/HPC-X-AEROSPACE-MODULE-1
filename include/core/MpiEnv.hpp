@@ -28,6 +28,11 @@ private:
     std::array<int, AXIS_COUNT> coords_ = {0, 0, 0};
 
 public:
+    /**
+     * @brief Constructor that initializes the MPI environment.
+     * @param argc the argument count from main
+     * @param argv the argument vector from main
+     */
     MpiEnv(int &argc, char **&argv) {
         int isInitialized;
         MPI_Initialized(&isInitialized);
@@ -39,6 +44,7 @@ public:
         }
     }
 
+    /// Destructor that finalizes the MPI environment.
     ~MpiEnv() {
         int isFinalized;
         MPI_Finalized(&isFinalized);

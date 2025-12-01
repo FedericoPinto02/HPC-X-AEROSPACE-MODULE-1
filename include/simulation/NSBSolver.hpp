@@ -18,12 +18,14 @@
 class NSBSolver
 {
 public:
-    explicit NSBSolver(const std::string &configFile);
+    NSBSolver(const std::string &configFile, MpiEnv &mpi);
 
     void setup();
     void solve();
 
 private:
+    MpiEnv &mpi;
+
     std::string configFile;
     InputData input;
     SimulationData simData;
