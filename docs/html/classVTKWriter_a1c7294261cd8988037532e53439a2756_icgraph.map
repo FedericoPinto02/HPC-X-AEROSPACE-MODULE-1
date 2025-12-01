@@ -1,0 +1,4 @@
+<map id="VTKWriter::write_legacy" name="VTKWriter::write_legacy">
+<area shape="rect" id="node1" title="Internal method to write a scalar field and a vector field to a legacy VTK file." alt="" coords="247,13,425,39"/>
+<area shape="rect" id="node2" href="$classVTKWriter.html#a417b6b9cdc035a67ca976cdd3b620789" title="Writes a timestep file if the current step matches the output frequency. It takes copies of the field..." alt="" coords="5,5,199,47"/>
+</map>

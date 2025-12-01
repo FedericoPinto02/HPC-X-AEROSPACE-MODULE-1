@@ -1,0 +1,176 @@
+\hypertarget{classNSBSolver}{}\doxysection{NSBSolver Class Reference}
+\label{classNSBSolver}\index{NSBSolver@{NSBSolver}}
+
+
+Class responsible for solving the Navier-\/\+Stokes-\/\+Brinkman equations.  
+
+
+
+
+{\ttfamily \#include $<$NSBSolver.\+hpp$>$}
+
+
+
+Collaboration diagram for NSBSolver\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNSBSolver__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classNSBSolver_a8c0514612c95f972817b952c178b2cc4}{NSBSolver}} (const std\+::string \&\mbox{\hyperlink{classNSBSolver_a7ef19e244d81644b6e37d8e86daa6ec8}{config\+File}})
+\item 
+void \mbox{\hyperlink{classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6}{setup}} ()
+\item 
+void \mbox{\hyperlink{classNSBSolver_ada676d7f89d6183a6666976991e4e868}{solve}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{classNSBSolver_a7ef19e244d81644b6e37d8e86daa6ec8}{config\+File}}
+\item 
+\mbox{\hyperlink{structInputData}{Input\+Data}} \mbox{\hyperlink{classNSBSolver_ae458fd4510287cf4081c838ce8a1f15a}{input}}
+\item 
+\mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \mbox{\hyperlink{classNSBSolver_adb3a3736c31fc79c63c1646bbc4aa187}{sim\+Data}}
+\item 
+\mbox{\hyperlink{structOutputSettings}{Output\+Settings}} \mbox{\hyperlink{classNSBSolver_ac3d1320907e6a704c227cf90bb712f70}{output\+Settings}}
+\item 
+\mbox{\hyperlink{structLoggingSettings}{Logging\+Settings}} \mbox{\hyperlink{classNSBSolver_aff1acbf42d308b5040e66b2af62e4e09}{logging\+Settings}}
+\item 
+\mbox{\hyperlink{structParallelizationSettings}{Parallelization\+Settings}} \mbox{\hyperlink{classNSBSolver_a3c4dc42317cb06fb72da272ed15b1051}{parallelization\+Settings}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classViscousStep}{Viscous\+Step}} $>$ \mbox{\hyperlink{classNSBSolver_a99749769c2ba908ac15881c1afb3c1e1}{viscous\+Step}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classPressureStep}{Pressure\+Step}} $>$ \mbox{\hyperlink{classNSBSolver_abbe020775eb463ae30843bd4640bfb26}{pressure\+Step}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classVTKWriter}{VTKWriter}} $>$ \mbox{\hyperlink{classNSBSolver_abfe3ab788c9d1904681f4f0387091880}{vtk\+Writer}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classLogWriter}{Log\+Writer}} $>$ \mbox{\hyperlink{classNSBSolver_a8ab8d83c5ace17329900dd9ed6c3cc4e}{logger}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class responsible for solving the Navier-\/\+Stokes-\/\+Brinkman equations. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classNSBSolver_a8c0514612c95f972817b952c178b2cc4}\label{classNSBSolver_a8c0514612c95f972817b952c178b2cc4}} 
+\index{NSBSolver@{NSBSolver}!NSBSolver@{NSBSolver}}
+\index{NSBSolver@{NSBSolver}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{NSBSolver()}{NSBSolver()}}
+{\footnotesize\ttfamily NSBSolver\+::\+NSBSolver (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{config\+File }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6}\label{classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6}} 
+\index{NSBSolver@{NSBSolver}!setup@{setup}}
+\index{setup@{setup}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void NSBSolver\+::setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=258pt]{classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classNSBSolver_ada676d7f89d6183a6666976991e4e868}\label{classNSBSolver_ada676d7f89d6183a6666976991e4e868}} 
+\index{NSBSolver@{NSBSolver}!solve@{solve}}
+\index{solve@{solve}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily void NSBSolver\+::solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNSBSolver_ada676d7f89d6183a6666976991e4e868_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=257pt]{classNSBSolver_ada676d7f89d6183a6666976991e4e868_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classNSBSolver_a7ef19e244d81644b6e37d8e86daa6ec8}\label{classNSBSolver_a7ef19e244d81644b6e37d8e86daa6ec8}} 
+\index{NSBSolver@{NSBSolver}!configFile@{configFile}}
+\index{configFile@{configFile}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{configFile}{configFile}}
+{\footnotesize\ttfamily std\+::string NSBSolver\+::config\+File\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classNSBSolver_ae458fd4510287cf4081c838ce8a1f15a}\label{classNSBSolver_ae458fd4510287cf4081c838ce8a1f15a}} 
+\index{NSBSolver@{NSBSolver}!input@{input}}
+\index{input@{input}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{input}{input}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structInputData}{Input\+Data}} NSBSolver\+::input\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classNSBSolver_a8ab8d83c5ace17329900dd9ed6c3cc4e}\label{classNSBSolver_a8ab8d83c5ace17329900dd9ed6c3cc4e}} 
+\index{NSBSolver@{NSBSolver}!logger@{logger}}
+\index{logger@{logger}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{logger}{logger}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classLogWriter}{Log\+Writer}}$>$ NSBSolver\+::logger\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classNSBSolver_aff1acbf42d308b5040e66b2af62e4e09}\label{classNSBSolver_aff1acbf42d308b5040e66b2af62e4e09}} 
+\index{NSBSolver@{NSBSolver}!loggingSettings@{loggingSettings}}
+\index{loggingSettings@{loggingSettings}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{loggingSettings}{loggingSettings}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structLoggingSettings}{Logging\+Settings}} NSBSolver\+::logging\+Settings\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classNSBSolver_ac3d1320907e6a704c227cf90bb712f70}\label{classNSBSolver_ac3d1320907e6a704c227cf90bb712f70}} 
+\index{NSBSolver@{NSBSolver}!outputSettings@{outputSettings}}
+\index{outputSettings@{outputSettings}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{outputSettings}{outputSettings}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structOutputSettings}{Output\+Settings}} NSBSolver\+::output\+Settings\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classNSBSolver_a3c4dc42317cb06fb72da272ed15b1051}\label{classNSBSolver_a3c4dc42317cb06fb72da272ed15b1051}} 
+\index{NSBSolver@{NSBSolver}!parallelizationSettings@{parallelizationSettings}}
+\index{parallelizationSettings@{parallelizationSettings}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{parallelizationSettings}{parallelizationSettings}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structParallelizationSettings}{Parallelization\+Settings}} NSBSolver\+::parallelization\+Settings\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classNSBSolver_abbe020775eb463ae30843bd4640bfb26}\label{classNSBSolver_abbe020775eb463ae30843bd4640bfb26}} 
+\index{NSBSolver@{NSBSolver}!pressureStep@{pressureStep}}
+\index{pressureStep@{pressureStep}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{pressureStep}{pressureStep}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classPressureStep}{Pressure\+Step}}$>$ NSBSolver\+::pressure\+Step\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classNSBSolver_adb3a3736c31fc79c63c1646bbc4aa187}\label{classNSBSolver_adb3a3736c31fc79c63c1646bbc4aa187}} 
+\index{NSBSolver@{NSBSolver}!simData@{simData}}
+\index{simData@{simData}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{simData}{simData}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} NSBSolver\+::sim\+Data\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classNSBSolver_a99749769c2ba908ac15881c1afb3c1e1}\label{classNSBSolver_a99749769c2ba908ac15881c1afb3c1e1}} 
+\index{NSBSolver@{NSBSolver}!viscousStep@{viscousStep}}
+\index{viscousStep@{viscousStep}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{viscousStep}{viscousStep}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classViscousStep}{Viscous\+Step}}$>$ NSBSolver\+::viscous\+Step\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classNSBSolver_abfe3ab788c9d1904681f4f0387091880}\label{classNSBSolver_abfe3ab788c9d1904681f4f0387091880}} 
+\index{NSBSolver@{NSBSolver}!vtkWriter@{vtkWriter}}
+\index{vtkWriter@{vtkWriter}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{vtkWriter}{vtkWriter}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classVTKWriter}{VTKWriter}}$>$ NSBSolver\+::vtk\+Writer\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/simulation/\mbox{\hyperlink{NSBSolver_8hpp}{NSBSolver.\+hpp}}\item 
+src/simulation/\mbox{\hyperlink{NSBSolver_8cpp}{NSBSolver.\+cpp}}\end{DoxyCompactItemize}

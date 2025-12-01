@@ -1,0 +1,41 @@
+\hypertarget{inputReader_8hpp}{}\doxysection{include/io/input\+Reader.hpp File Reference}
+\label{inputReader_8hpp}\index{include/io/inputReader.hpp@{include/io/inputReader.hpp}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$simulation/\+Simulation\+Context.\+hpp$>$}\newline
+{\ttfamily \#include $<$nlohmann/json.\+hpp$>$}\newline
+Include dependency graph for input\+Reader.\+hpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{inputReader_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{inputReader_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structMeshData}{Mesh\+Data}}
+\begin{DoxyCompactList}\small\item\em Structure to hold mesh configuration data. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structPhysicsData}{Physics\+Data}}
+\begin{DoxyCompactList}\small\item\em Structure to hold physics parameters. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structTimeData}{Time\+Data}}
+\begin{DoxyCompactList}\small\item\em Structure to hold time integration parameters. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structInputData}{Input\+Data}}
+\begin{DoxyCompactList}\small\item\em Structure to hold all input data from configuration file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespaceInputReader}{Input\+Reader}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structInputData}{Input\+Data}} \mbox{\hyperlink{namespaceInputReader_a727137059f29ce31ea17ec99608c372b}{Input\+Reader\+::read}} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Read and parse input data from a JSON configuration file. \end{DoxyCompactList}\end{DoxyCompactItemize}

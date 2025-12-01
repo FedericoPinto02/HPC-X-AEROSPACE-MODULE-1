@@ -1,0 +1,9 @@
+<map id="SchurSequentialSolver::setInterfaceVector" name="SchurSequentialSolver::setInterfaceVector">
+<area shape="rect" id="node1" title=" " alt="" coords="917,23,1085,65"/>
+<area shape="rect" id="node2" href="$classSchurSequentialSolver.html#a0c0a6ed80b6df87ae3e1c53167ff444e" title="Phase 1: Solve. Solves the system A*x = f using the Schur algorithm. &#39;PreProcess&#39; must have been call..." alt="" coords="701,23,869,65"/>
+<area shape="rect" id="node3" href="$classPressureStep.html#a5420590f473164b5d861a62dc270ac08" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,5,653,32"/>
+<area shape="rect" id="node5" href="$classViscousStep.html#a98b2a51b32509c2323cb32a7bfb2e93c" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,56,651,83"/>
+<area shape="rect" id="node4" href="$classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="227,5,363,32"/>
+<area shape="rect" id="node6" href="$classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,56,407,83"/>
+<area shape="rect" id="node7" href="$classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,56,136,83"/>
+</map>

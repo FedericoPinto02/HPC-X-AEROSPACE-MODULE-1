@@ -1,0 +1,113 @@
+\hypertarget{Grid_8hpp}{}\doxysection{include/core/\+Grid.hpp File Reference}
+\label{Grid_8hpp}\index{include/core/Grid.hpp@{include/core/Grid.hpp}}
+{\ttfamily \#include $<$cstddef$>$}\newline
+Include dependency graph for Grid.\+hpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=200pt]{Grid_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Grid_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structGrid}{Grid}}
+\begin{DoxyCompactList}\small\item\em Struct to hold grid dimensions and spacing information along each direction. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} = std\+::shared\+\_\+ptr$<$ const struct \mbox{\hyperlink{structGrid}{Grid}} $>$
+\begin{DoxyCompactList}\small\item\em Shared pointer type for \mbox{\hyperlink{structGrid}{Grid}} struct. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} \{ \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}{X}} = 0
+, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0}{Y}} = 1
+, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5}{Z}} = 2
+ \}
+\begin{DoxyCompactList}\small\item\em Enum class representing the three coordinate axes. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} \{ \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01aa514377f27da15203c2393890f1b872e}{CELL\+\_\+\+CENTERED}}
+, \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01a065dd325784072eaf86ef9431ad7e067}{FACE\+\_\+\+CENTERED}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum describing the (possibly staggered) position of some points in a grid. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const size\+\_\+t \mbox{\hyperlink{Grid_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}} = 3
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}\label{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}} 
+\index{Grid.hpp@{Grid.hpp}!GridPtr@{GridPtr}}
+\index{GridPtr@{GridPtr}!Grid.hpp@{Grid.hpp}}
+\doxysubsubsection{\texorpdfstring{GridPtr}{GridPtr}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} =  std\+::shared\+\_\+ptr$<$const struct \mbox{\hyperlink{structGrid}{Grid}}$>$}
+
+
+
+Shared pointer type for \mbox{\hyperlink{structGrid}{Grid}} struct. 
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}\label{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}} 
+\index{Grid.hpp@{Grid.hpp}!Axis@{Axis}}
+\index{Axis@{Axis}!Grid.hpp@{Grid.hpp}}
+\doxysubsubsection{\texorpdfstring{Axis}{Axis}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enum class representing the three coordinate axes. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{X@{X}!Grid.hpp@{Grid.hpp}}\index{Grid.hpp@{Grid.hpp}!X@{X}}}\mbox{\Hypertarget{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}\label{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}} 
+X&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Y@{Y}!Grid.hpp@{Grid.hpp}}\index{Grid.hpp@{Grid.hpp}!Y@{Y}}}\mbox{\Hypertarget{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0}\label{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0}} 
+Y&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Z@{Z}!Grid.hpp@{Grid.hpp}}\index{Grid.hpp@{Grid.hpp}!Z@{Z}}}\mbox{\Hypertarget{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5}\label{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5}} 
+Z&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}\label{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}} 
+\index{Grid.hpp@{Grid.hpp}!GridStaggering@{GridStaggering}}
+\index{GridStaggering@{GridStaggering}!Grid.hpp@{Grid.hpp}}
+\doxysubsubsection{\texorpdfstring{GridStaggering}{GridStaggering}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enum describing the (possibly staggered) position of some points in a grid. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CELL\_CENTERED@{CELL\_CENTERED}!Grid.hpp@{Grid.hpp}}\index{Grid.hpp@{Grid.hpp}!CELL\_CENTERED@{CELL\_CENTERED}}}\mbox{\Hypertarget{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01aa514377f27da15203c2393890f1b872e}\label{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01aa514377f27da15203c2393890f1b872e}} 
+CELL\+\_\+\+CENTERED&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FACE\_CENTERED@{FACE\_CENTERED}!Grid.hpp@{Grid.hpp}}\index{Grid.hpp@{Grid.hpp}!FACE\_CENTERED@{FACE\_CENTERED}}}\mbox{\Hypertarget{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01a065dd325784072eaf86ef9431ad7e067}\label{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01a065dd325784072eaf86ef9431ad7e067}} 
+FACE\+\_\+\+CENTERED&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{Grid_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}\label{Grid_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}} 
+\index{Grid.hpp@{Grid.hpp}!AXIS\_COUNT@{AXIS\_COUNT}}
+\index{AXIS\_COUNT@{AXIS\_COUNT}!Grid.hpp@{Grid.hpp}}
+\doxysubsubsection{\texorpdfstring{AXIS\_COUNT}{AXIS\_COUNT}}
+{\footnotesize\ttfamily const size\+\_\+t AXIS\+\_\+\+COUNT = 3}
+

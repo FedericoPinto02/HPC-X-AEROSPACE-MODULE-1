@@ -1,0 +1,208 @@
+\hypertarget{classTridiagMat}{}\doxysection{Tridiag\+Mat Class Reference}
+\label{classTridiagMat}\index{TridiagMat@{TridiagMat}}
+
+
+{\ttfamily \#include $<$Tridiag\+Mat.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTridiagMat_a0ff0d49fdabd7ae4ac08f09fc1f80cbc}{Tridiag\+Mat}} (int n)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTridiagMat_abb999fb0247f2d43586e929d109b47c2}{fill\+Mat}} (std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ae68c17c204ec8286119ef83834086c13}{diag}}, std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ab747fb4465e0e06b19d344470bcb5b6f}{subdiag}}, std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ae34b23e42c9abfe43a27727fc062f3ad}{supdiag}})
+\begin{DoxyCompactList}\small\item\em Fill the matrix. \end{DoxyCompactList}\item 
+const unsigned int \mbox{\hyperlink{classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9}{get\+Size}} () const
+\begin{DoxyCompactList}\small\item\em Get the matrix size. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classTridiagMat_ac10d2cf6286df2c24386429f4f2b0699}{get\+Element}} (int i, int j) const
+\begin{DoxyCompactList}\small\item\em Get the (i,j) element of the matrix. \end{DoxyCompactList}\item 
+std\+::vector$<$ double $>$ \& \mbox{\hyperlink{classTridiagMat_a1b0209ff66f297a15c9bb0a118b4329f}{get\+Diag}} (int w)
+\begin{DoxyCompactList}\small\item\em Get the whole diagonal, subdiagonal or supdiagonal. \end{DoxyCompactList}\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_aa91aaaadac7b277c8266fd55be6182ec}{get\+Diag}} (int w) const
+\item 
+double \mbox{\hyperlink{classTridiagMat_a3a114620314b9cdf5fedaa6c92a850f7}{get\+First\+Element\+From\+Diag}} (int w) const
+\begin{DoxyCompactList}\small\item\em Get the first element from the diagonal w. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classTridiagMat_ac142babd500db9b2cff732bcf8e66a54}{get\+Last\+Element\+From\+Diag}} (int w) const
+\begin{DoxyCompactList}\small\item\em Get the last element from the diagonal w. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ae68c17c204ec8286119ef83834086c13}{diag}}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ab747fb4465e0e06b19d344470bcb5b6f}{subdiag}}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ae34b23e42c9abfe43a27727fc062f3ad}{supdiag}}
+\item 
+const unsigned int \mbox{\hyperlink{classTridiagMat_a2110bb598a84a5326cab90807831dd94}{size}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classTridiagMat_a748e2c9fb0527c6ba8c840aaf91501f8}{Schur\+Sequential\+Solver}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classTridiagMat_a0ff0d49fdabd7ae4ac08f09fc1f80cbc}\label{classTridiagMat_a0ff0d49fdabd7ae4ac08f09fc1f80cbc}} 
+\index{TridiagMat@{TridiagMat}!TridiagMat@{TridiagMat}}
+\index{TridiagMat@{TridiagMat}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{TridiagMat()}{TridiagMat()}}
+{\footnotesize\ttfamily Tridiag\+Mat\+::\+Tridiag\+Mat (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & Size of the matrix (n x n) \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classTridiagMat_abb999fb0247f2d43586e929d109b47c2}\label{classTridiagMat_abb999fb0247f2d43586e929d109b47c2}} 
+\index{TridiagMat@{TridiagMat}!fillMat@{fillMat}}
+\index{fillMat@{fillMat}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{fillMat()}{fillMat()}}
+{\footnotesize\ttfamily void Tridiag\+Mat\+::fill\+Mat (\begin{DoxyParamCaption}\item[{std\+::vector$<$ double $>$}]{diag,  }\item[{std\+::vector$<$ double $>$}]{subdiag,  }\item[{std\+::vector$<$ double $>$}]{supdiag }\end{DoxyParamCaption})}
+
+
+
+Fill the matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em diag} & matrix diagonal. \\
+\hline
+{\em subdiag} & matrix subdiagonal. \\
+\hline
+{\em supdiag} & matrix upper diagonal. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classTridiagMat_a1b0209ff66f297a15c9bb0a118b4329f}\label{classTridiagMat_a1b0209ff66f297a15c9bb0a118b4329f}} 
+\index{TridiagMat@{TridiagMat}!getDiag@{getDiag}}
+\index{getDiag@{getDiag}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{getDiag()}{getDiag()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ \& Tridiag\+Mat\+::get\+Diag (\begin{DoxyParamCaption}\item[{int}]{w }\end{DoxyParamCaption})}
+
+
+
+Get the whole diagonal, subdiagonal or supdiagonal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em w} & number indicating sub (-\/1), diag (0) or sup (1) \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classTridiagMat_a1b0209ff66f297a15c9bb0a118b4329f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classTridiagMat_aa91aaaadac7b277c8266fd55be6182ec}\label{classTridiagMat_aa91aaaadac7b277c8266fd55be6182ec}} 
+\index{TridiagMat@{TridiagMat}!getDiag@{getDiag}}
+\index{getDiag@{getDiag}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{getDiag()}{getDiag()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ Tridiag\+Mat\+::get\+Diag (\begin{DoxyParamCaption}\item[{int}]{w }\end{DoxyParamCaption}) const}
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \mbox{\Hypertarget{classTridiagMat_ac10d2cf6286df2c24386429f4f2b0699}\label{classTridiagMat_ac10d2cf6286df2c24386429f4f2b0699}} 
+\index{TridiagMat@{TridiagMat}!getElement@{getElement}}
+\index{getElement@{getElement}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{getElement()}{getElement()}}
+{\footnotesize\ttfamily double Tridiag\+Mat\+::get\+Element (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{int}]{j }\end{DoxyParamCaption}) const}
+
+
+
+Get the (i,j) element of the matrix. 
+
+\mbox{\Hypertarget{classTridiagMat_a3a114620314b9cdf5fedaa6c92a850f7}\label{classTridiagMat_a3a114620314b9cdf5fedaa6c92a850f7}} 
+\index{TridiagMat@{TridiagMat}!getFirstElementFromDiag@{getFirstElementFromDiag}}
+\index{getFirstElementFromDiag@{getFirstElementFromDiag}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{getFirstElementFromDiag()}{getFirstElementFromDiag()}}
+{\footnotesize\ttfamily double Tridiag\+Mat\+::get\+First\+Element\+From\+Diag (\begin{DoxyParamCaption}\item[{int}]{w }\end{DoxyParamCaption}) const}
+
+
+
+Get the first element from the diagonal w. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em w} & number indicating sub (-\/1), main (0) or sup (1) diagonal \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classTridiagMat_ac142babd500db9b2cff732bcf8e66a54}\label{classTridiagMat_ac142babd500db9b2cff732bcf8e66a54}} 
+\index{TridiagMat@{TridiagMat}!getLastElementFromDiag@{getLastElementFromDiag}}
+\index{getLastElementFromDiag@{getLastElementFromDiag}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{getLastElementFromDiag()}{getLastElementFromDiag()}}
+{\footnotesize\ttfamily double Tridiag\+Mat\+::get\+Last\+Element\+From\+Diag (\begin{DoxyParamCaption}\item[{int}]{w }\end{DoxyParamCaption}) const}
+
+
+
+Get the last element from the diagonal w. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em w} & number indicating sub (-\/1), main (0) or sup (1) diagonal \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9}\label{classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9}} 
+\index{TridiagMat@{TridiagMat}!getSize@{getSize}}
+\index{getSize@{getSize}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{getSize()}{getSize()}}
+{\footnotesize\ttfamily const unsigned int Tridiag\+Mat\+::get\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the matrix size. 
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classTridiagMat_a748e2c9fb0527c6ba8c840aaf91501f8}\label{classTridiagMat_a748e2c9fb0527c6ba8c840aaf91501f8}} 
+\index{TridiagMat@{TridiagMat}!SchurSequentialSolver@{SchurSequentialSolver}}
+\index{SchurSequentialSolver@{SchurSequentialSolver}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{SchurSequentialSolver}{SchurSequentialSolver}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classSchurSequentialSolver}{Schur\+Sequential\+Solver}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classTridiagMat_ae68c17c204ec8286119ef83834086c13}\label{classTridiagMat_ae68c17c204ec8286119ef83834086c13}} 
+\index{TridiagMat@{TridiagMat}!diag@{diag}}
+\index{diag@{diag}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{diag}{diag}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Tridiag\+Mat\+::diag\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classTridiagMat_a2110bb598a84a5326cab90807831dd94}\label{classTridiagMat_a2110bb598a84a5326cab90807831dd94}} 
+\index{TridiagMat@{TridiagMat}!size@{size}}
+\index{size@{size}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{size}{size}}
+{\footnotesize\ttfamily const unsigned int Tridiag\+Mat\+::size\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classTridiagMat_ab747fb4465e0e06b19d344470bcb5b6f}\label{classTridiagMat_ab747fb4465e0e06b19d344470bcb5b6f}} 
+\index{TridiagMat@{TridiagMat}!subdiag@{subdiag}}
+\index{subdiag@{subdiag}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{subdiag}{subdiag}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Tridiag\+Mat\+::subdiag\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classTridiagMat_ae34b23e42c9abfe43a27727fc062f3ad}\label{classTridiagMat_ae34b23e42c9abfe43a27727fc062f3ad}} 
+\index{TridiagMat@{TridiagMat}!supdiag@{supdiag}}
+\index{supdiag@{supdiag}!TridiagMat@{TridiagMat}}
+\doxysubsubsection{\texorpdfstring{supdiag}{supdiag}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Tridiag\+Mat\+::supdiag\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/core/\mbox{\hyperlink{TridiagMat_8hpp}{Tridiag\+Mat.\+hpp}}\item 
+src/core/\mbox{\hyperlink{TridiagMat_8cpp}{Tridiag\+Mat.\+cpp}}\end{DoxyCompactItemize}

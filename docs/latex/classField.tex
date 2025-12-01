@@ -1,0 +1,589 @@
+\hypertarget{classField}{}\doxysection{Field Class Reference}
+\label{classField}\index{Field@{Field}}
+
+
+Class representing a scalar field defined on a 3D grid.  
+
+
+
+
+{\ttfamily \#include $<$Fields.\+hpp$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} = double
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}} $>$ \& \mbox{\hyperlink{classField_a86c44d11fbaee4e973679fceac4bf0be}{get\+Data}} ()
+\item 
+const std\+::vector$<$ \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}} $>$ \& \mbox{\hyperlink{classField_a653ed0c9fb2bd209271a1212e80a790f}{get\+Data}} () const
+\item 
+void \mbox{\hyperlink{classField_acc812182b3d806c93491194ae821d9a3}{setup}} (const \mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} \&grid, const \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&populate\+Function=\mbox{\hyperlink{Fields_8hpp_ae45e4c3f95d489d70a4c578c028e12df}{ZERO\+\_\+\+FUNC}}, \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} offset=\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01aa514377f27da15203c2393890f1b872e}{Grid\+Staggering\+::\+CELL\+\_\+\+CENTERED}}, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Axis=\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}{Axis\+::X}})
+\begin{DoxyCompactList}\small\item\em Setup the field with a function to populate it (e.\+g., initial condition). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classField_a17a19acc3a519f5e37a802e76c992f46}{populate}} (double time=0)
+\begin{DoxyCompactList}\small\item\em Populates the underlying field based on the stored function in (x,y,z,t). \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structGrid}{Grid}} \& \mbox{\hyperlink{classField_afe97c0b04f25f6322696a22ea9df8628}{get\+Grid}} ()
+\begin{DoxyCompactList}\small\item\em Getter for the grid information. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structGrid}{Grid}} \& \mbox{\hyperlink{classField_a65ac54d288b74e0b8a60f58925a6cbd2}{get\+Grid}} () const
+\begin{DoxyCompactList}\small\item\em This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classField_ab4240a7cb1cae0917ff698837485f399}{idx}} (size\+\_\+t i, size\+\_\+t j, size\+\_\+t k) const
+\begin{DoxyCompactList}\small\item\em Computes the linear index for 3D access in row-\/major order. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} \& \mbox{\hyperlink{classField_a82e946d93f3a0b28e88867637a667150}{operator\mbox{[}$\,$\mbox{]}}} (size\+\_\+t index)
+\begin{DoxyCompactList}\small\item\em Access the value in the field at given linear index. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} \& \mbox{\hyperlink{classField_a7481338efcc12304036ea13291bcd77d}{operator\mbox{[}$\,$\mbox{]}}} (size\+\_\+t index) const
+\begin{DoxyCompactList}\small\item\em This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} \& \mbox{\hyperlink{classField_ade27340b1247c816b86ef5e6cede81b8}{operator()}} (size\+\_\+t i, size\+\_\+t j, size\+\_\+t k)
+\begin{DoxyCompactList}\small\item\em Access the value in the field at given position. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} \& \mbox{\hyperlink{classField_a8b0ab56ab12d9539daf8682bb5d19013}{operator()}} (size\+\_\+t i, size\+\_\+t j, size\+\_\+t k) const
+\begin{DoxyCompactList}\small\item\em This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} \& \mbox{\hyperlink{classField_aea5fcf3a1776d0fc317815e373fcb371}{value}} (size\+\_\+t i, size\+\_\+t j, size\+\_\+t k)
+\begin{DoxyCompactList}\small\item\em Access the value in the field at given position. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} \& \mbox{\hyperlink{classField_aeddda00ed67ae7af3891d0d64bedef35}{value}} (size\+\_\+t i, size\+\_\+t j, size\+\_\+t k) const
+\begin{DoxyCompactList}\small\item\em This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} \& \mbox{\hyperlink{classField_ae8b4623a9fe837b3eff02e02ffe1c365}{value\+With\+Offset}} (size\+\_\+t i, size\+\_\+t j, size\+\_\+t k, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Direction, int offset)
+\begin{DoxyCompactList}\small\item\em Access the value in the field at given position considering direction offset. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} \& \mbox{\hyperlink{classField_a7588c082aa80a322077aaa4357855ed8}{value\+With\+Offset}} (size\+\_\+t i, size\+\_\+t j, size\+\_\+t k, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Direction, int offset) const
+\begin{DoxyCompactList}\small\item\em This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classField_a6bcf4ac8ae2f75b3caee656c6e260249}{reset}} (\mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} \mbox{\hyperlink{classField_aea5fcf3a1776d0fc317815e373fcb371}{value}}=\mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}}(0))
+\begin{DoxyCompactList}\small\item\em Reset the field values to a specified value (default is zero). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classField_af0b46b220f47ffcc3a76b70da049ce3c}{add}} (\mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} \mbox{\hyperlink{classField_aea5fcf3a1776d0fc317815e373fcb371}{value}})
+\begin{DoxyCompactList}\small\item\em Add a scalar value to all elements in the field. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classField_ae4c17e820e1e00a569bdcb91cecc8851}{add}} (const \mbox{\hyperlink{classField}{Field}} \&other)
+\begin{DoxyCompactList}\small\item\em Add another field to this field element-\/wise. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classField_a6edac7bcf17e1422a9dcbddbeaca2153}{multiply}} (\mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} \mbox{\hyperlink{classField_aea5fcf3a1776d0fc317815e373fcb371}{value}})
+\begin{DoxyCompactList}\small\item\em Multiply all elements in the field by a scalar value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} \mbox{\hyperlink{classField_af536c8e736b1be33d67adde1a6ada0b6}{grid\+Ptr\+\_\+}}
+\begin{DoxyCompactList}\small\item\em The pointer to the grid information. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} \mbox{\hyperlink{classField_abd7bf36c0ce545b49efb908e8acc2e86}{offset\+\_\+}}
+\begin{DoxyCompactList}\small\item\em The offset of the field in the staggered grid. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} \mbox{\hyperlink{classField_a0bb33f143d9cda835c435a9d5318990c}{offset\+Axis\+\_\+}}
+\begin{DoxyCompactList}\small\item\em The axis where to apply the offset in the staggered grid. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}} $>$ \mbox{\hyperlink{classField_ab5788151a7e4b4bdaf521f7425e063fa}{data\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Vector storing the field values in a flattened, row-\/major indexed 1D array. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \mbox{\hyperlink{classField_a2905e4ca06d0efc66641b05bbec0b626}{populate\+Function\+\_\+}}
+\begin{DoxyCompactList}\small\item\em The function used for populating the field. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classField_a9ef53175636ae8056e8d40e02c237f39}{Vector\+Field}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class representing a scalar field defined on a 3D grid. 
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classField_a70a75705a22e72ce9be65780d94783b1}\label{classField_a70a75705a22e72ce9be65780d94783b1}} 
+\index{Field@{Field}!Scalar@{Scalar}}
+\index{Scalar@{Scalar}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{Scalar}{Scalar}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}} =  double}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classField_ae4c17e820e1e00a569bdcb91cecc8851}\label{classField_ae4c17e820e1e00a569bdcb91cecc8851}} 
+\index{Field@{Field}!add@{add}}
+\index{add@{add}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Field\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{other }\end{DoxyParamCaption})}
+
+
+
+Add another field to this field element-\/wise. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & the other field to add \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=262pt]{classField_ae4c17e820e1e00a569bdcb91cecc8851_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_af0b46b220f47ffcc3a76b70da049ce3c}\label{classField_af0b46b220f47ffcc3a76b70da049ce3c}} 
+\index{Field@{Field}!add@{add}}
+\index{add@{add}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Field\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}}}]{value }\end{DoxyParamCaption})}
+
+
+
+Add a scalar value to all elements in the field. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & the scalar value to add \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_af0b46b220f47ffcc3a76b70da049ce3c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_af0b46b220f47ffcc3a76b70da049ce3c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_a86c44d11fbaee4e973679fceac4bf0be}\label{classField_a86c44d11fbaee4e973679fceac4bf0be}} 
+\index{Field@{Field}!getData@{getData}}
+\index{getData@{getData}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{getData()}{getData()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}}$>$\& Field\+::get\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyRefDesc}{Deprecated}
+\item[\mbox{\hyperlink{deprecated__deprecated000001}{Deprecated}}]
+\begin{DoxyItemize}
+\item Use \mbox{[}idx\mbox{]} instead. 
+\end{DoxyItemize}\end{DoxyRefDesc}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_a86c44d11fbaee4e973679fceac4bf0be_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_a653ed0c9fb2bd209271a1212e80a790f}\label{classField_a653ed0c9fb2bd209271a1212e80a790f}} 
+\index{Field@{Field}!getData@{getData}}
+\index{getData@{getData}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{getData()}{getData()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const std\+::vector$<$\mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}}$>$\& Field\+::get\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyRefDesc}{Deprecated}
+\item[\mbox{\hyperlink{deprecated__deprecated000002}{Deprecated}}]
+\begin{DoxyItemize}
+\item Use \mbox{[}idx\mbox{]} instead. 
+\end{DoxyItemize}\end{DoxyRefDesc}
+\mbox{\Hypertarget{classField_afe97c0b04f25f6322696a22ea9df8628}\label{classField_afe97c0b04f25f6322696a22ea9df8628}} 
+\index{Field@{Field}!getGrid@{getGrid}}
+\index{getGrid@{getGrid}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{getGrid()}{getGrid()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structGrid}{Grid}}\& Field\+::get\+Grid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for the grid information. 
+
+\begin{DoxyReturn}{Returns}
+the pointer to the grid information 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_afe97c0b04f25f6322696a22ea9df8628_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_a65ac54d288b74e0b8a60f58925a6cbd2}\label{classField_a65ac54d288b74e0b8a60f58925a6cbd2}} 
+\index{Field@{Field}!getGrid@{getGrid}}
+\index{getGrid@{getGrid}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{getGrid()}{getGrid()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structGrid}{Grid}}\& Field\+::get\+Grid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+\mbox{\Hypertarget{classField_ab4240a7cb1cae0917ff698837485f399}\label{classField_ab4240a7cb1cae0917ff698837485f399}} 
+\index{Field@{Field}!idx@{idx}}
+\index{idx@{idx}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{idx()}{idx()}}
+{\footnotesize\ttfamily size\+\_\+t Field\+::idx (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Computes the linear index for 3D access in row-\/major order. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the x-\/index \\
+\hline
+{\em j} & the y-\/index \\
+\hline
+{\em k} & the z-\/index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the corresponding 1D index 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_ab4240a7cb1cae0917ff698837485f399_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_a6edac7bcf17e1422a9dcbddbeaca2153}\label{classField_a6edac7bcf17e1422a9dcbddbeaca2153}} 
+\index{Field@{Field}!multiply@{multiply}}
+\index{multiply@{multiply}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{multiply()}{multiply()}}
+{\footnotesize\ttfamily void Field\+::multiply (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}}}]{value }\end{DoxyParamCaption})}
+
+
+
+Multiply all elements in the field by a scalar value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & the scalar value to multiply by \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_a6edac7bcf17e1422a9dcbddbeaca2153_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=319pt]{classField_a6edac7bcf17e1422a9dcbddbeaca2153_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_ade27340b1247c816b86ef5e6cede81b8}\label{classField_ade27340b1247c816b86ef5e6cede81b8}} 
+\index{Field@{Field}!operator()@{operator()}}
+\index{operator()@{operator()}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}}\& Field\+::operator() (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Access the value in the field at given position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the x-\/index \\
+\hline
+{\em j} & the y-\/index \\
+\hline
+{\em k} & the z-\/index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the value in the field at position (i,j,k) 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=272pt]{classField_ade27340b1247c816b86ef5e6cede81b8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_a8b0ab56ab12d9539daf8682bb5d19013}\label{classField_a8b0ab56ab12d9539daf8682bb5d19013}} 
+\index{Field@{Field}!operator()@{operator()}}
+\index{operator()@{operator()}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}}\& Field\+::operator() (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=272pt]{classField_a8b0ab56ab12d9539daf8682bb5d19013_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_a82e946d93f3a0b28e88867637a667150}\label{classField_a82e946d93f3a0b28e88867637a667150}} 
+\index{Field@{Field}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}}\& Field\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Access the value in the field at given linear index. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & the linear index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the value in the field at the given index 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classField_a7481338efcc12304036ea13291bcd77d}\label{classField_a7481338efcc12304036ea13291bcd77d}} 
+\index{Field@{Field}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}}\& Field\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+\mbox{\Hypertarget{classField_a17a19acc3a519f5e37a802e76c992f46}\label{classField_a17a19acc3a519f5e37a802e76c992f46}} 
+\index{Field@{Field}!populate@{populate}}
+\index{populate@{populate}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{populate()}{populate()}}
+{\footnotesize\ttfamily void Field\+::populate (\begin{DoxyParamCaption}\item[{double}]{time = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Populates the underlying field based on the stored function in (x,y,z,t). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & the time affecting the stored function in (x,y,z,t) \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_a17a19acc3a519f5e37a802e76c992f46_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_a6bcf4ac8ae2f75b3caee656c6e260249}\label{classField_a6bcf4ac8ae2f75b3caee656c6e260249}} 
+\index{Field@{Field}!reset@{reset}}
+\index{reset@{reset}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void Field\+::reset (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}}}]{value = {\ttfamily \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}}(0)} }\end{DoxyParamCaption})}
+
+
+
+Reset the field values to a specified value (default is zero). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & the value to reset the field to (default is zero) \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_a6bcf4ac8ae2f75b3caee656c6e260249_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_a6bcf4ac8ae2f75b3caee656c6e260249_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_acc812182b3d806c93491194ae821d9a3}\label{classField_acc812182b3d806c93491194ae821d9a3}} 
+\index{Field@{Field}!setup@{setup}}
+\index{setup@{setup}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void Field\+::setup (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} \&}]{grid,  }\item[{const \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&}]{populate\+Function = {\ttfamily \mbox{\hyperlink{Fields_8hpp_ae45e4c3f95d489d70a4c578c028e12df}{ZERO\+\_\+\+FUNC}}},  }\item[{\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}}}]{offset = {\ttfamily \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01aa514377f27da15203c2393890f1b872e}{Grid\+Staggering\+::\+CELL\+\_\+\+CENTERED}}},  }\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Axis = {\ttfamily \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}{Axis\+::X}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Setup the field with a function to populate it (e.\+g., initial condition). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em grid} & the pointer to the grid information \\
+\hline
+{\em populate\+Function} & the function to use for populating the field \\
+\hline
+{\em offset} & the offset of the field in the staggered grid \\
+\hline
+{\em offset\+Axis} & the axis where to apply the offset in the staggered grid \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_acc812182b3d806c93491194ae821d9a3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_aea5fcf3a1776d0fc317815e373fcb371}\label{classField_aea5fcf3a1776d0fc317815e373fcb371}} 
+\index{Field@{Field}!value@{value}}
+\index{value@{value}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{value()}{value()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}}\& Field\+::value (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Access the value in the field at given position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the x-\/index \\
+\hline
+{\em j} & the y-\/index \\
+\hline
+{\em k} & the z-\/index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the value in the field at position (i,j,k)
+\end{DoxyReturn}
+This method is a named alias for the access operator. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{classField_aea5fcf3a1776d0fc317815e373fcb371_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_aea5fcf3a1776d0fc317815e373fcb371_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_aeddda00ed67ae7af3891d0d64bedef35}\label{classField_aeddda00ed67ae7af3891d0d64bedef35}} 
+\index{Field@{Field}!value@{value}}
+\index{value@{value}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{value()}{value()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}}\& Field\+::value (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{classField_aeddda00ed67ae7af3891d0d64bedef35_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_ae8b4623a9fe837b3eff02e02ffe1c365}\label{classField_ae8b4623a9fe837b3eff02e02ffe1c365}} 
+\index{Field@{Field}!valueWithOffset@{valueWithOffset}}
+\index{valueWithOffset@{valueWithOffset}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{valueWithOffset()}{valueWithOffset()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}} \& Field\+::value\+With\+Offset (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k,  }\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Direction,  }\item[{int}]{offset }\end{DoxyParamCaption})}
+
+
+
+Access the value in the field at given position considering direction offset. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the x-\/index \\
+\hline
+{\em j} & the y-\/index \\
+\hline
+{\em k} & the z-\/index \\
+\hline
+{\em offset\+Direction} & the direction for the offset (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}{Axis\+::X}}, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0}{Axis\+::Y}}, or \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5}{Axis\+::Z}}) \\
+\hline
+{\em offset} & the offset value (can be positive or negative) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the value in the field at position (i,j,k) 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=302pt]{classField_ae8b4623a9fe837b3eff02e02ffe1c365_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classField_ae8b4623a9fe837b3eff02e02ffe1c365_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classField_a7588c082aa80a322077aaa4357855ed8}\label{classField_a7588c082aa80a322077aaa4357855ed8}} 
+\index{Field@{Field}!valueWithOffset@{valueWithOffset}}
+\index{valueWithOffset@{valueWithOffset}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{valueWithOffset()}{valueWithOffset()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}} \& Field\+::value\+With\+Offset (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k,  }\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Direction,  }\item[{int}]{offset }\end{DoxyParamCaption}) const}
+
+
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=302pt]{classField_a7588c082aa80a322077aaa4357855ed8_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classField_a9ef53175636ae8056e8d40e02c237f39}\label{classField_a9ef53175636ae8056e8d40e02c237f39}} 
+\index{Field@{Field}!VectorField@{VectorField}}
+\index{VectorField@{VectorField}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{VectorField}{VectorField}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classVectorField}{Vector\+Field}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classField_ab5788151a7e4b4bdaf521f7425e063fa}\label{classField_ab5788151a7e4b4bdaf521f7425e063fa}} 
+\index{Field@{Field}!data\_@{data\_}}
+\index{data\_@{data\_}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{data\_}{data\_}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Scalar}}$>$ Field\+::data\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Vector storing the field values in a flattened, row-\/major indexed 1D array. 
+
+\mbox{\Hypertarget{classField_af536c8e736b1be33d67adde1a6ada0b6}\label{classField_af536c8e736b1be33d67adde1a6ada0b6}} 
+\index{Field@{Field}!gridPtr\_@{gridPtr\_}}
+\index{gridPtr\_@{gridPtr\_}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{gridPtr\_}{gridPtr\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} Field\+::grid\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The pointer to the grid information. 
+
+\mbox{\Hypertarget{classField_abd7bf36c0ce545b49efb908e8acc2e86}\label{classField_abd7bf36c0ce545b49efb908e8acc2e86}} 
+\index{Field@{Field}!offset\_@{offset\_}}
+\index{offset\_@{offset\_}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{offset\_}{offset\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} Field\+::offset\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The offset of the field in the staggered grid. 
+
+\mbox{\Hypertarget{classField_a0bb33f143d9cda835c435a9d5318990c}\label{classField_a0bb33f143d9cda835c435a9d5318990c}} 
+\index{Field@{Field}!offsetAxis\_@{offsetAxis\_}}
+\index{offsetAxis\_@{offsetAxis\_}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{offsetAxis\_}{offsetAxis\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} Field\+::offset\+Axis\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The axis where to apply the offset in the staggered grid. 
+
+\mbox{\Hypertarget{classField_a2905e4ca06d0efc66641b05bbec0b626}\label{classField_a2905e4ca06d0efc66641b05bbec0b626}} 
+\index{Field@{Field}!populateFunction\_@{populateFunction\_}}
+\index{populateFunction\_@{populateFunction\_}!Field@{Field}}
+\doxysubsubsection{\texorpdfstring{populateFunction\_}{populateFunction\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} Field\+::populate\+Function\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The function used for populating the field. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/core/\mbox{\hyperlink{Fields_8hpp}{Fields.\+hpp}}\item 
+src/core/\mbox{\hyperlink{Fields_8cpp}{Fields.\+cpp}}\end{DoxyCompactItemize}

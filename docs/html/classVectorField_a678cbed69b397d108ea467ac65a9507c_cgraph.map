@@ -1,0 +1,5 @@
+<map id="VectorField::setup" name="VectorField::setup">
+<area shape="rect" id="node1" title="Setup the vector field with functions to populate each component (e.g., initial conditions)." alt="" coords="5,31,144,57"/>
+<area shape="rect" id="node2" href="$classVectorField.html#ad0d70e28de0a1efeaa1e3ffe8a86b175" title="Access the component of the vector field in the specified direction." alt="" coords="192,5,367,32"/>
+<area shape="rect" id="node3" href="$classField.html#acc812182b3d806c93491194ae821d9a3" title="Setup the field with a function to populate it (e.g., initial condition)." alt="" coords="231,56,328,83"/>
+</map>

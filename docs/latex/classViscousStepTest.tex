@@ -1,0 +1,152 @@
+\hypertarget{classViscousStepTest}{}\doxysection{Viscous\+Step\+Test Class Reference}
+\label{classViscousStepTest}\index{ViscousStepTest@{ViscousStepTest}}
+
+
+Inheritance diagram for Viscous\+Step\+Test\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=175pt]{classViscousStepTest__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Viscous\+Step\+Test\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classViscousStepTest__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classViscousStepTest_ae0adfc9d287ceb09275e87aa2a5b4404}{Viscous\+Step\+Test}} ()
+\item 
+void \mbox{\hyperlink{classViscousStepTest_a300ffccf90ca682aaeb930eda7c42f07}{Set\+Up}} () override
+\item 
+void \mbox{\hyperlink{classViscousStepTest_aded97009507bc5a7318c26a0f50ad51e}{call\+ComputeG}} ()
+\item 
+void \mbox{\hyperlink{classViscousStepTest_a428228b66655a13fbd7bc181b9dd1424}{call\+Compute\+Xi}} ()
+\item 
+double \mbox{\hyperlink{classViscousStepTest_a1f42a7113b16978d68524d64ef24b574}{getG}} (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} axis, size\+\_\+t i, size\+\_\+t j, size\+\_\+t k)
+\item 
+double \mbox{\hyperlink{classViscousStepTest_ad653e7931c2a134926f8f169ec357fcb}{get\+Xi}} (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} axis, size\+\_\+t i, size\+\_\+t j, size\+\_\+t k)
+\item 
+void \mbox{\hyperlink{classViscousStepTest_a07ce35b49d6bdbb84b717a1cc13373f8}{set\+GConstant}} (double val)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const double \mbox{\hyperlink{classViscousStepTest_a6e239d659f770678cac14f72cf6c5bad}{dt}} = 0.\+1
+\item 
+const double \mbox{\hyperlink{classViscousStepTest_a2fa75c1a193089329652ad227954ff68}{nu}} = 1.\+0
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structGrid}{Grid}} $>$ \mbox{\hyperlink{classViscousStepTest_a1d7e0194aaf5d538927a71243d04859e}{grid}}
+\item 
+\mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \mbox{\hyperlink{classViscousStepTest_ae8900f1d2e99f82d26ac0fb8e31a1769}{data\+\_\+}}
+\item 
+\mbox{\hyperlink{structParallelizationSettings}{Parallelization\+Settings}} \mbox{\hyperlink{classViscousStepTest_ac0531d146c584865583dc956f4dae3da}{parallel\+\_\+}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classViscousStep}{Viscous\+Step}} $>$ \mbox{\hyperlink{classViscousStepTest_a7dd1e19ea9d3038039475d36648380e3}{viscous\+Step}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classViscousStepTest_ae0adfc9d287ceb09275e87aa2a5b4404}\label{classViscousStepTest_ae0adfc9d287ceb09275e87aa2a5b4404}} 
+\index{ViscousStepTest@{ViscousStepTest}!ViscousStepTest@{ViscousStepTest}}
+\index{ViscousStepTest@{ViscousStepTest}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{ViscousStepTest()}{ViscousStepTest()}}
+{\footnotesize\ttfamily Viscous\+Step\+Test\+::\+Viscous\+Step\+Test (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classViscousStepTest_aded97009507bc5a7318c26a0f50ad51e}\label{classViscousStepTest_aded97009507bc5a7318c26a0f50ad51e}} 
+\index{ViscousStepTest@{ViscousStepTest}!callComputeG@{callComputeG}}
+\index{callComputeG@{callComputeG}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{callComputeG()}{callComputeG()}}
+{\footnotesize\ttfamily void Viscous\+Step\+Test\+::call\+ComputeG (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classViscousStepTest_a428228b66655a13fbd7bc181b9dd1424}\label{classViscousStepTest_a428228b66655a13fbd7bc181b9dd1424}} 
+\index{ViscousStepTest@{ViscousStepTest}!callComputeXi@{callComputeXi}}
+\index{callComputeXi@{callComputeXi}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{callComputeXi()}{callComputeXi()}}
+{\footnotesize\ttfamily void Viscous\+Step\+Test\+::call\+Compute\+Xi (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classViscousStepTest_a1f42a7113b16978d68524d64ef24b574}\label{classViscousStepTest_a1f42a7113b16978d68524d64ef24b574}} 
+\index{ViscousStepTest@{ViscousStepTest}!getG@{getG}}
+\index{getG@{getG}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{getG()}{getG()}}
+{\footnotesize\ttfamily double Viscous\+Step\+Test\+::getG (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{axis,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classViscousStepTest_ad653e7931c2a134926f8f169ec357fcb}\label{classViscousStepTest_ad653e7931c2a134926f8f169ec357fcb}} 
+\index{ViscousStepTest@{ViscousStepTest}!getXi@{getXi}}
+\index{getXi@{getXi}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{getXi()}{getXi()}}
+{\footnotesize\ttfamily double Viscous\+Step\+Test\+::get\+Xi (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{axis,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classViscousStepTest_a07ce35b49d6bdbb84b717a1cc13373f8}\label{classViscousStepTest_a07ce35b49d6bdbb84b717a1cc13373f8}} 
+\index{ViscousStepTest@{ViscousStepTest}!setGConstant@{setGConstant}}
+\index{setGConstant@{setGConstant}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{setGConstant()}{setGConstant()}}
+{\footnotesize\ttfamily void Viscous\+Step\+Test\+::set\+GConstant (\begin{DoxyParamCaption}\item[{double}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classViscousStepTest_a300ffccf90ca682aaeb930eda7c42f07}\label{classViscousStepTest_a300ffccf90ca682aaeb930eda7c42f07}} 
+\index{ViscousStepTest@{ViscousStepTest}!SetUp@{SetUp}}
+\index{SetUp@{SetUp}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{SetUp()}{SetUp()}}
+{\footnotesize\ttfamily void Viscous\+Step\+Test\+::\+Set\+Up (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classViscousStepTest_a300ffccf90ca682aaeb930eda7c42f07_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classViscousStepTest_ae8900f1d2e99f82d26ac0fb8e31a1769}\label{classViscousStepTest_ae8900f1d2e99f82d26ac0fb8e31a1769}} 
+\index{ViscousStepTest@{ViscousStepTest}!data\_@{data\_}}
+\index{data\_@{data\_}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{data\_}{data\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} Viscous\+Step\+Test\+::data\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classViscousStepTest_a6e239d659f770678cac14f72cf6c5bad}\label{classViscousStepTest_a6e239d659f770678cac14f72cf6c5bad}} 
+\index{ViscousStepTest@{ViscousStepTest}!dt@{dt}}
+\index{dt@{dt}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{dt}{dt}}
+{\footnotesize\ttfamily const double Viscous\+Step\+Test\+::dt = 0.\+1\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classViscousStepTest_a1d7e0194aaf5d538927a71243d04859e}\label{classViscousStepTest_a1d7e0194aaf5d538927a71243d04859e}} 
+\index{ViscousStepTest@{ViscousStepTest}!grid@{grid}}
+\index{grid@{grid}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{grid}{grid}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{structGrid}{Grid}}$>$ Viscous\+Step\+Test\+::grid\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classViscousStepTest_a2fa75c1a193089329652ad227954ff68}\label{classViscousStepTest_a2fa75c1a193089329652ad227954ff68}} 
+\index{ViscousStepTest@{ViscousStepTest}!nu@{nu}}
+\index{nu@{nu}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{nu}{nu}}
+{\footnotesize\ttfamily const double Viscous\+Step\+Test\+::nu = 1.\+0\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classViscousStepTest_ac0531d146c584865583dc956f4dae3da}\label{classViscousStepTest_ac0531d146c584865583dc956f4dae3da}} 
+\index{ViscousStepTest@{ViscousStepTest}!parallel\_@{parallel\_}}
+\index{parallel\_@{parallel\_}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{parallel\_}{parallel\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structParallelizationSettings}{Parallelization\+Settings}} Viscous\+Step\+Test\+::parallel\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classViscousStepTest_a7dd1e19ea9d3038039475d36648380e3}\label{classViscousStepTest_a7dd1e19ea9d3038039475d36648380e3}} 
+\index{ViscousStepTest@{ViscousStepTest}!viscousStep@{viscousStep}}
+\index{viscousStep@{viscousStep}!ViscousStepTest@{ViscousStepTest}}
+\doxysubsubsection{\texorpdfstring{viscousStep}{viscousStep}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classViscousStep}{Viscous\+Step}}$>$ Viscous\+Step\+Test\+::viscous\+Step\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tests/\mbox{\hyperlink{test__viscousStep_8cpp}{test\+\_\+viscous\+Step.\+cpp}}\end{DoxyCompactItemize}

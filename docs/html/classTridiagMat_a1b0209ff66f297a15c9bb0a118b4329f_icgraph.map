@@ -1,0 +1,12 @@
+<map id="TridiagMat::getDiag" name="TridiagMat::getDiag">
+<area shape="rect" id="node1" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="1223,96,1372,123"/>
+<area shape="rect" id="node2" href="$classLinearSys.html#a4a1b948b08605b422212a8b79dd8737d" title="Fill the linear system for Pressure variables." alt="" coords="701,5,916,32"/>
+<area shape="rect" id="node4" href="$classLinearSys.html#adc38bb02a25f7a917500b6a5ee0917c5" title="Fill the linear system for Velocity variables." alt="" coords="964,197,1175,224"/>
+<area shape="rect" id="node7" href="$classSchurSequentialSolver.html#a8b7aec052a578c5fd6ca38d279728212" title="Phase 0: Pre&#45;processing. Builds the submatrices A_ii, extracts interface coefficients,..." alt="" coords="725,57,893,98"/>
+<area shape="rect" id="node10" href="$classLinearSys.html#a60600d4d91ff996ab642bbc424f16525" title="Solve the linear system." alt="" coords="980,121,1159,148"/>
+<area shape="rect" id="node3" href="$classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="227,37,363,64"/>
+<area shape="rect" id="node5" href="$classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,199,407,225"/>
+<area shape="rect" id="node6" href="$classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,199,136,225"/>
+<area shape="rect" id="node8" href="$classPressureStep.html#a5420590f473164b5d861a62dc270ac08" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,64,653,91"/>
+<area shape="rect" id="node9" href="$classViscousStep.html#a98b2a51b32509c2323cb32a7bfb2e93c" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,173,651,200"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="InputData" name="InputData">
+<area shape="rect" id="node1" title="Structure to hold all input data from configuration file." alt="" coords="373,95,460,121"/>
+<area shape="rect" id="node2" href="$structOutputSettings.html" title=" " alt="" coords="5,5,124,32"/>
+<area shape="rect" id="node3" href="$structLoggingSettings.html" title=" " alt="" coords="148,5,275,32"/>
+<area shape="rect" id="node4" href="$structTimeData.html" title="Structure to hold time integration parameters." alt="" coords="299,5,385,32"/>
+<area shape="rect" id="node5" href="$structParallelizationSettings.html" title=" " alt="" coords="409,5,576,32"/>
+<area shape="rect" id="node6" href="$structMeshData.html" title="Structure to hold mesh configuration data." alt="" coords="601,5,689,32"/>
+<area shape="rect" id="node7" href="$structPhysicsData.html" title="Structure to hold physics parameters." alt="" coords="713,5,816,32"/>
+</map>

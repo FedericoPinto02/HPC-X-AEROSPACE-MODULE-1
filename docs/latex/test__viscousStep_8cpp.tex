@@ -1,0 +1,72 @@
+\hypertarget{test__viscousStep_8cpp}{}\doxysection{tests/test\+\_\+viscous\+Step.cpp File Reference}
+\label{test__viscousStep_8cpp}\index{tests/test\_viscousStep.cpp@{tests/test\_viscousStep.cpp}}
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include \char`\"{}simulation/viscous\+Step.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}simulation/\+Simulation\+Context.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}core/\+Fields.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}numerics/derivatives.\+hpp\char`\"{}}\newline
+Include dependency graph for test\+\_\+viscous\+Step.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__viscousStep_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classViscousStepTest}{Viscous\+Step\+Test}}
+\item 
+class \mbox{\hyperlink{classViscousStepRobustnessTest}{Viscous\+Step\+Robustness\+Test}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{test__viscousStep_8cpp_a333ff52985046a96bc72efa69cb5ebb5}{TEST\+\_\+F}} (\mbox{\hyperlink{classViscousStepTest}{Viscous\+Step\+Test}}, Constructor\+And\+Init)
+\item 
+\mbox{\hyperlink{test__viscousStep_8cpp_a03db34041509b5853781a4764a1e73cc}{TEST\+\_\+F}} (\mbox{\hyperlink{classViscousStepTest}{Viscous\+Step\+Test}}, Run\+Does\+Not\+Crash)
+\item 
+\mbox{\hyperlink{test__viscousStep_8cpp_aafb81fba5c8abc3e05a4ce1f7d927cd6}{TEST\+\_\+F}} (\mbox{\hyperlink{classViscousStepTest}{Viscous\+Step\+Test}}, Compute\+G\+\_\+\+Correctness)
+\item 
+\mbox{\hyperlink{test__viscousStep_8cpp_a0e7a6b7a0864bfcc7303b047cac3d7f5}{TEST\+\_\+F}} (\mbox{\hyperlink{classViscousStepTest}{Viscous\+Step\+Test}}, Compute\+Xi\+\_\+\+Correctness)
+\item 
+\mbox{\hyperlink{test__viscousStep_8cpp_a7a5dd4e794c0e6171d2b08f287c45854}{TEST\+\_\+F}} (\mbox{\hyperlink{classViscousStepRobustnessTest}{Viscous\+Step\+Robustness\+Test}}, Run\+\_\+\+With\+Polynomial\+Fields\+\_\+\+Produces\+Finite\+Output)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{test__viscousStep_8cpp_a7a5dd4e794c0e6171d2b08f287c45854}\label{test__viscousStep_8cpp_a7a5dd4e794c0e6171d2b08f287c45854}} 
+\index{test\_viscousStep.cpp@{test\_viscousStep.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_viscousStep.cpp@{test\_viscousStep.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classViscousStepRobustnessTest}{Viscous\+Step\+Robustness\+Test}}}]{,  }\item[{Run\+\_\+\+With\+Polynomial\+Fields\+\_\+\+Produces\+Finite\+Output}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{test__viscousStep_8cpp_aafb81fba5c8abc3e05a4ce1f7d927cd6}\label{test__viscousStep_8cpp_aafb81fba5c8abc3e05a4ce1f7d927cd6}} 
+\index{test\_viscousStep.cpp@{test\_viscousStep.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_viscousStep.cpp@{test\_viscousStep.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classViscousStepTest}{Viscous\+Step\+Test}}}]{,  }\item[{Compute\+G\+\_\+\+Correctness}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{test__viscousStep_8cpp_a0e7a6b7a0864bfcc7303b047cac3d7f5}\label{test__viscousStep_8cpp_a0e7a6b7a0864bfcc7303b047cac3d7f5}} 
+\index{test\_viscousStep.cpp@{test\_viscousStep.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_viscousStep.cpp@{test\_viscousStep.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classViscousStepTest}{Viscous\+Step\+Test}}}]{,  }\item[{Compute\+Xi\+\_\+\+Correctness}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{test__viscousStep_8cpp_a333ff52985046a96bc72efa69cb5ebb5}\label{test__viscousStep_8cpp_a333ff52985046a96bc72efa69cb5ebb5}} 
+\index{test\_viscousStep.cpp@{test\_viscousStep.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_viscousStep.cpp@{test\_viscousStep.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classViscousStepTest}{Viscous\+Step\+Test}}}]{,  }\item[{Constructor\+And\+Init}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{test__viscousStep_8cpp_a03db34041509b5853781a4764a1e73cc}\label{test__viscousStep_8cpp_a03db34041509b5853781a4764a1e73cc}} 
+\index{test\_viscousStep.cpp@{test\_viscousStep.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_viscousStep.cpp@{test\_viscousStep.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classViscousStepTest}{Viscous\+Step\+Test}}}]{,  }\item[{Run\+Does\+Not\+Crash}]{ }\end{DoxyParamCaption})}
+

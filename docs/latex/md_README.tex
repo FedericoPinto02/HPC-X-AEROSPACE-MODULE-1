@@ -1,0 +1,86 @@
+\mbox{\hyperlink{classNSBSolver}{NSBSolver}} is a high-\/performance Computational Fluid Dynamics (CFD) module designed to solve the {\bfseries{incompressible Navier–\+Stokes–\+Brinkman equations}}.
+
+The solver utilizes a {\bfseries{Fractional-\/\+Step Projection Method}} for time integration and features a custom {\bfseries{Domain Decomposition}} linear solver based on the {\bfseries{Schur Complement method}} to handle large-\/scale linear systems sequentially.
+
+\DoxyHorRuler{0}
+\hypertarget{md_README_autotoc_md2}{}\doxysection{🛠️ Quick Start}\label{md_README_autotoc_md2}
+\hypertarget{md_README_autotoc_md3}{}\doxysubsection{Prerequisites}\label{md_README_autotoc_md3}
+
+\begin{DoxyItemize}
+\item {\bfseries{C++ Compiler}}\+: C++17 compliant (GCC, Clang).
+\item {\bfseries{CMake}}\+: Version 3.\+10 or higher.
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md4}{}\doxysubsection{Building and Running}\label{md_README_autotoc_md4}
+Use the provided helper scripts to compile and run the simulation\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\# 1. Build the project}
+\DoxyCodeLine{./build.sh}
+\DoxyCodeLine{}
+\DoxyCodeLine{\# 2. Run the simulation}
+\DoxyCodeLine{\# Ensure data/config.json is configured properly before running}
+\DoxyCodeLine{./run.sh}
+\DoxyCodeLine{}
+\DoxyCodeLine{\# 3. Run Tests}
+\DoxyCodeLine{\# Executes unit tests for derivatives, linear solvers, and physics steps}
+\DoxyCodeLine{./test.sh}
+
+\end{DoxyCode}
+
+
+\DoxyHorRuler{0}
+\hypertarget{md_README_autotoc_md6}{}\doxysection{🚀 Key Features}\label{md_README_autotoc_md6}
+\hypertarget{md_README_autotoc_md7}{}\doxysubsection{Core Physics}\label{md_README_autotoc_md7}
+
+\begin{DoxyItemize}
+\item {\bfseries{Governing Equations}}\+: Incompressible Navier–\+Stokes–\+Brinkman.
+\item {\bfseries{Domain Types}}\+: Handles transitions between pure fluid (Navier-\/\+Stokes) and porous media (Brinkman/\+Darcy) via variable permeability fields.
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md8}{}\doxysubsection{Numerical Method}\label{md_README_autotoc_md8}
+
+\begin{DoxyItemize}
+\item {\bfseries{Spatial Discretization}}\+: Finite Difference Method (FDM) on a Staggered \mbox{\hyperlink{structGrid}{Grid}}.
+\item {\bfseries{Time Integration}}\+: Fractional-\/step Projection Method\+:
+\begin{DoxyEnumerate}
+\item {\bfseries{Viscous Step}}\+: Solves the momentum equation.
+\item {\bfseries{Pressure Step}}\+: Solves the Poisson equation.
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{md_README_autotoc_md10}{}\doxysection{📂 Project Structure}\label{md_README_autotoc_md10}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{.}
+\DoxyCodeLine{├── data/                       \# Configuration}
+\DoxyCodeLine{│   ├── config.json             \# Runtime parameters}
+\DoxyCodeLine{│   └── configFunctions.hpp     \# Boundary Condition definitions}
+\DoxyCodeLine{├── include/}
+\DoxyCodeLine{│   ├── core/                   \# Mesh, Fields, TridiagMat}
+\DoxyCodeLine{│   ├── io/                     \# VTKWriter, InputReader, LogWriter}
+\DoxyCodeLine{│   ├── numerics/               \# LinearSys, SchurSequentialSolver, Derivatives}
+\DoxyCodeLine{│   └── simulation/             \# NSBSolver, ViscousStep, PressureStep}
+\DoxyCodeLine{├── src/                        \# Source implementation}
+\DoxyCodeLine{├── tests/                      \# Unit testing suite}
+\DoxyCodeLine{└── output/                     \# VTK simulation results}
+
+\end{DoxyCode}
+
+
+\DoxyHorRuler{0}
+\hypertarget{md_README_autotoc_md12}{}\doxysection{🧩 Workflow Architecture}\label{md_README_autotoc_md12}
+The simulation is orchestrated by the {\ttfamily \mbox{\hyperlink{classNSBSolver}{NSBSolver}}} class, which manages the lifecycle of the simulation data and the time-\/stepping loop.\hypertarget{md_README_autotoc_md13}{}\doxysubsection{Main Execution Flow}\label{md_README_autotoc_md13}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{main()}
+\DoxyCodeLine{ └─ NSBSolver solver("{}config.json"{})}
+\DoxyCodeLine{     ├─ setup()}
+\DoxyCodeLine{     │   ├─ InputReader::read()          \# Parse JSON}
+\DoxyCodeLine{     │   ├─ Initializer::setup()         \# Allocate Grids, Fields, and BCs}
+\DoxyCodeLine{     │}
+\DoxyCodeLine{     └─ solve()                          \# Main Time Loop}
+\DoxyCodeLine{         ├─ ViscousStep::run()           \# Predictor}
+\DoxyCodeLine{         ├─ PressureStep::run()          \# Corrector}
+\DoxyCodeLine{         └─ VTKWriter::write()           \# Visualization export}
+
+\end{DoxyCode}
+ 
