@@ -3,14 +3,8 @@
 
 #include <cstddef>
 
-/**
- * @brief Enum class representing the three coordinate axes.
- */
-enum class Axis {
-    X = 0, Y = 1, Z = 2
-};
+#include "core/MpiEnv.hpp"
 
-const size_t AXIS_COUNT = 3;
 
 /// Enum describing the (possibly staggered) position of some points in a grid.
 enum class GridStaggering {

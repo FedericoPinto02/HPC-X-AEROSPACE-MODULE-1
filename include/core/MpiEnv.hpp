@@ -4,7 +4,13 @@
 #include <iostream>
 #include <mpi.h>
 
-#include "core/Grid.hpp"
+
+/// Enum class representing the three coordinate axes.
+enum class Axis {
+    X = 0, Y = 1, Z = 2
+};
+
+const size_t AXIS_COUNT = 3;
 
 /// Class that encapsulates MPI environment and Cartesian topology management.
 class MpiEnv {
@@ -23,13 +29,20 @@ private:
 
 public:
     MpiEnv(int &argc, char **&argv) {
-        MPI_Init(&argc, &argv);
-        MPI_Comm_rank(MPI_COMM_WORLD, &rank_);
-        MPI_Comm_size(MPI_COMM_WORLD, &size_);
+        int isInitialized;
+        MPI_Initialized(&isInitialized);
+
+        if (!isInitialized) {
+            MPI_Init(&argc, &argv);
+            MPI_Comm_rank(MPI_COMM_WORLD, &rank_);
+            MPI_Comm_size(MPI_COMM_WORLD, &size_);
+        }
     }
 
     ~MpiEnv() {
-        MPI_Finalize();
+        int isFinalized;
+        MPI_Finalized(&isFinalized);
+        if (!isFinalized) { MPI_Finalize(); }
     }
 
     // Delete copy/move constructors to prevent multiple finalizations
