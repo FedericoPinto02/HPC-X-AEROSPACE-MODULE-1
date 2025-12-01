@@ -42,6 +42,10 @@ public:
      */
     [[nodiscard]] const std::vector<double>& getSolution() const;
 
+    /**
+     * @brief Fill the linear system for Pressure variables
+     */
+    void fillSystemPressure(const Field& phi, const Axis direction);
 
     /**
      * @brief Fill the linear system for Velocity variables

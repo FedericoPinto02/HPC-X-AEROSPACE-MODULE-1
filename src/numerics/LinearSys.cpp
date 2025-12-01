@@ -23,6 +23,41 @@ const std::vector<double> &LinearSys::getSolution() const {
     return this->unknownX;
 }
 
+void LinearSys::fillSystemPressure(const Field &phi, const Axis direction) {
+
+    std::vector<double> &diag = matA.getDiag(0);
+    std::vector<double> &subdiag = matA.getDiag(-1);
+    std::vector<double> &supdiag = matA.getDiag(1);
+
+    if (rhsC.size() != matA.getSize()) {
+        throw std::runtime_error(
+                "Dimension mismatch: rhsIncomplete must be size n.");
+    }
+
+    const Grid &grid = phi.getGrid();
+    double d = 0;
+    switch (direction) {
+        case Axis::X:
+            d = 1 / grid.dx / grid.dx;
+            break;
+        case Axis::Y:
+            d = 1 / grid.dy / grid.dy;
+            break;
+        case Axis::Z:
+            d = 1 / grid.dz / grid.dz;
+            break;
+        default:
+            break;
+    }
+    std::fill(subdiag.begin(), subdiag.end(), -d);
+    std::fill(supdiag.begin(), supdiag.end(), -d);
+    std::fill(diag.begin(), diag.end(), 1.0 + 2.0 * d);
+
+    // Boundary conditions
+    supdiag.front() = -2.0 * d;
+    diag.back() = 1.0 + d;
+}
+
 void LinearSys::fillSystemVelocity(
         const SimulationData &simData, const VectorField &xi,
         const Axis fieldComponent, const Axis derivativeDirection,
