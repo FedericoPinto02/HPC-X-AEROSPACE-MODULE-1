@@ -33,6 +33,8 @@ struct Grid {
     size_t Nx, Ny, Nz; // derived, owned by this rank
     /// Index-offset in each dimension of this local grid chunk in the global grid.
     size_t i_start, j_start, k_start;
+    /// Number of halo points along each direction.
+    size_t n_halo;
 
     /**
      * @brief Constructor to initialize the grid in an explicitly sequential environment.
@@ -56,10 +58,12 @@ struct Grid {
      * @param dy_ the grid spacing in the Y direction
      * @param dz_ the grid spacing in the Z direction
      * @param env the MPI Environment containing topology information
+     * @param n_halo the number of halo points along each direction (default is 2)
      */
     Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
          double dx_, double dy_, double dz_,
-         const MpiEnv &env);
+         const MpiEnv &env,
+         size_t n_halo = 2);
 
     /**
      * @brief Decompose the grid along a target dimension, identifying local information of the chunk owned by a process
@@ -77,13 +81,21 @@ struct Grid {
      * @brief Getter for the total number of global grid points.
      * @return the total number of global grid points
      */
-    [[nodiscard]] constexpr size_t globalSize() const { return Nx_glob * Ny_glob * Nz_glob; }
+    [[nodiscard]] inline constexpr size_t globalSize() const { return Nx_glob * Ny_glob * Nz_glob; }
 
     /**
      * @brief Getter for the total number of local grid points.
      * @return the total number of local grid points
      */
-    [[nodiscard]] constexpr size_t size() const { return Nx * Ny * Nz; }
+    [[nodiscard]] inline constexpr size_t size() const { return Nx * Ny * Nz; }
+
+    /**
+     * @brief Getter for the total number of local grid points, including halo points in each direction.
+     * @return the total number of local grid points, including halo points
+     */
+    [[nodiscard]] inline constexpr size_t sizeWithHalo() const {
+        return (Nx + 2 * n_halo) * (Ny + 2 * n_halo) * (Nz + 2 * n_halo);
+    }
 
     /**
      * @brief Converts a grid index to a physical coordinate along the X-axis, considering staggering.
@@ -129,14 +141,22 @@ struct Grid {
      * @param axis the axis to check (Axis::X, Axis::Y, or Axis::Z)
      * @return true if the local grid chunk has the minimum boundary at the specified axis, false otherwise
      */
-    [[nodiscard]] bool hasMinBoundary(Axis axis) const;
+    [[nodiscard]] inline bool hasMinBoundary(Axis axis) const {
+        if (axis == Axis::X) return i_start == 0;
+        if (axis == Axis::Y) return j_start == 0;
+        return k_start == 0;
+    }
 
     /**
      * @brief Checks if the local grid chunk has the maximum boundary at the specified axis.
      * @param axis the axis to check (Axis::X, Axis::Y, or Axis::Z)
      * @return true if the local grid chunk has the maximum boundary at the specified axis, false otherwise
      */
-    [[nodiscard]] bool hasMaxBoundary(Axis axis) const;
+    [[nodiscard]] inline bool hasMaxBoundary(Axis axis) const {
+        if (axis == Axis::X) return (i_start + Nx) == Nx_glob;
+        if (axis == Axis::Y) return (j_start + Ny) == Ny_glob;
+        return (k_start + Nz) == Nz_glob;
+    }
 };
 
 #endif // NSBSOLVER_GRID_HPP

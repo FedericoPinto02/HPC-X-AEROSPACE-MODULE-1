@@ -5,7 +5,8 @@ Grid::Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
         : Nx_glob(Nx_g), Ny_glob(Ny_g), Nz_glob(Nz_g),
           Nx(Nx_g), Ny(Ny_g), Nz(Nz_g),
           dx(dx_), dy(dy_), dz(dz_),
-          i_start(0), j_start(0), k_start(0) {
+          i_start(0), j_start(0), k_start(0),
+          n_halo(0) {
     if (dx <= 0.0 || dy <= 0.0 || dz <= 0.0) {
         throw std::runtime_error("Grid spacing must be positive.");
     }
@@ -18,9 +19,11 @@ Grid::Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
 
 Grid::Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
            double dx_, double dy_, double dz_,
-           const MpiEnv &env)
+           const MpiEnv &env,
+           size_t n_halo_)
         : Nx_glob(Nx_g), Ny_glob(Ny_g), Nz_glob(Nz_g),
-          dx(dx_), dy(dy_), dz(dz_) {
+          dx(dx_), dy(dy_), dz(dz_),
+          n_halo(n_halo_) {
     if (dx <= 0.0 || dy <= 0.0 || dz <= 0.0) {
         throw std::runtime_error("Grid spacing must be positive.");
     }
@@ -60,16 +63,4 @@ std::pair<size_t, size_t> Grid::decompose1D(
     }
 
     return {proc_count, proc_start};
-}
-
-bool Grid::hasMinBoundary(Axis axis) const {
-    if (axis == Axis::X) return i_start == 0;
-    if (axis == Axis::Y) return j_start == 0;
-    return k_start == 0;
-}
-
-bool Grid::hasMaxBoundary(Axis axis) const {
-    if (axis == Axis::X) return (i_start + Nx) == Nx_glob;
-    if (axis == Axis::Y) return (j_start + Ny) == Ny_glob;
-    return (k_start + Nz) == Nz_glob;
 }

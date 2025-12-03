@@ -74,3 +74,58 @@ TEST(GridBoundaryTest, IdentifiesBoundariesCorrectly) {
     grid.i_start = 20;
     EXPECT_TRUE(grid.hasMaxBoundary(Axis::X));
 }
+
+
+// =========================================================================
+// TEST SUITE 3: Halo & Size Verification
+// =========================================================================
+
+TEST(GridHaloTest, CalculatesSizeWithHaloCorrectly) {
+    // 1. Create a Grid with known inner dimensions
+    // 10x10x10 inner cells, halo=2
+    size_t n_halo = 2;
+    Grid grid(10, 10, 10, 1.0, 1.0, 1.0); // Uses sequential constructor
+
+    // Manually set n_halo since sequential constructor defaults to 0 (in your cpp)
+    // OR we can rely on parallel constructor if available.
+    // Let's modify the struct manually to test the logic in isolation
+    grid.n_halo = n_halo;
+
+    // Inner size: 10 * 10 * 10 = 1000
+    EXPECT_EQ(grid.size(), 1000);
+
+    // Size with Halo: (10+4) * (10+4) * (10+4) = 14 * 14 * 14 = 2744
+    size_t expected_dim = 10 + (2 * n_halo);
+    size_t expected_total = expected_dim * expected_dim * expected_dim;
+
+    EXPECT_EQ(grid.sizeWithHalo(), expected_total);
+}
+
+TEST(GridHaloTest, ParallelConstructorSetsHaloDefault) {
+    // Use Parallel Constructor (default halo = 2)
+    int argc = 0;
+    char ** argv = nullptr;
+    Grid grid(10, 10, 10, 1.0, 1.0, 1.0, MpiEnv(argc, argv));
+
+    EXPECT_EQ(grid.n_halo, 2);
+
+    // Check math roughly (if 1 proc, Nx=10. If >1 proc, Nx < 10)
+    size_t expected_Nx = grid.Nx + 4;
+    size_t expected_Ny = grid.Ny + 4;
+    size_t expected_Nz = grid.Nz + 4;
+
+    EXPECT_EQ(grid.sizeWithHalo(), expected_Nx * expected_Ny * expected_Nz);
+}
+
+TEST(GridHaloTest, ParallelConstructorSetsCustomHalo) {
+    // Use Parallel Constructor with halo = 1
+    size_t custom_halo = 1;
+    int argc = 0;
+    char ** argv = nullptr;
+    Grid grid(10, 10, 10, 1.0, 1.0, 1.0, MpiEnv(argc, argv), custom_halo);
+
+    EXPECT_EQ(grid.n_halo, 1);
+
+    size_t expected_Nx = grid.Nx + 2; // + 2*1
+    EXPECT_EQ(grid.sizeWithHalo(), expected_Nx * (grid.Ny + 2) * (grid.Nz + 2));
+}
