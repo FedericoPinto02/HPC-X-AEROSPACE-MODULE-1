@@ -235,7 +235,7 @@ def run_analysis(custom_simulations=None):
         except ValueError as e:
             print(f"ERROR: {e}", file=sys.stderr); print("Skipping.", file=sys.stderr); continue
 
-        h = DOMAIN_LENGTH_X / (nx + 0.5)
+        h = DOMAIN_LENGTH_X / (nx - 0.5)
         
         # Store for plotting later
         nx_values.append(nx)
