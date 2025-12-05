@@ -23,8 +23,8 @@ OUTPUT_DIR = "../output/"              # Output directory (must match JSON)
 # 2. TEMPORAL_ONLY: Fix Nx (fine grid), vary dt. Studies temporal order (Expected O(dt^2)).
 # 3. SPACE_TIME_COUPLED: Vary both (dt ~ 1/Nx). Maintains constant CFL (Expected O(h^2) or O(dt^2)).
 STUDY_MODE = "SPACE_TIME_COUPLED" 
-STUDY_MODE = "SPATIAL_ONLY" 
-STUDY_MODE = "TEMPORAL_ONLY"
+#STUDY_MODE = "SPATIAL_ONLY" 
+#STUDY_MODE = "TEMPORAL_ONLY"
 
 # --- BASELINE & RESOLUTION PARAMETERS ---
 BASE_NX = 20           # Reference resolution
@@ -54,7 +54,7 @@ def calculate_params_for_mode(loop_val, base_dt, study_mode):
     elif study_mode == "SPACE_TIME_COUPLED":
         nx = loop_val
         # dt scales as 1/Nx (constant CFL for diffusion/viscous terms)
-        dt = base_dt * (BASE_NX / nx)
+        dt = base_dt * (BASE_NX / nx)**2
 
     elif study_mode == "TEMPORAL_ONLY":
         # loop_val is the dt multiplier
