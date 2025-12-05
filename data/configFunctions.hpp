@@ -1,90 +1,108 @@
 #pragma once
 
-#include <cmath> // For std::sin, std::cos, std::exp, M_PI
+#include <cmath> // For std::sin, std::cos
 
 namespace ConfigFuncs {
 
+    // Physical parameters
+    constexpr double nu = 6.0;
+    constexpr double Re = 1.0;
+
+    // Helper: Permeability field k(x, y, z)
+    inline double calc_k(double x, double y, double z) {
+        return 10.0 * (2.0 + std::cos(x) * std::cos(y) * std::cos(z));
+    }
+
     // ------------------------------------
-    // Boundary Conditions (BCs)
-    // f(x, y, z, t)
+    // Boundary Conditions (BCs) & Exact Solution
     // ------------------------------------
 
-    // Boundary Condition U (u_expr)
+    // u = sin(x)cos(t+y)sin(z)
     inline double bcu_func(double x, double y, double z, double t) {
-        return std::sin(t) * std::sin(x) * std::sin(y) * std::sin(z);
+        return std::sin(x) * std::cos(t + y) * std::sin(z);
     }
 
-    // Boundary Condition V (v_expr)
+    // v = cos(x)sin(t+y)sin(z)
     inline double bcv_func(double x, double y, double z, double t) {
-        return std::sin(t) * std::cos(x) * std::cos(y) * std::cos(z);
+        return std::cos(x) * std::sin(t + y) * std::sin(z);
     }
 
-    // Boundary Condition W (w_expr)
+    // w = 2cos(x)cos(t+y)cos(z)
     inline double bcw_func(double x, double y, double z, double t) {
-        return std::sin(t) * std::cos(x) * std::sin(y) * (std::sin(z) + std::cos(z));
+        return 2.0 * std::cos(x) * std::cos(t + y) * std::cos(z);
     }
 
     // ------------------------------------
     // Forces
-    // f(t, x, y, z)
+    // f = dt_u - nu*lapl_u + (nu/k)*u + grad_p
+    // Broken down into: Transient + Viscous + Drag + Pressure
     // ------------------------------------
 
-    // Force Fx (fx_expr)
     inline double fx_func(double x, double y, double z, double t) {
-        double term1 = std::cos(t) * std::sin(x) * std::sin(y) * std::sin(z);
-        double term2 = std::sin(t) * ((21.0 + 6e-20) * std::sin(x) * std::sin(y) * std::sin(z) -
-                                      3.0 * std::sin(x) * std::sin(y) * std::cos(z));
-        return term1 + term2;
+        double k = calc_k(x, y, z);
+        
+        // Terms
+        double transient = -std::sin(x) * std::sin(t + y) * std::sin(z);
+        double viscous   = 3.0 * nu * std::sin(x) * std::cos(t + y) * std::sin(z);
+        double drag      = (nu / k) * std::sin(x) * std::cos(t + y) * std::sin(z);
+        double pressure  = -(3.0 / Re) * std::sin(x) * std::cos(t + y) * std::cos(z);
+
+        return transient + viscous + drag + pressure;
     }
 
-    // Force Fy (fy_expr)
     inline double fy_func(double x, double y, double z, double t) {
-        double term1 = std::cos(t) * std::cos(x) * std::cos(y) * std::cos(z);
-        double term2 = std::sin(t) * ((21.0 + 6e-20) * std::cos(x) * std::cos(y) * std::cos(z) -
-                                      3.0 * std::cos(x) * std::cos(y) * std::sin(z));
-        return term1 + term2;
+        double k = calc_k(x, y, z);
+
+        // Terms
+        double transient = std::cos(x) * std::cos(t + y) * std::sin(z);
+        double viscous   = 3.0 * nu * std::cos(x) * std::sin(t + y) * std::sin(z);
+        double drag      = (nu / k) * std::cos(x) * std::sin(t + y) * std::sin(z);
+        double pressure  = -(3.0 / Re) * std::cos(x) * std::sin(t + y) * std::cos(z);
+
+        return transient + viscous + drag + pressure;
     }
 
-    // Force Fz (fz_expr)
     inline double fz_func(double x, double y, double z, double t) {
-        double term1 = std::cos(t) * std::cos(x) * std::sin(y) * (std::sin(z) + std::cos(z));
-        double term2 = std::sin(t) * ((15.0 + 6e-20) * std::cos(x) * std::sin(y) * (std::sin(z) + std::cos(z)));
-        return term1 + term2;
+        double k = calc_k(x, y, z);
+
+        // Terms (Note: w has a factor of 2, so viscous is 3*nu*2 = 6*nu)
+        double transient = -2.0 * std::cos(x) * std::sin(t + y) * std::cos(z);
+        double viscous   = 6.0 * nu * std::cos(x) * std::cos(t + y) * std::cos(z); 
+        double drag      = (2.0 * nu / k) * std::cos(x) * std::cos(t + y) * std::cos(z);
+        double pressure  = -(3.0 / Re) * std::cos(x) * std::cos(t + y) * std::sin(z);
+
+        return transient + viscous + drag + pressure;
     }
 
     // ------------------------------------
     // Initial Conditions (ICs)
-    // f(x, y, z, t) - Note: t will always be 0.0 in setup
+    // t = 0
     // ------------------------------------
 
-    // Initial Velocity U (u_expr)
     inline double u_init_func(double x, double y, double z, double t = 0) {
-        return std::sin(t) * std::sin(x) * std::sin(y) * std::sin(z);
+        return bcu_func(x, y, z, t);
     }
 
-    // Initial Velocity V (v_expr)
     inline double v_init_func(double x, double y, double z, double t = 0) {
-        return std::sin(t) * std::cos(x) * std::cos(y) * std::cos(z);
+        return bcv_func(x, y, z, t);
     }
 
-    // Initial Velocity W (w_expr)
     inline double w_init_func(double x, double y, double z, double t = 0) {
-        return std::sin(t) * std::cos(x) * std::sin(y) * (std::sin(z) + std::cos(z));
+        return bcw_func(x, y, z, t);
     }
 
-    // Initial Pressure (p_expr)
+    // p = (3/Re) cos(x)cos(t+y)cos(z)
     inline double p_init_func(double x, double y, double z, double t = 0) {
-        return -std::sin(t) * 3.0 * std::cos(x) * std::sin(y) * (std::sin(z) - std::cos(z));
+        return (3.0 / Re) * std::cos(x) * std::cos(t + y) * std::cos(z);
     }
 
     // ------------------------------------
-    // Physics
-    // f(x, y, z, t) - Note: t will always be 0.0 if time-independent
+    // Physics Fields
     // ------------------------------------
 
-    // Permeability K (k_expr)
-    inline double k_func(double /*x*/, double /*y*/, double /*z*/, double /*t*/ = 0) {
-        return 1e20;
+    // Permeability
+    inline double k_func(double x, double y, double z, double /*t*/ = 0) {
+        return calc_k(x, y, z);
     }
 
 }
