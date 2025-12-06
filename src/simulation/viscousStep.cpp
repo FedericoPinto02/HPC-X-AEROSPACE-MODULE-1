@@ -91,36 +91,6 @@ void ViscousStep::computeG()
             g_data[i] = f_data[i] - gradP_data[i] - nu_val * u_data[i] / k_data[i] + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]);
         }
 
-        const auto &grid = *data_.grid;
-        std::vector<double> mx(grid.Nx), my(grid.Ny), mz(grid.Nz);
-
-        for (Axis axis : {Axis::X, Axis::Y, Axis::Z})
-        {
-            for (size_t i = 0; i < grid.Nx; i++)
-                mx[i] = (i == 0 || (axis == Axis::X && i == grid.Nx - 1)) ? 0.0 : 1.0;
-
-            for (size_t j = 0; j < grid.Ny; j++)
-                my[j] = (j == 0 || (axis == Axis::Y && j == grid.Ny - 1)) ? 0.0 : 1.0;
-
-            for (size_t k = 0; k < grid.Nz; k++)
-                mz[k] = (k == 0 || (axis == Axis::Z && k == grid.Nz - 1)) ? 0.0 : 1.0;
-
-                
-            for (size_t k = 0; k < grid.Nz; k++)
-            {
-                const double mk = mz[k];
-
-                for (size_t j = 0; j < grid.Ny; j++)
-                {
-                    const double mj = mk * my[j];
-
-                    for (size_t i = 0; i < grid.Nx; i++)
-                    {
-                        g(axis, i, j, k) *= mj * mx[i];
-                    }
-                }
-            }
-        }
     }
 }
 
@@ -150,7 +120,69 @@ void ViscousStep::computeXi()
                         / (1 + dt_val * nu_val * 0.5 / k_data[i]);
         }
     }
+    size_t i, j, k;
+    auto &nx = data_.grid->Nx;
+    auto &ny = data_.grid->Ny;
+    auto &nz = data_.grid->Nz;
+    auto &dx = data_.grid->dx;
+    auto &dy = data_.grid->dy;
+    auto &dz = data_.grid->dz;
+    auto &time = data_.currTime;
+    
+    i = 0;
+    for (j = 0; j < ny; j++)
+    {
+        for (k = 0; k < nz; k++)
+        {
+            xi(Axis::Y)(i,j,k) = data_.bcv(0.0, (j+0.5)*dy, k*dz, time);
+            xi(Axis::Z)(i,j,k) = data_.bcw(0.0, j*dy, (k+0.5)*dz, time);
+        }
+    }
+    j = 0;
+    for (i = 0; i < nx; i++)
+    {
+        for (k = 0; k < nz; k++)
+        {
+            xi(Axis::X)(i,j,k) = data_.bcu((i+0.5)*dx, 0.0, k*dz, time);
+            xi(Axis::Z)(i,j,k) = data_.bcw(i*dx, 0.0, (k+0.5)*dz, time);
+        }
+    }
+    k = 0;
+    for (j = 0; j < ny; j++)
+    {
+        for (i = 0; i < nx; i++)
+        {
+            xi(Axis::Y)(i,j,k) = data_.bcv(i*dx, (j+0.5)*dy, 0.0, time);
+            xi(Axis::X)(i,j,k) = data_.bcu((i+0.5)*dx, j*dy, 0.0, time);
+        }
+    }
+
+    i = nx - 1;
+    for (j = 0; j < ny; j++)
+    {
+        for (k = 0; k < nz; k++)
+        {
+            xi(Axis::X)(i,j,k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, time);
+        }
+    }
+    j = ny - 1;
+    for (i = 0; i < nx; i++)
+    {
+        for (k = 0; k < nz; k++)
+        {
+            xi(Axis::Y)(i,j,k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, time);
+        }
+    }
+    k = nz - 1;
+    for (j = 0; j < ny; j++)
+    {
+        for (i = 0; i < nx; i++)
+        {
+            xi(Axis::Z)(i,j,k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, time);
+        }
+    }
 }
+
 
 void ViscousStep::closeViscousStep()
 {   
