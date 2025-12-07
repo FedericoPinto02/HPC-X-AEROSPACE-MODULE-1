@@ -104,85 +104,62 @@ void LinearSys::fillSystemVelocity(
 
     switch (boundaryType) {
         case BoundaryType::Normal: {
-            switch (fieldComponent) {
-                case Axis::X:
-                    rhsC.front() =
-                            simData.bcu(0.0, jStart * grid.dy, kStart * grid.dz, simData.currTime) -
-                            grid.dx / 2 *
-                            ((simData.bcv(0.0, (jStart + 0.5) * grid.dy, kStart * grid.dz, simData.currTime) -
-                              simData.bcv(0.0, (jStart - 0.5) * grid.dy, kStart * grid.dz, simData.currTime)) /
-                             grid.dy +
-                             (simData.bcw(0.0, jStart * grid.dy, (kStart + 0.5) * grid.dz, simData.currTime) -
-                              simData.bcw(0.0, jStart * grid.dy, (kStart - 0.5) * grid.dz, simData.currTime)) /
-                             grid.dz);
-                    break;
-
-                case Axis::Y:
-                    rhsC.front() =
-                            simData.bcv(iStart * grid.dx, 0.0, kStart * grid.dz, simData.currTime) -
-                            grid.dy / 2 *
-                            ((simData.bcu((iStart + 0.5) * grid.dx, 0.0, kStart * grid.dz, simData.currTime) -
-                              simData.bcu((iStart - 0.5) * grid.dx, 0.0, kStart * grid.dz, simData.currTime)) /
-                             grid.dx +
-                             (simData.bcw(iStart * grid.dx, 0.0, (kStart + 0.5) * grid.dz, simData.currTime) -
-                              simData.bcw(iStart * grid.dx, 0.0, (kStart - 0.5) * grid.dz, simData.currTime)) /
-                             grid.dz);
-                    break;
-
-                case Axis::Z:
-                    rhsC.front() =
-                            simData.bcw(iStart * grid.dx, jStart * grid.dy, 0.0, simData.currTime) -
-                            grid.dz / 2 *
-                            ((simData.bcu((iStart + 0.5) * grid.dx, jStart * grid.dy, 0.0, simData.currTime) -
-                              simData.bcu((iStart - 0.5) * grid.dx, jStart * grid.dy, 0.0, simData.currTime)) /
-                             grid.dx +
-                             (simData.bcv(iStart * grid.dx, (jStart + 0.5) * grid.dy, 0.0, simData.currTime) -
-                              simData.bcv(iStart * grid.dx, (jStart - 0.5) * grid.dy, 0.0, simData.currTime)) /
-                             grid.dy);
-                    break;
-
-                default:
-                    break;
-            }
-
+            double k = simData.k.valueWithOffset(iStart, jStart, kStart, derivativeDirection, 0);
+            double beta = 1 + (simData.dt * simData.nu * 0.5 / k);
+            double gamma = simData.dt * simData.nu * 0.5 / beta;
+            diag.front() = 1 + 4.0 * gamma * dCoef;
+            supdiag.front() = -4.0 / 3.0  * gamma * dCoef;
             diag.back() = 1.0; // the other is aready initialized to zero
-            diag.front() = 1.0;
+
             std::function<double(double t, double x, double y, double z)> bc;
             double xOff = 0.0, yOff = 0.0, zOff = 0.0;
-            switch (fieldComponent) {
+            switch (fieldComponent) {  // if normal fieldComponent == derivativeDirection
                 case Axis::X:
                     bc = simData.bcu;
                     xOff = 0.5;
+                    rhsC.front() =
+                            xi(fieldComponent)(0, jStart, kStart) 
+                            + 4.0 /3.0 * gamma * dCoef *  eta(fieldComponent)(1,jStart,kStart)
+                            - 4.0 * gamma * dCoef * eta(fieldComponent)(0, jStart, kStart) 
+                            + 8.0/3.0 * gamma * dCoef *  (
+                            bc(0.0, jStart * grid.dy, kStart * grid.dz, simData.currTime - simData.dt) +
+                            bc(0.0, jStart * grid.dy, kStart * grid.dz, simData.currTime) );
+
+                    rhsC.back() = bc((iStart + 0.5 + matA.getSize() - 1) * grid.dx, jStart * grid.dy, kStart * grid.dz, simData.currTime);
                     break;
 
                 case Axis::Y:
                     bc = simData.bcv;
                     yOff = 0.5;
+                    rhsC.front() =
+                            xi(fieldComponent)(iStart, 0, kStart) 
+                            + 4.0 /3.0 * gamma * dCoef *  eta(fieldComponent)(iStart, 1, kStart)
+                            - 4.0 * gamma * dCoef * eta(fieldComponent)(iStart, 0, kStart) 
+                            + 8.0/3.0 * gamma * dCoef *  (
+                            bc(iStart * grid.dx, 0.0, kStart * grid.dz, simData.currTime - simData.dt) +
+                            bc(iStart * grid.dx, 0.0, kStart * grid.dz, simData.currTime) );
+
+                    rhsC.back() = bc(iStart * grid.dx, (jStart + 0.5 + matA.getSize() - 1) * grid.dy, kStart * grid.dz, simData.currTime);
                     break;
 
                 case Axis::Z:
                     bc = simData.bcw;
                     zOff = 0.5;
+                    rhsC.front() =
+                            xi(fieldComponent)(iStart, jStart, 0) 
+                            + 4.0 /3.0 * gamma * dCoef *  eta(fieldComponent)(iStart,jStart,1)
+                            - 4.0 * gamma * dCoef * eta(fieldComponent)(iStart, jStart, 0) 
+                            + 8.0/3.0 * gamma * dCoef *  (
+                            bc(iStart * grid.dx, jStart * grid.dy, 0.0, simData.currTime - simData.dt) +
+                            bc(iStart * grid.dx, jStart * grid.dy, 0.0, simData.currTime) );
+
+                    rhsC.back() = bc(iStart * grid.dx, jStart * grid.dy, (kStart + 0.5 + matA.getSize() - 1) * grid.dz, simData.currTime);
                     break;
                 default:
                     break;
             }   
             
-            switch (derivativeDirection) {
-                case Axis::X:
-                    rhsC.back() = bc((iStart + xOff + matA.getSize() - 1) * grid.dx, (jStart + yOff) * grid.dy, (kStart + zOff) * grid.dz, simData.currTime);
-                    break;
-
-                case Axis::Y:
-                     rhsC.back() = bc((iStart + xOff) * grid.dx, (jStart + yOff + matA.getSize() - 1) * grid.dy, (kStart + zOff) * grid.dz, simData.currTime);
-                    break;
-
-                case Axis::Z:
-                     rhsC.back() = bc((iStart + xOff) * grid.dx, (jStart + yOff) * grid.dy, (kStart + zOff + matA.getSize() - 1) * grid.dz, simData.currTime);
-                    break;
-                default:
-                    break;
-            }   
+           
 
             break;
         }
