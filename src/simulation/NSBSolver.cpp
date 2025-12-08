@@ -65,7 +65,7 @@ void NSBSolver::solve()
         simData.currStep++;
         simData.currTime += simData.dt;
 
-        simData.f.populate(simData.currTime);
+        simData.f.populate(simData.currTime - simData.dt * 0.5);
 
         // 2. Physics Steps (Timed)
         auto start = std::chrono::high_resolution_clock::now();
