@@ -54,7 +54,7 @@ def calculate_params_for_mode(loop_val, base_dt, study_mode):
     elif study_mode == "SPACE_TIME_COUPLED":
         nx = loop_val
         # dt scales as 1/Nx (constant CFL for diffusion/viscous terms)
-        dt = base_dt * (BASE_NX / nx)**2
+        dt = base_dt * (BASE_NX / nx)
 
     elif study_mode == "TEMPORAL_ONLY":
         # loop_val is the dt multiplier

@@ -1,54 +1,66 @@
 #!/usr/bin/env python3
 
 """
-This script performs a spatial convergence analysis for a Method of
-Manufactured Solutions (MMS) test.
+Script for Spatial Convergence Analysis (Method of Manufactured Solutions).
 
-It reads multiple VTK files, each from a simulation with a different
-grid resolution. For each file, it computes the L2 RMS error
-of:
-1. Velocity components (u, v, w)
-2. Pressure (p) - Both L2 and L1 norms
-3. Pressure Gradient (gradP_x, gradP_y, gradP_z)
-4. Velocity Divergence (divU) - Analytical solution is 0.
+This script reads VTK files from simulations with varying grid resolutions
+and computes the L2 and L1 error norms against an analytical solution.
 
-This version is adapted for staggered grid solvers. It assumes the VTK output
-contains vector fields for Velocity and Pressure Gradient.
+Changes in this version:
+- Fixed SyntaxWarning regarding invalid escape sequences in LaTeX strings.
+- Reverted to standard sans-serif fonts (cleaner look).
+- High-contrast colors and explicit log-log grids.
+- Dynamic LaTeX titles indicating scaling (e.g., dt ~ dx).
+- Calculates and prints Convergence Order table.
+- UPDATED: Thinner lines and new color palette.
 """
 
 # --- 0. IMPORTS ---
 import pyvista as pv
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.ticker import ScalarFormatter
 import os
 import sys
 import re 
-from matplotlib import ticker
+from matplotlib.ticker import LogLocator, NullFormatter
 
-# --- 1. USER CONFIGURATION ---
+# --- 1. PLOTTING STYLE CONFIGURATION (CLEAN & SHARP) ---
+plt.rcParams.update({
+    'font.family': 'sans-serif',     # Clean standard font
+    'font.size': 12,
+    'axes.labelsize': 14,
+    'axes.titlesize': 15,
+    'xtick.labelsize': 12,
+    'ytick.labelsize': 12,
+    'legend.fontsize': 12,
+    'lines.linewidth': 1.5,          # UPDATED: Thinner lines (was 2.5)
+    'lines.markersize': 8,           # Slightly smaller markers
+    'figure.figsize': (10, 8),       # Larger figure
+    'savefig.dpi': 400,              # Very high resolution
+    'axes.grid': True,
+    'grid.alpha': 0.5,
+})
 
-# Physical Constants (Must match C++ config)
+# --- 2. USER CONFIGURATION ---
+
+# Physical Constants
 RE = 1.0
 
-# List of simulation results to analyze.
-# NOTE: This list is now IGNORED if run_convergence_study_unified.py is used.
+# List of simulation results.
 SIMULATIONS = [
     {"nx": 30, "file": "../output/n30simulation_output_0030.vtk"},
     {"nx": 20, "file": "../output/n20simulation_output_0030.vtk"},
 ]
 
-DOMAIN_LENGTH_X = 6.0 # Assumed, check your domain size
-DT = 0.001 
+DOMAIN_LENGTH_X = 6.0 
+DT = 0.001            
 
-# Field names in the VTK file
+# Field names in VTK
 VELOCITY_FIELD_NAME = "velocity"
 PRESSURE_FIELD_NAME = "pressure"
-GRAD_PRESSURE_FIELD_NAME = "gradP" 
-DIV_VELOCITY_FIELD_NAME = "divU"  # Field name for Divergence
 
+# --- 3. HELPER FUNCTIONS ---
 
-# Helper function to get step number from filename
 def get_step_from_filename(filepath: str) -> int:
     match = re.search(r'_(\d+)\.vtk$', os.path.basename(filepath))
     if match:
@@ -56,146 +68,139 @@ def get_step_from_filename(filepath: str) -> int:
     else:
         raise ValueError(f"Could not parse step number from filename: {filepath}.")
 
+def compute_convergence_orders(x_values: list, errors: list) -> tuple:
+    x = np.array(x_values)
+    e = np.array(errors)
+    if len(x) < 2:
+        return 0.0, []
+    
+    # Global Order (Linear Regression)
+    coeffs = np.polyfit(np.log(x), np.log(e), 1)
+    global_order = coeffs[0]
 
-# --- 2. ANALYTICAL SOLUTION FUNCTIONS ---
+    # Local Orders
+    local_orders = []
+    for i in range(1, len(x)):
+        p = np.log(e[i] / e[i-1]) / np.log(x[i] / x[i-1])
+        local_orders.append(p)
+        
+    return global_order, local_orders
 
-# --- Velocity (u, v, w) ---
-# u = sin(x)cos(t+y)sin(z)
+# --- 4. ANALYTICAL SOLUTION FUNCTIONS ---
+
 def compute_analytical_u_at_x_faces(points: np.ndarray, t: float, h: float) -> np.ndarray:
-    x = points[:, 0] + h / 2.0  
+    x = points[:, 0] + h / 2.0 
     y = points[:, 1]
     z = points[:, 2]
-    u_ana = np.sin(x) * np.cos(t + y) * np.sin(z)
-    return u_ana
+    return np.sin(x) * np.cos(t + y) * np.sin(z)
 
-# v = cos(x)sin(t+y)sin(z)
 def compute_analytical_v_at_y_faces(points: np.ndarray, t: float, h: float) -> np.ndarray:
     x = points[:, 0]
     y = points[:, 1] + h / 2.0  
     z = points[:, 2]
-    v_ana = np.cos(x) * np.sin(t + y) * np.sin(z)
-    return v_ana
+    return np.cos(x) * np.sin(t + y) * np.sin(z)
 
-# w = 2cos(x)cos(t+y)cos(z)
 def compute_analytical_w_at_z_faces(points: np.ndarray, t: float, h: float) -> np.ndarray:
     x = points[:, 0]
     y = points[:, 1]
     z = points[:, 2] + h / 2.0  
-    w_ana = 2.0 * np.cos(x) * np.cos(t + y) * np.cos(z)
-    return w_ana
+    return 2.0 * np.cos(x) * np.cos(t + y) * np.cos(z)
 
-# --- Pressure (p) ---
-# p = (3/Re) * cos(x)cos(t+y)cos(z)
 def compute_analytical_p_at_centers(points: np.ndarray, t: float) -> np.ndarray:
     x = points[:, 0]
     y = points[:, 1]
     z = points[:, 2]
-    p_ana = (3.0 / RE) * np.cos(x) * np.cos(t + y) * np.cos(z)
-    return p_ana
+    return (3.0 / RE) * np.cos(x) * np.cos(t + y) * np.cos(z)
 
-# --- Pressure Gradient (gradP) ---
-# Evaluated at velocity points (staggered faces)
-# nabla p = -3/Re * [sin(x)cos(t+y)cos(z), cos(x)sin(t+y)cos(z), cos(x)cos(t+y)sin(z)]^T
+# --- 5. ERROR CALCULATION ---
 
-def compute_analytical_gradP_x_at_x_faces(points: np.ndarray, t: float, h: float) -> np.ndarray:
-    # dp/dx = - (3/Re) * sin(x) * cos(t+y) * cos(z)
-    x = points[:, 0] + h / 2.0
-    y = points[:, 1]
-    z = points[:, 2]
-    dp_dx = -(3.0 / RE) * np.sin(x) * np.cos(t + y) * np.cos(z)
-    return dp_dx
-
-def compute_analytical_gradP_y_at_y_faces(points: np.ndarray, t: float, h: float) -> np.ndarray:
-    # dp/dy = - (3/Re) * cos(x) * sin(t+y) * cos(z)
-    x = points[:, 0]
-    y = points[:, 1] + h / 2.0
-    z = points[:, 2]
-    dp_dy = -(3.0 / RE) * np.cos(x) * np.sin(t + y) * np.cos(z)
-    return dp_dy
-
-def compute_analytical_gradP_z_at_z_faces(points: np.ndarray, t: float, h: float) -> np.ndarray:
-    # dp/dz = - (3/Re) * cos(x) * cos(t+y) * sin(z)
-    x = points[:, 0]
-    y = points[:, 1]
-    z = points[:, 2] + h / 2.0  
-    dp_dz = -(3.0 / RE) * np.cos(x) * np.cos(t + y) * np.sin(z)
-    return dp_dz
-
-
-# --- 3. ERROR CALCULATION HELPERS ---
 def calculate_l2_rms(data: np.ndarray) -> float:
     data_sq = data**2
     if data.ndim == 2:
         data_sq = np.sum(data_sq, axis=1)
-    mean_squared_value = np.mean(data_sq)
-    return np.sqrt(mean_squared_value + 1e-16)
+    return np.sqrt(np.mean(data_sq) + 1e-16)
 
 def calculate_l2_rms_error(field_numerical: np.ndarray, field_analytical: np.ndarray) -> float:
-    error_field = field_numerical - field_analytical
-    rms_error = calculate_l2_rms(error_field)
-    return rms_error
+    return calculate_l2_rms(field_numerical - field_analytical)
 
 def calculate_l1_mean_error(field_numerical: np.ndarray, field_analytical: np.ndarray) -> float:
-    error_field = field_numerical - field_analytical
-    # L1 norm (Mean Absolute Error)
-    l1_error = np.mean(np.abs(error_field))
-    return l1_error
+    return np.mean(np.abs(field_numerical - field_analytical))
 
-# --- 4. PLOTTING FUNCTION ---
+# --- 6. PLOTTING FUNCTION (IMPROVED) ---
 
-def plot_convergence(x_values: list, error_data: dict, title: str, save_filename: str, x_label: str, expected_order: int):
+def plot_clean_convergence(x_values: list, error_data: dict, title_prefix: str, save_filename: str, x_label: str, expected_order: int, mode_label: str):
+    """
+    Generates a clean, high-contrast log-log plot.
+    """
     x_arr = np.array(x_values)
-
     if len(x_arr) == 0:
-        print("No data to plot.", file=sys.stderr)
         return
 
+    # Sort
     sort_idx = np.argsort(x_arr)
     x_arr = x_arr[sort_idx]
 
+    # Prepare Data
     plottable_error_data = {}
     for label, errors in error_data.items():
         if len(errors) == len(x_arr):
             plottable_error_data[label] = np.array(errors)[sort_idx]
-        else:
-            print(f"WARNING: Skipping '{label}' (dim mismatch)", file=sys.stderr)
 
     if not plottable_error_data:
         return
 
-    fig, ax = plt.subplots(figsize=(10, 7))
-    markers = ['o', 's', '^', 'D', 'v', '*']
+    fig, ax = plt.subplots()
 
-    # Plotting Data
+    # UPDATED: Standard Tab10 Palette (Blue, Orange, Green, Red, Purple)
+    # Distinct and classic
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd'] 
+    markers = ['o', 's', '^', 'D', 'v'] 
+    
+    # Plot Data
     for i, (label, errors) in enumerate(plottable_error_data.items()):
-        ax.plot(x_arr, errors, marker=markers[i % len(markers)], markersize=8, linestyle='-', label=label)
+        ax.loglog(x_arr, errors, 
+                  marker=markers[i % len(markers)], 
+                  linestyle='-', 
+                  color=colors[i % len(colors)],
+                  label=label, alpha=0.9)
 
-    # --- Reference Lines ---
+    # Reference Lines
     if len(x_arr) > 1:
         x_ref = x_arr[-1]
         err_ref = list(plottable_error_data.values())[0][-1]
-        x_line = np.array([x_arr.min(), x_arr.max()])
+        x_line = np.geomspace(x_arr.min(), x_arr.max(), 100)
 
+        # Order N
         C_order = err_ref / (x_ref**expected_order)
-        ax.plot(x_line, C_order * (x_line**expected_order), 'k--', label=f'O($x^{expected_order}$) Reference') 
+        y_order = C_order * (x_line**expected_order)
+        # Fix: Use raw f-string (rf) to handle LaTeX backslashes correctly
+        ax.loglog(x_line, y_order, 'k--', linewidth=1.5, label=rf'Ideal Slope {expected_order}: $\mathcal{{O}}(x^{{{expected_order}}})$') 
 
-        C_1 = err_ref / (x_ref**1)
-        ax.plot(x_line, C_1 * (x_line**1), 'k:', label='O($x$) Reference') 
+        # Order 1 (if expected is not 1)
+        if expected_order != 1:
+            C_1 = err_ref / (x_ref**1)
+            y_1 = C_1 * (x_line**1)
+            # Fix: Use raw string (r) to handle LaTeX backslashes correctly
+            ax.loglog(x_line, y_1, 'k:', linewidth=1.5, label=r'Reference Slope 1: $\mathcal{O}(x)$')
 
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-    ax.set_xlabel(x_label, fontsize=14) 
-    ax.set_ylabel("Error", fontsize=14)
-    ax.set_title(title, fontsize=16)
-    ax.grid(True, which="both", linestyle=':', linewidth=0.5)
-    ax.legend(fontsize=12)
+    # Grid - Crucial for Log-Log
+    ax.grid(True, which='major', linestyle='-', linewidth=0.7, color='gray', alpha=0.5)
+    ax.grid(True, which='minor', linestyle=':', linewidth=0.5, color='gray', alpha=0.3)
+    
+    # Title Logic
+    full_title = f"{title_prefix}\n{mode_label}"
+    ax.set_title(full_title)
+    
+    ax.set_xlabel(x_label)
+    ax.set_ylabel("RMS Error ($L_2$ Norm)")
+    ax.legend(loc='best', framealpha=0.9, edgecolor='gray')
 
+    print(f"Saving high-quality plot to {save_filename}...")
     plt.tight_layout()
-    print(f"Saving plot to {save_filename}...")
-    plt.savefig(save_filename, dpi=300, bbox_inches='tight')
+    plt.savefig(save_filename, bbox_inches='tight')
     plt.close(fig)
 
-# --- 5. MAIN ANALYSIS LOOP ---
+# --- 7. MAIN LOOP ---
 
 def run_analysis(custom_simulations=None):
     if custom_simulations is not None:
@@ -204,165 +209,124 @@ def run_analysis(custom_simulations=None):
         sims_to_analyze = SIMULATIONS
         for s in sims_to_analyze:
             s['dt'] = DT
-            s['mode'] = 'SPATIAL_ONLY'
+            s['mode'] = 'SPATIAL_ONLY' # Change this if running coupled tests
 
     if not sims_to_analyze:
-        print("No data to analyze.")
+        print("No data.")
         return
 
-    study_mode = sims_to_analyze[0].get('mode', 'SPATIAL_ONLY')
-    print(f"--- Starting Convergence Analysis (Mode: {study_mode}) ---")
+    # Check variation to determine label
+    dts = [s['dt'] for s in sims_to_analyze]
+    nxs = [s['nx'] for s in sims_to_analyze]
+    dt_varies = len(set(dts)) > 1
+    nx_varies = len(set(nxs)) > 1
     
-    # Lists to store results
-    nx_values = []
-    dt_values = []
-    h_values = []
-    
-    # Error containers
-    errors_u = []; errors_v = []; errors_w = []
-    errors_p = []
-    errors_p_l1 = [] # New container for Pressure L1 error
-    errors_gp_x = []; errors_gp_y = []; errors_gp_z = []
-    errors_div_u = []
+    # Determine Label Mode
+    if dt_varies and nx_varies:
+        study_mode = "COUPLED"
+        mode_label_latex = r"Scaling: $\Delta t \sim \Delta x$"
+        filename_suffix = "_coupled"
+    elif dt_varies:
+        study_mode = "TEMPORAL_ONLY"
+        mode_label_latex = r"Temporal Refinement ($\Delta x$ fixed)"
+        filename_suffix = "_temporal"
+    else:
+        study_mode = "SPATIAL_ONLY"
+        mode_label_latex = r"Spatial Refinement ($\Delta t$ fixed)"
+        filename_suffix = "_spatial"
 
-    # Sort logic
+    print(f"--- Starting Analysis (Detected Mode: {study_mode}) ---")
+    
+    nx_values, dt_values, h_values = [], [], []
+    errors_u, errors_v, errors_w = [], [], []
+    errors_p, errors_p_l1 = [], []
+
+    # Sort based on the primary variable
     if study_mode == "TEMPORAL_ONLY":
         sorted_simulations = sorted(sims_to_analyze, key=lambda s: s['dt'])
     else:
         sorted_simulations = sorted(sims_to_analyze, key=lambda s: s['nx'])
     
-    # Update header
-    print(f"{'Nx':>4} | {'h':>10} | {'L2_Err_U':>10} | {'L2_Err_P':>10} | {'L1_Err_P':>10} | {'L2_Err_GradP':>12} | {'L2_Err_DivU':>12}")
-    print("-" * 90)
+    print(f"{'Nx':>4} | {'h':>10} | {'L2_Err_U':>12} | {'L2_Err_V':>12} | {'L2_Err_W':>12} | {'L2_Err_P':>12} | {'L1_Err_P':>12}")
+    print("-" * 95)
 
     for sim in sorted_simulations:
-        nx = sim['nx']
-        dt = sim['dt']
-        filepath = sim['file']
-
+        nx = sim['nx']; dt = sim['dt']; filepath = sim['file']
         try:
-            step_number = get_step_from_filename(filepath)
-            current_time = step_number * dt
+            step = get_step_from_filename(filepath)
+            time = step * dt
         except ValueError as e:
-            print(f"ERROR: {e}", file=sys.stderr); continue
+            print(f"Skip {filepath}: {e}", file=sys.stderr); continue
 
         h = DOMAIN_LENGTH_X / (nx - 0.5)
         nx_values.append(nx); dt_values.append(dt); h_values.append(h)
 
         try:
             grid = pv.read(filepath)
-            points = grid.points
+            pts = grid.points
             
-            # --- 1. Velocity Error ---
-            vel_numerical = grid.point_data[VELOCITY_FIELD_NAME]
-            u_ana = compute_analytical_u_at_x_faces(points, current_time, h)
-            v_ana = compute_analytical_v_at_y_faces(points, current_time, h)
-            w_ana = compute_analytical_w_at_z_faces(points, current_time, h)
-
-            errors_u.append(calculate_l2_rms_error(vel_numerical[:, 0], u_ana))
-            errors_v.append(calculate_l2_rms_error(vel_numerical[:, 1], v_ana))
-            errors_w.append(calculate_l2_rms_error(vel_numerical[:, 2], w_ana))
-
-            # --- 2. Pressure Error ---
-            p_numerical = grid.point_data[PRESSURE_FIELD_NAME]
-            p_ana = compute_analytical_p_at_centers(points, current_time)
+            # Velocity
+            if VELOCITY_FIELD_NAME in grid.point_data:
+                vel = grid.point_data[VELOCITY_FIELD_NAME]
+                u_a = compute_analytical_u_at_x_faces(pts, time, h)
+                v_a = compute_analytical_v_at_y_faces(pts, time, h)
+                w_a = compute_analytical_w_at_z_faces(pts, time, h)
+                errors_u.append(calculate_l2_rms_error(vel[:, 0], u_a))
+                errors_v.append(calculate_l2_rms_error(vel[:, 1], v_a))
+                errors_w.append(calculate_l2_rms_error(vel[:, 2], w_a))
             
-            # L2 Error
-            errors_p.append(calculate_l2_rms_error(p_numerical, p_ana))
-            # L1 Error (New)
-            errors_p_l1.append(calculate_l1_mean_error(p_numerical, p_ana))
-
-            # --- 3. Pressure Gradient Error ---
-            if GRAD_PRESSURE_FIELD_NAME in grid.point_data:
-                gradp_numerical = grid.point_data[GRAD_PRESSURE_FIELD_NAME]
-                
-                gp_x_ana = compute_analytical_gradP_x_at_x_faces(points, current_time, h)
-                gp_y_ana = compute_analytical_gradP_y_at_y_faces(points, current_time, h)
-                gp_z_ana = compute_analytical_gradP_z_at_z_faces(points, current_time, h)
-
-                e_gpx = calculate_l2_rms_error(gradp_numerical[:, 0], gp_x_ana)
-                e_gpy = calculate_l2_rms_error(gradp_numerical[:, 1], gp_y_ana)
-                e_gpz = calculate_l2_rms_error(gradp_numerical[:, 2], gp_z_ana)
-
-                errors_gp_x.append(e_gpx)
-                errors_gp_y.append(e_gpy)
-                errors_gp_z.append(e_gpz)
-                
-                total_grad_err = np.sqrt(e_gpx**2 + e_gpy**2 + e_gpz**2)
-            else:
-                total_grad_err = 0.0
-                if len(h_values) == 1: 
-                    print(f"Warning: Field '{GRAD_PRESSURE_FIELD_NAME}' not found.", file=sys.stderr)
-
-            # --- 4. Divergence Error ---
-            if DIV_VELOCITY_FIELD_NAME in grid.point_data:
-                div_u_num = grid.point_data[DIV_VELOCITY_FIELD_NAME]
-                div_u_ana = np.zeros_like(div_u_num)
-                err_div = calculate_l2_rms_error(div_u_num, div_u_ana)
-                errors_div_u.append(err_div)
-            else:
-                errors_div_u.append(0.0)
-                if len(h_values) == 1:
-                    print(f"Warning: Field '{DIV_VELOCITY_FIELD_NAME}' not found.", file=sys.stderr)
+            # Pressure
+            if PRESSURE_FIELD_NAME in grid.point_data:
+                p_num = grid.point_data[PRESSURE_FIELD_NAME]
+                p_a = compute_analytical_p_at_centers(pts, time)
+                errors_p.append(calculate_l2_rms_error(p_num, p_a))
+                errors_p_l1.append(calculate_l1_mean_error(p_num, p_a))
 
         except Exception as e:
-            print(f"ERROR processing file {filepath}: {e}", file=sys.stderr); continue
+            print(f"Error {filepath}: {e}", file=sys.stderr); continue
 
-        # Print summary line
-        print(f"{nx:>4} | {h:>10.4e} | {errors_u[-1]:>10.4e} | {errors_p[-1]:>10.4e} | {errors_p_l1[-1]:>10.4e} | {total_grad_err:>12.4e} | {errors_div_u[-1]:>12.4e}")
+        print(f"{nx:>4} | {h:>10.4e} | {errors_u[-1]:>12.4e} | {errors_v[-1]:>12.4e} | {errors_w[-1]:>12.4e} | {errors_p[-1]:>12.4e} | {errors_p_l1[-1]:>12.4e}")
+
+    print("-" * 95)
+
+    # --- ORDER ANALYSIS ---
+    x_analysis = dt_values if study_mode == "TEMPORAL_ONLY" else h_values
+    
+    print("\n--- Convergence Order Analysis ---")
+    print(f"{'Variable':<20} | {'Global Order':<12} | {'Local Orders':<40}")
+    print("-" * 90)
+
+    for name, errs in [("Vel U", errors_u), ("Vel V", errors_v), ("Vel W", errors_w), ("Press L2", errors_p), ("Press L1", errors_p_l1)]:
+        if errs:
+            g_ord, l_ords = compute_convergence_orders(x_analysis, errs)
+            l_str = ", ".join([f"{o:.2f}" for o in l_ords]) if l_ords else "N/A"
+            print(f"{name:<20} | {g_ord:>12.2f} | {l_str}")
 
     print("-" * 90)
-    print("Analysis complete. Saving plots...\n")
 
-    # --- 6. PLOTTING ---
-    if not nx_values:
-        return
+    # --- PLOTTING ---
+    if not nx_values: return
 
     if study_mode == "TEMPORAL_ONLY":
-        x_values = dt_values; x_label = 'Time Step $\Delta t$ (s)'; expected_order = 2 
-        filename_suffix = "_temporal_only"
+        x_plot = dt_values; x_lbl = r'Time Step $\Delta t$'
     else:
-        x_values = h_values; x_label = 'Grid Size $h$ (m)'; expected_order = 2 
-        filename_suffix = f"_{study_mode.lower()}"
+        x_plot = h_values; x_lbl = r'Grid Size $h$'
     
-    # Plot 1: Velocity
-    plot_convergence(x_values, 
-                     {'u': errors_u, 'v': errors_v, 'w': errors_w},
-                     f'Convergence: Velocity ({study_mode})',
+    # 1. Velocity
+    plot_clean_convergence(x_plot, 
+                     {'U-Component': errors_u, 'V-Component': errors_v, 'W-Component': errors_w},
+                     'Velocity Convergence',
                      f"../results/convergence_velocity{filename_suffix}.png",
-                     x_label, expected_order)
+                     x_lbl, 2, mode_label_latex)
 
-    # Plot 2: Pressure (L2)
-    plot_convergence(x_values, 
-                     {'p (L2)': errors_p},
-                     f'Convergence: Pressure L2 ({study_mode})',
+    # 2. Pressure
+    plot_clean_convergence(x_plot, 
+                     {'Pressure ($L_2$)': errors_p, 'Pressure ($L_1$)': errors_p_l1},
+                     'Pressure Convergence',
                      f"../results/convergence_pressure{filename_suffix}.png",
-                     x_label, expected_order)
+                     x_lbl, 2, mode_label_latex)
 
-    # Plot 3: Pressure (L1 - New)
-    plot_convergence(x_values, 
-                     {'p (L1)': errors_p_l1},
-                     f'Convergence: Pressure L1 ({study_mode})',
-                     f"../results/convergence_pressure_l1{filename_suffix}.png",
-                     x_label, expected_order)
-
-    # Plot 4: Pressure Gradient
-    if errors_gp_x:
-        plot_convergence(x_values, 
-                        {'GradP_x': errors_gp_x, 'GradP_y': errors_gp_y, 'GradP_z': errors_gp_z},
-                        f'Convergence: Pressure Gradient ({study_mode})',
-                        f"../results/convergence_gradP{filename_suffix}.png",
-                        x_label, expected_order)
-        
-    # Plot 5: Divergence
-    if errors_div_u and any(e > 0 for e in errors_div_u):
-        plot_convergence(x_values,
-                         {'Div U': errors_div_u},
-                         f'Convergence: Divergence ({study_mode})',
-                         f"../results/convergence_divU{filename_suffix}.png",
-                         x_label, expected_order)
-
-    print("\nAll plots saved successfully.")
+    print("\nHigh-quality plots saved.")
 
 if __name__ == "__main__":
     run_analysis()
