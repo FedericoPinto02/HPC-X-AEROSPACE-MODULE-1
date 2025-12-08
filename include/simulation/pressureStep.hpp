@@ -49,7 +49,7 @@ private:
     /**
      * @brief Wrapper that chooses whether to use Thomas (P=1) or Schur (P>1).
      */
-    std::vector<double> solveSystem(LinearSys& sys, BoundaryType bType);
+    std::vector<double> solveSystem(LinearSys& sys);
 
 
 

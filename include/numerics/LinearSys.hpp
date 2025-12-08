@@ -25,9 +25,8 @@ public:
     /**
      * @brief Constructor.
      * @param n Size of the linear system (n x n)
-     * @param boundaryType Boundary condition type, Normal or Tangent (set Normal for pressure)
      */
-    LinearSys(int n, BoundaryType boundaryType);
+    LinearSys(int n);
 
     /**
      * @brief Sets the right-hand side (rhsC) vector for the solver.
@@ -46,7 +45,7 @@ public:
     /**
      * @brief Fill the linear system for Pressure variables
      */
-    void fillSystemPressure(const Field& phi, const Axis direction);
+    void fillSystemPressure(const GridPtr& grid, const Axis direction);
 
 
     /**

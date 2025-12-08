@@ -5,8 +5,8 @@
 #include <numerics/derivatives.hpp>
 #include <vector>
 
-LinearSys::LinearSys(int n, BoundaryType boundaryType)
-        : boundaryType(boundaryType), matA(n) {
+LinearSys::LinearSys(int n)
+        : matA(n) {
     unknownX.resize(n, 0.0);
 }
 
@@ -24,7 +24,7 @@ const std::vector<double> &LinearSys::getSolution() const {
     return this->unknownX;
 }
 
-void LinearSys::fillSystemPressure(const Field &phi, const Axis direction) {
+void LinearSys::fillSystemPressure(const GridPtr &grid, const Axis direction) {
 
     std::vector<double> &diag = matA.getDiag(0);
     std::vector<double> &subdiag = matA.getDiag(-1);
@@ -35,18 +35,16 @@ void LinearSys::fillSystemPressure(const Field &phi, const Axis direction) {
                 "Dimension mismatch: rhsIncomplete must be size n.");
     }
 
-
-    const Grid &grid = phi.getGrid();
     double d = 0;
     switch (direction) {
         case Axis::X:
-            d = 1 / grid.dx / grid.dx;
+            d = 1 / grid->dx / grid->dx;
             break;
         case Axis::Y:
-            d = 1 / grid.dy / grid.dy;
+            d = 1 / grid->dy / grid->dy;
             break;
         case Axis::Z:
-            d = 1 / grid.dz / grid.dz;
+            d = 1 / grid->dz / grid->dz;
             break;
         default:
             break;
@@ -64,6 +62,10 @@ void LinearSys::fillSystemVelocity(
         const SimulationData &simData, const VectorField &eta, const VectorField &xi,
         const Axis fieldComponent, const Axis derivativeDirection,
         const size_t iStart, const size_t jStart, const size_t kStart) {
+
+    boundaryType = (fieldComponent == derivativeDirection)
+               ? BoundaryType::Normal
+               : BoundaryType::Tangent;
 
     std::vector<double> &diag = matA.getDiag(0);
     std::vector<double> &subdiag = matA.getDiag(-1);
