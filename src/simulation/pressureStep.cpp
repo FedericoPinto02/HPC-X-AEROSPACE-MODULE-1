@@ -174,7 +174,7 @@ void PressureStep::run()
             std::vector<Field::Scalar> solution = solveSystem(mySystem);
             for (size_t k = 0; k < sysDimension; k++)
             {
-                pcr(i, j, k) = 1.0 * solution[k];
+                pcr(i, j, k) = solution[k];
             }
            
         }
