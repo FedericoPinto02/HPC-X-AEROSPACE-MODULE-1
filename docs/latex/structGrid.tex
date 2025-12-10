@@ -1,0 +1,240 @@
+\hypertarget{structGrid}{}\doxysection{Grid Struct Reference}
+\label{structGrid}\index{Grid@{Grid}}
+
+
+Struct to hold grid dimensions and spacing information along each direction.  
+
+
+
+
+{\ttfamily \#include $<$Grid.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structGrid_ab12903263a3f2097858c2be593dcab19}{Grid}} (size\+\_\+t Nx\+\_\+, size\+\_\+t Ny\+\_\+, size\+\_\+t Nz\+\_\+, double dx\+\_\+, double dy\+\_\+, double dz\+\_\+)
+\begin{DoxyCompactList}\small\item\em Constructor to initialize the grid with given physical sizes and number of points. \end{DoxyCompactList}\item 
+constexpr size\+\_\+t \mbox{\hyperlink{structGrid_a70a4b43c216152caf67f3628326f1d59}{size}} ()
+\begin{DoxyCompactList}\small\item\em Getter for the total number of grid points. \end{DoxyCompactList}\item 
+constexpr size\+\_\+t \mbox{\hyperlink{structGrid_add6c8c9ea4bd708abfcbe875e85cd076}{size}} () const
+\item 
+double \mbox{\hyperlink{structGrid_a32cb639714ca32d125b906bae21573cf}{to\+\_\+x}} (double i, \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} offset, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Axis) const
+\begin{DoxyCompactList}\small\item\em Converts a grid index to a physical coordinate along the X-\/axis, considering staggering. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structGrid_a3e6e2b09c73bf2e2f1710f4baca80ec2}{to\+\_\+y}} (double j, \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} offset, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Axis) const
+\begin{DoxyCompactList}\small\item\em Converts a grid index to a physical coordinate along the Y-\/axis, considering staggering. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structGrid_a07ecb5a874d22f56f673f3b8b2b3526e}{to\+\_\+z}} (double k, \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} offset, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Axis) const
+\begin{DoxyCompactList}\small\item\em Converts a grid index to a physical coordinate along the Z-\/axis, considering staggering. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{structGrid_ad4c79bac71b59281996b784f6e538068}{Lx}}
+\begin{DoxyCompactList}\small\item\em Physical size of the grid in each direction. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structGrid_a60a2f837f0e629c85b16f120631d8324}{Ly}}
+\item 
+double \mbox{\hyperlink{structGrid_ad8f3d3e5b45ccccad6936114dad717d9}{Lz}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structGrid_a7f51b9f4262231b3e89f1b9169f83e1c}{Nx}}
+\begin{DoxyCompactList}\small\item\em Number of grid points in each direction. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{structGrid_aedbe6591ce1565b3bdece8af225e5015}{Ny}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structGrid_a5165f82a832d9b1c2bd2156c3b6439d6}{Nz}}
+\item 
+double \mbox{\hyperlink{structGrid_a1f52441a37442b054bf153cc362cf2d8}{dx}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{structGrid}{Grid}} spacing in each direction (derived from physical sizes and number of grid points). \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structGrid_ac388777840b30765f83a8a135d7b0cec}{dy}}
+\item 
+double \mbox{\hyperlink{structGrid_a229d6a7322d5d4ff446fd78468fef27b}{dz}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct to hold grid dimensions and spacing information along each direction. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structGrid_ab12903263a3f2097858c2be593dcab19}\label{structGrid_ab12903263a3f2097858c2be593dcab19}} 
+\index{Grid@{Grid}!Grid@{Grid}}
+\index{Grid@{Grid}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Grid()}{Grid()}}
+{\footnotesize\ttfamily Grid\+::\+Grid (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{Nx\+\_\+,  }\item[{size\+\_\+t}]{Ny\+\_\+,  }\item[{size\+\_\+t}]{Nz\+\_\+,  }\item[{double}]{dx\+\_\+,  }\item[{double}]{dy\+\_\+,  }\item[{double}]{dz\+\_\+ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor to initialize the grid with given physical sizes and number of points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Nx\+\_\+} & the number of grid points in the X direction \\
+\hline
+{\em Ny\+\_\+} & the number of grid points in the Y direction \\
+\hline
+{\em Nz\+\_\+} & the number of grid points in the Z direction \\
+\hline
+{\em dx\+\_\+} & the grid spacing in the X direction \\
+\hline
+{\em dy\+\_\+} & the grid spacing in the Y direction \\
+\hline
+{\em dz\+\_\+} & the grid spacing in the Z direction \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structGrid_a70a4b43c216152caf67f3628326f1d59}\label{structGrid_a70a4b43c216152caf67f3628326f1d59}} 
+\index{Grid@{Grid}!size@{size}}
+\index{size@{size}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily constexpr size\+\_\+t Grid\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+
+
+Getter for the total number of grid points. 
+
+\begin{DoxyReturn}{Returns}
+the total number of grid points 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structGrid_add6c8c9ea4bd708abfcbe875e85cd076}\label{structGrid_add6c8c9ea4bd708abfcbe875e85cd076}} 
+\index{Grid@{Grid}!size@{size}}
+\index{size@{size}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily constexpr size\+\_\+t Grid\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \mbox{\Hypertarget{structGrid_a32cb639714ca32d125b906bae21573cf}\label{structGrid_a32cb639714ca32d125b906bae21573cf}} 
+\index{Grid@{Grid}!to\_x@{to\_x}}
+\index{to\_x@{to\_x}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{to\_x()}{to\_x()}}
+{\footnotesize\ttfamily double Grid\+::to\+\_\+x (\begin{DoxyParamCaption}\item[{double}]{i,  }\item[{\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}}}]{offset,  }\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Axis }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Converts a grid index to a physical coordinate along the X-\/axis, considering staggering. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the x-\/index \\
+\hline
+{\em offset} & the staggering offset \\
+\hline
+{\em offset\+Axis} & the axis where to apply the offset \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the physical x-\/coordinate 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structGrid_a3e6e2b09c73bf2e2f1710f4baca80ec2}\label{structGrid_a3e6e2b09c73bf2e2f1710f4baca80ec2}} 
+\index{Grid@{Grid}!to\_y@{to\_y}}
+\index{to\_y@{to\_y}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{to\_y()}{to\_y()}}
+{\footnotesize\ttfamily double Grid\+::to\+\_\+y (\begin{DoxyParamCaption}\item[{double}]{j,  }\item[{\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}}}]{offset,  }\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Axis }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Converts a grid index to a physical coordinate along the Y-\/axis, considering staggering. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em j} & the y-\/index \\
+\hline
+{\em offset} & the staggering offset \\
+\hline
+{\em offset\+Axis} & the axis where to apply the offset \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the physical y-\/coordinate 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structGrid_a07ecb5a874d22f56f673f3b8b2b3526e}\label{structGrid_a07ecb5a874d22f56f673f3b8b2b3526e}} 
+\index{Grid@{Grid}!to\_z@{to\_z}}
+\index{to\_z@{to\_z}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{to\_z()}{to\_z()}}
+{\footnotesize\ttfamily double Grid\+::to\+\_\+z (\begin{DoxyParamCaption}\item[{double}]{k,  }\item[{\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}}}]{offset,  }\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Axis }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Converts a grid index to a physical coordinate along the Z-\/axis, considering staggering. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & the z-\/index \\
+\hline
+{\em offset} & the staggering offset \\
+\hline
+{\em offset\+Axis} & the axis where to apply the offset \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the physical z-\/coordinate 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structGrid_a1f52441a37442b054bf153cc362cf2d8}\label{structGrid_a1f52441a37442b054bf153cc362cf2d8}} 
+\index{Grid@{Grid}!dx@{dx}}
+\index{dx@{dx}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{dx}{dx}}
+{\footnotesize\ttfamily double Grid\+::dx}
+
+
+
+\mbox{\hyperlink{structGrid}{Grid}} spacing in each direction (derived from physical sizes and number of grid points). 
+
+\mbox{\Hypertarget{structGrid_ac388777840b30765f83a8a135d7b0cec}\label{structGrid_ac388777840b30765f83a8a135d7b0cec}} 
+\index{Grid@{Grid}!dy@{dy}}
+\index{dy@{dy}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{dy}{dy}}
+{\footnotesize\ttfamily double Grid\+::dy}
+
+\mbox{\Hypertarget{structGrid_a229d6a7322d5d4ff446fd78468fef27b}\label{structGrid_a229d6a7322d5d4ff446fd78468fef27b}} 
+\index{Grid@{Grid}!dz@{dz}}
+\index{dz@{dz}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{dz}{dz}}
+{\footnotesize\ttfamily double Grid\+::dz}
+
+\mbox{\Hypertarget{structGrid_ad4c79bac71b59281996b784f6e538068}\label{structGrid_ad4c79bac71b59281996b784f6e538068}} 
+\index{Grid@{Grid}!Lx@{Lx}}
+\index{Lx@{Lx}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Lx}{Lx}}
+{\footnotesize\ttfamily double Grid\+::\+Lx}
+
+
+
+Physical size of the grid in each direction. 
+
+\mbox{\Hypertarget{structGrid_a60a2f837f0e629c85b16f120631d8324}\label{structGrid_a60a2f837f0e629c85b16f120631d8324}} 
+\index{Grid@{Grid}!Ly@{Ly}}
+\index{Ly@{Ly}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Ly}{Ly}}
+{\footnotesize\ttfamily double Grid\+::\+Ly}
+
+\mbox{\Hypertarget{structGrid_ad8f3d3e5b45ccccad6936114dad717d9}\label{structGrid_ad8f3d3e5b45ccccad6936114dad717d9}} 
+\index{Grid@{Grid}!Lz@{Lz}}
+\index{Lz@{Lz}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Lz}{Lz}}
+{\footnotesize\ttfamily double Grid\+::\+Lz}
+
+\mbox{\Hypertarget{structGrid_a7f51b9f4262231b3e89f1b9169f83e1c}\label{structGrid_a7f51b9f4262231b3e89f1b9169f83e1c}} 
+\index{Grid@{Grid}!Nx@{Nx}}
+\index{Nx@{Nx}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Nx}{Nx}}
+{\footnotesize\ttfamily size\+\_\+t Grid\+::\+Nx}
+
+
+
+Number of grid points in each direction. 
+
+\mbox{\Hypertarget{structGrid_aedbe6591ce1565b3bdece8af225e5015}\label{structGrid_aedbe6591ce1565b3bdece8af225e5015}} 
+\index{Grid@{Grid}!Ny@{Ny}}
+\index{Ny@{Ny}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Ny}{Ny}}
+{\footnotesize\ttfamily size\+\_\+t Grid\+::\+Ny}
+
+\mbox{\Hypertarget{structGrid_a5165f82a832d9b1c2bd2156c3b6439d6}\label{structGrid_a5165f82a832d9b1c2bd2156c3b6439d6}} 
+\index{Grid@{Grid}!Nz@{Nz}}
+\index{Nz@{Nz}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Nz}{Nz}}
+{\footnotesize\ttfamily size\+\_\+t Grid\+::\+Nz}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/core/\mbox{\hyperlink{Grid_8hpp}{Grid.\+hpp}}\end{DoxyCompactItemize}

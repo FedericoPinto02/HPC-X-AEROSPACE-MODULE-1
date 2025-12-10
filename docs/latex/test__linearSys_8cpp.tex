@@ -1,0 +1,177 @@
+\hypertarget{test__linearSys_8cpp}{}\doxysection{tests/test\+\_\+linear\+Sys.cpp File Reference}
+\label{test__linearSys_8cpp}\index{tests/test\_linearSys.cpp@{tests/test\_linearSys.cpp}}
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include \char`\"{}core/\+Grid.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}core/\+Fields.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}numerics/\+Linear\+Sys.\+hpp\char`\"{}}\newline
+Include dependency graph for test\+\_\+linear\+Sys.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__linearSys_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}
+\begin{DoxyCompactList}\small\item\em Standalone test fixture for the \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{test__linearSys_8cpp_a7f90399a271d1741a0803cfc123a7f1c}{TEST\+\_\+F}} (\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}, Constructor\+\_\+\+Can\+Be\+Created)
+\item 
+\mbox{\hyperlink{test__linearSys_8cpp_a757a3b3d3f05b35f49a5e62b12f0fd05}{TEST\+\_\+F}} (\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}, Set\+Rhs\+\_\+\+Mismatched\+Rhs\+Size)
+\item 
+\mbox{\hyperlink{test__linearSys_8cpp_a8f3961ed3a60a802a8c8800fe7fde087}{TEST\+\_\+F}} (\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}, Fill\+System\+Pressure\+\_\+\+Correct\+Execution)
+\item 
+\mbox{\hyperlink{test__linearSys_8cpp_aaa66fd181674e595d4c65d1557593bc5}{TEST\+\_\+F}} (\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}, Fill\+System\+Velocity\+\_\+\+Correct\+Execution)
+\item 
+\mbox{\hyperlink{test__linearSys_8cpp_a6f533bb63836f6b9d9f9ae8b66f1cca3}{TEST\+\_\+F}} (\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}, Thoma\+Solver\+\_\+\+Calculates\+Known\+Solution)
+\begin{DoxyCompactList}\small\item\em Tests the Thoma\+Solver with a manually constructed system. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{test__linearSys_8cpp_a52665d68dfb3bdcff079e0710642d86e}{TEST\+\_\+F}} (\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}, Constructor\+\_\+\+Throws\+On\+Invalid\+Size)
+\begin{DoxyCompactList}\small\item\em Tests the constructor\textquotesingle{}s handling of invalid (zero or negative) sizes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{test__linearSys_8cpp_ac1265420e0f1a490468ba3b41691b761}{TEST\+\_\+F}} (\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}, Get\+Solution\+\_\+\+Returns\+Correct\+Sized\+Vector)
+\begin{DoxyCompactList}\small\item\em Tests the get\+Solution() method on a newly constructed system. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{test__linearSys_8cpp_a22afa14b4b5037b16827c441e1757e84}{TEST\+\_\+F}} (\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}, Thoma\+Solver\+\_\+\+Calculates\+Different\+Solution)
+\begin{DoxyCompactList}\small\item\em Tests the Thoma\+Solver with the same matrix but a different RHS. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{test__linearSys_8cpp_abcb1dcc8f8115babc1bc92ec615ccc56}{TEST\+\_\+F}} (\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}, Set\+Rhs\+\_\+\+Mismatched\+Rhs\+Size\+\_\+\+Empty\+Vector)
+\begin{DoxyCompactList}\small\item\em Tests set\+Rhs with another mismatched size (empty vector). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{test__linearSys_8cpp_a7f90399a271d1741a0803cfc123a7f1c}\label{test__linearSys_8cpp_a7f90399a271d1741a0803cfc123a7f1c}} 
+\index{test\_linearSys.cpp@{test\_linearSys.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_linearSys.cpp@{test\_linearSys.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [1/9]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}}]{,  }\item[{Constructor\+\_\+\+Can\+Be\+Created}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{test__linearSys_8cpp_a52665d68dfb3bdcff079e0710642d86e}\label{test__linearSys_8cpp_a52665d68dfb3bdcff079e0710642d86e}} 
+\index{test\_linearSys.cpp@{test\_linearSys.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_linearSys.cpp@{test\_linearSys.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [2/9]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}}]{,  }\item[{Constructor\+\_\+\+Throws\+On\+Invalid\+Size}]{ }\end{DoxyParamCaption})}
+
+
+
+Tests the constructor\textquotesingle{}s handling of invalid (zero or negative) sizes. 
+
+The \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} class should not be constructible with a size less than or equal to zero. It should throw an exception. \mbox{\Hypertarget{test__linearSys_8cpp_a8f3961ed3a60a802a8c8800fe7fde087}\label{test__linearSys_8cpp_a8f3961ed3a60a802a8c8800fe7fde087}} 
+\index{test\_linearSys.cpp@{test\_linearSys.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_linearSys.cpp@{test\_linearSys.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [3/9]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}}]{,  }\item[{Fill\+System\+Pressure\+\_\+\+Correct\+Execution}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__linearSys_8cpp_a8f3961ed3a60a802a8c8800fe7fde087_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__linearSys_8cpp_aaa66fd181674e595d4c65d1557593bc5}\label{test__linearSys_8cpp_aaa66fd181674e595d4c65d1557593bc5}} 
+\index{test\_linearSys.cpp@{test\_linearSys.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_linearSys.cpp@{test\_linearSys.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [4/9]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}}]{,  }\item[{Fill\+System\+Velocity\+\_\+\+Correct\+Execution}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__linearSys_8cpp_aaa66fd181674e595d4c65d1557593bc5_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__linearSys_8cpp_ac1265420e0f1a490468ba3b41691b761}\label{test__linearSys_8cpp_ac1265420e0f1a490468ba3b41691b761}} 
+\index{test\_linearSys.cpp@{test\_linearSys.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_linearSys.cpp@{test\_linearSys.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [5/9]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}}]{,  }\item[{Get\+Solution\+\_\+\+Returns\+Correct\+Sized\+Vector}]{ }\end{DoxyParamCaption})}
+
+
+
+Tests the get\+Solution() method on a newly constructed system. 
+
+When a \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} object is first created, the internal solution vector (unknownX) should exist, have the correct size \textquotesingle{}n\textquotesingle{}, and be initialized (e.\+g., to all zeros). Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=293pt]{test__linearSys_8cpp_ac1265420e0f1a490468ba3b41691b761_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__linearSys_8cpp_a757a3b3d3f05b35f49a5e62b12f0fd05}\label{test__linearSys_8cpp_a757a3b3d3f05b35f49a5e62b12f0fd05}} 
+\index{test\_linearSys.cpp@{test\_linearSys.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_linearSys.cpp@{test\_linearSys.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [6/9]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}}]{,  }\item[{Set\+Rhs\+\_\+\+Mismatched\+Rhs\+Size}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__linearSys_8cpp_a757a3b3d3f05b35f49a5e62b12f0fd05_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__linearSys_8cpp_abcb1dcc8f8115babc1bc92ec615ccc56}\label{test__linearSys_8cpp_abcb1dcc8f8115babc1bc92ec615ccc56}} 
+\index{test\_linearSys.cpp@{test\_linearSys.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_linearSys.cpp@{test\_linearSys.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [7/9]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}}]{,  }\item[{Set\+Rhs\+\_\+\+Mismatched\+Rhs\+Size\+\_\+\+Empty\+Vector}]{ }\end{DoxyParamCaption})}
+
+
+
+Tests set\+Rhs with another mismatched size (empty vector). 
+
+This complements the existing \textquotesingle{}Set\+Rhs\+\_\+\+Mismatched\+Rhs\+Size\textquotesingle{} test by checking the edge case of an empty vector. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__linearSys_8cpp_abcb1dcc8f8115babc1bc92ec615ccc56_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__linearSys_8cpp_a22afa14b4b5037b16827c441e1757e84}\label{test__linearSys_8cpp_a22afa14b4b5037b16827c441e1757e84}} 
+\index{test\_linearSys.cpp@{test\_linearSys.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_linearSys.cpp@{test\_linearSys.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [8/9]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}}]{,  }\item[{Thoma\+Solver\+\_\+\+Calculates\+Different\+Solution}]{ }\end{DoxyParamCaption})}
+
+
+
+Tests the Thoma\+Solver with the same matrix but a different RHS. 
+
+This test uses the same 3x3 matrix from \textquotesingle{}setup\+Test\+Matrix\textquotesingle{} but provides a different RHS vector to produce a different known solution. Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__linearSys_8cpp_a22afa14b4b5037b16827c441e1757e84_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__linearSys_8cpp_a6f533bb63836f6b9d9f9ae8b66f1cca3}\label{test__linearSys_8cpp_a6f533bb63836f6b9d9f9ae8b66f1cca3}} 
+\index{test\_linearSys.cpp@{test\_linearSys.cpp}!TEST\_F@{TEST\_F}}
+\index{TEST\_F@{TEST\_F}!test\_linearSys.cpp@{test\_linearSys.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_F()}{TEST\_F()}\hspace{0.1cm}{\footnotesize\ttfamily [9/9]}}
+{\footnotesize\ttfamily TEST\+\_\+F (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}}]{,  }\item[{Thoma\+Solver\+\_\+\+Calculates\+Known\+Solution}]{ }\end{DoxyParamCaption})}
+
+
+
+Tests the Thoma\+Solver with a manually constructed system. 
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__linearSys_8cpp_a6f533bb63836f6b9d9f9ae8b66f1cca3_cgraph}
+\end{center}
+\end{figure}

@@ -1,0 +1,16 @@
+<map id="include/numerics/SchurSequentialSolver.hpp" name="include/numerics/SchurSequentialSolver.hpp">
+<area shape="rect" id="node1" title=" " alt="" coords="56,5,298,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="12,319,75,345"/>
+<area shape="rect" id="node3" title=" " alt="" coords="616,319,693,345"/>
+<area shape="rect" id="node4" href="$TridiagMat_8hpp.html" title=" " alt="" coords="27,169,178,196"/>
+<area shape="rect" id="node7" href="$LinearSys_8hpp.html" title=" " alt="" coords="174,95,351,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="74,244,136,271"/>
+<area shape="rect" id="node6" title=" " alt="" coords="99,319,186,345"/>
+<area shape="rect" id="node8" href="$Fields_8hpp.html" title=" " alt="" coords="364,244,484,271"/>
+<area shape="rect" id="node13" href="$SimulationContext_8hpp.html" title=" " alt="" coords="399,169,643,196"/>
+<area shape="rect" id="node9" title=" " alt="" coords="394,319,480,345"/>
+<area shape="rect" id="node10" title=" " alt="" coords="322,393,392,420"/>
+<area shape="rect" id="node11" title=" " alt="" coords="504,319,591,345"/>
+<area shape="rect" id="node12" href="$Grid_8hpp.html" title=" " alt="" coords="210,319,320,345"/>
+<area shape="rect" id="node14" title=" " alt="" coords="558,244,617,271"/>
+</map>

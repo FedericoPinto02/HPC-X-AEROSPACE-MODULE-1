@@ -1,0 +1,300 @@
+\hypertarget{classLinearSys}{}\doxysection{Linear\+Sys Class Reference}
+\label{classLinearSys}\index{LinearSys@{LinearSys}}
+
+
+Manages and solves a tridiagonal linear system (Ax = b) used for pressure and velocity steps.  
+
+
+
+
+{\ttfamily \#include $<$Linear\+Sys.\+hpp$>$}
+
+
+
+Collaboration diagram for Linear\+Sys\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=148pt]{classLinearSys__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classLinearSys_a6bded7c3b5e0e72c65ad49ddef18c0f1}{Linear\+Sys}} (int n, \mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}} \mbox{\hyperlink{classLinearSys_a08edd648862dccf619a7fc358600e521}{boundary\+Type}})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classLinearSys_a257096829bb54fc3e45084b5c94beaa8}{set\+Rhs}} (const std\+::vector$<$ double $>$ \&new\+Rhs)
+\begin{DoxyCompactList}\small\item\em Sets the right-\/hand side (rhsC) vector for the solver. \end{DoxyCompactList}\item 
+const std\+::vector$<$ double $>$ \& \mbox{\hyperlink{classLinearSys_ab5e1dc2bef1794dec1b232f2fbc5b077}{get\+Solution}} () const
+\begin{DoxyCompactList}\small\item\em Gets the solution vector (unknownX) computed by the solver. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classLinearSys_a4a1b948b08605b422212a8b79dd8737d}{fill\+System\+Pressure}} (const \mbox{\hyperlink{classField}{Field}} \&phi, const \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} direction)
+\begin{DoxyCompactList}\small\item\em Fill the linear system for Pressure variables. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5}{fill\+System\+Velocity}} (const \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \&sim\+Data, const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&xi, const \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} field\+Component, const \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} derivative\+Direction, const size\+\_\+t i\+Start, const size\+\_\+t j\+Start, const size\+\_\+t k\+Start)
+\begin{DoxyCompactList}\small\item\em Fill the linear system for Velocity variables. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classTridiagMat}{Tridiag\+Mat}} \& \mbox{\hyperlink{classLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac}{get\+Matrix}} () const
+\begin{DoxyCompactList}\small\item\em Getter to access the internal matrix (needed for Schur). \end{DoxyCompactList}\item 
+const std\+::vector$<$ double $>$ \& \mbox{\hyperlink{classLinearSys_af0256caf9d237026696a6ca545503d7a}{get\+Rhs}} () const
+\begin{DoxyCompactList}\small\item\em Getter to access the internal RHS (modified by fill\+System). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classLinearSys_a60600d4d91ff996ab642bbc424f16525}{Thoma\+Solver}} ()
+\begin{DoxyCompactList}\small\item\em Solve the linear system. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTridiagMat}{Tridiag\+Mat}} \mbox{\hyperlink{classLinearSys_a5c607c5d06a11f514fd425008f739381}{matA}}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classLinearSys_ae7286b8c95e02b0e82ed098c54217ef1}{rhsC}}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classLinearSys_a924a43fea62e845e94f308541acc182e}{unknownX}}
+\item 
+\mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}} \mbox{\hyperlink{classLinearSys_a08edd648862dccf619a7fc358600e521}{boundary\+Type}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classLinearSys_a7dae3f3c163076becbf389249a47d29b}{Linear\+Sys\+Test\+Fixture}}
+\item 
+class \mbox{\hyperlink{classLinearSys_a16601a9cdc4d2b8ae4692035cefe501d}{Schur\+Solver\+Test\+Fixture}}
+\item 
+class \mbox{\hyperlink{classLinearSys_a748e2c9fb0527c6ba8c840aaf91501f8}{Schur\+Sequential\+Solver}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages and solves a tridiagonal linear system (Ax = b) used for pressure and velocity steps. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classLinearSys_a6bded7c3b5e0e72c65ad49ddef18c0f1}\label{classLinearSys_a6bded7c3b5e0e72c65ad49ddef18c0f1}} 
+\index{LinearSys@{LinearSys}!LinearSys@{LinearSys}}
+\index{LinearSys@{LinearSys}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{LinearSys()}{LinearSys()}}
+{\footnotesize\ttfamily Linear\+Sys\+::\+Linear\+Sys (\begin{DoxyParamCaption}\item[{int}]{n,  }\item[{\mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}}}]{boundary\+Type }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & Size of the linear system (n x n) \\
+\hline
+{\em boundary\+Type} & Boundary condition type, Normal or Tangent (set Normal for pressure) \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classLinearSys_a4a1b948b08605b422212a8b79dd8737d}\label{classLinearSys_a4a1b948b08605b422212a8b79dd8737d}} 
+\index{LinearSys@{LinearSys}!fillSystemPressure@{fillSystemPressure}}
+\index{fillSystemPressure@{fillSystemPressure}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{fillSystemPressure()}{fillSystemPressure()}}
+{\footnotesize\ttfamily void Linear\+Sys\+::fill\+System\+Pressure (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{phi,  }\item[{const \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{direction }\end{DoxyParamCaption})}
+
+
+
+Fill the linear system for Pressure variables. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLinearSys_a4a1b948b08605b422212a8b79dd8737d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLinearSys_a4a1b948b08605b422212a8b79dd8737d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5}\label{classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5}} 
+\index{LinearSys@{LinearSys}!fillSystemVelocity@{fillSystemVelocity}}
+\index{fillSystemVelocity@{fillSystemVelocity}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{fillSystemVelocity()}{fillSystemVelocity()}}
+{\footnotesize\ttfamily void Linear\+Sys\+::fill\+System\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \&}]{sim\+Data,  }\item[{const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{xi,  }\item[{const \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{field\+Component,  }\item[{const \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{derivative\+Direction,  }\item[{const size\+\_\+t}]{i\+Start,  }\item[{const size\+\_\+t}]{j\+Start,  }\item[{const size\+\_\+t}]{k\+Start }\end{DoxyParamCaption})}
+
+
+
+Fill the linear system for Velocity variables. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac}\label{classLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac}} 
+\index{LinearSys@{LinearSys}!getMatrix@{getMatrix}}
+\index{getMatrix@{getMatrix}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{getMatrix()}{getMatrix()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classTridiagMat}{Tridiag\+Mat}}\& Linear\+Sys\+::get\+Matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter to access the internal matrix (needed for Schur). 
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLinearSys_af0256caf9d237026696a6ca545503d7a}\label{classLinearSys_af0256caf9d237026696a6ca545503d7a}} 
+\index{LinearSys@{LinearSys}!getRhs@{getRhs}}
+\index{getRhs@{getRhs}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{getRhs()}{getRhs()}}
+{\footnotesize\ttfamily const std\+::vector$<$double$>$\& Linear\+Sys\+::get\+Rhs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter to access the internal RHS (modified by fill\+System). 
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLinearSys_af0256caf9d237026696a6ca545503d7a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLinearSys_ab5e1dc2bef1794dec1b232f2fbc5b077}\label{classLinearSys_ab5e1dc2bef1794dec1b232f2fbc5b077}} 
+\index{LinearSys@{LinearSys}!getSolution@{getSolution}}
+\index{getSolution@{getSolution}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{getSolution()}{getSolution()}}
+{\footnotesize\ttfamily const std\+::vector$<$ double $>$ \& Linear\+Sys\+::get\+Solution (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the solution vector (unknownX) computed by the solver. 
+
+\begin{DoxyReturn}{Returns}
+A const reference to the solution vector. 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLinearSys_ab5e1dc2bef1794dec1b232f2fbc5b077_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLinearSys_a257096829bb54fc3e45084b5c94beaa8}\label{classLinearSys_a257096829bb54fc3e45084b5c94beaa8}} 
+\index{LinearSys@{LinearSys}!setRhs@{setRhs}}
+\index{setRhs@{setRhs}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{setRhs()}{setRhs()}}
+{\footnotesize\ttfamily void Linear\+Sys\+::set\+Rhs (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{new\+Rhs }\end{DoxyParamCaption})}
+
+
+
+Sets the right-\/hand side (rhsC) vector for the solver. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Rhs} & The vector to be copied into the internal rhsC. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & if new\+Rhs size does not match system size. \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=329pt]{classLinearSys_a257096829bb54fc3e45084b5c94beaa8_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLinearSys_a257096829bb54fc3e45084b5c94beaa8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLinearSys_a60600d4d91ff996ab642bbc424f16525}\label{classLinearSys_a60600d4d91ff996ab642bbc424f16525}} 
+\index{LinearSys@{LinearSys}!ThomaSolver@{ThomaSolver}}
+\index{ThomaSolver@{ThomaSolver}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{ThomaSolver()}{ThomaSolver()}}
+{\footnotesize\ttfamily void Linear\+Sys\+::\+Thoma\+Solver (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solve the linear system. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLinearSys_a60600d4d91ff996ab642bbc424f16525_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLinearSys_a60600d4d91ff996ab642bbc424f16525_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classLinearSys_a7dae3f3c163076becbf389249a47d29b}\label{classLinearSys_a7dae3f3c163076becbf389249a47d29b}} 
+\index{LinearSys@{LinearSys}!LinearSysTestFixture@{LinearSysTestFixture}}
+\index{LinearSysTestFixture@{LinearSysTestFixture}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{LinearSysTestFixture}{LinearSysTestFixture}}
+{\footnotesize\ttfamily friend class Linear\+Sys\+Test\+Fixture\hspace{0.3cm}{\ttfamily [friend]}}
+
+\mbox{\Hypertarget{classLinearSys_a748e2c9fb0527c6ba8c840aaf91501f8}\label{classLinearSys_a748e2c9fb0527c6ba8c840aaf91501f8}} 
+\index{LinearSys@{LinearSys}!SchurSequentialSolver@{SchurSequentialSolver}}
+\index{SchurSequentialSolver@{SchurSequentialSolver}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{SchurSequentialSolver}{SchurSequentialSolver}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classSchurSequentialSolver}{Schur\+Sequential\+Solver}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+\mbox{\Hypertarget{classLinearSys_a16601a9cdc4d2b8ae4692035cefe501d}\label{classLinearSys_a16601a9cdc4d2b8ae4692035cefe501d}} 
+\index{LinearSys@{LinearSys}!SchurSolverTestFixture@{SchurSolverTestFixture}}
+\index{SchurSolverTestFixture@{SchurSolverTestFixture}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{SchurSolverTestFixture}{SchurSolverTestFixture}}
+{\footnotesize\ttfamily friend class Schur\+Solver\+Test\+Fixture\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classLinearSys_a08edd648862dccf619a7fc358600e521}\label{classLinearSys_a08edd648862dccf619a7fc358600e521}} 
+\index{LinearSys@{LinearSys}!boundaryType@{boundaryType}}
+\index{boundaryType@{boundaryType}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{boundaryType}{boundaryType}}
+{\footnotesize\ttfamily \mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}} Linear\+Sys\+::boundary\+Type\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classLinearSys_a5c607c5d06a11f514fd425008f739381}\label{classLinearSys_a5c607c5d06a11f514fd425008f739381}} 
+\index{LinearSys@{LinearSys}!matA@{matA}}
+\index{matA@{matA}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{matA}{matA}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classTridiagMat}{Tridiag\+Mat}} Linear\+Sys\+::matA\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classLinearSys_ae7286b8c95e02b0e82ed098c54217ef1}\label{classLinearSys_ae7286b8c95e02b0e82ed098c54217ef1}} 
+\index{LinearSys@{LinearSys}!rhsC@{rhsC}}
+\index{rhsC@{rhsC}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{rhsC}{rhsC}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Linear\+Sys\+::rhsC\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classLinearSys_a924a43fea62e845e94f308541acc182e}\label{classLinearSys_a924a43fea62e845e94f308541acc182e}} 
+\index{LinearSys@{LinearSys}!unknownX@{unknownX}}
+\index{unknownX@{unknownX}!LinearSys@{LinearSys}}
+\doxysubsubsection{\texorpdfstring{unknownX}{unknownX}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Linear\+Sys\+::unknownX\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/numerics/\mbox{\hyperlink{LinearSys_8hpp}{Linear\+Sys.\+hpp}}\item 
+src/numerics/\mbox{\hyperlink{LinearSys_8cpp}{Linear\+Sys.\+cpp}}\end{DoxyCompactItemize}

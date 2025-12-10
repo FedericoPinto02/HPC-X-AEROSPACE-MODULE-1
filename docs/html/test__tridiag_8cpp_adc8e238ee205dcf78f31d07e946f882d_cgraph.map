@@ -1,0 +1,7 @@
+<map id="TEST" name="TEST">
+<area shape="rect" id="node1" title=" " alt="" coords="5,85,60,112"/>
+<area shape="rect" id="node2" href="$classTridiagMat.html#abb999fb0247f2d43586e929d109b47c2" title="Fill the matrix." alt="" coords="139,5,278,32"/>
+<area shape="rect" id="node3" href="$classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="134,56,283,83"/>
+<area shape="rect" id="node4" href="$classTridiagMat.html#a3a114620314b9cdf5fedaa6c92a850f7" title="Get the first element from the diagonal w." alt="" coords="108,107,309,149"/>
+<area shape="rect" id="node5" href="$classTridiagMat.html#ac142babd500db9b2cff732bcf8e66a54" title="Get the last element from the diagonal w." alt="" coords="109,173,309,214"/>
+</map>

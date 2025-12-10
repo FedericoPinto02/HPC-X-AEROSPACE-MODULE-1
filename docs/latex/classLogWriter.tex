@@ -1,0 +1,176 @@
+\hypertarget{classLogWriter}{}\doxysection{Log\+Writer Class Reference}
+\label{classLogWriter}\index{LogWriter@{LogWriter}}
+
+
+Handles console and file logging.  
+
+
+
+
+{\ttfamily \#include $<$log\+Writer.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classLogWriter_ac4f6000d7a395160be2aa433865e9c28}{Log\+Writer}} (const \mbox{\hyperlink{structLoggingSettings}{Logging\+Settings}} \&log\+Settings)
+\item 
+void \mbox{\hyperlink{classLogWriter_a2fecac5d4c69afc68e441fce63b9298f}{write}} (const std\+::string \&msg)
+\item 
+void \mbox{\hyperlink{classLogWriter_abfbe02b4d8a36520ab748a8def1a3326}{print\+Simulation\+Header}} (const \mbox{\hyperlink{structInputData}{Input\+Data}} \&input, const \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \&sim\+Data)
+\item 
+void \mbox{\hyperlink{classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2}{print\+Step\+Header}} ()
+\item 
+void \mbox{\hyperlink{classLogWriter_a1d66aebf8de216f3a0b9fd0b023c5149}{print\+Step\+Progress}} (int step, double time, double dt, double elapsed\+Sec, bool is\+Output\+Step)
+\item 
+void \mbox{\hyperlink{classLogWriter_afa1aee893d0731d546986049b901ca3c}{print\+Final\+Summary}} (double total\+Cpu\+Time\+Sec, double mean\+Cpu\+Time\+Per\+Cell\+Timestep, unsigned int total\+Steps, const unsigned int total\+Cells)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{classLogWriter_a1a9dcc3f29001d9cdd621c2458a6dff3}{separator}} (int width=60, char c=\textquotesingle{}=\textquotesingle{}) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classLogWriter_afe54f3c3eac30ecc20829282c3f348ce}{log\+To\+File\+\_\+}}
+\item 
+bool \mbox{\hyperlink{classLogWriter_a6276f98ffda5bf74a333f21801efba47}{log\+To\+Console\+\_\+}}
+\item 
+std\+::string \mbox{\hyperlink{classLogWriter_a1499b33fb3fc3b6689af618bb385e1ef}{log\+Dir\+\_\+}}
+\item 
+std\+::string \mbox{\hyperlink{classLogWriter_a0fe1469c0b2444c71b06b8a51fcba32c}{filename\+\_\+}}
+\item 
+std\+::ofstream \mbox{\hyperlink{classLogWriter_a5fe6d6a356f1f25dbd9f43d16093b938}{file\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Handles console and file logging. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classLogWriter_ac4f6000d7a395160be2aa433865e9c28}\label{classLogWriter_ac4f6000d7a395160be2aa433865e9c28}} 
+\index{LogWriter@{LogWriter}!LogWriter@{LogWriter}}
+\index{LogWriter@{LogWriter}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{LogWriter()}{LogWriter()}}
+{\footnotesize\ttfamily Log\+Writer\+::\+Log\+Writer (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structLoggingSettings}{Logging\+Settings}} \&}]{log\+Settings }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classLogWriter_afa1aee893d0731d546986049b901ca3c}\label{classLogWriter_afa1aee893d0731d546986049b901ca3c}} 
+\index{LogWriter@{LogWriter}!printFinalSummary@{printFinalSummary}}
+\index{printFinalSummary@{printFinalSummary}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{printFinalSummary()}{printFinalSummary()}}
+{\footnotesize\ttfamily void Log\+Writer\+::print\+Final\+Summary (\begin{DoxyParamCaption}\item[{double}]{total\+Cpu\+Time\+Sec,  }\item[{double}]{mean\+Cpu\+Time\+Per\+Cell\+Timestep,  }\item[{unsigned int}]{total\+Steps,  }\item[{const unsigned int}]{total\+Cells }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLogWriter_afa1aee893d0731d546986049b901ca3c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLogWriter_abfbe02b4d8a36520ab748a8def1a3326}\label{classLogWriter_abfbe02b4d8a36520ab748a8def1a3326}} 
+\index{LogWriter@{LogWriter}!printSimulationHeader@{printSimulationHeader}}
+\index{printSimulationHeader@{printSimulationHeader}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{printSimulationHeader()}{printSimulationHeader()}}
+{\footnotesize\ttfamily void Log\+Writer\+::print\+Simulation\+Header (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structInputData}{Input\+Data}} \&}]{input,  }\item[{const \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \&}]{sim\+Data }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLogWriter_abfbe02b4d8a36520ab748a8def1a3326_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2}\label{classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2}} 
+\index{LogWriter@{LogWriter}!printStepHeader@{printStepHeader}}
+\index{printStepHeader@{printStepHeader}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{printStepHeader()}{printStepHeader()}}
+{\footnotesize\ttfamily void Log\+Writer\+::print\+Step\+Header (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLogWriter_a1d66aebf8de216f3a0b9fd0b023c5149}\label{classLogWriter_a1d66aebf8de216f3a0b9fd0b023c5149}} 
+\index{LogWriter@{LogWriter}!printStepProgress@{printStepProgress}}
+\index{printStepProgress@{printStepProgress}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{printStepProgress()}{printStepProgress()}}
+{\footnotesize\ttfamily void Log\+Writer\+::print\+Step\+Progress (\begin{DoxyParamCaption}\item[{int}]{step,  }\item[{double}]{time,  }\item[{double}]{dt,  }\item[{double}]{elapsed\+Sec,  }\item[{bool}]{is\+Output\+Step }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLogWriter_a1d66aebf8de216f3a0b9fd0b023c5149_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLogWriter_a1a9dcc3f29001d9cdd621c2458a6dff3}\label{classLogWriter_a1a9dcc3f29001d9cdd621c2458a6dff3}} 
+\index{LogWriter@{LogWriter}!separator@{separator}}
+\index{separator@{separator}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{separator()}{separator()}}
+{\footnotesize\ttfamily std\+::string Log\+Writer\+::separator (\begin{DoxyParamCaption}\item[{int}]{width = {\ttfamily 60},  }\item[{char}]{c = {\ttfamily \textquotesingle{}=\textquotesingle{}} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLogWriter_a1a9dcc3f29001d9cdd621c2458a6dff3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLogWriter_a2fecac5d4c69afc68e441fce63b9298f}\label{classLogWriter_a2fecac5d4c69afc68e441fce63b9298f}} 
+\index{LogWriter@{LogWriter}!write@{write}}
+\index{write@{write}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily void Log\+Writer\+::write (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLogWriter_a2fecac5d4c69afc68e441fce63b9298f_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classLogWriter_a5fe6d6a356f1f25dbd9f43d16093b938}\label{classLogWriter_a5fe6d6a356f1f25dbd9f43d16093b938}} 
+\index{LogWriter@{LogWriter}!file\_@{file\_}}
+\index{file\_@{file\_}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{file\_}{file\_}}
+{\footnotesize\ttfamily std\+::ofstream Log\+Writer\+::file\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classLogWriter_a0fe1469c0b2444c71b06b8a51fcba32c}\label{classLogWriter_a0fe1469c0b2444c71b06b8a51fcba32c}} 
+\index{LogWriter@{LogWriter}!filename\_@{filename\_}}
+\index{filename\_@{filename\_}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{filename\_}{filename\_}}
+{\footnotesize\ttfamily std\+::string Log\+Writer\+::filename\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classLogWriter_a1499b33fb3fc3b6689af618bb385e1ef}\label{classLogWriter_a1499b33fb3fc3b6689af618bb385e1ef}} 
+\index{LogWriter@{LogWriter}!logDir\_@{logDir\_}}
+\index{logDir\_@{logDir\_}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{logDir\_}{logDir\_}}
+{\footnotesize\ttfamily std\+::string Log\+Writer\+::log\+Dir\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classLogWriter_a6276f98ffda5bf74a333f21801efba47}\label{classLogWriter_a6276f98ffda5bf74a333f21801efba47}} 
+\index{LogWriter@{LogWriter}!logToConsole\_@{logToConsole\_}}
+\index{logToConsole\_@{logToConsole\_}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{logToConsole\_}{logToConsole\_}}
+{\footnotesize\ttfamily bool Log\+Writer\+::log\+To\+Console\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classLogWriter_afe54f3c3eac30ecc20829282c3f348ce}\label{classLogWriter_afe54f3c3eac30ecc20829282c3f348ce}} 
+\index{LogWriter@{LogWriter}!logToFile\_@{logToFile\_}}
+\index{logToFile\_@{logToFile\_}!LogWriter@{LogWriter}}
+\doxysubsubsection{\texorpdfstring{logToFile\_}{logToFile\_}}
+{\footnotesize\ttfamily bool Log\+Writer\+::log\+To\+File\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/io/\mbox{\hyperlink{logWriter_8hpp}{log\+Writer.\+hpp}}\item 
+src/io/\mbox{\hyperlink{logWriter_8cpp}{log\+Writer.\+cpp}}\end{DoxyCompactItemize}

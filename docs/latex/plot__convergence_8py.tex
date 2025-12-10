@@ -1,0 +1,41 @@
+\hypertarget{plot__convergence_8py}{}\doxysection{scripts/plot\+\_\+convergence.py File Reference}
+\label{plot__convergence_8py}\index{scripts/plot\_convergence.py@{scripts/plot\_convergence.py}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespaceplot__convergence}{plot\+\_\+convergence}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{namespaceplot__convergence_a87393486292e635e9ba0f41aa3187f9b}{plot\+\_\+convergence.\+get\+\_\+step\+\_\+from\+\_\+filename}} (str filepath)
+\item 
+np.\+ndarray \mbox{\hyperlink{namespaceplot__convergence_a9d194ce0680046fcab4dc84a30985795}{plot\+\_\+convergence.\+compute\+\_\+analytical\+\_\+u\+\_\+at\+\_\+x\+\_\+faces}} (np.\+ndarray points, float t, float h)
+\item 
+np.\+ndarray \mbox{\hyperlink{namespaceplot__convergence_a6c2284685104840a9071e4012cf24cd4}{plot\+\_\+convergence.\+compute\+\_\+analytical\+\_\+v\+\_\+at\+\_\+y\+\_\+faces}} (np.\+ndarray points, float t, float h)
+\item 
+np.\+ndarray \mbox{\hyperlink{namespaceplot__convergence_aeaba55980f3984a336b6a0808e21f13b}{plot\+\_\+convergence.\+compute\+\_\+analytical\+\_\+w\+\_\+at\+\_\+z\+\_\+faces}} (np.\+ndarray points, float t, float h)
+\item 
+np.\+ndarray \mbox{\hyperlink{namespaceplot__convergence_afefebe4bf93b54608bcc4eb36d03d587}{plot\+\_\+convergence.\+compute\+\_\+analytical\+\_\+p\+\_\+at\+\_\+centers}} (np.\+ndarray points, float t)
+\item 
+float \mbox{\hyperlink{namespaceplot__convergence_a86f4b7292316d5209cdb9f9a8729a3a1}{plot\+\_\+convergence.\+calculate\+\_\+l2\+\_\+rms}} (np.\+ndarray data)
+\item 
+float \mbox{\hyperlink{namespaceplot__convergence_a29cf4ff6696e41332aaa9418b382885e}{plot\+\_\+convergence.\+calculate\+\_\+l2\+\_\+rms\+\_\+error}} (np.\+ndarray field\+\_\+numerical, np.\+ndarray field\+\_\+analytical)
+\item 
+def \mbox{\hyperlink{namespaceplot__convergence_a73e0b3f40b0a1731c5159499b15d4066}{plot\+\_\+convergence.\+plot\+\_\+convergence}} (list h\+\_\+values, dict error\+\_\+data, str title, str save\+\_\+filename)
+\item 
+def \mbox{\hyperlink{namespaceplot__convergence_a619471dc6a944337f477b6a70bb21773}{plot\+\_\+convergence.\+run\+\_\+analysis}} (custom\+\_\+simulations=None)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+list \mbox{\hyperlink{namespaceplot__convergence_a0b267e5e75f04fd7a7c8c883df64be8b}{plot\+\_\+convergence.\+SIMULATIONS}}
+\item 
+int \mbox{\hyperlink{namespaceplot__convergence_ac69ad50acd795edd6bb46dbfd98082da}{plot\+\_\+convergence.\+DOMAIN\+\_\+\+LENGTH\+\_\+X}} = 6
+\item 
+float \mbox{\hyperlink{namespaceplot__convergence_af7596294482c5833f5b57644f839427e}{plot\+\_\+convergence.\+DT}} = 0.\+001
+\item 
+string \mbox{\hyperlink{namespaceplot__convergence_a8a5d9e2af61f78e3bc89b22c898bf8ec}{plot\+\_\+convergence.\+VELOCITY\+\_\+\+FIELD\+\_\+\+NAME}} = \char`\"{}velocity\char`\"{}
+\item 
+string \mbox{\hyperlink{namespaceplot__convergence_a6b7feb52a97db1f3fdfee7b06c98f47e}{plot\+\_\+convergence.\+PRESSURE\+\_\+\+FIELD\+\_\+\+NAME}} = \char`\"{}pressure\char`\"{}
+\end{DoxyCompactItemize}

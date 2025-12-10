@@ -1,0 +1,149 @@
+\hypertarget{classSchurSolverTestFixture}{}\doxysection{Schur\+Solver\+Test\+Fixture Class Reference}
+\label{classSchurSolverTestFixture}\index{SchurSolverTestFixture@{SchurSolverTestFixture}}
+
+
+Inheritance diagram for Schur\+Solver\+Test\+Fixture\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=219pt]{classSchurSolverTestFixture__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Schur\+Solver\+Test\+Fixture\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=219pt]{classSchurSolverTestFixture__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classSchurSolverTestFixture_a80901727712a0633b5e618fe9c75536e}{create\+Test\+Matrix}} (\mbox{\hyperlink{classTridiagMat}{Tridiag\+Mat}} \&mat)
+\item 
+void \mbox{\hyperlink{classSchurSolverTestFixture_a59810a44ac8581ddc37a1b945fa88fb8}{create\+Test\+Rhs}} (std\+::vector$<$ double $>$ \&rhs)
+\item 
+void \mbox{\hyperlink{classSchurSolverTestFixture_acae7e087fd77ab1bb1309257e520ac76}{Set\+Up}} () override
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classSchurSolverTestFixture_a1bc5e62d6c1cf89af157ee8a93549c62}{N\+\_\+global}}
+\item 
+int \mbox{\hyperlink{classSchurSolverTestFixture_ad5cd8cb9486b6f1ed0a5c5b1ff33bb43}{P\+\_\+domains}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classTridiagMat}{Tridiag\+Mat}} $>$ \mbox{\hyperlink{classSchurSolverTestFixture_a7764ad9e0350b64b7bb32a05bc7547c7}{A\+\_\+global\+\_\+ptr}}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classSchurSolverTestFixture_ae3443366a63626a078aa19ec2b17c13b}{f\+\_\+global}}
+\item 
+\mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}} \mbox{\hyperlink{classSchurSolverTestFixture_ab3f76f64f7bf6c88fee61fe07a9b931c}{b\+Type}} = \mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8a960b44c579bc2f6818d2daaf9e4c16f0}{Boundary\+Type\+::\+Normal}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} $>$ \mbox{\hyperlink{classSchurSolverTestFixture_acef8443c2673238e50e413c3bb88ba7a}{direct\+Solver}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classSchurSequentialSolver}{Schur\+Sequential\+Solver}} $>$ \mbox{\hyperlink{classSchurSolverTestFixture_aed9bf44303b2602a0c4ab0ed7473042a}{schur\+Solver}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classSchurSolverTestFixture_a80901727712a0633b5e618fe9c75536e}\label{classSchurSolverTestFixture_a80901727712a0633b5e618fe9c75536e}} 
+\index{SchurSolverTestFixture@{SchurSolverTestFixture}!createTestMatrix@{createTestMatrix}}
+\index{createTestMatrix@{createTestMatrix}!SchurSolverTestFixture@{SchurSolverTestFixture}}
+\doxysubsubsection{\texorpdfstring{createTestMatrix()}{createTestMatrix()}}
+{\footnotesize\ttfamily void Schur\+Solver\+Test\+Fixture\+::create\+Test\+Matrix (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classTridiagMat}{Tridiag\+Mat}} \&}]{mat }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSolverTestFixture_a80901727712a0633b5e618fe9c75536e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSolverTestFixture_a80901727712a0633b5e618fe9c75536e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSchurSolverTestFixture_a59810a44ac8581ddc37a1b945fa88fb8}\label{classSchurSolverTestFixture_a59810a44ac8581ddc37a1b945fa88fb8}} 
+\index{SchurSolverTestFixture@{SchurSolverTestFixture}!createTestRhs@{createTestRhs}}
+\index{createTestRhs@{createTestRhs}!SchurSolverTestFixture@{SchurSolverTestFixture}}
+\doxysubsubsection{\texorpdfstring{createTestRhs()}{createTestRhs()}}
+{\footnotesize\ttfamily void Schur\+Solver\+Test\+Fixture\+::create\+Test\+Rhs (\begin{DoxyParamCaption}\item[{std\+::vector$<$ double $>$ \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSolverTestFixture_a59810a44ac8581ddc37a1b945fa88fb8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSchurSolverTestFixture_acae7e087fd77ab1bb1309257e520ac76}\label{classSchurSolverTestFixture_acae7e087fd77ab1bb1309257e520ac76}} 
+\index{SchurSolverTestFixture@{SchurSolverTestFixture}!SetUp@{SetUp}}
+\index{SetUp@{SetUp}!SchurSolverTestFixture@{SchurSolverTestFixture}}
+\doxysubsubsection{\texorpdfstring{SetUp()}{SetUp()}}
+{\footnotesize\ttfamily void Schur\+Solver\+Test\+Fixture\+::\+Set\+Up (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSolverTestFixture_acae7e087fd77ab1bb1309257e520ac76_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classSchurSolverTestFixture_a7764ad9e0350b64b7bb32a05bc7547c7}\label{classSchurSolverTestFixture_a7764ad9e0350b64b7bb32a05bc7547c7}} 
+\index{SchurSolverTestFixture@{SchurSolverTestFixture}!A\_global\_ptr@{A\_global\_ptr}}
+\index{A\_global\_ptr@{A\_global\_ptr}!SchurSolverTestFixture@{SchurSolverTestFixture}}
+\doxysubsubsection{\texorpdfstring{A\_global\_ptr}{A\_global\_ptr}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classTridiagMat}{Tridiag\+Mat}}$>$ Schur\+Solver\+Test\+Fixture\+::\+A\+\_\+global\+\_\+ptr\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classSchurSolverTestFixture_ab3f76f64f7bf6c88fee61fe07a9b931c}\label{classSchurSolverTestFixture_ab3f76f64f7bf6c88fee61fe07a9b931c}} 
+\index{SchurSolverTestFixture@{SchurSolverTestFixture}!bType@{bType}}
+\index{bType@{bType}!SchurSolverTestFixture@{SchurSolverTestFixture}}
+\doxysubsubsection{\texorpdfstring{bType}{bType}}
+{\footnotesize\ttfamily \mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}} Schur\+Solver\+Test\+Fixture\+::b\+Type = \mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8a960b44c579bc2f6818d2daaf9e4c16f0}{Boundary\+Type\+::\+Normal}}\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classSchurSolverTestFixture_acef8443c2673238e50e413c3bb88ba7a}\label{classSchurSolverTestFixture_acef8443c2673238e50e413c3bb88ba7a}} 
+\index{SchurSolverTestFixture@{SchurSolverTestFixture}!directSolver@{directSolver}}
+\index{directSolver@{directSolver}!SchurSolverTestFixture@{SchurSolverTestFixture}}
+\doxysubsubsection{\texorpdfstring{directSolver}{directSolver}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classLinearSys}{Linear\+Sys}}$>$ Schur\+Solver\+Test\+Fixture\+::direct\+Solver\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classSchurSolverTestFixture_ae3443366a63626a078aa19ec2b17c13b}\label{classSchurSolverTestFixture_ae3443366a63626a078aa19ec2b17c13b}} 
+\index{SchurSolverTestFixture@{SchurSolverTestFixture}!f\_global@{f\_global}}
+\index{f\_global@{f\_global}!SchurSolverTestFixture@{SchurSolverTestFixture}}
+\doxysubsubsection{\texorpdfstring{f\_global}{f\_global}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Schur\+Solver\+Test\+Fixture\+::f\+\_\+global\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classSchurSolverTestFixture_a1bc5e62d6c1cf89af157ee8a93549c62}\label{classSchurSolverTestFixture_a1bc5e62d6c1cf89af157ee8a93549c62}} 
+\index{SchurSolverTestFixture@{SchurSolverTestFixture}!N\_global@{N\_global}}
+\index{N\_global@{N\_global}!SchurSolverTestFixture@{SchurSolverTestFixture}}
+\doxysubsubsection{\texorpdfstring{N\_global}{N\_global}}
+{\footnotesize\ttfamily int Schur\+Solver\+Test\+Fixture\+::\+N\+\_\+global\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classSchurSolverTestFixture_ad5cd8cb9486b6f1ed0a5c5b1ff33bb43}\label{classSchurSolverTestFixture_ad5cd8cb9486b6f1ed0a5c5b1ff33bb43}} 
+\index{SchurSolverTestFixture@{SchurSolverTestFixture}!P\_domains@{P\_domains}}
+\index{P\_domains@{P\_domains}!SchurSolverTestFixture@{SchurSolverTestFixture}}
+\doxysubsubsection{\texorpdfstring{P\_domains}{P\_domains}}
+{\footnotesize\ttfamily int Schur\+Solver\+Test\+Fixture\+::\+P\+\_\+domains\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classSchurSolverTestFixture_aed9bf44303b2602a0c4ab0ed7473042a}\label{classSchurSolverTestFixture_aed9bf44303b2602a0c4ab0ed7473042a}} 
+\index{SchurSolverTestFixture@{SchurSolverTestFixture}!schurSolver@{schurSolver}}
+\index{schurSolver@{schurSolver}!SchurSolverTestFixture@{SchurSolverTestFixture}}
+\doxysubsubsection{\texorpdfstring{schurSolver}{schurSolver}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classSchurSequentialSolver}{Schur\+Sequential\+Solver}}$>$ Schur\+Solver\+Test\+Fixture\+::schur\+Solver\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tests/\mbox{\hyperlink{test__schurSolver_8cpp}{test\+\_\+schur\+Solver.\+cpp}}\end{DoxyCompactItemize}

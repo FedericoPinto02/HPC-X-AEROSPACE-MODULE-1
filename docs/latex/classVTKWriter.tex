@@ -1,0 +1,179 @@
+\hypertarget{classVTKWriter}{}\doxysection{VTKWriter Class Reference}
+\label{classVTKWriter}\index{VTKWriter@{VTKWriter}}
+
+
+Class to write 3D fields to legacy VTK (STRUCTURED\+\_\+\+POINTS) for a uniform Cartesian grid, managing output frequency internally.  
+
+
+
+
+{\ttfamily \#include $<$VTKWriter.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classVTKWriter_ad1154d5934baae450840fafd655d518b}{VTKWriter}} (const \mbox{\hyperlink{structOutputSettings}{Output\+Settings}} \&output\+Settings, const \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \&sim\+Data)
+\begin{DoxyCompactList}\small\item\em Construct a \mbox{\hyperlink{classVTKWriter}{VTKWriter}} with output settings and grid dimensions. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classVTKWriter_a417b6b9cdc035a67ca976cdd3b620789}{write\+\_\+timestep\+\_\+if\+\_\+needed}} (size\+\_\+t curr\+Step, const \mbox{\hyperlink{classField}{Field}} \&pressure, const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&velocity)
+\begin{DoxyCompactList}\small\item\em Writes a timestep file if the current step matches the output frequency. It takes copies of the fields internally to prevent modification during writing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classVTKWriter_a1c7294261cd8988037532e53439a2756}{write\+\_\+legacy}} (const std\+::string \&filename, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classField}{Field}} $>$ \&pressure, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classVectorField}{Vector\+Field}} $>$ \&velocity) const
+\begin{DoxyCompactList}\small\item\em Internal method to write a scalar field and a vector field to a legacy VTK file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classVTKWriter_a640d7ad387776a849b409fbcc965e2a6}{Nx\+\_\+}}
+\item 
+int \mbox{\hyperlink{classVTKWriter_ada7266bf668e39dd880f06fdc3466015}{Ny\+\_\+}}
+\item 
+int \mbox{\hyperlink{classVTKWriter_aea922966160213d9c9a9f313453ac537}{Nz\+\_\+}}
+\item 
+double \mbox{\hyperlink{classVTKWriter_a20f3328b02f1ccc84ab2640ca6c3a601}{dx\+\_\+}}
+\item 
+double \mbox{\hyperlink{classVTKWriter_ae6bdde9f905cf0c62fea5f3773fcfa99}{dy\+\_\+}}
+\item 
+double \mbox{\hyperlink{classVTKWriter_a39c4a3517f6cf2b91eef6e27379548d5}{dz\+\_\+}}
+\item 
+bool \mbox{\hyperlink{classVTKWriter_a9d2ec6a891da82376839db64ff5ad2d5}{enabled\+\_\+}}
+\item 
+int \mbox{\hyperlink{classVTKWriter_ab6a3ccc5dc1fc50e0b0ab5409557930e}{output\+Frequency\+\_\+}}
+\item 
+std\+::string \mbox{\hyperlink{classVTKWriter_a2d0c7f5d2f5352805623c2e808b622db}{base\+Prefix\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to write 3D fields to legacy VTK (STRUCTURED\+\_\+\+POINTS) for a uniform Cartesian grid, managing output frequency internally. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classVTKWriter_ad1154d5934baae450840fafd655d518b}\label{classVTKWriter_ad1154d5934baae450840fafd655d518b}} 
+\index{VTKWriter@{VTKWriter}!VTKWriter@{VTKWriter}}
+\index{VTKWriter@{VTKWriter}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{VTKWriter()}{VTKWriter()}}
+{\footnotesize\ttfamily VTKWriter\+::\+VTKWriter (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structOutputSettings}{Output\+Settings}} \&}]{output\+Settings,  }\item[{const \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \&}]{sim\+Data }\end{DoxyParamCaption})}
+
+
+
+Construct a \mbox{\hyperlink{classVTKWriter}{VTKWriter}} with output settings and grid dimensions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em output\+Settings} & Output settings, including frequency. \\
+\hline
+{\em sim\+Data} & Simulation data containing grid dimensions (Nx, Ny, Nz, dx, dy, dz). \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classVTKWriter_a1c7294261cd8988037532e53439a2756}\label{classVTKWriter_a1c7294261cd8988037532e53439a2756}} 
+\index{VTKWriter@{VTKWriter}!write\_legacy@{write\_legacy}}
+\index{write\_legacy@{write\_legacy}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{write\_legacy()}{write\_legacy()}}
+{\footnotesize\ttfamily void VTKWriter\+::write\+\_\+legacy (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename,  }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classField}{Field}} $>$ \&}]{pressure,  }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classVectorField}{Vector\+Field}} $>$ \&}]{velocity }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Internal method to write a scalar field and a vector field to a legacy VTK file. 
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVTKWriter_a1c7294261cd8988037532e53439a2756_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVTKWriter_a417b6b9cdc035a67ca976cdd3b620789}\label{classVTKWriter_a417b6b9cdc035a67ca976cdd3b620789}} 
+\index{VTKWriter@{VTKWriter}!write\_timestep\_if\_needed@{write\_timestep\_if\_needed}}
+\index{write\_timestep\_if\_needed@{write\_timestep\_if\_needed}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{write\_timestep\_if\_needed()}{write\_timestep\_if\_needed()}}
+{\footnotesize\ttfamily bool VTKWriter\+::write\+\_\+timestep\+\_\+if\+\_\+needed (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{curr\+Step,  }\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{pressure,  }\item[{const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{velocity }\end{DoxyParamCaption})}
+
+
+
+Writes a timestep file if the current step matches the output frequency. It takes copies of the fields internally to prevent modification during writing. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em curr\+Step} & The current simulation step. \\
+\hline
+{\em pressure} & The scalar pressure field. \\
+\hline
+{\em velocity} & The vector velocity field. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the file was written, false otherwise. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVTKWriter_a417b6b9cdc035a67ca976cdd3b620789_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classVTKWriter_a2d0c7f5d2f5352805623c2e808b622db}\label{classVTKWriter_a2d0c7f5d2f5352805623c2e808b622db}} 
+\index{VTKWriter@{VTKWriter}!basePrefix\_@{basePrefix\_}}
+\index{basePrefix\_@{basePrefix\_}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{basePrefix\_}{basePrefix\_}}
+{\footnotesize\ttfamily std\+::string VTKWriter\+::base\+Prefix\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classVTKWriter_a20f3328b02f1ccc84ab2640ca6c3a601}\label{classVTKWriter_a20f3328b02f1ccc84ab2640ca6c3a601}} 
+\index{VTKWriter@{VTKWriter}!dx\_@{dx\_}}
+\index{dx\_@{dx\_}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{dx\_}{dx\_}}
+{\footnotesize\ttfamily double VTKWriter\+::dx\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classVTKWriter_ae6bdde9f905cf0c62fea5f3773fcfa99}\label{classVTKWriter_ae6bdde9f905cf0c62fea5f3773fcfa99}} 
+\index{VTKWriter@{VTKWriter}!dy\_@{dy\_}}
+\index{dy\_@{dy\_}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{dy\_}{dy\_}}
+{\footnotesize\ttfamily double VTKWriter\+::dy\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classVTKWriter_a39c4a3517f6cf2b91eef6e27379548d5}\label{classVTKWriter_a39c4a3517f6cf2b91eef6e27379548d5}} 
+\index{VTKWriter@{VTKWriter}!dz\_@{dz\_}}
+\index{dz\_@{dz\_}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{dz\_}{dz\_}}
+{\footnotesize\ttfamily double VTKWriter\+::dz\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classVTKWriter_a9d2ec6a891da82376839db64ff5ad2d5}\label{classVTKWriter_a9d2ec6a891da82376839db64ff5ad2d5}} 
+\index{VTKWriter@{VTKWriter}!enabled\_@{enabled\_}}
+\index{enabled\_@{enabled\_}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{enabled\_}{enabled\_}}
+{\footnotesize\ttfamily bool VTKWriter\+::enabled\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classVTKWriter_a640d7ad387776a849b409fbcc965e2a6}\label{classVTKWriter_a640d7ad387776a849b409fbcc965e2a6}} 
+\index{VTKWriter@{VTKWriter}!Nx\_@{Nx\_}}
+\index{Nx\_@{Nx\_}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{Nx\_}{Nx\_}}
+{\footnotesize\ttfamily int VTKWriter\+::\+Nx\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classVTKWriter_ada7266bf668e39dd880f06fdc3466015}\label{classVTKWriter_ada7266bf668e39dd880f06fdc3466015}} 
+\index{VTKWriter@{VTKWriter}!Ny\_@{Ny\_}}
+\index{Ny\_@{Ny\_}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{Ny\_}{Ny\_}}
+{\footnotesize\ttfamily int VTKWriter\+::\+Ny\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classVTKWriter_aea922966160213d9c9a9f313453ac537}\label{classVTKWriter_aea922966160213d9c9a9f313453ac537}} 
+\index{VTKWriter@{VTKWriter}!Nz\_@{Nz\_}}
+\index{Nz\_@{Nz\_}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{Nz\_}{Nz\_}}
+{\footnotesize\ttfamily int VTKWriter\+::\+Nz\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classVTKWriter_ab6a3ccc5dc1fc50e0b0ab5409557930e}\label{classVTKWriter_ab6a3ccc5dc1fc50e0b0ab5409557930e}} 
+\index{VTKWriter@{VTKWriter}!outputFrequency\_@{outputFrequency\_}}
+\index{outputFrequency\_@{outputFrequency\_}!VTKWriter@{VTKWriter}}
+\doxysubsubsection{\texorpdfstring{outputFrequency\_}{outputFrequency\_}}
+{\footnotesize\ttfamily int VTKWriter\+::output\+Frequency\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/io/\mbox{\hyperlink{VTKWriter_8hpp}{VTKWriter.\+hpp}}\item 
+src/io/\mbox{\hyperlink{VTKWriter_8cpp}{VTKWriter.\+cpp}}\end{DoxyCompactItemize}

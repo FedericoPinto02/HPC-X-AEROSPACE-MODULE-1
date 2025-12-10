@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['scalar_247',['Scalar',['../classField.html#a70a75705a22e72ce9be65780d94783b1',1,'Field::Scalar()'],['../classVectorField.html#a53f10b47337e22c2cf762d5f8da6ff75',1,'VectorField::Scalar()']]],
+  ['schurdomains_248',['schurDomains',['../structParallelizationSettings.html#a2a3f216f0c139b001a20e848f9bb9891',1,'ParallelizationSettings']]],
+  ['schurscalars_249',['schurScalarS',['../classSchurSequentialSolver.html#a57a1c63a819f9dbb8bb115e03b4d7cc2',1,'SchurSequentialSolver']]],
+  ['schursequentialsolver_250',['SchurSequentialSolver',['../classSchurSequentialSolver.html',1,'SchurSequentialSolver'],['../classSchurSequentialSolver.html#a1f3826dc32223ad54a8b760106da967c',1,'SchurSequentialSolver::SchurSequentialSolver()'],['../classLinearSys.html#a748e2c9fb0527c6ba8c840aaf91501f8',1,'LinearSys::SchurSequentialSolver()'],['../classTridiagMat.html#a748e2c9fb0527c6ba8c840aaf91501f8',1,'TridiagMat::SchurSequentialSolver()']]],
+  ['schursequentialsolver_2ecpp_251',['SchurSequentialSolver.cpp',['../SchurSequentialSolver_8cpp.html',1,'']]],
+  ['schursequentialsolver_2ehpp_252',['SchurSequentialSolver.hpp',['../SchurSequentialSolver_8hpp.html',1,'']]],
+  ['schursolver_253',['schurSolver',['../classSchurSequentialSolver.html#a3f2bee336c9103ef3be3ef52b3d47995',1,'SchurSequentialSolver']]],
+  ['schursolvertestfixture_254',['SchurSolverTestFixture',['../classLinearSys.html#a16601a9cdc4d2b8ae4692035cefe501d',1,'LinearSys']]],
+  ['separator_255',['separator',['../classLogWriter.html#a1a9dcc3f29001d9cdd621c2458a6dff3',1,'LogWriter']]],
+  ['setglobalsubvector_256',['setGlobalSubVector',['../classSchurSequentialSolver.html#aeae72f30176c219c7d60a206f54865c4',1,'SchurSequentialSolver']]],
+  ['setinterfacevector_257',['setInterfaceVector',['../classSchurSequentialSolver.html#aebe81742570d50e62bf86d13a1fd8d93',1,'SchurSequentialSolver']]],
+  ['setrhs_258',['setRhs',['../classLinearSys.html#a257096829bb54fc3e45084b5c94beaa8',1,'LinearSys']]],
+  ['setup_259',['setup',['../classField.html#acc812182b3d806c93491194ae821d9a3',1,'Field::setup()'],['../classVectorField.html#a678cbed69b397d108ea467ac65a9507c',1,'VectorField::setup()'],['../classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6',1,'NSBSolver::setup()'],['../namespaceInitializer.html#ab08ce6fc3e43c623779edfdfb7ea3855',1,'Initializer::setup()']]],
+  ['simdata_260',['simData',['../classNSBSolver.html#adb3a3736c31fc79c63c1646bbc4aa187',1,'NSBSolver']]],
+  ['simulationcontext_2ehpp_261',['SimulationContext.hpp',['../SimulationContext_8hpp.html',1,'']]],
+  ['simulationdata_262',['SimulationData',['../structSimulationData.html',1,'']]],
+  ['simulations_263',['SIMULATIONS',['../namespaceplot__convergence.html#a0b267e5e75f04fd7a7c8c883df64be8b',1,'plot_convergence.SIMULATIONS()'],['../namespaceplot__convergence__new.html#aa6e753cfeb34aa66e2d85a0812dd3592',1,'plot_convergence_new.SIMULATIONS()']]],
+  ['size_264',['size',['../structGrid.html#a70a4b43c216152caf67f3628326f1d59',1,'Grid::size()'],['../structGrid.html#add6c8c9ea4bd708abfcbe875e85cd076',1,'Grid::size() const'],['../classTridiagMat.html#a2110bb598a84a5326cab90807831dd94',1,'TridiagMat::size()']]],
+  ['solve_265',['solve',['../classSchurSequentialSolver.html#a0c0a6ed80b6df87ae3e1c53167ff444e',1,'SchurSequentialSolver::solve()'],['../classNSBSolver.html#ada676d7f89d6183a6666976991e4e868',1,'NSBSolver::solve()']]],
+  ['solvesystem_266',['solveSystem',['../classPressureStep.html#a5420590f473164b5d861a62dc270ac08',1,'PressureStep::solveSystem()'],['../classViscousStep.html#a98b2a51b32509c2323cb32a7bfb2e93c',1,'ViscousStep::solveSystem()']]],
+  ['study_5fmode_267',['STUDY_MODE',['../namespacerun__convergence__study__new.html#a9da2146cac162780bd0d1f883af60c2d',1,'run_convergence_study_new']]],
+  ['subdiag_268',['subdiag',['../classTridiagMat.html#ab747fb4465e0e06b19d344470bcb5b6f',1,'TridiagMat']]],
+  ['supdiag_269',['supdiag',['../classTridiagMat.html#ae34b23e42c9abfe43a27727fc062f3ad',1,'TridiagMat']]]
+];

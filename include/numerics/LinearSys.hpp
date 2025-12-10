@@ -8,6 +8,9 @@
 enum class BoundaryType {Normal, Tangent};
 class LinearSysTestFixture;
 
+/**
+* @brief Manages and solves a tridiagonal linear system (Ax = b) used for pressure and velocity steps.
+ */
 class LinearSys {
 
     friend class LinearSysTestFixture;

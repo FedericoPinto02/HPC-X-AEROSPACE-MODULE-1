@@ -11,6 +11,9 @@
  */
 class Derivatives {
 public:
+    //==================================================================================================================
+    //--- First-order forward differences ------------------------------------------------------------------------------
+    //==================================================================================================================
     /**
      * @brief Compute the gradient of a scalar field (forward difference).
      * @param field the input scalar field
@@ -23,22 +26,25 @@ public:
      * @param field the input scalar field
      * @param dx the output field to store the derivative in x-direction
      */
-    void computeDx(const Field &field, Field &dx) const;
+    void computeDx_fwd(const Field &field, Field &dx) const;
 
     /**
      * @brief Compute the derivative of a scalar field in the y-direction (forward difference).
      * @param field the input scalar field
      * @param dy the output field to store the derivative in y-direction
      */
-    void computeDy(const Field &field, Field &dy) const;
+    void computeDy_fwd(const Field &field, Field &dy) const;
 
     /**
      * @brief Compute the derivative of a scalar field in the z-direction (forward difference).
      * @param field the input scalar field
      * @param dz the output field to store the derivative in z-direction
      */
-    void computeDz(const Field &field, Field &dz) const;
+    void computeDz_fwd(const Field &field, Field &dz) const;
 
+    //==================================================================================================================
+    //--- First-order backward differences -----------------------------------------------------------------------------
+    //==================================================================================================================
     /**
      * @brief Compute the derivative of a scalar field in the x-direction (backward difference).
      * @param field the input vector field
@@ -67,12 +73,29 @@ public:
      */
     void computeDivergence(const VectorField &field, Field &divergence, SimulationData &data)const;
 
+    //==================================================================================================================
+    //--- Second-order centered differences ----------------------------------------------------------------------------
+    //==================================================================================================================
     /**
-     * @brief Compute the diagonal of the Hessian matrix of a scalar field.
-     * @param field the input scalar field
-     * @param hessianDiag the output vector field to store the Hessian diagonal components
+     * @brief Compute the second derivative of a vector field in the x-direction.
+     * @param field the input vector field
+     * @param dxx the output vector field to store the second derivative in x-direction
      */
-    void computeHessianDiag(const Field &field, VectorField &hessianDiag) const;
+    void computeDxx(const VectorField &field, VectorField &dxx) const;
+
+    /**
+     * @brief Compute the second derivative of a vector field in the y-direction.
+     * @param field the input vector field
+     * @param dyy the output vector field to store the second derivative in y-direction
+     */
+    void computeDyy(const VectorField &field, VectorField &dyy) const;
+
+    /**
+     * @brief Compute the second derivative of a vector field in the z-direction.
+     * @param field the input vector field
+     * @param dzz the output vector field to store the second derivative in z-direction
+     */
+    void computeDzz(const VectorField &field, VectorField &dzz) const;
 
     /**
      * @brief Compute the second derivative of a scalar field in the x-direction.
@@ -108,7 +131,7 @@ public:
      * @param k Grid index in the z–direction.
      * @return The second derivative ∂²f/∂x² at (i,j,k).
      */
-    double Dxx_local(const Field& f, size_t i, size_t j, size_t k) const;
+    double Dxx_local(const Field &f, size_t i, size_t j, size_t k) const;
 
     /**
      * @brief Compute the local second derivative ∂²f/∂y² at a single grid point.
@@ -123,7 +146,7 @@ public:
      * @param k Grid index in the z–direction.
      * @return The second derivative ∂²f/∂y² at (i,j,k).
      */
-    double Dyy_local(const Field& f, size_t i, size_t j, size_t k) const;
+    double Dyy_local(const Field &f, size_t i, size_t j, size_t k) const;
 
     /**
      * @brief Compute the local second derivative ∂²f/∂z² at a single grid point.
@@ -138,7 +161,7 @@ public:
      * @param k Grid index in the z–direction.
      * @return The second derivative ∂²f/∂z² at (i,j,k).
      */
-    double Dzz_local(const Field& f, size_t i, size_t j, size_t k) const;
+    double Dzz_local(const Field &f, size_t i, size_t j, size_t k) const;
 
 };
 

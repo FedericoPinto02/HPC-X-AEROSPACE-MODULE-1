@@ -9,6 +9,9 @@
 
 #include "core/Fields.hpp"
 
+/**
+ * @brief Structure holding configuration parameters for outputting simulation results.
+ */
 struct OutputSettings {
     std::string dir;
     std::string baseFilename;
@@ -16,6 +19,9 @@ struct OutputSettings {
     size_t outputFrequency;
 };
 
+/**
+ * @brief Structure holding configuration parameters for simulation logging (console and file).
+ */
 struct LoggingSettings {
     bool logToFile;
     bool logToConsole;
@@ -24,10 +30,16 @@ struct LoggingSettings {
     size_t loggingFrequency;
 };
 
+/**
+ * @brief Structure holding parameters related to parallel execution and domain decomposition.
+ */
 struct ParallelizationSettings {
     int schurDomains;
 };
 
+/**
+ * @brief Central structure containing all transient data, fields, and physical properties of the running simulation.
+ */
 struct SimulationData {
     // Grid
     GridPtr grid;
