@@ -33,12 +33,14 @@ T_END = 0.03           # Fixed physical end time for ALL simulations
 
 # --- RESOLUTION SETS ---
 # Set used when STUDY_MODE is SPATIAL_ONLY or SPACE_TIME_COUPLED
-NX_VALUES_FOR_SPATIAL_STUDY = [20, 25, 30, 35, 40, 45, 50, 60, 80] 
+NX_VALUES_FOR_SPATIAL_STUDY = [20, 25, 30, 35, 40, 45, 50, 60, 80, 100, 120] 
 
 # Set used when STUDY_MODE is TEMPORAL_ONLY
 # Multipliers relative to BASE_DT (e.g., 0.5 means dt = 0.0005)
-DT_MULTIPLIERS_FOR_TEMPORAL_STUDY = [1.0, 0.5, 0.25, 0.125, 0.0625]
-FIXED_NX_FOR_TEMPORAL_STUDY = 50
+DT_MULTIPLIERS_FOR_TEMPORAL_STUDY = [1.0, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01]
+# BASE_DT = 0.2  
+# T_END = 1.0
+FIXED_NX_FOR_TEMPORAL_STUDY = 70
 
 
 def calculate_params_for_mode(loop_val, base_dt, study_mode):

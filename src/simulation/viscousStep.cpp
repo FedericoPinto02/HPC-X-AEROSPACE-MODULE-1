@@ -55,35 +55,44 @@ void ViscousStep::computeG()
     auto& eta = data_.eta;
     auto& zeta = data_.zeta;
     auto& u = data_.u;
-    auto& predictor = data_.predictor;
+    auto &predictor = data_.predictor;
     double nu_val = data_.nu;
-    
+
     Derivatives derive;
     derive.computeGradient(predictor, gradP);
-    
 
     // Recepie
     // g = f  -grad(p)  -nu/k *u * 0.5  +nu*(dxx eta + dyy zeta + dzz u) * 0.5
 
     // Let me cook
-    for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
+    for (Axis axis : {Axis::X, Axis::Y, Axis::Z})
+    {
 
-        auto& f_data = data_.f(axis).getData();
-        auto& u_data = data_.u(axis).getData();
-        auto& gradP_data = gradP(axis).getData();
-        auto& dxx_data = dxxEta(axis).getData();
-        auto& dyy_data = dyyZeta(axis).getData();
-        auto& dzz_data = dzzU(axis).getData();
-        auto& g_data = g(axis).getData();
-        auto& k_data = data_.k(axis).getData(); 
+        for (size_t k = 0; k < data_.grid->Nz; k++)
+            for (size_t j = 0; j < data_.grid->Ny; j++)
+                for (size_t i = 0; i < data_.grid->Nx; i++)
+                {
+                    dxxEta(axis, i, j, k) = derive.Dxx_local(eta(axis), i, j, k);
+                    dyyZeta(axis, i, j, k) = derive.Dyy_local(zeta(axis), i, j, k);
+                    dzzU(axis, i, j, k) = derive.Dzz_local(u(axis), i, j, k);
+                    
+                }
+
+        auto &f_data = data_.f(axis).getData();
+        auto &u_data = data_.u(axis).getData();
+        auto &gradP_data = gradP(axis).getData();
+        auto &dxx_data = dxxEta(axis).getData();
+        auto &dyy_data = dyyZeta(axis).getData();
+        auto &dzz_data = dzzU(axis).getData();
+        auto &g_data = g(axis).getData();
+        auto &k_data = data_.k(axis).getData();
 
         for (size_t i = 0; i < u_data.size(); i++)
         {
             g_data[i] = f_data[i] - gradP_data[i] - nu_val * u_data[i] / k_data[i] + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]);
         }
-
     }
-}
+    }
 
 void ViscousStep::computeXi()
 {
