@@ -2,7 +2,7 @@
 #define NSBSOLVER_GRID_HPP
 
 #include <cstddef>
-
+#include <memory>
 #include "core/MpiEnv.hpp"
 
 
