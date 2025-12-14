@@ -51,7 +51,7 @@ void Derivatives::computeDz_fwd(const Field &field, Field &dz) const {
 }
 
 
-void Derivatives::computeDxDiv(const Field &field, Field &dx, Func &bcu, double &time) const {
+void Derivatives::computeDx_bwd(const Field &field, Field &dx, Func &bcu, double time) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dx;
 
@@ -66,7 +66,7 @@ void Derivatives::computeDxDiv(const Field &field, Field &dx, Func &bcu, double 
     }
 }
 
-void Derivatives::computeDyDiv(const Field &field, Field &dy, Func &bcv, double &time) const {
+void Derivatives::computeDy_bwd(const Field &field, Field &dy, Func &bcv, double time) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dy;
 
@@ -81,7 +81,7 @@ void Derivatives::computeDyDiv(const Field &field, Field &dy, Func &bcv, double 
     }
 }
 
-void Derivatives::computeDzDiv(const Field &field, Field &dz, Func &bcw, double &time) const {
+void Derivatives::computeDz_bwd(const Field &field, Field &dz, Func &bcw, double time) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dz;
 
@@ -97,21 +97,20 @@ void Derivatives::computeDzDiv(const Field &field, Field &dz, Func &bcw, double 
 }
 
 
-void Derivatives::computeDivergence(const VectorField &field, Field &divergence, SimulationData &data) const {
+void Derivatives::computeDivergence(
+        const VectorField &field, Field &divergence,
+        Func &bcu, Func &bcv, Func &bcw, double time
+) const {
     Field tmp = divergence;
     tmp.reset();
     divergence.reset();
-    auto& bcu = data.bcu;
-    auto& bcv = data.bcv;
-    auto& bcw = data.bcw;
 
-    computeDxDiv(field(Axis::X), tmp, bcu, data.currTime);
+    computeDx_bwd(field(Axis::X), tmp, bcu, time);
     divergence.add(tmp);
-    computeDyDiv(field(Axis::Y), tmp, bcv, data.currTime);
+    computeDy_bwd(field(Axis::Y), tmp, bcv, time);
     divergence.add(tmp);
-    computeDzDiv(field(Axis::Z), tmp, bcw, data.currTime);
+    computeDz_bwd(field(Axis::Z), tmp, bcw, time);
     divergence.add(tmp);
-
 }
 
 

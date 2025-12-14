@@ -50,28 +50,31 @@ public:
      * @param field the input vector field
      * @param dx the output field to store the derivative in x-direction
      */
-    void computeDxDiv(const Field &field, Field &dx, Func &bcu, double &time) const;
+    void computeDx_bwd(const Field &field, Field &dx, Func &bcu, double time) const;
 
     /**
      * @brief Compute the derivative of a scalar field in the y-direction (backward difference).
      * @param field the input vector field
      * @param dy the output field to store the derivative in y-direction
      */
-    void computeDyDiv(const Field &field, Field &dy, Func &bcv, double &time) const;
+    void computeDy_bwd(const Field &field, Field &dy, Func &bcv, double time) const;
 
     /**
      * @brief Compute the derivative of a scalar field in the z-direction (backward difference).
      * @param field the input vector field
      * @param dz the output field to store the derivative in z-direction
      */
-    void computeDzDiv(const Field &field, Field &dz, Func &bcw, double &time) const;
+    void computeDz_bwd(const Field &field, Field &dz, Func &bcw, double time) const;
 
     /**
      * @brief Compute the divergence of a vector field (backward difference).
      * @param field the input vector field
      * @param divergence the output scalar field to store the divergence
      */
-    void computeDivergence(const VectorField &field, Field &divergence, SimulationData &data)const;
+    void computeDivergence(
+            const VectorField &field, Field &divergence,
+            Func &bcu, Func &bcv, Func &bcw, double time
+    ) const;
 
     //==================================================================================================================
     //--- Second-order centered differences ----------------------------------------------------------------------------

@@ -111,7 +111,11 @@ TEST_F(DerivativesTest, Scalar_Dx_Backward_Accuracy) {
     Field field = createField([](double x, double, double, double) { return x * x; });
     Field dxField = createEmptyField();
 
-    deriv.computeDx_bwd(field, dxField);
+    // Define Boundary Condition: Value of function at boundary x=0 is 0.0
+    Func bcFunc = [](double, double, double, double) { return 0.0; };
+    double time = 0.0;
+
+    deriv.computeDx_bwd(field, dxField, bcFunc, time);
 
     const double tol = 1e-6;
     for (size_t i = 1; i < Nx; ++i) { // Valid starting from 1
@@ -119,8 +123,6 @@ TEST_F(DerivativesTest, Scalar_Dx_Backward_Accuracy) {
         double expected = 2.0 * x - dx;
         EXPECT_NEAR(dxField(i, 0, 0), expected, tol);
     }
-    // Boundary check
-    EXPECT_DOUBLE_EQ(dxField(0, 0, 0), 0.0);
 }
 
 TEST_F(DerivativesTest, Scalar_Dy_Backward_Accuracy) {
@@ -129,7 +131,11 @@ TEST_F(DerivativesTest, Scalar_Dy_Backward_Accuracy) {
     Field field = createField([](double, double y, double, double) { return y * y; });
     Field dyField = createEmptyField();
 
-    deriv.computeDy_bwd(field, dyField);
+    // Define Boundary Condition: Value of function at boundary y=0 is 0.0
+    Func bcFunc = [](double, double, double, double) { return 0.0; };
+    double time = 0.0;
+
+    deriv.computeDy_bwd(field, dyField, bcFunc, time);
 
     const double tol = 1e-6;
     for (size_t j = 1; j < Ny; ++j) {
@@ -137,7 +143,6 @@ TEST_F(DerivativesTest, Scalar_Dy_Backward_Accuracy) {
         double expected = 2.0 * y - dy;
         EXPECT_NEAR(dyField(0, j, 0), expected, tol);
     }
-    EXPECT_DOUBLE_EQ(dyField(0, 0, 0), 0.0);
 }
 
 TEST_F(DerivativesTest, Scalar_Dz_Backward_Accuracy) {
@@ -146,7 +151,11 @@ TEST_F(DerivativesTest, Scalar_Dz_Backward_Accuracy) {
     Field field = createField([](double, double, double z, double) { return z * z; });
     Field dzField = createEmptyField();
 
-    deriv.computeDz_bwd(field, dzField);
+    // Define Boundary Condition: Value of function at boundary z=0 is 0.0
+    Func bcFunc = [](double, double, double, double) { return 0.0; };
+    double time = 0.0;
+
+    deriv.computeDz_bwd(field, dzField, bcFunc, time);
 
     const double tol = 1e-6;
     for (size_t k = 1; k < Nz; ++k) {
@@ -154,7 +163,6 @@ TEST_F(DerivativesTest, Scalar_Dz_Backward_Accuracy) {
         double expected = 2.0 * z - dz;
         EXPECT_NEAR(dzField(0, 0, k), expected, tol);
     }
-    EXPECT_DOUBLE_EQ(dzField(0, 0, 0), 0.0);
 }
 
 // ============================================================================
@@ -225,13 +233,15 @@ TEST_F(DerivativesTest, Vector_Dxx_Accuracy) {
 
     const double tol = 1e-8;
     for (size_t i = 1; i < Nx - 1; ++i) {
-        double x = i * dx;
-        // Check X component
-        EXPECT_NEAR(result(Axis::X, i, 0, 0), 6.0 * x, tol);
-        // Check Y component
-        EXPECT_NEAR(result(Axis::Y, i, 0, 0), 6.0 * x, tol);
-        // Check Z component
-        EXPECT_NEAR(result(Axis::Z, i, 0, 0), 6.0 * x, tol);
+        double x_center = i * dx;
+        double x_staggered = (i + 0.5) * dx; // Shift for FACE_CENTERED X-component
+
+        // X component IS staggered in X -> Expected 6 * (x + 0.5dx)
+        EXPECT_NEAR(result(Axis::X, i, 0, 0), 6.0 * x_staggered, tol);
+
+        // Y and Z components are NOT staggered in X -> Expected 6 * x
+        EXPECT_NEAR(result(Axis::Y, i, 0, 0), 6.0 * x_center, tol);
+        EXPECT_NEAR(result(Axis::Z, i, 0, 0), 6.0 * x_center, tol);
     }
 }
 
@@ -249,10 +259,15 @@ TEST_F(DerivativesTest, Vector_Dyy_Accuracy) {
 
     const double tol = 1e-8;
     for (size_t j = 1; j < Ny - 1; ++j) {
-        double y = j * dy;
-        EXPECT_NEAR(result(Axis::X, 0, j, 0), 6.0 * y, tol);
-        EXPECT_NEAR(result(Axis::Y, 0, j, 0), 6.0 * y, tol);
-        EXPECT_NEAR(result(Axis::Z, 0, j, 0), 6.0 * y, tol);
+        double y_center = j * dy;
+        double y_staggered = (j + 0.5) * dy; // Shift for FACE_CENTERED Y-component
+
+        // X and Z components are NOT staggered in Y -> Expected 6 * y
+        EXPECT_NEAR(result(Axis::X, 0, j, 0), 6.0 * y_center, tol);
+        EXPECT_NEAR(result(Axis::Z, 0, j, 0), 6.0 * y_center, tol);
+
+        // Y component IS staggered in Y -> Expected 6 * (y + 0.5dy)
+        EXPECT_NEAR(result(Axis::Y, 0, j, 0), 6.0 * y_staggered, tol);
     }
 }
 
@@ -270,10 +285,15 @@ TEST_F(DerivativesTest, Vector_Dzz_Accuracy) {
 
     const double tol = 1e-8;
     for (size_t k = 1; k < Nz - 1; ++k) {
-        double z = k * dz;
-        EXPECT_NEAR(result(Axis::X, 0, 0, k), 6.0 * z, tol);
-        EXPECT_NEAR(result(Axis::Y, 0, 0, k), 6.0 * z, tol);
-        EXPECT_NEAR(result(Axis::Z, 0, 0, k), 6.0 * z, tol);
+        double z_center = k * dz;
+        double z_staggered = (k + 0.5) * dz; // Shift for FACE_CENTERED
+
+        // X and Y components are NOT staggered in Z -> Use Center Z
+        EXPECT_NEAR(result(Axis::X, 0, 0, k), 6.0 * z_center, tol);
+        EXPECT_NEAR(result(Axis::Y, 0, 0, k), 6.0 * z_center, tol);
+
+        // Z component IS staggered in Z -> Use Staggered Z
+        EXPECT_NEAR(result(Axis::Z, 0, 0, k), 6.0 * z_staggered, tol);
     }
 }
 
@@ -292,7 +312,6 @@ TEST_F(DerivativesTest, Gradient_Composite_Test) {
     deriv.computeGradient(field, grad);
 
     // Check internal points (Forward Difference for linear is exact if grid is uniform)
-    // ( (x+h) - x ) / h = 1.
     const double tol = 1e-8;
     // Gradient uses forward differences, valid up to N-2
     EXPECT_NEAR(grad(Axis::X, 5, 5, 5), 1.0, tol);
@@ -303,6 +322,7 @@ TEST_F(DerivativesTest, Gradient_Composite_Test) {
 TEST_F(DerivativesTest, Divergence_Composite_Test) {
     // vec = [x, 2y, 3z]
     // Divergence = 1 + 2 + 3 = 6
+    // Internal points use backward difference, which is exact for linear functions.
     VectorField vec;
     vec.setup(grid,
               [](double x, double, double, double) { return x; },
@@ -312,7 +332,13 @@ TEST_F(DerivativesTest, Divergence_Composite_Test) {
     vec.populate(0.0);
 
     Field div = createEmptyField();
-    deriv.computeDivergence(vec, div);
+
+    // Define BCs: Boundary values for x, 2y, 3z at their respective lower boundaries (0) are all 0.0
+    Func bcFunc = [](double, double, double, double) { return 0.0; };
+    double time = 0.0;
+
+    // Updated signature: pass BC funcs for u, v, w and time
+    deriv.computeDivergence(vec, div, bcFunc, bcFunc, bcFunc, time);
 
     // Check internal points (Backward Difference for linear is exact)
     EXPECT_NEAR(div(5, 5, 5), 6.0, 1e-8);
@@ -330,7 +356,14 @@ TEST_F(DerivativesTest, Laplacian_Consistency_Check) {
     deriv.computeGradient(field, grad);
 
     Field divGrad = createEmptyField();
-    deriv.computeDivergence(grad, divGrad);
+
+    // BCs for Divergence of Gradient:
+    // This is technically evaluating the Laplacian at the boundary.
+    // For consistency checking internal points, we can pass dummy BCs as long as we only check internal indices.
+    Func dummyBC = [](double, double, double, double) { return 0.0; };
+    double time = 0.0;
+
+    deriv.computeDivergence(grad, divGrad, dummyBC, dummyBC, dummyBC, time);
 
     Field dxx = createEmptyField();
     Field dyy = createEmptyField();

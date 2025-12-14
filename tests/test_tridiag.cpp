@@ -279,7 +279,7 @@ TEST(TridiagMatTest, GetFirstElementFromDiag_invalidArgument) {
     std::vector<double> subdiag = {8.0, 9.0, 10.0};
 
     matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_THROW(matrix.getDiag(3), std::invalid_argument);
+    EXPECT_THROW(matrix.getFirstElementFromDiag(3), std::invalid_argument);
 }
 
 // === GetLastElementFromDiag tests ===
@@ -321,5 +321,5 @@ TEST(TridiagMatTest, GetLastElementFromDiag_invalidArgument) {
     std::vector<double> subdiag = {8.0, 9.0, 10.0};
 
     matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_THROW(matrix.getDiag(-5), std::invalid_argument);
+    EXPECT_THROW(matrix.getLastElementFromDiag(-5), std::invalid_argument);
 }

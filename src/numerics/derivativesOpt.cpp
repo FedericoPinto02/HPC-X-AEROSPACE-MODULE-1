@@ -104,31 +104,53 @@ void Derivatives::computeDz_fwd(const Field &field, Field &dz) const {
 }
 
 
-void Derivatives::computeDx_bwd(const Field &field, Field &dx) const {
+void Derivatives::computeDx_bwd(const Field &field, Field &dx, Func &bcu, double time) const {
     const auto &grid = field.getGrid();
     const double inv_dx = 1.0 / grid.dx;
 
     const size_t Nx = grid.Nx;
-    // Flatten Y and Z dimensions into a single 'xLine' count
-    const size_t totalXLines = grid.Ny * grid.Nz;
+    const size_t Ny = grid.Ny;
+    const size_t Nz = grid.Nz;
 
-    // Iterate over every x-line in the volume
-    for (size_t xLine = 0; xLine < totalXLines; ++xLine) {
-        const size_t xLineOffset = xLine * Nx;
+    // Precompute constant coefficients for boundary conditions
+    const double C1 = -1.0 / 3.0 * inv_dx;          // Coefficient for field(1, j, k)
+    const double C2 = 3.0 * inv_dx;                 // Coefficient for field(0, j, k)
+    const double C3 = -(8.0 / 3.0) * inv_dx;        // Coefficient for bcu(...)
+    const double dy = grid.dy;
+    const double dz = grid.dz;
 
-        // 1. Compute the derivative for each, whole x-line (first x-elements excluded)
-        // Linear index iteration: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
-        for (size_t i = 1; i < Nx; ++i) {
-            size_t idx = xLineOffset + i;
-            dx[idx] = (field[idx] - field[idx - 1]) * inv_dx;
+    // The distance in memory between (i, j, k) and (i, j-1, k), and (i, j, k) and (i, j, k-1)
+    const size_t strideY = Nx;
+    const size_t strideZ = Nx * Ny;
+
+    // Iterate over all XY-planes (at each vertical level k)
+    for (size_t k = 0; k < Nz; ++k) {
+        const double physical_z = (double) k * dz;
+        const size_t xyPlaneOffset = k * strideZ;
+
+        // Iterate over all x-lines in the current XY-plane
+        for (size_t j = 0; j < Ny; ++j) {
+            const double physical_y = (double) j * dy;
+            const size_t xLineOffset = xyPlaneOffset + j * strideY;
+
+            // 1. Compute the derivative for each, whole x-line (first x-elements excluded)
+            // Linear index iteration: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
+            for (size_t i = 1; i < Nx; ++i) {
+                size_t idx = xLineOffset + i;
+                dx[idx] = (field[idx] - field[idx - 1]) * inv_dx;
+            }
+
+            // 2. Handle Boundary Condition: the first point of the x-line is based on the given BC-Func and time
+            // The two field points are contiguous at the start of the row
+            const double field_0 = field[xLineOffset];
+            const double field_1 = field[xLineOffset + 1];
+            double bcu_val = bcu(0.0, physical_y, physical_z, time);
+            dx[xLineOffset] = C1 * field_1 + C2 * field_0 + C3 * bcu_val;
         }
-
-        // 2. Handle Boundary Condition: the first point of the x-line cannot compute a backward difference
-        dx[xLineOffset] = 0.0;
     }
 }
 
-void Derivatives::computeDy_bwd(const Field &field, Field &dy) const {
+void Derivatives::computeDy_bwd(const Field &field, Field &dy, Func &bcv, double time) const {
     const auto &grid = field.getGrid();
     const double inv_dy = 1.0 / grid.dy;
 
@@ -136,18 +158,36 @@ void Derivatives::computeDy_bwd(const Field &field, Field &dy) const {
     const size_t Ny = grid.Ny;
     const size_t Nz = grid.Nz;
 
-    // The distance in memory between (i, j, k) and (i, j-1, k)
-    //  i.e., field[idx - strideY] is physically the neighbor "below" in Y w.r.t. field[idx]
+    // Precompute constant coefficients for boundary conditions
+    const double C1 = -1.0 / 3.0 * inv_dy;          // Coefficient for field(i, 1, k)
+    const double C2 = 3.0 * inv_dy;                 // Coefficient for field(i, 0, k)
+    const double C3 = -(8.0 / 3.0) * inv_dy;        // Coefficient for bcv(...)
+    const double dx = grid.dx;
+    const double dz = grid.dz;
+
+    // The distance in memory between (i, j, k) and (i, j-1, k), and (i, j, k) and (i, j, k-1)
     const size_t strideY = Nx;
+    const size_t strideZ = Nx * Ny;
 
     // Iterate over all XY-planes (at each vertical level k)
     for (size_t k = 0; k < Nz; ++k) {
-        const size_t xyPlaneOffset = k * Ny * Nx; // skip an entire XY plane for each k-level
+        const double physical_z = (double) k * dz;
+        const size_t xyPlaneOffset = k * strideZ;
 
-        // 1. Compute the derivative for each, whole XY-plane (first y-elements excluded)
+        // 1. Handle Boundary Condition: the first point of each y-line is based on the given BC-Func and time
+        //      (computed first to let first and second x-lines already in cache for later)
+        for (size_t i = 0; i < Nx; ++i) {
+            const double physical_x = (double) i * dx;
+            const size_t idx_0 = xyPlaneOffset + i;                     // field(i, 0, k)
+            const size_t idx_1 = idx_0 + strideY;                       // field(i, 1, k)
+            double bcv_val = bcv(physical_x, 0.0, physical_z, time);
+            dy[xyPlaneOffset + i] = C1 * field[idx_1] + C2 * field[idx_0] + C3 * bcv_val;
+        }
+
+
+        // 2. Compute the derivative for each, whole XY-plane (first y-elements excluded)
         for (size_t j = 1; j < Ny; ++j) {
-            // Calculate the starting linear index of the current x-line
-            const size_t xLineStart = xyPlaneOffset + (j * Nx);
+            const size_t xLineStart = xyPlaneOffset + j * strideY;
 
             // Still iterate over each x-line, with linear indexes: maximum cache coherency, allowing compiler auto-vectorization (SIMD)
             for (size_t i = 0; i < Nx; ++i) {
@@ -157,16 +197,10 @@ void Derivatives::computeDy_bwd(const Field &field, Field &dy) const {
                 dy[idx] = (field[idx] - field[idx - strideY]) * inv_dy;
             }
         }
-
-        // 2. Handle Boundary Condition: the first point of each y-line cannot compute a backward difference
-        //  i.e., the whole first x-line of the XY-plane
-        for (size_t i = 0; i < Nx; ++i) {
-            dy[xyPlaneOffset + i] = 0.0;
-        }
     }
 }
 
-void Derivatives::computeDz_bwd(const Field &field, Field &dz) const {
+void Derivatives::computeDz_bwd(const Field &field, Field &dz, Func &bcw, double time) const {
     const auto &grid = field.getGrid();
     const double inv_dz = 1.0 / grid.dz;
 
@@ -174,15 +208,39 @@ void Derivatives::computeDz_bwd(const Field &field, Field &dz) const {
     const size_t Ny = grid.Ny;
     const size_t Nz = grid.Nz;
 
+    // Precompute constant coefficients for boundary conditions
+    const double C1 = -1.0 / 3.0 * inv_dz;          // Coefficient for field(i, j, 1)
+    const double C2 = 3.0 * inv_dz;                 // Coefficient for field(i, j, 0)
+    const double C3 = -(8.0 / 3.0) * inv_dz;        // Coefficient for bcw(...)
+    const double dx = grid.dx;
+    const double dy = grid.dy;
+
     // The distance in memory between (i, j, k) and (i, j, k-1)
-    //  i.e., field[idx - strideZ] is physically the neighbor "below" in Z w.r.t. field[idx]
     const size_t strideZ = Nx * Ny; // stride is one full XY plane
+
+    // 1. Handle Boundary Condition: the first point of each z-line (first XY-plane)
+    //      is based on the given BC-Func and time
+    {
+        const size_t strideY = Nx;
+        for (size_t j = 0; j < Ny; ++j) {
+            const double physical_y = (double) j * dy;
+            const size_t xLineOffset = j * strideY;
+
+            for (size_t i = 0; i < Nx; ++i) {
+                const double physical_x = (double) i * dx;
+                size_t idx_0 = xLineOffset + i;    // field(i, j, 0)
+                size_t idx_1 = idx_0 + strideZ;    // field(i, j, 1)
+                dz[idx_0] = C1 * field[idx_1] + C2 * field[idx_0]
+                            + C3 * bcw(physical_x, physical_y, 0.0, time);
+            }
+        }
+    }
 
     // Iterate over all XY-planes (at each vertical level k, first z-elements excluded)
     for (size_t k = 1; k < Nz; ++k) {
         const size_t xyPlaneOffset = k * strideZ; // skip an entire XY plane for each k-level
 
-        // 1. Compute the derivative for each, whole XY-plane (flattened: each point, one by one)
+        // 2. Compute the derivative for each, whole XY-plane (flattened: each point, one by one)
         for (size_t p = 0; p < strideZ; ++p) {
             // Striding ensures we are reading/writing contiguous memory blocks in an efficient way
             //  ~ "take the whole contiguous row z, and subtract the contiguous row z-1"
@@ -190,26 +248,22 @@ void Derivatives::computeDz_bwd(const Field &field, Field &dz) const {
             dz[idx] = (field[idx] - field[idx - strideZ]) * inv_dz;
         }
     }
-
-    // 2. Handle Boundary Condition: the first point of each z-line cannot compute a backward difference
-    for (size_t p = 0; p < strideZ; ++p) {
-        dz[p] = 0.0;
-    }
 }
 
-
-void Derivatives::computeDivergence(const VectorField &field, Field &divergence) const {
-    Field tmp = divergence; // to clone shared-pointer grid
+void Derivatives::computeDivergence(
+        const VectorField &field, Field &divergence,
+        Func &bcu, Func &bcv, Func &bcw, double time
+) const {
+    Field tmp = divergence;
+    tmp.reset();
     divergence.reset();
 
-    computeDx_bwd(field(Axis::X), tmp);
+    computeDx_bwd(field(Axis::X), tmp, bcu, time);
     divergence.add(tmp);
-    computeDy_bwd(field(Axis::Y), tmp);
+    computeDy_bwd(field(Axis::Y), tmp, bcv, time);
     divergence.add(tmp);
-    computeDz_bwd(field(Axis::Z), tmp);
+    computeDz_bwd(field(Axis::Z), tmp, bcw, time);
     divergence.add(tmp);
-
-    // todo - could be further optimized to avoid time-interleaved addition, reset and temporary field allocation
 }
 
 
@@ -449,7 +503,6 @@ void Derivatives::computeDzz(const Field &field, Field &dzz) const {
         dzz[lastXyPlaneOffset + p] = 0.0; // last XY-plane
     }
 }
-
 
 double Derivatives::Dxx_local(const Field &f, size_t i, size_t j, size_t k) const {
     const auto &grid = f.getGrid();

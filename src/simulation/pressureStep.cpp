@@ -57,7 +57,7 @@ void PressureStep::run()
 
     
     Derivatives deriv;
-    deriv.computeDivergence(data_.u, divU, data_);
+    deriv.computeDivergence(data_.u, divU, data_.bcu, data_.bcv, data_.bcw, data_.currTime);
     double inv_dt = 1.0 / data_.dt;
 
     // iStart = 0;   

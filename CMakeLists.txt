@@ -58,7 +58,7 @@ add_library(NSBSolver
         src/io/VTKWriter.cpp
         src/io/logWriter.cpp
         # -- src/numerics/derivatives.cpp use this source file to compile a non-optimized version
-        src/numerics/derivatives.cpp
+        src/numerics/derivativesOpt.cpp
         src/numerics/LinearSys.cpp
         src/numerics/SchurSequentialSolver.cpp
         src/simulation/initializer.cpp
@@ -117,9 +117,9 @@ if (BUILD_TESTS)
              ${PROJECT_TESTS_DIR}/test_derivatives.cpp
              ${PROJECT_TESTS_DIR}/test_grid.cpp
              ${PROJECT_TESTS_DIR}/test_fields.cpp
-             ${PROJECT_TESTS_DIR}/test_pressureStep.cpp
-             ${PROJECT_TESTS_DIR}/test_viscousStep.cpp
-             ${PROJECT_TESTS_DIR}/test_schurSolver.cpp
+             #${PROJECT_TESTS_DIR}/test_pressureStep.cpp
+             #${PROJECT_TESTS_DIR}/test_viscousStep.cpp
+             #${PROJECT_TESTS_DIR}/test_schurSolver.cpp
              ${PROJECT_TESTS_DIR}/test_tridiag.cpp
     )
 

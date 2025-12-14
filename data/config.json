@@ -1,6 +1,6 @@
 {
     "mesh": {
-        "nx": 50,
+        "nx": 120,
         "ny": 60,
         "nz": 60,
         "dx": 0.01,
@@ -9,7 +9,7 @@
         "input_for_manufactured_solution": true
     },
     "time": {
-        "dt": 6.25e-05,
+        "dt": 0.00016666666666666666,
         "t_end": 0.03
     },
     "parallelization": {
@@ -21,8 +21,8 @@
     "output": {
         "enabled": true,
         "dir": "../output",
-        "base_filename": "temporal_n50_mult_00625_output",
-        "output_frequency": 480
+        "base_filename": "spatial_n120_output",
+        "output_frequency": 180
     },
     "logging": {
         "log_to_file": false,

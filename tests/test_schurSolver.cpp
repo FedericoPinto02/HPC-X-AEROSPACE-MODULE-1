@@ -15,7 +15,6 @@ protected:
 
     std::unique_ptr<TridiagMat> A_global_ptr; 
     std::vector<double> f_global;
-    BoundaryType bType = BoundaryType::Normal; 
 
     std::unique_ptr<LinearSys> directSolver;
     std::unique_ptr<SchurSequentialSolver> schurSolver;
@@ -61,7 +60,7 @@ protected:
         createTestRhs(f_global);
 
         // 2. Inizializza il solutore diretto
-        directSolver = std::make_unique<LinearSys>(N_global, bType);
+        directSolver = std::make_unique<LinearSys>(N_global);
         
         // --- QUESTA È LA CORREZIONE ---
         // Errore: non possiamo fare l'assegnazione
@@ -78,7 +77,7 @@ protected:
         // ---------------------------------
 
         // 3. Inizializza il solutore di Schur e fai il PreProcess
-        schurSolver = std::make_unique<SchurSequentialSolver>(N_global, P_domains, bType);
+        schurSolver = std::make_unique<SchurSequentialSolver>(N_global, P_domains);
         schurSolver->PreProcess(*A_global_ptr);
     }
 };
@@ -116,7 +115,7 @@ INSTANTIATE_TEST_SUITE_P(
 );
 
 TEST(SchurSolverConstructorTest, HandlesInvalidInputs) {
-    EXPECT_THROW(SchurSequentialSolver(10, 0, BoundaryType::Normal), std::invalid_argument);
-    EXPECT_THROW(SchurSequentialSolver(5, 10, BoundaryType::Normal), std::invalid_argument);
-    EXPECT_NO_THROW(SchurSequentialSolver(10, 1, BoundaryType::Normal));
+    EXPECT_THROW(SchurSequentialSolver(10, 0), std::invalid_argument);
+    EXPECT_THROW(SchurSequentialSolver(5, 10), std::invalid_argument);
+    EXPECT_NO_THROW(SchurSequentialSolver(10, 1));
 }
