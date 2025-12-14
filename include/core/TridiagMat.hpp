@@ -4,6 +4,9 @@
 #include <stdexcept>
 #include <vector>
 
+/**
+ * @brief Class representing a tridiagonal matrix and providing access to its elements.
+ */
 class TridiagMat {
 
   friend class SchurSequentialSolver;

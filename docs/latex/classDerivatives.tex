@@ -1,0 +1,552 @@
+\hypertarget{classDerivatives}{}\doxysection{Derivatives Class Reference}
+\label{classDerivatives}\index{Derivatives@{Derivatives}}
+
+
+Handler for computing spatial derivatives of scalar fields.  
+
+
+
+
+{\ttfamily \#include $<$derivatives.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classDerivatives_a9d509cd4c682cc79ebebce1df69474a9}{compute\+Gradient}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&gradient) const
+\begin{DoxyCompactList}\small\item\em Compute the gradient of a scalar field (forward difference). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76}{compute\+Dx\+\_\+fwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dx) const
+\begin{DoxyCompactList}\small\item\em Compute the derivative of a scalar field in the x-\/direction (forward difference). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_aee26f33635f34433d93ca5790849bd95}{compute\+Dy\+\_\+fwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dy) const
+\begin{DoxyCompactList}\small\item\em Compute the derivative of a scalar field in the y-\/direction (forward difference). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_a41f8f51d76f35343b09b8711af339480}{compute\+Dz\+\_\+fwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dz) const
+\begin{DoxyCompactList}\small\item\em Compute the derivative of a scalar field in the z-\/direction (forward difference). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545}{compute\+Dx\+\_\+bwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dx) const
+\begin{DoxyCompactList}\small\item\em Compute the derivative of a scalar field in the x-\/direction (backward difference). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_ae29cfbcadce2127aa49c690547514b66}{compute\+Dy\+\_\+bwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dy) const
+\begin{DoxyCompactList}\small\item\em Compute the derivative of a scalar field in the y-\/direction (backward difference). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66}{compute\+Dz\+\_\+bwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dz) const
+\begin{DoxyCompactList}\small\item\em Compute the derivative of a scalar field in the z-\/direction (backward difference). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af}{compute\+Divergence}} (const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&divergence) const
+\begin{DoxyCompactList}\small\item\em Compute the divergence of a vector field (backward difference). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_a50f5b9c159f7071eca24da47339f094c}{compute\+Dxx}} (const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&field, \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&dxx) const
+\begin{DoxyCompactList}\small\item\em Compute the second derivative of a vector field in the x-\/direction. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_a8f62d63f77d17bf5d4469b1038ee0c1a}{compute\+Dyy}} (const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&field, \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&dyy) const
+\begin{DoxyCompactList}\small\item\em Compute the second derivative of a vector field in the y-\/direction. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_a99280512fa8db2e9703d721141fb7c17}{compute\+Dzz}} (const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&field, \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&dzz) const
+\begin{DoxyCompactList}\small\item\em Compute the second derivative of a vector field in the z-\/direction. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_a28f03b6e1467e93fddf29b81f8c5ec16}{compute\+Dxx}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dxx) const
+\begin{DoxyCompactList}\small\item\em Compute the second derivative of a scalar field in the x-\/direction. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_a8dfd9d551bf8de4c26bf318cede4abda}{compute\+Dyy}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dyy) const
+\begin{DoxyCompactList}\small\item\em Compute the second derivative of a scalar field in the y-\/direction. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDerivatives_a0db4507f057f9ab64081cdd3116cc076}{compute\+Dzz}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dzz) const
+\begin{DoxyCompactList}\small\item\em Compute the second derivative of a scalar field in the z-\/direction. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classDerivatives_a192787b8808ab051708d9c7a1987ba26}{Dxx\+\_\+local}} (const \mbox{\hyperlink{classField}{Field}} \&f, size\+\_\+t i, size\+\_\+t j, size\+\_\+t k) const
+\begin{DoxyCompactList}\small\item\em Compute the local second derivative ∂²f/∂x² at a single grid point. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classDerivatives_a355ace855ad6c919b284d2624ba38d86}{Dyy\+\_\+local}} (const \mbox{\hyperlink{classField}{Field}} \&f, size\+\_\+t i, size\+\_\+t j, size\+\_\+t k) const
+\begin{DoxyCompactList}\small\item\em Compute the local second derivative ∂²f/∂y² at a single grid point. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classDerivatives_a390aa9768dd08a39aa377a8670a6ab33}{Dzz\+\_\+local}} (const \mbox{\hyperlink{classField}{Field}} \&f, size\+\_\+t i, size\+\_\+t j, size\+\_\+t k) const
+\begin{DoxyCompactList}\small\item\em Compute the local second derivative ∂²f/∂z² at a single grid point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Handler for computing spatial derivatives of scalar fields. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af}\label{classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af}} 
+\index{Derivatives@{Derivatives}!computeDivergence@{computeDivergence}}
+\index{computeDivergence@{computeDivergence}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDivergence()}{computeDivergence()}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Divergence (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{divergence }\end{DoxyParamCaption}) const}
+
+
+
+Compute the divergence of a vector field (backward difference). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input vector field \\
+\hline
+{\em divergence} & the output scalar field to store the divergence \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545}\label{classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545}} 
+\index{Derivatives@{Derivatives}!computeDx\_bwd@{computeDx\_bwd}}
+\index{computeDx\_bwd@{computeDx\_bwd}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDx\_bwd()}{computeDx\_bwd()}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dx\+\_\+bwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dx }\end{DoxyParamCaption}) const}
+
+
+
+Compute the derivative of a scalar field in the x-\/direction (backward difference). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input vector field \\
+\hline
+{\em dx} & the output field to store the derivative in x-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76}\label{classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76}} 
+\index{Derivatives@{Derivatives}!computeDx\_fwd@{computeDx\_fwd}}
+\index{computeDx\_fwd@{computeDx\_fwd}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDx\_fwd()}{computeDx\_fwd()}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dx\+\_\+fwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dx }\end{DoxyParamCaption}) const}
+
+
+
+Compute the derivative of a scalar field in the x-\/direction (forward difference). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input scalar field \\
+\hline
+{\em dx} & the output field to store the derivative in x-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a28f03b6e1467e93fddf29b81f8c5ec16}\label{classDerivatives_a28f03b6e1467e93fddf29b81f8c5ec16}} 
+\index{Derivatives@{Derivatives}!computeDxx@{computeDxx}}
+\index{computeDxx@{computeDxx}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDxx()}{computeDxx()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dxx (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dxx }\end{DoxyParamCaption}) const}
+
+
+
+Compute the second derivative of a scalar field in the x-\/direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input scalar field \\
+\hline
+{\em dxx} & the output field to store the second derivative in x-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=339pt]{classDerivatives_a28f03b6e1467e93fddf29b81f8c5ec16_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a50f5b9c159f7071eca24da47339f094c}\label{classDerivatives_a50f5b9c159f7071eca24da47339f094c}} 
+\index{Derivatives@{Derivatives}!computeDxx@{computeDxx}}
+\index{computeDxx@{computeDxx}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDxx()}{computeDxx()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dxx (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{dxx }\end{DoxyParamCaption}) const}
+
+
+
+Compute the second derivative of a vector field in the x-\/direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input vector field \\
+\hline
+{\em dxx} & the output vector field to store the second derivative in x-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a50f5b9c159f7071eca24da47339f094c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_ae29cfbcadce2127aa49c690547514b66}\label{classDerivatives_ae29cfbcadce2127aa49c690547514b66}} 
+\index{Derivatives@{Derivatives}!computeDy\_bwd@{computeDy\_bwd}}
+\index{computeDy\_bwd@{computeDy\_bwd}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDy\_bwd()}{computeDy\_bwd()}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dy\+\_\+bwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dy }\end{DoxyParamCaption}) const}
+
+
+
+Compute the derivative of a scalar field in the y-\/direction (backward difference). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input vector field \\
+\hline
+{\em dy} & the output field to store the derivative in y-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_ae29cfbcadce2127aa49c690547514b66_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_ae29cfbcadce2127aa49c690547514b66_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_aee26f33635f34433d93ca5790849bd95}\label{classDerivatives_aee26f33635f34433d93ca5790849bd95}} 
+\index{Derivatives@{Derivatives}!computeDy\_fwd@{computeDy\_fwd}}
+\index{computeDy\_fwd@{computeDy\_fwd}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDy\_fwd()}{computeDy\_fwd()}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dy\+\_\+fwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dy }\end{DoxyParamCaption}) const}
+
+
+
+Compute the derivative of a scalar field in the y-\/direction (forward difference). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input scalar field \\
+\hline
+{\em dy} & the output field to store the derivative in y-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_aee26f33635f34433d93ca5790849bd95_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_aee26f33635f34433d93ca5790849bd95_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a8dfd9d551bf8de4c26bf318cede4abda}\label{classDerivatives_a8dfd9d551bf8de4c26bf318cede4abda}} 
+\index{Derivatives@{Derivatives}!computeDyy@{computeDyy}}
+\index{computeDyy@{computeDyy}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDyy()}{computeDyy()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dyy (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dyy }\end{DoxyParamCaption}) const}
+
+
+
+Compute the second derivative of a scalar field in the y-\/direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input scalar field \\
+\hline
+{\em dyy} & the output field to store the second derivative in y-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=339pt]{classDerivatives_a8dfd9d551bf8de4c26bf318cede4abda_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a8f62d63f77d17bf5d4469b1038ee0c1a}\label{classDerivatives_a8f62d63f77d17bf5d4469b1038ee0c1a}} 
+\index{Derivatives@{Derivatives}!computeDyy@{computeDyy}}
+\index{computeDyy@{computeDyy}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDyy()}{computeDyy()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dyy (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{dyy }\end{DoxyParamCaption}) const}
+
+
+
+Compute the second derivative of a vector field in the y-\/direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input vector field \\
+\hline
+{\em dyy} & the output vector field to store the second derivative in y-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a8f62d63f77d17bf5d4469b1038ee0c1a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66}\label{classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66}} 
+\index{Derivatives@{Derivatives}!computeDz\_bwd@{computeDz\_bwd}}
+\index{computeDz\_bwd@{computeDz\_bwd}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDz\_bwd()}{computeDz\_bwd()}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dz\+\_\+bwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dz }\end{DoxyParamCaption}) const}
+
+
+
+Compute the derivative of a scalar field in the z-\/direction (backward difference). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input vector field \\
+\hline
+{\em dz} & the output field to store the derivative in z-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a41f8f51d76f35343b09b8711af339480}\label{classDerivatives_a41f8f51d76f35343b09b8711af339480}} 
+\index{Derivatives@{Derivatives}!computeDz\_fwd@{computeDz\_fwd}}
+\index{computeDz\_fwd@{computeDz\_fwd}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDz\_fwd()}{computeDz\_fwd()}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dz\+\_\+fwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dz }\end{DoxyParamCaption}) const}
+
+
+
+Compute the derivative of a scalar field in the z-\/direction (forward difference). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input scalar field \\
+\hline
+{\em dz} & the output field to store the derivative in z-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a41f8f51d76f35343b09b8711af339480_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a41f8f51d76f35343b09b8711af339480_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a0db4507f057f9ab64081cdd3116cc076}\label{classDerivatives_a0db4507f057f9ab64081cdd3116cc076}} 
+\index{Derivatives@{Derivatives}!computeDzz@{computeDzz}}
+\index{computeDzz@{computeDzz}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDzz()}{computeDzz()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dzz (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dzz }\end{DoxyParamCaption}) const}
+
+
+
+Compute the second derivative of a scalar field in the z-\/direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input scalar field \\
+\hline
+{\em dzz} & the output field to store the second derivative in z-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=338pt]{classDerivatives_a0db4507f057f9ab64081cdd3116cc076_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a99280512fa8db2e9703d721141fb7c17}\label{classDerivatives_a99280512fa8db2e9703d721141fb7c17}} 
+\index{Derivatives@{Derivatives}!computeDzz@{computeDzz}}
+\index{computeDzz@{computeDzz}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeDzz()}{computeDzz()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dzz (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{dzz }\end{DoxyParamCaption}) const}
+
+
+
+Compute the second derivative of a vector field in the z-\/direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input vector field \\
+\hline
+{\em dzz} & the output vector field to store the second derivative in z-\/direction \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a99280512fa8db2e9703d721141fb7c17_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a9d509cd4c682cc79ebebce1df69474a9}\label{classDerivatives_a9d509cd4c682cc79ebebce1df69474a9}} 
+\index{Derivatives@{Derivatives}!computeGradient@{computeGradient}}
+\index{computeGradient@{computeGradient}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{computeGradient()}{computeGradient()}}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Gradient (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{gradient }\end{DoxyParamCaption}) const}
+
+
+
+Compute the gradient of a scalar field (forward difference). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em field} & the input scalar field \\
+\hline
+{\em gradient} & the output vector field to store the gradient \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a192787b8808ab051708d9c7a1987ba26}\label{classDerivatives_a192787b8808ab051708d9c7a1987ba26}} 
+\index{Derivatives@{Derivatives}!Dxx\_local@{Dxx\_local}}
+\index{Dxx\_local@{Dxx\_local}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{Dxx\_local()}{Dxx\_local()}}
+{\footnotesize\ttfamily double Derivatives\+::\+Dxx\+\_\+local (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{f,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption}) const}
+
+
+
+Compute the local second derivative ∂²f/∂x² at a single grid point. 
+
+Evaluates the second–order central finite difference at coordinates (i,j,k)\+: ( f(i+1,j,k) + f(i-\/1,j,k) − 2 f(i,j,k) ) / dx². Performs minimal boundary checking\+: if {\ttfamily i} is on the domain boundary, returns 0.\+0.
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & The input scalar field. \\
+\hline
+{\em i} & \mbox{\hyperlink{structGrid}{Grid}} index in the x–direction. \\
+\hline
+{\em j} & \mbox{\hyperlink{structGrid}{Grid}} index in the y–direction. \\
+\hline
+{\em k} & \mbox{\hyperlink{structGrid}{Grid}} index in the z–direction. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The second derivative ∂²f/∂x² at (i,j,k). 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=325pt]{classDerivatives_a192787b8808ab051708d9c7a1987ba26_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a355ace855ad6c919b284d2624ba38d86}\label{classDerivatives_a355ace855ad6c919b284d2624ba38d86}} 
+\index{Derivatives@{Derivatives}!Dyy\_local@{Dyy\_local}}
+\index{Dyy\_local@{Dyy\_local}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{Dyy\_local()}{Dyy\_local()}}
+{\footnotesize\ttfamily double Derivatives\+::\+Dyy\+\_\+local (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{f,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption}) const}
+
+
+
+Compute the local second derivative ∂²f/∂y² at a single grid point. 
+
+Evaluates the second–order central finite difference at coordinates (i,j,k)\+: ( f(i,j+1,k) + f(i,j-\/1,k) − 2 f(i,j,k) ) / dy². Performs minimal boundary checking\+: if {\ttfamily j} is on the domain boundary, returns 0.\+0.
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & The input scalar field. \\
+\hline
+{\em i} & \mbox{\hyperlink{structGrid}{Grid}} index in the x–direction. \\
+\hline
+{\em j} & \mbox{\hyperlink{structGrid}{Grid}} index in the y–direction. \\
+\hline
+{\em k} & \mbox{\hyperlink{structGrid}{Grid}} index in the z–direction. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The second derivative ∂²f/∂y² at (i,j,k). 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=325pt]{classDerivatives_a355ace855ad6c919b284d2624ba38d86_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classDerivatives_a390aa9768dd08a39aa377a8670a6ab33}\label{classDerivatives_a390aa9768dd08a39aa377a8670a6ab33}} 
+\index{Derivatives@{Derivatives}!Dzz\_local@{Dzz\_local}}
+\index{Dzz\_local@{Dzz\_local}!Derivatives@{Derivatives}}
+\doxysubsubsection{\texorpdfstring{Dzz\_local()}{Dzz\_local()}}
+{\footnotesize\ttfamily double Derivatives\+::\+Dzz\+\_\+local (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{f,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption}) const}
+
+
+
+Compute the local second derivative ∂²f/∂z² at a single grid point. 
+
+Evaluates the second–order central finite difference at coordinates (i,j,k)\+: ( f(i,j,k+1) + f(i,j,k-\/1) − 2 f(i,j,k) ) / dz². Performs minimal boundary checking\+: if {\ttfamily k} is on the domain boundary, returns 0.\+0.
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & The input scalar field. \\
+\hline
+{\em i} & \mbox{\hyperlink{structGrid}{Grid}} index in the x–direction. \\
+\hline
+{\em j} & \mbox{\hyperlink{structGrid}{Grid}} index in the y–direction. \\
+\hline
+{\em k} & \mbox{\hyperlink{structGrid}{Grid}} index in the z–direction. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The second derivative ∂²f/∂z² at (i,j,k). 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=323pt]{classDerivatives_a390aa9768dd08a39aa377a8670a6ab33_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/numerics/\mbox{\hyperlink{derivatives_8hpp}{derivatives.\+hpp}}\item 
+src/numerics/\mbox{\hyperlink{derivatives_8cpp}{derivatives.\+cpp}}\item 
+src/numerics/\mbox{\hyperlink{derivativesOpt_8cpp}{derivatives\+Opt.\+cpp}}\end{DoxyCompactItemize}

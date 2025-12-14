@@ -5,10 +5,14 @@
 #include "core/TridiagMat.hpp"
 #include "numerics/LinearSys.hpp"
 
+/**
+ * @brief Implements the Schur Complement method for solving large tridiagonal systems
+ * by decomposing them into smaller sub-systems solved sequentially.
+ */
 class SchurSequentialSolver {
 
 public:
-    SchurSequentialSolver(int globalSize, int numDomains, BoundaryType type);
+    SchurSequentialSolver(int globalSize, int numDomains);
 
     /**
      * @brief Phase 0: Pre-processing.

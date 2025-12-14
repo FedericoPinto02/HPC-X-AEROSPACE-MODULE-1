@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "core/Fields.hpp"
+#include "simulation/SimulationContext.hpp"
 
 /**
  * @brief Handler for computing spatial derivatives of scalar fields.
@@ -49,28 +50,28 @@ public:
      * @param field the input vector field
      * @param dx the output field to store the derivative in x-direction
      */
-    void computeDx_bwd(const Field &field, Field &dx) const;
+    void computeDxDiv(const Field &field, Field &dx, Func &bcu, double &time) const;
 
     /**
      * @brief Compute the derivative of a scalar field in the y-direction (backward difference).
      * @param field the input vector field
      * @param dy the output field to store the derivative in y-direction
      */
-    void computeDy_bwd(const Field &field, Field &dy) const;
+    void computeDyDiv(const Field &field, Field &dy, Func &bcv, double &time) const;
 
     /**
      * @brief Compute the derivative of a scalar field in the z-direction (backward difference).
      * @param field the input vector field
      * @param dz the output field to store the derivative in z-direction
      */
-    void computeDz_bwd(const Field &field, Field &dz) const;
+    void computeDzDiv(const Field &field, Field &dz, Func &bcw, double &time) const;
 
     /**
      * @brief Compute the divergence of a vector field (backward difference).
      * @param field the input vector field
      * @param divergence the output scalar field to store the divergence
      */
-    void computeDivergence(const VectorField &field, Field &divergence) const;
+    void computeDivergence(const VectorField &field, Field &divergence, SimulationData &data)const;
 
     //==================================================================================================================
     //--- Second-order centered differences ----------------------------------------------------------------------------

@@ -1,0 +1,65 @@
+\hypertarget{Fields_8hpp}{}\doxysection{include/core/\+Fields.hpp File Reference}
+\label{Fields_8hpp}\index{include/core/Fields.hpp@{include/core/Fields.hpp}}
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$cstddef$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include \char`\"{}core/\+Grid.\+hpp\char`\"{}}\newline
+Include dependency graph for Fields.\+hpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Fields_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Fields_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classField}{Field}}
+\begin{DoxyCompactList}\small\item\em Class representing a scalar field defined on a 3D grid. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classVectorField}{Vector\+Field}}
+\begin{DoxyCompactList}\small\item\em Class representing a 3D vector field defined on a 3D grid. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} = std\+::function$<$ double(double x, double y, double z, double t)$>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \mbox{\hyperlink{Fields_8hpp_ae45e4c3f95d489d70a4c578c028e12df}{ZERO\+\_\+\+FUNC}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}\label{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}} 
+\index{Fields.hpp@{Fields.hpp}!Func@{Func}}
+\index{Func@{Func}!Fields.hpp@{Fields.hpp}}
+\doxysubsubsection{\texorpdfstring{Func}{Func}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} =  std\+::function$<$double(double x, double y, double z, double t)$>$}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{Fields_8hpp_ae45e4c3f95d489d70a4c578c028e12df}\label{Fields_8hpp_ae45e4c3f95d489d70a4c578c028e12df}} 
+\index{Fields.hpp@{Fields.hpp}!ZERO\_FUNC@{ZERO\_FUNC}}
+\index{ZERO\_FUNC@{ZERO\_FUNC}!Fields.hpp@{Fields.hpp}}
+\doxysubsubsection{\texorpdfstring{ZERO\_FUNC}{ZERO\_FUNC}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} ZERO\+\_\+\+FUNC}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= [](double , double , double , \textcolor{keywordtype}{double}  = 0) \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0.0;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}

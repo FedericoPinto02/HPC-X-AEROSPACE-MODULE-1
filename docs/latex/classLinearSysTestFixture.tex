@@ -1,0 +1,185 @@
+\hypertarget{classLinearSysTestFixture}{}\doxysection{Linear\+Sys\+Test\+Fixture Class Reference}
+\label{classLinearSysTestFixture}\index{LinearSysTestFixture@{LinearSysTestFixture}}
+
+
+Standalone test fixture for the \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} class.  
+
+
+
+
+Inheritance diagram for Linear\+Sys\+Test\+Fixture\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=197pt]{classLinearSysTestFixture__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Linear\+Sys\+Test\+Fixture\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{classLinearSysTestFixture__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classLinearSysTestFixture_a9e81b9f618f5d96259e74b730e9afe14}{Set\+Up}} () override
+\begin{DoxyCompactList}\small\item\em Sets up all required objects before each test. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classLinearSysTestFixture_a95f29a51776e41297fedccb4dac6b506}{setup\+Test\+Matrix}} (\mbox{\hyperlink{classLinearSys}{Linear\+Sys}} \&sys)
+\begin{DoxyCompactList}\small\item\em Helper function to set up the 3x3 test matrix. This function is a member of \mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}, which IS a friend of \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} and can access its private members. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const size\+\_\+t \mbox{\hyperlink{classLinearSysTestFixture_ab5e0e10e74ac6bc691a7277efa95d4f5}{Nx}} = 3
+\item 
+const size\+\_\+t \mbox{\hyperlink{classLinearSysTestFixture_ab6c638c8e025d8e914d9348b7fa951f1}{Ny}} = 4
+\item 
+const size\+\_\+t \mbox{\hyperlink{classLinearSysTestFixture_a537ade26e13c2d70928c07693cf01314}{Nz}} = 5
+\item 
+const double \mbox{\hyperlink{classLinearSysTestFixture_a93c6eb21d63d794322ab37e459c4c2db}{dx}} = 0.\+1
+\item 
+const double \mbox{\hyperlink{classLinearSysTestFixture_a3ebb7d49aac79e2a9dd5cfd133991a9b}{dy}} = 0.\+1
+\item 
+const double \mbox{\hyperlink{classLinearSysTestFixture_aacb101c4bdd6c661db5820edc8e17c49}{dz}} = 0.\+1
+\item 
+const size\+\_\+t \mbox{\hyperlink{classLinearSysTestFixture_afe5bb05e9ab8490d89c7a1cc1e67168b}{vector\+Size}} = \mbox{\hyperlink{classLinearSysTestFixture_ab5e0e10e74ac6bc691a7277efa95d4f5}{Nx}} $\ast$ \mbox{\hyperlink{classLinearSysTestFixture_ab6c638c8e025d8e914d9348b7fa951f1}{Ny}} $\ast$ \mbox{\hyperlink{classLinearSysTestFixture_a537ade26e13c2d70928c07693cf01314}{Nz}}
+\item 
+std\+::shared\+\_\+ptr$<$ const \mbox{\hyperlink{structGrid}{Grid}} $>$ \mbox{\hyperlink{classLinearSysTestFixture_a6aea4a2d1f7a3afa03d1241f7dc066fe}{grid\+Ptr}}
+\item 
+\mbox{\hyperlink{classField}{Field}} \mbox{\hyperlink{classLinearSysTestFixture_a5afcd5cb8d4d5e5275535800f8b31acc}{test\+Field}}
+\item 
+\mbox{\hyperlink{classField}{Field}} \mbox{\hyperlink{classLinearSysTestFixture_aa9afe07176f00f30a977107d40636a0d}{porosity}}
+\item 
+\mbox{\hyperlink{classVectorField}{Vector\+Field}} \mbox{\hyperlink{classLinearSysTestFixture_a47286bb406c084a47c61270ffd1f0f92}{eta}}
+\item 
+\mbox{\hyperlink{classVectorField}{Vector\+Field}} \mbox{\hyperlink{classLinearSysTestFixture_abc3ee405656e1831be29ac1490056738}{xi}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Standalone test fixture for the \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} class. 
+
+This fixture does not inherit from any other test fixture. It creates all necessary objects (\mbox{\hyperlink{structGrid}{Grid}}, \mbox{\hyperlink{classField}{Field}}, \mbox{\hyperlink{classVectorField}{Vector\+Field}}) from scratch required to test the \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} interface.
+
+It is declared as a \textquotesingle{}friend\textquotesingle{} of \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} to allow access to private members for testing. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classLinearSysTestFixture_a9e81b9f618f5d96259e74b730e9afe14}\label{classLinearSysTestFixture_a9e81b9f618f5d96259e74b730e9afe14}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!SetUp@{SetUp}}
+\index{SetUp@{SetUp}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{SetUp()}{SetUp()}}
+{\footnotesize\ttfamily void Linear\+Sys\+Test\+Fixture\+::\+Set\+Up (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [protected]}}
+
+
+
+Sets up all required objects before each test. 
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classLinearSysTestFixture_a9e81b9f618f5d96259e74b730e9afe14_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classLinearSysTestFixture_a95f29a51776e41297fedccb4dac6b506}\label{classLinearSysTestFixture_a95f29a51776e41297fedccb4dac6b506}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!setupTestMatrix@{setupTestMatrix}}
+\index{setupTestMatrix@{setupTestMatrix}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{setupTestMatrix()}{setupTestMatrix()}}
+{\footnotesize\ttfamily void Linear\+Sys\+Test\+Fixture\+::setup\+Test\+Matrix (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSys}{Linear\+Sys}} \&}]{sys }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Helper function to set up the 3x3 test matrix. This function is a member of \mbox{\hyperlink{classLinearSysTestFixture}{Linear\+Sys\+Test\+Fixture}}, which IS a friend of \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} and can access its private members. 
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=345pt]{classLinearSysTestFixture_a95f29a51776e41297fedccb4dac6b506_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classLinearSysTestFixture_a93c6eb21d63d794322ab37e459c4c2db}\label{classLinearSysTestFixture_a93c6eb21d63d794322ab37e459c4c2db}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!dx@{dx}}
+\index{dx@{dx}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{dx}{dx}}
+{\footnotesize\ttfamily const double Linear\+Sys\+Test\+Fixture\+::dx = 0.\+1\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classLinearSysTestFixture_a3ebb7d49aac79e2a9dd5cfd133991a9b}\label{classLinearSysTestFixture_a3ebb7d49aac79e2a9dd5cfd133991a9b}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!dy@{dy}}
+\index{dy@{dy}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{dy}{dy}}
+{\footnotesize\ttfamily const double Linear\+Sys\+Test\+Fixture\+::dy = 0.\+1\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classLinearSysTestFixture_aacb101c4bdd6c661db5820edc8e17c49}\label{classLinearSysTestFixture_aacb101c4bdd6c661db5820edc8e17c49}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!dz@{dz}}
+\index{dz@{dz}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{dz}{dz}}
+{\footnotesize\ttfamily const double Linear\+Sys\+Test\+Fixture\+::dz = 0.\+1\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classLinearSysTestFixture_a47286bb406c084a47c61270ffd1f0f92}\label{classLinearSysTestFixture_a47286bb406c084a47c61270ffd1f0f92}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!eta@{eta}}
+\index{eta@{eta}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{eta}{eta}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classVectorField}{Vector\+Field}} Linear\+Sys\+Test\+Fixture\+::eta\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classLinearSysTestFixture_a6aea4a2d1f7a3afa03d1241f7dc066fe}\label{classLinearSysTestFixture_a6aea4a2d1f7a3afa03d1241f7dc066fe}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!gridPtr@{gridPtr}}
+\index{gridPtr@{gridPtr}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{gridPtr}{gridPtr}}
+{\footnotesize\ttfamily std\+::shared\+\_\+ptr$<$const \mbox{\hyperlink{structGrid}{Grid}}$>$ Linear\+Sys\+Test\+Fixture\+::grid\+Ptr\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classLinearSysTestFixture_ab5e0e10e74ac6bc691a7277efa95d4f5}\label{classLinearSysTestFixture_ab5e0e10e74ac6bc691a7277efa95d4f5}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!Nx@{Nx}}
+\index{Nx@{Nx}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{Nx}{Nx}}
+{\footnotesize\ttfamily const size\+\_\+t Linear\+Sys\+Test\+Fixture\+::\+Nx = 3\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classLinearSysTestFixture_ab6c638c8e025d8e914d9348b7fa951f1}\label{classLinearSysTestFixture_ab6c638c8e025d8e914d9348b7fa951f1}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!Ny@{Ny}}
+\index{Ny@{Ny}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{Ny}{Ny}}
+{\footnotesize\ttfamily const size\+\_\+t Linear\+Sys\+Test\+Fixture\+::\+Ny = 4\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classLinearSysTestFixture_a537ade26e13c2d70928c07693cf01314}\label{classLinearSysTestFixture_a537ade26e13c2d70928c07693cf01314}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!Nz@{Nz}}
+\index{Nz@{Nz}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{Nz}{Nz}}
+{\footnotesize\ttfamily const size\+\_\+t Linear\+Sys\+Test\+Fixture\+::\+Nz = 5\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classLinearSysTestFixture_aa9afe07176f00f30a977107d40636a0d}\label{classLinearSysTestFixture_aa9afe07176f00f30a977107d40636a0d}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!porosity@{porosity}}
+\index{porosity@{porosity}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{porosity}{porosity}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField}{Field}} Linear\+Sys\+Test\+Fixture\+::porosity\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classLinearSysTestFixture_a5afcd5cb8d4d5e5275535800f8b31acc}\label{classLinearSysTestFixture_a5afcd5cb8d4d5e5275535800f8b31acc}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!testField@{testField}}
+\index{testField@{testField}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{testField}{testField}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField}{Field}} Linear\+Sys\+Test\+Fixture\+::test\+Field\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classLinearSysTestFixture_afe5bb05e9ab8490d89c7a1cc1e67168b}\label{classLinearSysTestFixture_afe5bb05e9ab8490d89c7a1cc1e67168b}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!vectorSize@{vectorSize}}
+\index{vectorSize@{vectorSize}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{vectorSize}{vectorSize}}
+{\footnotesize\ttfamily const size\+\_\+t Linear\+Sys\+Test\+Fixture\+::vector\+Size = \mbox{\hyperlink{classLinearSysTestFixture_ab5e0e10e74ac6bc691a7277efa95d4f5}{Nx}} $\ast$ \mbox{\hyperlink{classLinearSysTestFixture_ab6c638c8e025d8e914d9348b7fa951f1}{Ny}} $\ast$ \mbox{\hyperlink{classLinearSysTestFixture_a537ade26e13c2d70928c07693cf01314}{Nz}}\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classLinearSysTestFixture_abc3ee405656e1831be29ac1490056738}\label{classLinearSysTestFixture_abc3ee405656e1831be29ac1490056738}} 
+\index{LinearSysTestFixture@{LinearSysTestFixture}!xi@{xi}}
+\index{xi@{xi}!LinearSysTestFixture@{LinearSysTestFixture}}
+\doxysubsubsection{\texorpdfstring{xi}{xi}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classVectorField}{Vector\+Field}} Linear\+Sys\+Test\+Fixture\+::xi\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tests/\mbox{\hyperlink{test__linearSys_8cpp}{test\+\_\+linear\+Sys.\+cpp}}\end{DoxyCompactItemize}

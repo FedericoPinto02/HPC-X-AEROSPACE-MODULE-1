@@ -8,7 +8,7 @@
 #include <simulation/pressureStep.hpp>
 
 
-std::vector<double> PressureStep::solveSystem(LinearSys& sys, BoundaryType bType) {
+std::vector<double> PressureStep::solveSystem(LinearSys& sys) {
 
     // 1. If we want to use the classic solver (debug or actual P=1)
     if (parallel_.schurDomains <= 1) {
@@ -18,7 +18,7 @@ std::vector<double> PressureStep::solveSystem(LinearSys& sys, BoundaryType bType
     else 
     {
         // 2. Sequential Schur Logic
-        SchurSequentialSolver schur(sys.getMatrix().getSize(), parallel_.schurDomains, bType);
+        SchurSequentialSolver schur(sys.getMatrix().getSize(), parallel_.schurDomains);
         schur.PreProcess(sys.getMatrix());
         return schur.solve(sys.getRhs());
     }
@@ -36,12 +36,12 @@ PressureStep::PressureStep(SimulationData &simData, ParallelizationSettings &par
 
 
 void PressureStep::run()
-{   
+{
     // size_t iStart, jStart, kStart;   // these will be useful with parallelization
-    // Every pressure-like variable is solved exploiting Neumann homogeneous boundary conditions
-
     // solve on the face orthogonal to normalAxis
     Axis normalAxis;
+    // Every pressure-like variable is solved exploting Neumann homogeneous boundary conditions
+    
     
     // ------------------------------------------
     // Solve Psi --------------------------------
@@ -49,16 +49,15 @@ void PressureStep::run()
     {
     normalAxis = Axis::X;   // x = psi, rhs = divU/dt
     size_t nSystem = data_.grid->Ny * data_.grid->Nz; // number of linear systems to solve
-
     size_t sysDimension = data_.grid->Nx; // dimension of linear system to solve
     // when solving Psi we fill linsys with dxx derivatives
 
-    LinearSys mySystem(sysDimension, BoundaryType::Normal);
+    LinearSys mySystem(sysDimension);
     std::vector<double> rhs(sysDimension);
 
     
     Derivatives deriv;
-    deriv.computeDivergence(data_.u, divU);
+    deriv.computeDivergence(data_.u, divU, data_);
     double inv_dt = 1.0 / data_.dt;
 
     // iStart = 0;   
@@ -75,9 +74,13 @@ void PressureStep::run()
             }
 
             mySystem.setRhs(rhs);
-            mySystem.fillSystemPressure(data_.p, normalAxis);
 
-            std::vector<Field::Scalar> solution = solveSystem(mySystem, BoundaryType::Normal);
+            mySystem.fillSystemPressure(data_.grid, normalAxis);
+
+            // mySystem.ThomaSolver();
+
+            // std::vector<Field::Scalar> solution = mySystem.getSolution();
+            std::vector<Field::Scalar> solution = solveSystem(mySystem);
             for (size_t i = 0; i < sysDimension; i++)
             {
                 psi(i, j, k) = solution[i];
@@ -96,8 +99,8 @@ void PressureStep::run()
     size_t sysDimension = data_.grid->Ny; // dimension of linear system to solve
     // when solving Phi we fill linsys with dyy derivatives
 
-    LinearSys mySystem(sysDimension, BoundaryType::Normal);
-    std::vector<double> rhs(sysDimension);
+    LinearSys mySystem(sysDimension);
+    std::vector<double> rhs(sysDimension);      
 
     // jStart = 0;
     for (size_t i = 0; i < data_.grid->Nx; i++)
@@ -113,9 +116,13 @@ void PressureStep::run()
             }
 
             mySystem.setRhs(rhs);
-            mySystem.fillSystemPressure(data_.p, normalAxis);
 
-            std::vector<Field::Scalar> solution = solveSystem(mySystem, BoundaryType::Normal);
+            mySystem.fillSystemPressure(data_.grid, normalAxis);
+
+            // mySystem.ThomaSolver();
+            
+            // std::vector<Field::Scalar> solution = mySystem.getSolution();
+            std::vector<Field::Scalar> solution = solveSystem(mySystem);
             for (size_t j = 0; j < sysDimension; j++)
             {
                 phi(i, j, k) = solution[j];
@@ -133,8 +140,8 @@ void PressureStep::run()
     size_t sysDimension = data_.grid->Nz; // dimension of linear system to solve
     // when solving Pcr we fill linsys with dzz derivatives
 
-    LinearSys mySystem(sysDimension, BoundaryType::Normal);
-    std::vector<double> rhs(sysDimension);
+    LinearSys mySystem(sysDimension);
+    std::vector<double> rhs(sysDimension);      
 
     // kStart = 0;
     for (size_t j = 0; j < data_.grid->Ny; j++)
@@ -150,9 +157,13 @@ void PressureStep::run()
             }
 
             mySystem.setRhs(rhs);
-            mySystem.fillSystemPressure(data_.p, normalAxis);
 
-            std::vector<Field::Scalar> solution = solveSystem(mySystem, BoundaryType::Normal);
+            mySystem.fillSystemPressure(data_.grid, normalAxis);
+
+            // mySystem.ThomaSolver();
+
+            // std::vector<Field::Scalar> solution = mySystem.getSolution();
+            std::vector<Field::Scalar> solution = solveSystem(mySystem);
             for (size_t k = 0; k < sysDimension; k++)
             {
                 pcr(i, j, k) = solution[k];
@@ -162,9 +173,24 @@ void PressureStep::run()
     }
     }
 
-    // Add pressure corrector contribution
-    data_.p.add( pcr );
+    // Add pressure corrector contribution and rotational correction
+    // Write pressure predictor
+    double chi = 0.0;
+    double Re = 1;
+    double nu = data_.nu;
+    double factor = chi * nu;
 
+    for (size_t k = 0; k < data_.grid->Nz; k++) {
+    for (size_t j = 0; j < data_.grid->Ny; j++) {
+        for (size_t i = 0; i < data_.grid->Nx; i++) {
+
+            data_.p(i, j, k) += pcr(i, j, k) - factor * divU(i, j, k);
+            data_.predictor(i,j,k) = data_.p(i, j, k) + pcr(i, j, k);
+        }
+    }
+
+
+}
 }
 
 

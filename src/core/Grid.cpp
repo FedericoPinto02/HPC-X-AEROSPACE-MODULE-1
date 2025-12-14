@@ -12,9 +12,9 @@ Grid::Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
     }
 
     // Compute global physical dimensions
-    Lx_glob = dx * (static_cast<double>(Nx_glob) + 0.5);
-    Ly_glob = dy * (static_cast<double>(Ny_glob) + 0.5);
-    Lz_glob = dz * (static_cast<double>(Nz_glob) + 0.5);
+    Lx_glob = dx * (static_cast<double>(Nx_glob) - 0.5);
+    Ly_glob = dy * (static_cast<double>(Ny_glob) - 0.5);
+    Lz_glob = dz * (static_cast<double>(Nz_glob) - 0.5);
 }
 
 Grid::Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
@@ -29,9 +29,9 @@ Grid::Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
     }
 
     // Compute global physical dimensions
-    Lx_glob = dx * (static_cast<double>(Nx_glob) + 0.5);
-    Ly_glob = dy * (static_cast<double>(Ny_glob) + 0.5);
-    Lz_glob = dz * (static_cast<double>(Nz_glob) + 0.5);
+    Lx_glob = dx * (static_cast<double>(Nx_glob) - 0.5);
+    Ly_glob = dy * (static_cast<double>(Ny_glob) - 0.5);
+    Lz_glob = dz * (static_cast<double>(Nz_glob) - 0.5);
 
     // Compute own chunk information based on MPI topology
     auto dims = env.dims();     // e.g., {2, 2, 1}

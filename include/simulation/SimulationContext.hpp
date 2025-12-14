@@ -9,6 +9,9 @@
 
 #include "core/Fields.hpp"
 
+/**
+ * @brief Structure holding configuration parameters for outputting simulation results.
+ */
 struct OutputSettings {
     std::string dir;
     std::string baseFilename;
@@ -16,6 +19,9 @@ struct OutputSettings {
     size_t outputFrequency;
 };
 
+/**
+ * @brief Structure holding configuration parameters for simulation logging (console and file).
+ */
 struct LoggingSettings {
     bool logToFile;
     bool logToConsole;
@@ -24,10 +30,16 @@ struct LoggingSettings {
     size_t loggingFrequency;
 };
 
+/**
+ * @brief Structure holding parameters related to parallel execution and domain decomposition.
+ */
 struct ParallelizationSettings {
     int schurDomains;
 };
 
+/**
+ * @brief Central structure containing all transient data, fields, and physical properties of the running simulation.
+ */
 struct SimulationData {
     // Grid
     GridPtr grid;
@@ -46,6 +58,7 @@ struct SimulationData {
 
     // Pressure field
     Field p;
+    Field predictor;
 
     // Boundary conditions
     Func bcu;
@@ -55,9 +68,8 @@ struct SimulationData {
     // Kinematic viscosity of the fluid
     double nu;
 
-    // Inverse of the permeability of the (porous) medium (solid: very low; fluid: very high)
-    //  (prefer multiplication with inv_k over division by k)
-    Field inv_k;
+    // Permeability of the (porous) medium (solid: very low; fluid: very high)
+    VectorField k;
 
     // Body force acting on the medium
     VectorField f;

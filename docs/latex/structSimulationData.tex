@@ -1,0 +1,186 @@
+\hypertarget{structSimulationData}{}\doxysection{Simulation\+Data Struct Reference}
+\label{structSimulationData}\index{SimulationData@{SimulationData}}
+
+
+Central structure containing all transient data, fields, and physical properties of the running simulation.  
+
+
+
+
+{\ttfamily \#include $<$Simulation\+Context.\+hpp$>$}
+
+
+
+Collaboration diagram for Simulation\+Data\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{structSimulationData__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} \mbox{\hyperlink{structSimulationData_ac631e9844ec1d329532d0e052800964d}{grid}}
+\item 
+double \mbox{\hyperlink{structSimulationData_aaf44e0034b172243d61d007dd5b00206}{dt}}
+\item 
+double \mbox{\hyperlink{structSimulationData_a41d3edc9dc5c8ff7637a31483cb01ec7}{curr\+Time}}
+\item 
+double \mbox{\hyperlink{structSimulationData_aba3c240216b32668a59505a6cb18ce91}{total\+Sim\+Time}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structSimulationData_ab2b597fca0bcdaff1c898b0a97a172df}{curr\+Step}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structSimulationData_ac8fb5110609ffb68412d97bc8653ea60}{total\+Steps}}
+\item 
+\mbox{\hyperlink{classVectorField}{Vector\+Field}} \mbox{\hyperlink{structSimulationData_a7a8f3fe2819eb0320bbaf58b3f681f5c}{eta}}
+\item 
+\mbox{\hyperlink{classVectorField}{Vector\+Field}} \mbox{\hyperlink{structSimulationData_a5c484082f7447fc0cdf6596ba4cb0129}{zeta}}
+\item 
+\mbox{\hyperlink{classVectorField}{Vector\+Field}} \mbox{\hyperlink{structSimulationData_a4d761472a2718230b9453f36cc1f472b}{u}}
+\item 
+\mbox{\hyperlink{classField}{Field}} \mbox{\hyperlink{structSimulationData_a4ae06e6437c7a9307c519ff0fcc0f873}{p}}
+\item 
+\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \mbox{\hyperlink{structSimulationData_a1e332a48c4872864362d75879701d2e6}{bcu}}
+\item 
+\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \mbox{\hyperlink{structSimulationData_a0320d5c5308b452b05f2bb30616fbcff}{bcv}}
+\item 
+\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \mbox{\hyperlink{structSimulationData_af19a48463a8412a199701b8e55c97d53}{bcw}}
+\item 
+double \mbox{\hyperlink{structSimulationData_a601b6e3895425e7874d4bfb8ca556bf1}{nu}}
+\item 
+\mbox{\hyperlink{classField}{Field}} \mbox{\hyperlink{structSimulationData_a879a0828cbbea0b77a1120ec92469bce}{k}}
+\item 
+\mbox{\hyperlink{classVectorField}{Vector\+Field}} \mbox{\hyperlink{structSimulationData_ad77a73fa59324c76b0281f1eac4c3a3b}{f}}
+\item 
+\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \mbox{\hyperlink{structSimulationData_ae5f9c49214e13bb67d76cc5efbe156cf}{fx}}
+\item 
+\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \mbox{\hyperlink{structSimulationData_a6809cccd2dc45121e047ef43df5e98c4}{fy}}
+\item 
+\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \mbox{\hyperlink{structSimulationData_a6acaba8bbfc3157ed6287b8f76398b59}{fz}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Central structure containing all transient data, fields, and physical properties of the running simulation. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structSimulationData_a1e332a48c4872864362d75879701d2e6}\label{structSimulationData_a1e332a48c4872864362d75879701d2e6}} 
+\index{SimulationData@{SimulationData}!bcu@{bcu}}
+\index{bcu@{bcu}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{bcu}{bcu}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} Simulation\+Data\+::bcu}
+
+\mbox{\Hypertarget{structSimulationData_a0320d5c5308b452b05f2bb30616fbcff}\label{structSimulationData_a0320d5c5308b452b05f2bb30616fbcff}} 
+\index{SimulationData@{SimulationData}!bcv@{bcv}}
+\index{bcv@{bcv}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{bcv}{bcv}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} Simulation\+Data\+::bcv}
+
+\mbox{\Hypertarget{structSimulationData_af19a48463a8412a199701b8e55c97d53}\label{structSimulationData_af19a48463a8412a199701b8e55c97d53}} 
+\index{SimulationData@{SimulationData}!bcw@{bcw}}
+\index{bcw@{bcw}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{bcw}{bcw}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} Simulation\+Data\+::bcw}
+
+\mbox{\Hypertarget{structSimulationData_ab2b597fca0bcdaff1c898b0a97a172df}\label{structSimulationData_ab2b597fca0bcdaff1c898b0a97a172df}} 
+\index{SimulationData@{SimulationData}!currStep@{currStep}}
+\index{currStep@{currStep}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{currStep}{currStep}}
+{\footnotesize\ttfamily size\+\_\+t Simulation\+Data\+::curr\+Step}
+
+\mbox{\Hypertarget{structSimulationData_a41d3edc9dc5c8ff7637a31483cb01ec7}\label{structSimulationData_a41d3edc9dc5c8ff7637a31483cb01ec7}} 
+\index{SimulationData@{SimulationData}!currTime@{currTime}}
+\index{currTime@{currTime}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{currTime}{currTime}}
+{\footnotesize\ttfamily double Simulation\+Data\+::curr\+Time}
+
+\mbox{\Hypertarget{structSimulationData_aaf44e0034b172243d61d007dd5b00206}\label{structSimulationData_aaf44e0034b172243d61d007dd5b00206}} 
+\index{SimulationData@{SimulationData}!dt@{dt}}
+\index{dt@{dt}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{dt}{dt}}
+{\footnotesize\ttfamily double Simulation\+Data\+::dt}
+
+\mbox{\Hypertarget{structSimulationData_a7a8f3fe2819eb0320bbaf58b3f681f5c}\label{structSimulationData_a7a8f3fe2819eb0320bbaf58b3f681f5c}} 
+\index{SimulationData@{SimulationData}!eta@{eta}}
+\index{eta@{eta}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{eta}{eta}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classVectorField}{Vector\+Field}} Simulation\+Data\+::eta}
+
+\mbox{\Hypertarget{structSimulationData_ad77a73fa59324c76b0281f1eac4c3a3b}\label{structSimulationData_ad77a73fa59324c76b0281f1eac4c3a3b}} 
+\index{SimulationData@{SimulationData}!f@{f}}
+\index{f@{f}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{f}{f}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classVectorField}{Vector\+Field}} Simulation\+Data\+::f}
+
+\mbox{\Hypertarget{structSimulationData_ae5f9c49214e13bb67d76cc5efbe156cf}\label{structSimulationData_ae5f9c49214e13bb67d76cc5efbe156cf}} 
+\index{SimulationData@{SimulationData}!fx@{fx}}
+\index{fx@{fx}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{fx}{fx}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} Simulation\+Data\+::fx}
+
+\mbox{\Hypertarget{structSimulationData_a6809cccd2dc45121e047ef43df5e98c4}\label{structSimulationData_a6809cccd2dc45121e047ef43df5e98c4}} 
+\index{SimulationData@{SimulationData}!fy@{fy}}
+\index{fy@{fy}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{fy}{fy}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} Simulation\+Data\+::fy}
+
+\mbox{\Hypertarget{structSimulationData_a6acaba8bbfc3157ed6287b8f76398b59}\label{structSimulationData_a6acaba8bbfc3157ed6287b8f76398b59}} 
+\index{SimulationData@{SimulationData}!fz@{fz}}
+\index{fz@{fz}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{fz}{fz}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} Simulation\+Data\+::fz}
+
+\mbox{\Hypertarget{structSimulationData_ac631e9844ec1d329532d0e052800964d}\label{structSimulationData_ac631e9844ec1d329532d0e052800964d}} 
+\index{SimulationData@{SimulationData}!grid@{grid}}
+\index{grid@{grid}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{grid}{grid}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} Simulation\+Data\+::grid}
+
+\mbox{\Hypertarget{structSimulationData_a879a0828cbbea0b77a1120ec92469bce}\label{structSimulationData_a879a0828cbbea0b77a1120ec92469bce}} 
+\index{SimulationData@{SimulationData}!k@{k}}
+\index{k@{k}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{k}{k}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField}{Field}} Simulation\+Data\+::k}
+
+\mbox{\Hypertarget{structSimulationData_a601b6e3895425e7874d4bfb8ca556bf1}\label{structSimulationData_a601b6e3895425e7874d4bfb8ca556bf1}} 
+\index{SimulationData@{SimulationData}!nu@{nu}}
+\index{nu@{nu}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{nu}{nu}}
+{\footnotesize\ttfamily double Simulation\+Data\+::nu}
+
+\mbox{\Hypertarget{structSimulationData_a4ae06e6437c7a9307c519ff0fcc0f873}\label{structSimulationData_a4ae06e6437c7a9307c519ff0fcc0f873}} 
+\index{SimulationData@{SimulationData}!p@{p}}
+\index{p@{p}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{p}{p}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField}{Field}} Simulation\+Data\+::p}
+
+\mbox{\Hypertarget{structSimulationData_aba3c240216b32668a59505a6cb18ce91}\label{structSimulationData_aba3c240216b32668a59505a6cb18ce91}} 
+\index{SimulationData@{SimulationData}!totalSimTime@{totalSimTime}}
+\index{totalSimTime@{totalSimTime}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{totalSimTime}{totalSimTime}}
+{\footnotesize\ttfamily double Simulation\+Data\+::total\+Sim\+Time}
+
+\mbox{\Hypertarget{structSimulationData_ac8fb5110609ffb68412d97bc8653ea60}\label{structSimulationData_ac8fb5110609ffb68412d97bc8653ea60}} 
+\index{SimulationData@{SimulationData}!totalSteps@{totalSteps}}
+\index{totalSteps@{totalSteps}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{totalSteps}{totalSteps}}
+{\footnotesize\ttfamily size\+\_\+t Simulation\+Data\+::total\+Steps}
+
+\mbox{\Hypertarget{structSimulationData_a4d761472a2718230b9453f36cc1f472b}\label{structSimulationData_a4d761472a2718230b9453f36cc1f472b}} 
+\index{SimulationData@{SimulationData}!u@{u}}
+\index{u@{u}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{u}{u}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classVectorField}{Vector\+Field}} Simulation\+Data\+::u}
+
+\mbox{\Hypertarget{structSimulationData_a5c484082f7447fc0cdf6596ba4cb0129}\label{structSimulationData_a5c484082f7447fc0cdf6596ba4cb0129}} 
+\index{SimulationData@{SimulationData}!zeta@{zeta}}
+\index{zeta@{zeta}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{zeta}{zeta}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classVectorField}{Vector\+Field}} Simulation\+Data\+::zeta}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/simulation/\mbox{\hyperlink{SimulationContext_8hpp}{Simulation\+Context.\+hpp}}\end{DoxyCompactItemize}

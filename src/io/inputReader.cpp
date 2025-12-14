@@ -121,8 +121,8 @@ InputData InputReader::read(const std::string &filename)
         double L = data.physics.nu;
 
         // Calculate grid spacing dx based on the provided nx.
-        // The domain length is L, and we use the formula: dx = L / (nx + 0.5).
-        double calculated_dx = L / (static_cast<double>(data.mesh.nx) + 0.5);
+        // The domain length is L, and we use the formula: dx = L / (nx - 0.5).
+        double calculated_dx = L / (static_cast<double>(data.mesh.nx) - 0.5);
 
         // Enforce an isotropic grid (cubic cells and cubic domain):
         // 1. Set all spatial steps equal to the calculated dx

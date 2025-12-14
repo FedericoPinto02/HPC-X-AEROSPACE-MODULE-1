@@ -8,6 +8,9 @@
 enum class BoundaryType {Normal, Tangent};
 class LinearSysTestFixture;
 
+/**
+* @brief Manages and solves a tridiagonal linear system (Ax = b) used for pressure and velocity steps.
+ */
 class LinearSys {
 
     friend class LinearSysTestFixture;
@@ -25,9 +28,8 @@ public:
     /**
      * @brief Constructor.
      * @param n Size of the linear system (n x n)
-     * @param boundaryType Boundary condition type, Normal or Tangent (set Normal for pressure)
      */
-    LinearSys(size_t n, BoundaryType boundaryType);
+    LinearSys(size_t n);
 
     /**
      * @brief Sets the right-hand side (rhsC) vector for the solver.
@@ -45,13 +47,13 @@ public:
     /**
      * @brief Fill the linear system for Pressure variables
      */
-    void fillSystemPressure(const Field& phi, const Axis direction);
+    void fillSystemPressure(const GridPtr& grid, const Axis direction);
 
     /**
      * @brief Fill the linear system for Velocity variables
      */
     void fillSystemVelocity(
-        const SimulationData& simData, const VectorField& xi,
+        const SimulationData& simData, const VectorField& eta, const VectorField& xi,
         const Axis fieldComponent, const Axis derivativeDirection,
         const size_t iStart, const size_t jStart, const size_t kStart);
 

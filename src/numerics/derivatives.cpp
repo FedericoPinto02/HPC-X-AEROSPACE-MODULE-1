@@ -51,7 +51,7 @@ void Derivatives::computeDz_fwd(const Field &field, Field &dz) const {
 }
 
 
-void Derivatives::computeDx_bwd(const Field &field, Field &dx) const {
+void Derivatives::computeDxDiv(const Field &field, Field &dx, Func &bcu, double &time) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dx;
 
@@ -60,12 +60,13 @@ void Derivatives::computeDx_bwd(const Field &field, Field &dx) const {
             for (size_t i = 1; i < grid.Nx; i++) {
                 dx(i, j, k) = (field(i, j, k) - field(i - 1, j, k)) * mul;
             }
-            dx(0, j, k) = 0.0;
+            dx(0, j, k) = -1.0/3.0*mul * field(1, j, k)  + 3.0*mul * field(0, j, k)
+            - (8.0 / 3.0) * mul * bcu(0.0, j*grid.dy, k*grid.dz, time);
         }
     }
 }
 
-void Derivatives::computeDy_bwd(const Field &field, Field &dy) const {
+void Derivatives::computeDyDiv(const Field &field, Field &dy, Func &bcv, double &time) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dy;
 
@@ -74,12 +75,13 @@ void Derivatives::computeDy_bwd(const Field &field, Field &dy) const {
             for (size_t j = 1; j < grid.Ny; j++) {
                 dy(i, j, k) = (field(i, j, k) - field(i, j - 1, k)) * mul;
             }
-            dy(i, 0, k) = 0.0;
+            dy(i, 0, k) = -1.0/3.0*mul * field(i, 1, k)  + 3.0*mul * field(i, 0, k)
+            - (8.0 / 3.0) * mul * bcv(i*grid.dx, 0.0, k*grid.dz, time);
         }
     }
 }
 
-void Derivatives::computeDz_bwd(const Field &field, Field &dz) const {
+void Derivatives::computeDzDiv(const Field &field, Field &dz, Func &bcw, double &time) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / grid.dz;
 
@@ -88,23 +90,28 @@ void Derivatives::computeDz_bwd(const Field &field, Field &dz) const {
             for (size_t k = 1; k < grid.Nz; k++) {
                 dz(i, j, k) = (field(i, j, k) - field(i, j, k - 1)) * mul;
             }
-            dz(i, j, 0) = 0.0;
+            dz(i, j, 0) = -1.0/3.0*mul * field(i, j, 1)  + 3.0*mul * field(i, j, 0)
+            - (8.0 / 3.0) * mul * bcw(i*grid.dx, j*grid.dy, 0.0, time);
         }
     }
 }
 
 
-void Derivatives::computeDivergence(const VectorField &field, Field &divergence) const {
+void Derivatives::computeDivergence(const VectorField &field, Field &divergence, SimulationData &data) const {
     Field tmp = divergence;
     tmp.reset();
     divergence.reset();
+    auto& bcu = data.bcu;
+    auto& bcv = data.bcv;
+    auto& bcw = data.bcw;
 
-    computeDx_bwd(field(Axis::X), tmp);
+    computeDxDiv(field(Axis::X), tmp, bcu, data.currTime);
     divergence.add(tmp);
-    computeDy_bwd(field(Axis::Y), tmp);
+    computeDyDiv(field(Axis::Y), tmp, bcv, data.currTime);
     divergence.add(tmp);
-    computeDz_bwd(field(Axis::Z), tmp);
+    computeDzDiv(field(Axis::Z), tmp, bcw, data.currTime);
     divergence.add(tmp);
+
 }
 
 

@@ -1,0 +1,20 @@
+/**
+ * @mainpage NSB Solver Documentation
+ *
+ * <center><h1>Welcome to the NSB Solver project</h1></center>
+ *
+ * The **NSB Solver** project is a high-performance C++ library
+ * dedicated to fluid simulation, particularly the solution of the
+ * **Navier-Stokes-Brinkman Equations**.
+ *
+ * It is developed as part of the HPSC for Aerospace Engineering course and aims to provide an efficient
+ * and parallelizable solution for three-dimensional grid fluid dynamics problem.
+ *
+ * ---
+ *
+ * ## 🔗 Navigation
+ *
+ * Use the menus above to explore the sections:
+ * * Go to [Class List](annotated.html) to see all classes and structs.
+ * * Check the [Files](files.html) for the complete list of headers.
+ */

@@ -1,0 +1,433 @@
+\hypertarget{classVectorField}{}\doxysection{Vector\+Field Class Reference}
+\label{classVectorField}\index{VectorField@{VectorField}}
+
+
+Class representing a 3D vector field defined on a 3D grid.  
+
+
+
+
+{\ttfamily \#include $<$Fields.\+hpp$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}{Scalar}} = \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classVectorField_a678cbed69b397d108ea467ac65a9507c}{setup}} (const \mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} \&grid, const \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&populate\+XFunction=\mbox{\hyperlink{Fields_8hpp_ae45e4c3f95d489d70a4c578c028e12df}{ZERO\+\_\+\+FUNC}}, const \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&populate\+YFunction=\mbox{\hyperlink{Fields_8hpp_ae45e4c3f95d489d70a4c578c028e12df}{ZERO\+\_\+\+FUNC}}, const \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&populate\+ZFunction=\mbox{\hyperlink{Fields_8hpp_ae45e4c3f95d489d70a4c578c028e12df}{ZERO\+\_\+\+FUNC}})
+\begin{DoxyCompactList}\small\item\em Setup the vector field with functions to populate each component (e.\+g., initial conditions). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d}{populate}} (double time=0)
+\begin{DoxyCompactList}\small\item\em Populates each component of the underlying vector field based on the stored functions in (x,y,z,t). \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structGrid}{Grid}} \& \mbox{\hyperlink{classVectorField_a44e6ba866c7ab75a4608062f16f702b9}{get\+Grid}} ()
+\begin{DoxyCompactList}\small\item\em Getter for the grid information. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structGrid}{Grid}} \& \mbox{\hyperlink{classVectorField_a32f73666f1e8f42fab937bad0b2fd01d}{get\+Grid}} () const
+\begin{DoxyCompactList}\small\item\em This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classField}{Field}} \& \mbox{\hyperlink{classVectorField_a0f142a00acaedd2b302e978c2623b8a7}{operator()}} (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} component\+Direction)
+\begin{DoxyCompactList}\small\item\em Access the component of the vector field in the specified direction. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classField}{Field}} \& \mbox{\hyperlink{classVectorField_a5cf577c01a673cd62ca1e28df93ebe8d}{operator()}} (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} component\+Direction) const
+\begin{DoxyCompactList}\small\item\em This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classField}{Field}} \& \mbox{\hyperlink{classVectorField_ad0d70e28de0a1efeaa1e3ffe8a86b175}{component}} (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} component\+Direction)
+\begin{DoxyCompactList}\small\item\em Access the component of the vector field in the specified direction. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classField}{Field}} \& \mbox{\hyperlink{classVectorField_a9cda4836f1887d256d159e859cdcf61d}{component}} (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} component\+Direction) const
+\begin{DoxyCompactList}\small\item\em This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}{Scalar}} \& \mbox{\hyperlink{classVectorField_a8ed16373ed36283478770b599908deda}{operator()}} (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} component\+Direction, size\+\_\+t i, size\+\_\+t j, size\+\_\+t k)
+\begin{DoxyCompactList}\small\item\em Access the component value of the vector field in the specified direction at the given position. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}{Scalar}} \& \mbox{\hyperlink{classVectorField_a92c6e367b585b7bcb3ef378c10c7104e}{operator()}} (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} component\+Direction, size\+\_\+t i, size\+\_\+t j, size\+\_\+t k) const
+\begin{DoxyCompactList}\small\item\em This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}{Scalar}} \& \mbox{\hyperlink{classVectorField_abed2562f8c20d6ae9861913d10c0c7ac}{value}} (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} component\+Direction, size\+\_\+t i, size\+\_\+t j, size\+\_\+t k)
+\begin{DoxyCompactList}\small\item\em Access the component value of the vector field in the specified direction at the given position. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}{Scalar}} \& \mbox{\hyperlink{classVectorField_a04a582970451f7ebca74b9b5a33327f3}{value}} (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} component\+Direction, size\+\_\+t i, size\+\_\+t j, size\+\_\+t k) const
+\begin{DoxyCompactList}\small\item\em This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classVectorField_aa8f5f5a590e1eb791f2e27e802dd8cb7}{add}} (\mbox{\hyperlink{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}{Scalar}} \mbox{\hyperlink{classVectorField_abed2562f8c20d6ae9861913d10c0c7ac}{value}})
+\begin{DoxyCompactList}\small\item\em Add a scalar value to all components of the vector field. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classVectorField_a7bc378f9fc79bf136b4a4a8053bd6c80}{add}} (const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&other)
+\begin{DoxyCompactList}\small\item\em Add another vector field to this vector field element-\/wise. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classVectorField_a6cde8853c3eb1d5ba60b4a61e467c7c0}{multiply}} (\mbox{\hyperlink{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}{Scalar}} \mbox{\hyperlink{classVectorField_abed2562f8c20d6ae9861913d10c0c7ac}{value}})
+\begin{DoxyCompactList}\small\item\em Multiply all components of the vector field by a scalar value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} \mbox{\hyperlink{classVectorField_ad8b46bd3b5ce860985a16fcaf7e172b0}{grid\+Ptr\+\_\+}}
+\begin{DoxyCompactList}\small\item\em The pointer to the grid information (dimensions and spacing). \end{DoxyCompactList}\item 
+std\+::array$<$ \mbox{\hyperlink{classField}{Field}}, \mbox{\hyperlink{Grid_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}} $>$ \mbox{\hyperlink{classVectorField_a55123431d697628d673374ee936b2d8c}{components\+\_\+}}
+\begin{DoxyCompactList}\small\item\em The components of the vector field (x, y, z). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class representing a 3D vector field defined on a 3D grid. 
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}\label{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}} 
+\index{VectorField@{VectorField}!Scalar@{Scalar}}
+\index{Scalar@{Scalar}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{Scalar}{Scalar}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}{Vector\+Field\+::\+Scalar}} =  \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classVectorField_a7bc378f9fc79bf136b4a4a8053bd6c80}\label{classVectorField_a7bc378f9fc79bf136b4a4a8053bd6c80}} 
+\index{VectorField@{VectorField}!add@{add}}
+\index{add@{add}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Vector\+Field\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{other }\end{DoxyParamCaption})}
+
+
+
+Add another vector field to this vector field element-\/wise. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & the other vector field to add \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_a7bc378f9fc79bf136b4a4a8053bd6c80_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVectorField_aa8f5f5a590e1eb791f2e27e802dd8cb7}\label{classVectorField_aa8f5f5a590e1eb791f2e27e802dd8cb7}} 
+\index{VectorField@{VectorField}!add@{add}}
+\index{add@{add}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Vector\+Field\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}}}]{value }\end{DoxyParamCaption})}
+
+
+
+Add a scalar value to all components of the vector field. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & the scalar value to add \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_aa8f5f5a590e1eb791f2e27e802dd8cb7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVectorField_ad0d70e28de0a1efeaa1e3ffe8a86b175}\label{classVectorField_ad0d70e28de0a1efeaa1e3ffe8a86b175}} 
+\index{VectorField@{VectorField}!component@{component}}
+\index{component@{component}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{component()}{component()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField}{Field}}\& Vector\+Field\+::component (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{component\+Direction }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Access the component of the vector field in the specified direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em component\+Direction} & the direction (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}{Axis\+::X}}, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0}{Axis\+::Y}}, or \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5}{Axis\+::Z}}) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the component of the vector field in the specified direction
+\end{DoxyReturn}
+This method is a named alias for the access operator. Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_ad0d70e28de0a1efeaa1e3ffe8a86b175_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVectorField_a9cda4836f1887d256d159e859cdcf61d}\label{classVectorField_a9cda4836f1887d256d159e859cdcf61d}} 
+\index{VectorField@{VectorField}!component@{component}}
+\index{component@{component}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{component()}{component()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classField}{Field}}\& Vector\+Field\+::component (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{component\+Direction }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+\mbox{\Hypertarget{classVectorField_a44e6ba866c7ab75a4608062f16f702b9}\label{classVectorField_a44e6ba866c7ab75a4608062f16f702b9}} 
+\index{VectorField@{VectorField}!getGrid@{getGrid}}
+\index{getGrid@{getGrid}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{getGrid()}{getGrid()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structGrid}{Grid}}\& Vector\+Field\+::get\+Grid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for the grid information. 
+
+\begin{DoxyReturn}{Returns}
+the pointer to the grid information 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_a44e6ba866c7ab75a4608062f16f702b9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVectorField_a32f73666f1e8f42fab937bad0b2fd01d}\label{classVectorField_a32f73666f1e8f42fab937bad0b2fd01d}} 
+\index{VectorField@{VectorField}!getGrid@{getGrid}}
+\index{getGrid@{getGrid}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{getGrid()}{getGrid()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structGrid}{Grid}}\& Vector\+Field\+::get\+Grid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+\mbox{\Hypertarget{classVectorField_a6cde8853c3eb1d5ba60b4a61e467c7c0}\label{classVectorField_a6cde8853c3eb1d5ba60b4a61e467c7c0}} 
+\index{VectorField@{VectorField}!multiply@{multiply}}
+\index{multiply@{multiply}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{multiply()}{multiply()}}
+{\footnotesize\ttfamily void Vector\+Field\+::multiply (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}}}]{value }\end{DoxyParamCaption})}
+
+
+
+Multiply all components of the vector field by a scalar value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & the scalar value to multiply by \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_a6cde8853c3eb1d5ba60b4a61e467c7c0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVectorField_a0f142a00acaedd2b302e978c2623b8a7}\label{classVectorField_a0f142a00acaedd2b302e978c2623b8a7}} 
+\index{VectorField@{VectorField}!operator()@{operator()}}
+\index{operator()@{operator()}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField}{Field}}\& Vector\+Field\+::operator() (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{component\+Direction }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Access the component of the vector field in the specified direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em component\+Direction} & the direction (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}{Axis\+::X}}, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0}{Axis\+::Y}}, or \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5}{Axis\+::Z}}) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the component of the vector field in the specified direction 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_a0f142a00acaedd2b302e978c2623b8a7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVectorField_a5cf577c01a673cd62ca1e28df93ebe8d}\label{classVectorField_a5cf577c01a673cd62ca1e28df93ebe8d}} 
+\index{VectorField@{VectorField}!operator()@{operator()}}
+\index{operator()@{operator()}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classField}{Field}}\& Vector\+Field\+::operator() (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{component\+Direction }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+\mbox{\Hypertarget{classVectorField_a8ed16373ed36283478770b599908deda}\label{classVectorField_a8ed16373ed36283478770b599908deda}} 
+\index{VectorField@{VectorField}!operator()@{operator()}}
+\index{operator()@{operator()}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}} \& Vector\+Field\+::operator() (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{component\+Direction,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption})}
+
+
+
+Access the component value of the vector field in the specified direction at the given position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em direction} & the direction (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}{Axis\+::X}}, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0}{Axis\+::Y}}, or \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5}{Axis\+::Z}}) \\
+\hline
+{\em i} & the x-\/index \\
+\hline
+{\em j} & the y-\/index \\
+\hline
+{\em k} & the z-\/index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the component value of the vector field in the specified direction at position (i,j,k) 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_a8ed16373ed36283478770b599908deda_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVectorField_a92c6e367b585b7bcb3ef378c10c7104e}\label{classVectorField_a92c6e367b585b7bcb3ef378c10c7104e}} 
+\index{VectorField@{VectorField}!operator()@{operator()}}
+\index{operator()@{operator()}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classField_a70a75705a22e72ce9be65780d94783b1}{Field\+::\+Scalar}} \& Vector\+Field\+::operator() (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{component\+Direction,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption}) const}
+
+
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_a92c6e367b585b7bcb3ef378c10c7104e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d}\label{classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d}} 
+\index{VectorField@{VectorField}!populate@{populate}}
+\index{populate@{populate}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{populate()}{populate()}}
+{\footnotesize\ttfamily void Vector\+Field\+::populate (\begin{DoxyParamCaption}\item[{double}]{time = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Populates each component of the underlying vector field based on the stored functions in (x,y,z,t). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & the time affecting the stored functions in (x,y,z,t) \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVectorField_a678cbed69b397d108ea467ac65a9507c}\label{classVectorField_a678cbed69b397d108ea467ac65a9507c}} 
+\index{VectorField@{VectorField}!setup@{setup}}
+\index{setup@{setup}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void Vector\+Field\+::setup (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} \&}]{grid,  }\item[{const \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&}]{populate\+XFunction = {\ttfamily \mbox{\hyperlink{Fields_8hpp_ae45e4c3f95d489d70a4c578c028e12df}{ZERO\+\_\+\+FUNC}}},  }\item[{const \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&}]{populate\+YFunction = {\ttfamily \mbox{\hyperlink{Fields_8hpp_ae45e4c3f95d489d70a4c578c028e12df}{ZERO\+\_\+\+FUNC}}},  }\item[{const \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&}]{populate\+ZFunction = {\ttfamily \mbox{\hyperlink{Fields_8hpp_ae45e4c3f95d489d70a4c578c028e12df}{ZERO\+\_\+\+FUNC}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Setup the vector field with functions to populate each component (e.\+g., initial conditions). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em grid} & the pointer to the grid information \\
+\hline
+{\em populate\+XFunction} & the function to use for populating the x-\/component of the vector field \\
+\hline
+{\em populate\+YFunction} & the function to use for populating the y-\/component of the vector field \\
+\hline
+{\em populate\+ZFunction} & the function to use for populating the z-\/component of the vector field \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_a678cbed69b397d108ea467ac65a9507c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classVectorField_a678cbed69b397d108ea467ac65a9507c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVectorField_abed2562f8c20d6ae9861913d10c0c7ac}\label{classVectorField_abed2562f8c20d6ae9861913d10c0c7ac}} 
+\index{VectorField@{VectorField}!value@{value}}
+\index{value@{value}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{value()}{value()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}{Scalar}}\& Vector\+Field\+::value (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{component\+Direction,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Access the component value of the vector field in the specified direction at the given position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em direction} & the direction (\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}{Axis\+::X}}, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0}{Axis\+::Y}}, or \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5}{Axis\+::Z}}) \\
+\hline
+{\em i} & the x-\/index \\
+\hline
+{\em j} & the y-\/index \\
+\hline
+{\em k} & the z-\/index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the component value of the vector field in the specified direction at position (i,j,k)
+\end{DoxyReturn}
+This method is a named alias for the access operator. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=345pt]{classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=337pt]{classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classVectorField_a04a582970451f7ebca74b9b5a33327f3}\label{classVectorField_a04a582970451f7ebca74b9b5a33327f3}} 
+\index{VectorField@{VectorField}!value@{value}}
+\index{value@{value}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{value()}{value()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classVectorField_a53f10b47337e22c2cf762d5f8da6ff75}{Scalar}}\& Vector\+Field\+::value (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{component\+Direction,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j,  }\item[{size\+\_\+t}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=345pt]{classVectorField_a04a582970451f7ebca74b9b5a33327f3_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classVectorField_a55123431d697628d673374ee936b2d8c}\label{classVectorField_a55123431d697628d673374ee936b2d8c}} 
+\index{VectorField@{VectorField}!components\_@{components\_}}
+\index{components\_@{components\_}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{components\_}{components\_}}
+{\footnotesize\ttfamily std\+::array$<$\mbox{\hyperlink{classField}{Field}}, \mbox{\hyperlink{Grid_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}}$>$ Vector\+Field\+::components\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The components of the vector field (x, y, z). 
+
+\mbox{\Hypertarget{classVectorField_ad8b46bd3b5ce860985a16fcaf7e172b0}\label{classVectorField_ad8b46bd3b5ce860985a16fcaf7e172b0}} 
+\index{VectorField@{VectorField}!gridPtr\_@{gridPtr\_}}
+\index{gridPtr\_@{gridPtr\_}!VectorField@{VectorField}}
+\doxysubsubsection{\texorpdfstring{gridPtr\_}{gridPtr\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} Vector\+Field\+::grid\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The pointer to the grid information (dimensions and spacing). 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/core/\mbox{\hyperlink{Fields_8hpp}{Fields.\+hpp}}\item 
+src/core/\mbox{\hyperlink{Fields_8cpp}{Fields.\+cpp}}\end{DoxyCompactItemize}

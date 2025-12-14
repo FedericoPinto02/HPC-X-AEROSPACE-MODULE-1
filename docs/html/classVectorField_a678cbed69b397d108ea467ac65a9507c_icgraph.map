@@ -1,0 +1,9 @@
+<map id="VectorField::setup" name="VectorField::setup">
+<area shape="rect" id="node1" title="Setup the vector field with functions to populate each component (e.g., initial conditions)." alt="" coords="811,46,949,73"/>
+<area shape="rect" id="node2" href="$namespaceInitializer.html#ad0df7e265dd3a6f2b2aaefcb2244203d" title=" " alt="" coords="551,5,739,47"/>
+<area shape="rect" id="node6" href="$classViscousStep.html#a9ad97cebe4b5966259b6d205f62a392e" title="Construct temporary fields to proceed in computations." alt="" coords="527,71,763,112"/>
+<area shape="rect" id="node3" href="$namespaceInitializer.html#ab08ce6fc3e43c623779edfdfb7ea3855" title="Setup and initialize the SimulationData from input data." alt="" coords="321,13,448,39"/>
+<area shape="rect" id="node4" href="$classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6" title=" " alt="" coords="108,13,243,39"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,13,60,39"/>
+<area shape="rect" id="node7" href="$classViscousStep.html#a3c394708ab3435546917bbc8787e6d83" title="Constructor." alt="" coords="291,78,479,105"/>
+</map>

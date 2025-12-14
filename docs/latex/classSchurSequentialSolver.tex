@@ -1,0 +1,298 @@
+\hypertarget{classSchurSequentialSolver}{}\doxysection{Schur\+Sequential\+Solver Class Reference}
+\label{classSchurSequentialSolver}\index{SchurSequentialSolver@{SchurSequentialSolver}}
+
+
+Implements the Schur Complement method for solving large tridiagonal systems by decomposing them into smaller sub-\/systems solved sequentially.  
+
+
+
+
+{\ttfamily \#include $<$Schur\+Sequential\+Solver.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classSchurSequentialSolver_a1f3826dc32223ad54a8b760106da967c}{Schur\+Sequential\+Solver}} (int global\+Size, int num\+Domains, \mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}} type)
+\item 
+void \mbox{\hyperlink{classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212}{Pre\+Process}} (const \mbox{\hyperlink{classTridiagMat}{Tridiag\+Mat}} \&A\+\_\+global)
+\begin{DoxyCompactList}\small\item\em Phase 0\+: Pre-\/processing. Builds the submatrices A\+\_\+ii, extracts interface coefficients, and assembles the Schur matrix \textquotesingle{}S\textquotesingle{}. \end{DoxyCompactList}\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e}{solve}} (const std\+::vector$<$ double $>$ \&f\+\_\+global)
+\begin{DoxyCompactList}\small\item\em Phase 1\+: Solve. Solves the system A$\ast$x = f using the Schur algorithm. \textquotesingle{}Pre\+Process\textquotesingle{} must have been called before. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classSchurSequentialSolver_a046a2bbdb46a799a963f44c3ef15bf49}{get\+Global\+Sub\+Vector}} (const std\+::vector$<$ double $>$ \&global\+Vec, int start, int size) const
+\item 
+void \mbox{\hyperlink{classSchurSequentialSolver_aeae72f30176c219c7d60a206f54865c4}{set\+Global\+Sub\+Vector}} (std\+::vector$<$ double $>$ \&global\+Vec, const std\+::vector$<$ double $>$ \&sub\+Vec, int start) const
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classSchurSequentialSolver_afc572bd947a97f8aebc82714013d6d41}{get\+Interface\+Vector}} (const std\+::vector$<$ double $>$ \&global\+Vec) const
+\item 
+void \mbox{\hyperlink{classSchurSequentialSolver_aebe81742570d50e62bf86d13a1fd8d93}{set\+Interface\+Vector}} (std\+::vector$<$ double $>$ \&global\+Vec, const std\+::vector$<$ double $>$ \&interface\+Vec) const
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classSchurSequentialSolver_ae84b28ee0ff1e33bae823b780e88c1c2}{create\+Sparse\+Vector}} (int size, int index, double value) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classSchurSequentialSolver_a8416a46e164b21d0b816f49bc6ed8098}{n\+Global}}
+\item 
+int \mbox{\hyperlink{classSchurSequentialSolver_a382c8a4b66aa664a629dd14a04a491de}{num\+\_\+domains}}
+\item 
+int \mbox{\hyperlink{classSchurSequentialSolver_aa198611f596766dfab4f4f6c97ee2891}{num\+\_\+interfaces}}
+\item 
+\mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}} \mbox{\hyperlink{classSchurSequentialSolver_ad4313a0f29d8699ba9fe7a027064cfb3}{b\+Type}}
+\item 
+std\+::vector$<$ int $>$ \mbox{\hyperlink{classSchurSequentialSolver_aa9e05f5a2877857926f1724d576d9938}{domain\+\_\+sizes}}
+\item 
+std\+::vector$<$ int $>$ \mbox{\hyperlink{classSchurSequentialSolver_a90e12004475e6a251301abebcc23f6a1}{domain\+\_\+starts}}
+\item 
+std\+::vector$<$ int $>$ \mbox{\hyperlink{classSchurSequentialSolver_a0500a7ca451f34b01275a61d453d4ac8}{interface\+\_\+indices}}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} $>$ \mbox{\hyperlink{classSchurSequentialSolver_a1d38b6d5249fe0ddd2f9b968ccf68968}{local\+Solvers}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classLinearSys}{Linear\+Sys}} $>$ \mbox{\hyperlink{classSchurSequentialSolver_a3f2bee336c9103ef3be3ef52b3d47995}{schur\+Solver}}
+\item 
+double \mbox{\hyperlink{classSchurSequentialSolver_a57a1c63a819f9dbb8bb115e03b4d7cc2}{schur\+ScalarS}} = 0.\+0
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classSchurSequentialSolver_a40fc0c1f5a913da1ac8c871aba9d897c}{A\+\_\+ie\+\_\+left}}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classSchurSequentialSolver_a992ddf14ea0f38332bbec384c34880b1}{A\+\_\+ie\+\_\+right}}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classSchurSequentialSolver_a4ac3354eda88673a3e6616f0e4760a8c}{A\+\_\+ei\+\_\+left}}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classSchurSequentialSolver_a2383d89591ea886caeaf9cabc63aa37a}{A\+\_\+ei\+\_\+right}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implements the Schur Complement method for solving large tridiagonal systems by decomposing them into smaller sub-\/systems solved sequentially. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSchurSequentialSolver_a1f3826dc32223ad54a8b760106da967c}\label{classSchurSequentialSolver_a1f3826dc32223ad54a8b760106da967c}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!SchurSequentialSolver@{SchurSequentialSolver}}
+\index{SchurSequentialSolver@{SchurSequentialSolver}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{SchurSequentialSolver()}{SchurSequentialSolver()}}
+{\footnotesize\ttfamily Schur\+Sequential\+Solver\+::\+Schur\+Sequential\+Solver (\begin{DoxyParamCaption}\item[{int}]{global\+Size,  }\item[{int}]{num\+Domains,  }\item[{\mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}}}]{type }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classSchurSequentialSolver_ae84b28ee0ff1e33bae823b780e88c1c2}\label{classSchurSequentialSolver_ae84b28ee0ff1e33bae823b780e88c1c2}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!createSparseVector@{createSparseVector}}
+\index{createSparseVector@{createSparseVector}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{createSparseVector()}{createSparseVector()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ Schur\+Sequential\+Solver\+::create\+Sparse\+Vector (\begin{DoxyParamCaption}\item[{int}]{size,  }\item[{int}]{index,  }\item[{double}]{value }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSequentialSolver_ae84b28ee0ff1e33bae823b780e88c1c2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSchurSequentialSolver_a046a2bbdb46a799a963f44c3ef15bf49}\label{classSchurSequentialSolver_a046a2bbdb46a799a963f44c3ef15bf49}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!getGlobalSubVector@{getGlobalSubVector}}
+\index{getGlobalSubVector@{getGlobalSubVector}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{getGlobalSubVector()}{getGlobalSubVector()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ Schur\+Sequential\+Solver\+::get\+Global\+Sub\+Vector (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{global\+Vec,  }\item[{int}]{start,  }\item[{int}]{size }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSequentialSolver_a046a2bbdb46a799a963f44c3ef15bf49_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSchurSequentialSolver_afc572bd947a97f8aebc82714013d6d41}\label{classSchurSequentialSolver_afc572bd947a97f8aebc82714013d6d41}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!getInterfaceVector@{getInterfaceVector}}
+\index{getInterfaceVector@{getInterfaceVector}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{getInterfaceVector()}{getInterfaceVector()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ Schur\+Sequential\+Solver\+::get\+Interface\+Vector (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{global\+Vec }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSequentialSolver_afc572bd947a97f8aebc82714013d6d41_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212}\label{classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!PreProcess@{PreProcess}}
+\index{PreProcess@{PreProcess}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{PreProcess()}{PreProcess()}}
+{\footnotesize\ttfamily void Schur\+Sequential\+Solver\+::\+Pre\+Process (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classTridiagMat}{Tridiag\+Mat}} \&}]{A\+\_\+global }\end{DoxyParamCaption})}
+
+
+
+Phase 0\+: Pre-\/processing. Builds the submatrices A\+\_\+ii, extracts interface coefficients, and assembles the Schur matrix \textquotesingle{}S\textquotesingle{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A\+\_\+global} & The GLOBAL tridiagonal matrix (N x N). \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSchurSequentialSolver_aeae72f30176c219c7d60a206f54865c4}\label{classSchurSequentialSolver_aeae72f30176c219c7d60a206f54865c4}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!setGlobalSubVector@{setGlobalSubVector}}
+\index{setGlobalSubVector@{setGlobalSubVector}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{setGlobalSubVector()}{setGlobalSubVector()}}
+{\footnotesize\ttfamily void Schur\+Sequential\+Solver\+::set\+Global\+Sub\+Vector (\begin{DoxyParamCaption}\item[{std\+::vector$<$ double $>$ \&}]{global\+Vec,  }\item[{const std\+::vector$<$ double $>$ \&}]{sub\+Vec,  }\item[{int}]{start }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSequentialSolver_aeae72f30176c219c7d60a206f54865c4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSchurSequentialSolver_aebe81742570d50e62bf86d13a1fd8d93}\label{classSchurSequentialSolver_aebe81742570d50e62bf86d13a1fd8d93}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!setInterfaceVector@{setInterfaceVector}}
+\index{setInterfaceVector@{setInterfaceVector}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{setInterfaceVector()}{setInterfaceVector()}}
+{\footnotesize\ttfamily void Schur\+Sequential\+Solver\+::set\+Interface\+Vector (\begin{DoxyParamCaption}\item[{std\+::vector$<$ double $>$ \&}]{global\+Vec,  }\item[{const std\+::vector$<$ double $>$ \&}]{interface\+Vec }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSequentialSolver_aebe81742570d50e62bf86d13a1fd8d93_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e}\label{classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!solve@{solve}}
+\index{solve@{solve}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ Schur\+Sequential\+Solver\+::solve (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{f\+\_\+global }\end{DoxyParamCaption})}
+
+
+
+Phase 1\+: Solve. Solves the system A$\ast$x = f using the Schur algorithm. \textquotesingle{}Pre\+Process\textquotesingle{} must have been called before. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f\+\_\+global} & The global RHS vector (length N). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The global solution vector x (length N). 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classSchurSequentialSolver_a4ac3354eda88673a3e6616f0e4760a8c}\label{classSchurSequentialSolver_a4ac3354eda88673a3e6616f0e4760a8c}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!A\_ei\_left@{A\_ei\_left}}
+\index{A\_ei\_left@{A\_ei\_left}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{A\_ei\_left}{A\_ei\_left}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Schur\+Sequential\+Solver\+::\+A\+\_\+ei\+\_\+left\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_a2383d89591ea886caeaf9cabc63aa37a}\label{classSchurSequentialSolver_a2383d89591ea886caeaf9cabc63aa37a}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!A\_ei\_right@{A\_ei\_right}}
+\index{A\_ei\_right@{A\_ei\_right}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{A\_ei\_right}{A\_ei\_right}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Schur\+Sequential\+Solver\+::\+A\+\_\+ei\+\_\+right\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_a40fc0c1f5a913da1ac8c871aba9d897c}\label{classSchurSequentialSolver_a40fc0c1f5a913da1ac8c871aba9d897c}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!A\_ie\_left@{A\_ie\_left}}
+\index{A\_ie\_left@{A\_ie\_left}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{A\_ie\_left}{A\_ie\_left}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Schur\+Sequential\+Solver\+::\+A\+\_\+ie\+\_\+left\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_a992ddf14ea0f38332bbec384c34880b1}\label{classSchurSequentialSolver_a992ddf14ea0f38332bbec384c34880b1}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!A\_ie\_right@{A\_ie\_right}}
+\index{A\_ie\_right@{A\_ie\_right}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{A\_ie\_right}{A\_ie\_right}}
+{\footnotesize\ttfamily std\+::vector$<$double$>$ Schur\+Sequential\+Solver\+::\+A\+\_\+ie\+\_\+right\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_ad4313a0f29d8699ba9fe7a027064cfb3}\label{classSchurSequentialSolver_ad4313a0f29d8699ba9fe7a027064cfb3}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!bType@{bType}}
+\index{bType@{bType}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{bType}{bType}}
+{\footnotesize\ttfamily \mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}} Schur\+Sequential\+Solver\+::b\+Type\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_aa9e05f5a2877857926f1724d576d9938}\label{classSchurSequentialSolver_aa9e05f5a2877857926f1724d576d9938}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!domain\_sizes@{domain\_sizes}}
+\index{domain\_sizes@{domain\_sizes}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{domain\_sizes}{domain\_sizes}}
+{\footnotesize\ttfamily std\+::vector$<$int$>$ Schur\+Sequential\+Solver\+::domain\+\_\+sizes\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_a90e12004475e6a251301abebcc23f6a1}\label{classSchurSequentialSolver_a90e12004475e6a251301abebcc23f6a1}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!domain\_starts@{domain\_starts}}
+\index{domain\_starts@{domain\_starts}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{domain\_starts}{domain\_starts}}
+{\footnotesize\ttfamily std\+::vector$<$int$>$ Schur\+Sequential\+Solver\+::domain\+\_\+starts\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_a0500a7ca451f34b01275a61d453d4ac8}\label{classSchurSequentialSolver_a0500a7ca451f34b01275a61d453d4ac8}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!interface\_indices@{interface\_indices}}
+\index{interface\_indices@{interface\_indices}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{interface\_indices}{interface\_indices}}
+{\footnotesize\ttfamily std\+::vector$<$int$>$ Schur\+Sequential\+Solver\+::interface\+\_\+indices\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_a1d38b6d5249fe0ddd2f9b968ccf68968}\label{classSchurSequentialSolver_a1d38b6d5249fe0ddd2f9b968ccf68968}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!localSolvers@{localSolvers}}
+\index{localSolvers@{localSolvers}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{localSolvers}{localSolvers}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{classLinearSys}{Linear\+Sys}}$>$ Schur\+Sequential\+Solver\+::local\+Solvers\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_a8416a46e164b21d0b816f49bc6ed8098}\label{classSchurSequentialSolver_a8416a46e164b21d0b816f49bc6ed8098}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!nGlobal@{nGlobal}}
+\index{nGlobal@{nGlobal}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{nGlobal}{nGlobal}}
+{\footnotesize\ttfamily int Schur\+Sequential\+Solver\+::n\+Global\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_a382c8a4b66aa664a629dd14a04a491de}\label{classSchurSequentialSolver_a382c8a4b66aa664a629dd14a04a491de}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!num\_domains@{num\_domains}}
+\index{num\_domains@{num\_domains}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{num\_domains}{num\_domains}}
+{\footnotesize\ttfamily int Schur\+Sequential\+Solver\+::num\+\_\+domains\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_aa198611f596766dfab4f4f6c97ee2891}\label{classSchurSequentialSolver_aa198611f596766dfab4f4f6c97ee2891}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!num\_interfaces@{num\_interfaces}}
+\index{num\_interfaces@{num\_interfaces}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{num\_interfaces}{num\_interfaces}}
+{\footnotesize\ttfamily int Schur\+Sequential\+Solver\+::num\+\_\+interfaces\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_a57a1c63a819f9dbb8bb115e03b4d7cc2}\label{classSchurSequentialSolver_a57a1c63a819f9dbb8bb115e03b4d7cc2}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!schurScalarS@{schurScalarS}}
+\index{schurScalarS@{schurScalarS}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{schurScalarS}{schurScalarS}}
+{\footnotesize\ttfamily double Schur\+Sequential\+Solver\+::schur\+ScalarS = 0.\+0\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classSchurSequentialSolver_a3f2bee336c9103ef3be3ef52b3d47995}\label{classSchurSequentialSolver_a3f2bee336c9103ef3be3ef52b3d47995}} 
+\index{SchurSequentialSolver@{SchurSequentialSolver}!schurSolver@{schurSolver}}
+\index{schurSolver@{schurSolver}!SchurSequentialSolver@{SchurSequentialSolver}}
+\doxysubsubsection{\texorpdfstring{schurSolver}{schurSolver}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{classLinearSys}{Linear\+Sys}}$>$ Schur\+Sequential\+Solver\+::schur\+Solver\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/numerics/\mbox{\hyperlink{SchurSequentialSolver_8hpp}{Schur\+Sequential\+Solver.\+hpp}}\item 
+src/numerics/\mbox{\hyperlink{SchurSequentialSolver_8cpp}{Schur\+Sequential\+Solver.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,475 @@
+\hypertarget{test__tridiag_8cpp}{}\doxysection{tests/test\+\_\+tridiag.cpp File Reference}
+\label{test__tridiag_8cpp}\index{tests/test\_tridiag.cpp@{tests/test\_tridiag.cpp}}
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include \char`\"{}core/\+Tridiag\+Mat.\+hpp\char`\"{}}\newline
+Include dependency graph for test\+\_\+tridiag.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__tridiag_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_aa049ed683240916ff3cb30ac3b64555d}{TEST}} (Tridiag\+Mat\+Test, Constructor\+\_\+invalid\+Argument)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_aabf93b07042396e1d6248f87c94bce98}{TEST}} (Tridiag\+Mat\+Test, Constructor\+\_\+correct\+Creation)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_ada60189d064527854dcba1c5279269e8}{TEST}} (Tridiag\+Mat\+Test, Fill\+Mat\+\_\+incorrect\+Size\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a6947255b3ffe4b6abfaae2b310fcb975}{TEST}} (Tridiag\+Mat\+Test, Fill\+Mat\+\_\+incorrect\+Size\+Sub\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a27193323c7a45a401a90b69a13f77021}{TEST}} (Tridiag\+Mat\+Test, Fill\+Mat\+\_\+incorrect\+Size\+Sup\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_adf71277a5e53669f80c6c146fede92ca}{TEST}} (Tridiag\+Mat\+Test, Fill\+Mat\+\_\+correct\+Population)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a214b0b2b2ad33db789bcfd56ce970293}{TEST}} (Tridiag\+Mat\+Test, Get\+Size)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a22593ed52ce2e01341c253ad8b70d64b}{TEST}} (Tridiag\+Mat\+Test, Get\+Element\+\_\+row\+Index\+Too\+Small)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_ad21b7605acfbabad98dbfdbf0b322261}{TEST}} (Tridiag\+Mat\+Test, Get\+Element\+\_\+column\+Index\+Too\+Small)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a138c1635b83af9a2844323a7d1c91a3d}{TEST}} (Tridiag\+Mat\+Test, Get\+Element\+\_\+row\+Index\+Too\+Large)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a70e484b24ccc092d5500dccc4bd34007}{TEST}} (Tridiag\+Mat\+Test, Get\+Element\+\_\+column\+Index\+Too\+Large)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a14a6db6facb02f9c7d26f198ebb91ecd}{TEST}} (Tridiag\+Mat\+Test, Get\+Element\+\_\+sub\+Diag\+Element)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a6db4372e560a2cdcc3aca5765a292a61}{TEST}} (Tridiag\+Mat\+Test, Get\+Element\+\_\+main\+Diag\+Element)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_ac77b8120bc885af55d9cf22a5b62ddaa}{TEST}} (Tridiag\+Mat\+Test, Get\+Element\+\_\+sup\+Diag\+Element)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a1288831a1ac7b915fb61398f83a68cb7}{TEST}} (Tridiag\+Mat\+Test, Get\+Diag\+\_\+sub\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a9e398e2a37d61c40cd6be59754da4826}{TEST}} (Tridiag\+Mat\+Test, Get\+Diag\+\_\+main\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a8843d9e577c7c72be06cb2bd705a55c3}{TEST}} (Tridiag\+Mat\+Test, Get\+Diag\+\_\+sup\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_aa03af85d1e68cf4f0be5a2b4e89028bf}{TEST}} (Tridiag\+Mat\+Test, Get\+Diag\+\_\+invalid\+Argument)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a77b93905c6127f3a803e65f70353537f}{TEST}} (Tridiag\+Mat\+Test, Get\+Diag\+\_\+changing\+Values\+Sub\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_adc8e238ee205dcf78f31d07e946f882d}{TEST}} (Tridiag\+Mat\+Test, Get\+Diag\+\_\+changing\+Values\+Main\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a3aa2317ec3fcc404cfbacdc7ee9e2d1d}{TEST}} (Tridiag\+Mat\+Test, Get\+Diag\+\_\+changing\+Values\+Sup\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a6317f97502c4ec0f1a3040822bda3767}{TEST}} (Tridiag\+Mat\+Test, Get\+First\+Element\+From\+Diag\+\_\+sub\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a145551a261e7b8f4a67b422e474dee5d}{TEST}} (Tridiag\+Mat\+Test, Get\+First\+Element\+From\+Diag\+\_\+main\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a816ba7991436807c1832dd741c750004}{TEST}} (Tridiag\+Mat\+Test, Get\+First\+Element\+From\+Diag\+\_\+sup\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_abd9b6326b4830cb08c602e6a7e18d728}{TEST}} (Tridiag\+Mat\+Test, Get\+First\+Element\+From\+Diag\+\_\+invalid\+Argument)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a19b6f2b2e4a44e5b8cd82fb284c3afd0}{TEST}} (Tridiag\+Mat\+Test, Get\+Last\+Element\+From\+Diag\+\_\+sub\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a4b29d3c3fe206ad213504481a83f4619}{TEST}} (Tridiag\+Mat\+Test, Get\+Last\+Element\+From\+Diag\+\_\+main\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_ae91374bbc4e3196a77ad8c694ff10d17}{TEST}} (Tridiag\+Mat\+Test, Get\+Last\+Element\+From\+Diag\+\_\+sup\+Diag)
+\item 
+\mbox{\hyperlink{test__tridiag_8cpp_a2d7d8cb9f66c087d26a7f27572932662}{TEST}} (Tridiag\+Mat\+Test, Get\+Last\+Element\+From\+Diag\+\_\+invalid\+Argument)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{test__tridiag_8cpp_aabf93b07042396e1d6248f87c94bce98}\label{test__tridiag_8cpp_aabf93b07042396e1d6248f87c94bce98}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [1/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Constructor\+\_\+correct\+Creation}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{test__tridiag_8cpp_aabf93b07042396e1d6248f87c94bce98_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_aa049ed683240916ff3cb30ac3b64555d}\label{test__tridiag_8cpp_aa049ed683240916ff3cb30ac3b64555d}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [2/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Constructor\+\_\+invalid\+Argument}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{test__tridiag_8cpp_adf71277a5e53669f80c6c146fede92ca}\label{test__tridiag_8cpp_adf71277a5e53669f80c6c146fede92ca}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [3/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Fill\+Mat\+\_\+correct\+Population}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{test__tridiag_8cpp_adf71277a5e53669f80c6c146fede92ca_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_ada60189d064527854dcba1c5279269e8}\label{test__tridiag_8cpp_ada60189d064527854dcba1c5279269e8}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [4/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Fill\+Mat\+\_\+incorrect\+Size\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{test__tridiag_8cpp_ada60189d064527854dcba1c5279269e8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a6947255b3ffe4b6abfaae2b310fcb975}\label{test__tridiag_8cpp_a6947255b3ffe4b6abfaae2b310fcb975}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [5/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Fill\+Mat\+\_\+incorrect\+Size\+Sub\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{test__tridiag_8cpp_a6947255b3ffe4b6abfaae2b310fcb975_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a27193323c7a45a401a90b69a13f77021}\label{test__tridiag_8cpp_a27193323c7a45a401a90b69a13f77021}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [6/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Fill\+Mat\+\_\+incorrect\+Size\+Sup\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{test__tridiag_8cpp_a27193323c7a45a401a90b69a13f77021_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_adc8e238ee205dcf78f31d07e946f882d}\label{test__tridiag_8cpp_adc8e238ee205dcf78f31d07e946f882d}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [7/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Diag\+\_\+changing\+Values\+Main\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{test__tridiag_8cpp_adc8e238ee205dcf78f31d07e946f882d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a77b93905c6127f3a803e65f70353537f}\label{test__tridiag_8cpp_a77b93905c6127f3a803e65f70353537f}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [8/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Diag\+\_\+changing\+Values\+Sub\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{test__tridiag_8cpp_a77b93905c6127f3a803e65f70353537f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a3aa2317ec3fcc404cfbacdc7ee9e2d1d}\label{test__tridiag_8cpp_a3aa2317ec3fcc404cfbacdc7ee9e2d1d}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [9/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Diag\+\_\+changing\+Values\+Sup\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{test__tridiag_8cpp_a3aa2317ec3fcc404cfbacdc7ee9e2d1d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_aa03af85d1e68cf4f0be5a2b4e89028bf}\label{test__tridiag_8cpp_aa03af85d1e68cf4f0be5a2b4e89028bf}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [10/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Diag\+\_\+invalid\+Argument}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{test__tridiag_8cpp_aa03af85d1e68cf4f0be5a2b4e89028bf_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a9e398e2a37d61c40cd6be59754da4826}\label{test__tridiag_8cpp_a9e398e2a37d61c40cd6be59754da4826}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [11/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Diag\+\_\+main\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{test__tridiag_8cpp_a9e398e2a37d61c40cd6be59754da4826_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a1288831a1ac7b915fb61398f83a68cb7}\label{test__tridiag_8cpp_a1288831a1ac7b915fb61398f83a68cb7}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [12/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Diag\+\_\+sub\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{test__tridiag_8cpp_a1288831a1ac7b915fb61398f83a68cb7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a8843d9e577c7c72be06cb2bd705a55c3}\label{test__tridiag_8cpp_a8843d9e577c7c72be06cb2bd705a55c3}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [13/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Diag\+\_\+sup\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{test__tridiag_8cpp_a8843d9e577c7c72be06cb2bd705a55c3_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a70e484b24ccc092d5500dccc4bd34007}\label{test__tridiag_8cpp_a70e484b24ccc092d5500dccc4bd34007}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [14/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Element\+\_\+column\+Index\+Too\+Large}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{test__tridiag_8cpp_a70e484b24ccc092d5500dccc4bd34007_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_ad21b7605acfbabad98dbfdbf0b322261}\label{test__tridiag_8cpp_ad21b7605acfbabad98dbfdbf0b322261}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [15/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Element\+\_\+column\+Index\+Too\+Small}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{test__tridiag_8cpp_ad21b7605acfbabad98dbfdbf0b322261_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a6db4372e560a2cdcc3aca5765a292a61}\label{test__tridiag_8cpp_a6db4372e560a2cdcc3aca5765a292a61}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [16/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Element\+\_\+main\+Diag\+Element}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{test__tridiag_8cpp_a6db4372e560a2cdcc3aca5765a292a61_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a138c1635b83af9a2844323a7d1c91a3d}\label{test__tridiag_8cpp_a138c1635b83af9a2844323a7d1c91a3d}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [17/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Element\+\_\+row\+Index\+Too\+Large}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{test__tridiag_8cpp_a138c1635b83af9a2844323a7d1c91a3d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a22593ed52ce2e01341c253ad8b70d64b}\label{test__tridiag_8cpp_a22593ed52ce2e01341c253ad8b70d64b}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [18/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Element\+\_\+row\+Index\+Too\+Small}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{test__tridiag_8cpp_a22593ed52ce2e01341c253ad8b70d64b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a14a6db6facb02f9c7d26f198ebb91ecd}\label{test__tridiag_8cpp_a14a6db6facb02f9c7d26f198ebb91ecd}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [19/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Element\+\_\+sub\+Diag\+Element}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{test__tridiag_8cpp_a14a6db6facb02f9c7d26f198ebb91ecd_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_ac77b8120bc885af55d9cf22a5b62ddaa}\label{test__tridiag_8cpp_ac77b8120bc885af55d9cf22a5b62ddaa}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [20/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Element\+\_\+sup\+Diag\+Element}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{test__tridiag_8cpp_ac77b8120bc885af55d9cf22a5b62ddaa_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_abd9b6326b4830cb08c602e6a7e18d728}\label{test__tridiag_8cpp_abd9b6326b4830cb08c602e6a7e18d728}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [21/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+First\+Element\+From\+Diag\+\_\+invalid\+Argument}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{test__tridiag_8cpp_abd9b6326b4830cb08c602e6a7e18d728_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a145551a261e7b8f4a67b422e474dee5d}\label{test__tridiag_8cpp_a145551a261e7b8f4a67b422e474dee5d}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [22/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+First\+Element\+From\+Diag\+\_\+main\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{test__tridiag_8cpp_a145551a261e7b8f4a67b422e474dee5d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a6317f97502c4ec0f1a3040822bda3767}\label{test__tridiag_8cpp_a6317f97502c4ec0f1a3040822bda3767}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [23/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+First\+Element\+From\+Diag\+\_\+sub\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{test__tridiag_8cpp_a6317f97502c4ec0f1a3040822bda3767_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a816ba7991436807c1832dd741c750004}\label{test__tridiag_8cpp_a816ba7991436807c1832dd741c750004}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [24/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+First\+Element\+From\+Diag\+\_\+sup\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{test__tridiag_8cpp_a816ba7991436807c1832dd741c750004_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a2d7d8cb9f66c087d26a7f27572932662}\label{test__tridiag_8cpp_a2d7d8cb9f66c087d26a7f27572932662}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [25/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Last\+Element\+From\+Diag\+\_\+invalid\+Argument}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{test__tridiag_8cpp_a2d7d8cb9f66c087d26a7f27572932662_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a4b29d3c3fe206ad213504481a83f4619}\label{test__tridiag_8cpp_a4b29d3c3fe206ad213504481a83f4619}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [26/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Last\+Element\+From\+Diag\+\_\+main\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=307pt]{test__tridiag_8cpp_a4b29d3c3fe206ad213504481a83f4619_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a19b6f2b2e4a44e5b8cd82fb284c3afd0}\label{test__tridiag_8cpp_a19b6f2b2e4a44e5b8cd82fb284c3afd0}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [27/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Last\+Element\+From\+Diag\+\_\+sub\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=307pt]{test__tridiag_8cpp_a19b6f2b2e4a44e5b8cd82fb284c3afd0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_ae91374bbc4e3196a77ad8c694ff10d17}\label{test__tridiag_8cpp_ae91374bbc4e3196a77ad8c694ff10d17}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [28/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Last\+Element\+From\+Diag\+\_\+sup\+Diag}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=307pt]{test__tridiag_8cpp_ae91374bbc4e3196a77ad8c694ff10d17_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{test__tridiag_8cpp_a214b0b2b2ad33db789bcfd56ce970293}\label{test__tridiag_8cpp_a214b0b2b2ad33db789bcfd56ce970293}} 
+\index{test\_tridiag.cpp@{test\_tridiag.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_tridiag.cpp@{test\_tridiag.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [29/29]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tridiag\+Mat\+Test}]{,  }\item[{Get\+Size}]{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=267pt]{test__tridiag_8cpp_a214b0b2b2ad33db789bcfd56ce970293_cgraph}
+\end{center}
+\end{figure}

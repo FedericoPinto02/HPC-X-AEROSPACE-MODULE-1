@@ -1,0 +1,9 @@
+<map id="SchurSequentialSolver::PreProcess" name="SchurSequentialSolver::PreProcess">
+<area shape="rect" id="node1" title="Phase 0: Pre&#45;processing. Builds the submatrices A_ii, extracts interface coefficients,..." alt="" coords="5,140,173,181"/>
+<area shape="rect" id="node2" href="$classSchurSequentialSolver.html#ae84b28ee0ff1e33bae823b780e88c1c2" title=" " alt="" coords="227,5,395,47"/>
+<area shape="rect" id="node3" href="$classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="448,97,597,123"/>
+<area shape="rect" id="node4" href="$classTridiagMat.html#a46d96fb5ae69f72ff1f56c12b390d0a9" title="Get the matrix size." alt="" coords="449,223,596,250"/>
+<area shape="rect" id="node5" href="$classLinearSys.html#ab5e1dc2bef1794dec1b232f2fbc5b077" title="Gets the solution vector (unknownX) computed by the solver." alt="" coords="227,173,394,199"/>
+<area shape="rect" id="node6" href="$classLinearSys.html#a257096829bb54fc3e45084b5c94beaa8" title="Sets the right&#45;hand side (rhsC) vector for the solver." alt="" coords="242,223,379,250"/>
+<area shape="rect" id="node7" href="$classLinearSys.html#a60600d4d91ff996ab642bbc424f16525" title="Solve the linear system." alt="" coords="221,122,400,149"/>
+</map>

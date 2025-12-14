@@ -1,0 +1,53 @@
+\hypertarget{test__schurSolver_8cpp}{}\doxysection{tests/test\+\_\+schur\+Solver.cpp File Reference}
+\label{test__schurSolver_8cpp}\index{tests/test\_schurSolver.cpp@{tests/test\_schurSolver.cpp}}
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$numeric$>$}\newline
+{\ttfamily \#include \char`\"{}numerics/\+Linear\+Sys.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}numerics/\+Schur\+Sequential\+Solver.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}core/\+Tridiag\+Mat.\+hpp\char`\"{}}\newline
+Include dependency graph for test\+\_\+schur\+Solver.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__schurSolver_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classSchurSolverTestFixture}{Schur\+Solver\+Test\+Fixture}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{test__schurSolver_8cpp_a48e1ad16d836feae76c4f3d9a4307ca9}{TEST\+\_\+P}} (\mbox{\hyperlink{classSchurSolverTestFixture}{Schur\+Solver\+Test\+Fixture}}, Solution\+Agrees\+With\+Direct\+Solve)
+\item 
+\mbox{\hyperlink{test__schurSolver_8cpp_ab973f83201bc226aba63b5efddbe6b14}{INSTANTIATE\+\_\+\+TEST\+\_\+\+SUITE\+\_\+P}} (Schur\+Verification, \mbox{\hyperlink{classSchurSolverTestFixture}{Schur\+Solver\+Test\+Fixture}}, \+::testing\+::\+Values(std\+::make\+\_\+tuple(50, 4), std\+::make\+\_\+tuple(100, 10), std\+::make\+\_\+tuple(17, 5), std\+::make\+\_\+tuple(20, 1), std\+::make\+\_\+tuple(2, 1), std\+::make\+\_\+tuple(5, 2)))
+\item 
+\mbox{\hyperlink{test__schurSolver_8cpp_aedd5bb88d1a235c23e1782eb8b18992a}{TEST}} (Schur\+Solver\+Constructor\+Test, Handles\+Invalid\+Inputs)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{test__schurSolver_8cpp_ab973f83201bc226aba63b5efddbe6b14}\label{test__schurSolver_8cpp_ab973f83201bc226aba63b5efddbe6b14}} 
+\index{test\_schurSolver.cpp@{test\_schurSolver.cpp}!INSTANTIATE\_TEST\_SUITE\_P@{INSTANTIATE\_TEST\_SUITE\_P}}
+\index{INSTANTIATE\_TEST\_SUITE\_P@{INSTANTIATE\_TEST\_SUITE\_P}!test\_schurSolver.cpp@{test\_schurSolver.cpp}}
+\doxysubsubsection{\texorpdfstring{INSTANTIATE\_TEST\_SUITE\_P()}{INSTANTIATE\_TEST\_SUITE\_P()}}
+{\footnotesize\ttfamily INSTANTIATE\+\_\+\+TEST\+\_\+\+SUITE\+\_\+P (\begin{DoxyParamCaption}\item[{Schur\+Verification}]{,  }\item[{\mbox{\hyperlink{classSchurSolverTestFixture}{Schur\+Solver\+Test\+Fixture}}}]{,  }\item[{\+::testing\+::\+Values(std\+::make\+\_\+tuple(50, 4), std\+::make\+\_\+tuple(100, 10), std\+::make\+\_\+tuple(17, 5), std\+::make\+\_\+tuple(20, 1), std\+::make\+\_\+tuple(2, 1), std\+::make\+\_\+tuple(5, 2))}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{test__schurSolver_8cpp_aedd5bb88d1a235c23e1782eb8b18992a}\label{test__schurSolver_8cpp_aedd5bb88d1a235c23e1782eb8b18992a}} 
+\index{test\_schurSolver.cpp@{test\_schurSolver.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!test\_schurSolver.cpp@{test\_schurSolver.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Schur\+Solver\+Constructor\+Test}]{,  }\item[{Handles\+Invalid\+Inputs}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{test__schurSolver_8cpp_a48e1ad16d836feae76c4f3d9a4307ca9}\label{test__schurSolver_8cpp_a48e1ad16d836feae76c4f3d9a4307ca9}} 
+\index{test\_schurSolver.cpp@{test\_schurSolver.cpp}!TEST\_P@{TEST\_P}}
+\index{TEST\_P@{TEST\_P}!test\_schurSolver.cpp@{test\_schurSolver.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST\_P()}{TEST\_P()}}
+{\footnotesize\ttfamily TEST\+\_\+P (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classSchurSolverTestFixture}{Schur\+Solver\+Test\+Fixture}}}]{,  }\item[{Solution\+Agrees\+With\+Direct\+Solve}]{ }\end{DoxyParamCaption})}
+
