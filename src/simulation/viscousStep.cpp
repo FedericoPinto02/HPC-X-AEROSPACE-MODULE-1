@@ -77,11 +77,14 @@ void ViscousStep::computeG()
         auto &dyy_data = dyyZeta(axis).getData();
         auto &dzz_data = dzzU(axis).getData();
         auto &g_data = g(axis).getData();
-        auto &k_data = data_.k(axis).getData();
+        auto &inv_k_data = data_.inv_k(axis).getData();
 
         for (size_t i = 0; i < u_data.size(); i++)
         {
-            g_data[i] = f_data[i] - gradP_data[i] - nu_val * u_data[i] / k_data[i] + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]);
+            g_data[i] = f_data[i]
+                    - gradP_data[i]
+                    - nu_val * u_data[i] * inv_k_data[i]
+                    + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]);
         }
     }
 }
@@ -89,10 +92,10 @@ void ViscousStep::computeG()
 void ViscousStep::computeXi()
 {
     // Ingredients list
-    auto& u = data_.u;
-    double nu_val = data_.nu;
-    double dt_val = data_.dt;
-   
+    const double nu_val = data_.nu;
+    const double dt_val = data_.dt;
+    const double dt_nu_over_2_val = dt_val * nu_val * 0.5;
+
     // Recepie
     // beta = 1+ dt*nu /2/k
     // xi = u + dt/beta * g
@@ -101,15 +104,16 @@ void ViscousStep::computeXi()
     for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
 
         auto& u_data = data_.u(axis).getData();
-        auto& k_data = data_.k(axis).getData();
+        auto& inv_k_data = data_.inv_k(axis).getData();
         auto& g_data = g(axis).getData();
         auto& xi_data = xi(axis).getData();
 
         for (size_t i = 0; i < u_data.size(); i++)
         {
+            double beta_val = 1 + dt_nu_over_2_val * inv_k_data[i];
             xi_data[i] = u_data[i]
                         + dt_val * g_data[i]
-                        / (1 + dt_val * nu_val * 0.5 / k_data[i]);
+                        / beta_val;
         }
     }
     size_t i, j, k;
@@ -182,7 +186,7 @@ void ViscousStep::closeViscousStep()
     const double dy = data_.grid->dy;
     const double dz = data_.grid->dz;
     const double t = data_.currTime;
-    double porosity, beta, gamma, mul, deriv_u, deriv_v, deriv_w;
+    double inv_porosity, beta, gamma, mul, deriv_u, deriv_v, deriv_w;
     size_t iStart, jStart, kStart;
     // solve on the face orthogonal to normalAxis
     Axis normalAxis;
@@ -239,18 +243,18 @@ void ViscousStep::closeViscousStep()
                 deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k))*mul;
 
 
-                porosity = data_.k(Axis::X)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(Axis::X)(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta;
                 rhs_u[i] = xi(Axis::X, i,j,k) - gamma * deriv_u;
 
-                porosity = data_.k(Axis::Y)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(Axis::Y)(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta;
                 rhs_v[i] = xi(Axis::Y, i,j,k) - gamma * deriv_v;
 
-                porosity = data_.k(Axis::Z)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(Axis::Z)(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta;
                 rhs_w[i] = xi(Axis::Z, i,j,k) - gamma * deriv_w;
             }
@@ -341,18 +345,18 @@ void ViscousStep::closeViscousStep()
                 deriv_v = (data_.zeta(Axis::Y, i, j + 1, k) + data_.zeta(Axis::Y, i, j - 1, k) - 2.0 * data_.zeta(Axis::Y, i, j, k))*mul;
                 deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k))*mul;
 
-                porosity = data_.k(Axis::X)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(Axis::X)(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta;
                 rhs_u[j] = data_.eta(Axis::X, i,j,k) - gamma * deriv_u;
 
-                porosity = data_.k(Axis::Y)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(Axis::Y)(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta;
                 rhs_v[j] = data_.eta(Axis::Y, i,j,k) - gamma * deriv_v;
 
-                porosity = data_.k(Axis::Z)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(Axis::Z)(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta;
                 rhs_w[j] = data_.eta(Axis::Z, i,j,k) - gamma * deriv_w;
             }
@@ -443,18 +447,18 @@ void ViscousStep::closeViscousStep()
                 deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k))*mul;
                 deriv_w = (data_.u(Axis::Z, i, j, k + 1) + data_.u(Axis::Z, i, j, k - 1) - 2.0 * data_.u(Axis::Z, i, j, k))*mul;
 
-                porosity = data_.k(Axis::X)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(Axis::X)(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta;
                 rhs_u[k] = data_.zeta(Axis::X, i,j,k) - gamma * deriv_u;
 
-                porosity = data_.k(Axis::Y)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(Axis::Y)(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta;
                 rhs_v[k] = data_.zeta(Axis::Y, i,j,k) - gamma * deriv_v;
 
-                porosity = data_.k(Axis::Z)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 / porosity);
+                inv_porosity = data_.inv_k(Axis::Z)(i,j,k);
+                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
                 gamma = data_.dt * data_.nu * 0.5 / beta;
                 rhs_w[k] = data_.zeta(Axis::Z, i,j,k) - gamma * deriv_w;
             }

@@ -94,9 +94,9 @@ void LinearSys::fillSystemVelocity(
     }
 
     for (size_t i = 1; i < matA.getSize() - 1; i++) {
-        double k = simData.k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+        double inv_k = simData.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
                                              derivativeDirection, i);
-        double beta = 1 + (simData.dt * simData.nu * 0.5 / k);
+        double beta = 1 + (simData.dt * simData.nu * 0.5 * inv_k);
         double gamma = simData.dt * simData.nu * 0.5 / beta;
         subdiag[i - 1] = -gamma * dCoef;
         supdiag[i] = -gamma * dCoef;
@@ -105,8 +105,8 @@ void LinearSys::fillSystemVelocity(
 
     switch (boundaryType) {
         case BoundaryType::Normal: {
-            double k = simData.k(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, 0);
-            double beta = 1 + (simData.dt * simData.nu * 0.5 / k);
+            double inv_k = simData.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, 0);
+            double beta = 1 + (simData.dt * simData.nu * 0.5 * inv_k);
             double gamma = simData.dt * simData.nu * 0.5 / beta;
             diag.front() = 1 + 4.0 * gamma * dCoef;
             supdiag.front() = -4.0 / 3.0  * gamma * dCoef;
@@ -167,9 +167,9 @@ void LinearSys::fillSystemVelocity(
 
         case BoundaryType::Tangent: {
             diag.front() = 1.0;
-            double k = simData.k(fieldComponent).valueWithOffset(
+            double inv_k = simData.inv_k(fieldComponent).valueWithOffset(
                     iStart, jStart, kStart, derivativeDirection, matA.getSize() - 1);
-            double beta = 1 + (simData.dt * simData.nu * 0.5 / k);
+            double beta = 1 + (simData.dt * simData.nu * 0.5 * inv_k);
             double gamma = simData.dt * simData.nu * 0.5 / beta;
             diag.back() = 1 + 4.0 * gamma * dCoef;
             subdiag.back() = -4.0 / 3.0  * gamma * dCoef;
