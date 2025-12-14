@@ -27,6 +27,11 @@ private:
     /// The coordinates of the current process in the Cartesian topology.
     std::array<int, AXIS_COUNT> coords_ = {0, 0, 0};
 
+    /// The line sub-communicators, one for each axis.
+    std::array<MPI_Comm, AXIS_COUNT> lineComms_{MPI_COMM_NULL, MPI_COMM_NULL, MPI_COMM_NULL};
+    /// The ranks of the current process in each line sub-communicator.
+    std::array<int, AXIS_COUNT> lineRanks_{0, 0, 0};
+
 public:
     /**
      * @brief Constructor that initializes the MPI environment.
@@ -56,7 +61,9 @@ public:
 
     MpiEnv &operator=(const MpiEnv &) = delete;
 
-
+    //==================================================================================================================
+    //--- Main Communicator --------------------------------------------------------------------------------------------
+    //==================================================================================================================
     /// Getter for the current process rank.
     [[nodiscard]] inline int rank() const { return rank_; }
 
@@ -65,16 +72,6 @@ public:
 
     /// Getter for the Cartesian communicator.
     [[nodiscard]] inline MPI_Comm cartComm() const { return cartComm_; }
-
-    /// Getter for the dimensions of the Cartesian grid.
-    [[nodiscard]] inline const std::array<int, AXIS_COUNT> &dims() const { return dims_; }
-
-    /// Getter for the coordinates of the current process in the Cartesian topology.
-    [[nodiscard]] inline const std::array<int, AXIS_COUNT> &coords() const { return coords_; }
-
-    /// Checks if the current process is the master (rank 0).
-    [[nodiscard]] inline bool isMaster() const { return rank_ == 0; }
-
 
     /**
      * @brief Setup the MPI Cartesian topology with given dimensions and periodicity.
@@ -89,12 +86,54 @@ public:
             int reorder = 1
     );
 
+    /// Getter for the dimensions of the Cartesian grid.
+    [[nodiscard]] inline const std::array<int, AXIS_COUNT> &dims() const { return dims_; }
+
+    /// Getter for the coordinates of the current process in the Cartesian topology.
+    [[nodiscard]] inline const std::array<int, AXIS_COUNT> &coords() const { return coords_; }
+
     /**
-     * @brief Get the rank of the neighboring process in a given direction and displacement.
+     * @brief Get the rank of the neighboring process in a given direction and displacement,
+     *  in the Cartesian communicator.
      * @param direction the direction (Axis::X, Axis::Y, or Axis::Z)
      * @param disp the displacement (+1 or -1)
      * @return the rank of the neighboring process, or MPI_PROC_NULL if no neighbor exists
      */
     [[nodiscard]] int getNeighborRank(Axis direction, int disp) const;
+
+    /// Checks if the current process is the master (rank 0).
+    [[nodiscard]] inline bool isMaster() const { return rank_ == 0; }
+
+
+    //==================================================================================================================
+    //--- Line Communicators -------------------------------------------------------------------------------------------
+    //==================================================================================================================
+    /**
+     * @brief Getter for the line sub-communicator along a specific axis.
+     * @param axis the axis (Axis::X, Axis::Y, or Axis::Z)
+     */
+    [[nodiscard]] inline MPI_Comm lineComm(Axis axis) const { return lineComms_[static_cast<int>(axis)]; }
+
+    /**
+     * @brief Getter for the rank of the current process in a specific line sub-communicator.
+     * @param axis the axis (Axis::X, Axis::Y, or Axis::Z)
+     */
+    [[nodiscard]] inline int lineRank(Axis axis) const {
+        return lineRanks_[static_cast<int>(axis)];
+    }
+
+    [[nodiscard]] inline int lineSize(Axis axis) const {
+        int lineSize;
+        MPI_Comm_size(lineComms_[static_cast<int>(axis)], &lineSize);
+        return lineSize;
+    }
+
+    /**
+     * @brief Checks if the current process is the master along a specific axis (coordinate is 0).
+     * @param axis the axis (Axis::X, Axis::Y, or Axis::Z)
+     */
+    [[nodiscard]] inline bool isLineMaster(Axis axis) const {
+        return lineRanks_[static_cast<int>(axis)] == 0;
+    }
 };
 
