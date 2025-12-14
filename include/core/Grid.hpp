@@ -47,9 +47,9 @@ struct Grid {
         if (dx <= 0.0 || dy <= 0.0 || dz <= 0.0) {
             throw std::runtime_error("Grid spacing must be positive.");
         }
-        Lx = dx * (static_cast<double>(Nx) + 0.5);
-        Ly = dy * (static_cast<double>(Ny) + 0.5);
-        Lz = dz * (static_cast<double>(Nz) + 0.5);
+        Lx = dx * (static_cast<double>(Nx) - 0.5);
+        Ly = dy * (static_cast<double>(Ny) - 0.5);
+        Lz = dz * (static_cast<double>(Nz) - 0.5);
     }
 
 

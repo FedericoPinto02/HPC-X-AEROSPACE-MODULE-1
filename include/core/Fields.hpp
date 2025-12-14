@@ -220,9 +220,9 @@ public:
                const Func &populateYFunction = ZERO_FUNC,
                const Func &populateZFunction = ZERO_FUNC) {
         gridPtr_ = grid;
-        component(Axis::X).setup(grid, populateXFunction);
-        component(Axis::Y).setup(grid, populateYFunction);
-        component(Axis::Z).setup(grid, populateZFunction);
+        component(Axis::X).setup(grid, populateXFunction, GridStaggering::FACE_CENTERED, Axis::X);
+        component(Axis::Y).setup(grid, populateYFunction, GridStaggering::FACE_CENTERED, Axis::Y);
+        component(Axis::Z).setup(grid, populateZFunction, GridStaggering::FACE_CENTERED, Axis::Z);
     }
 
     /**

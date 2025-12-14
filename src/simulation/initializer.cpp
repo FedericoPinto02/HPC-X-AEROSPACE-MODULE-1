@@ -72,10 +72,11 @@ SimulationData Initializer::setup(const InputData &inputData) {
     sim.zeta = sim.u;
 
     sim.p = initializeFieldFromFunc(t0, grid, pi_func);
+    sim.predictor = initializeFieldFromFunc(t0, grid, pi_func);
 
     // --- Permeability ---
     Func k_func = ConfigFuncs::k_func;
-    sim.k = initializeFieldFromFunc(t0, grid, k_func);
+    sim.k = initializeVectorFieldFromFunc(t0, grid, k_func, k_func, k_func);
 
     // --- BC functions ---
     sim.bcu = ConfigFuncs::bcu_func;

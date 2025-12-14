@@ -51,7 +51,7 @@ add_library(NSBSolver
         src/io/VTKWriter.cpp
         src/io/logWriter.cpp
         # -- src/numerics/derivatives.cpp use this source file to compile a non-optimized version
-        src/numerics/derivativesOpt.cpp
+        src/numerics/derivatives.cpp
         src/numerics/LinearSys.cpp
         src/numerics/SchurSequentialSolver.cpp
         src/simulation/initializer.cpp

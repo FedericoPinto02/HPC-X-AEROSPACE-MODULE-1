@@ -26,7 +26,7 @@ bool VTKWriter::write_timestep_if_needed(size_t currStep,
     }
 
     // 2. Check frequency
-    if (currStep == 0 || (currStep % outputFrequency_ != 0))
+    if (currStep != 0 && (currStep % outputFrequency_ != 0))
     {
         return false;
     }

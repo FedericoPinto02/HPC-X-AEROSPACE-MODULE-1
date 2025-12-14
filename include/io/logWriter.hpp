@@ -17,7 +17,7 @@ public:
 
     void write(const std::string &msg);
 
-    void printSimulationHeader(const InputData &input, const SimulationData &simData);
+    void printSimulationHeader(const InputData &input, const SimulationData &simData, bool vtkWritten);
 
     void printStepHeader();
 

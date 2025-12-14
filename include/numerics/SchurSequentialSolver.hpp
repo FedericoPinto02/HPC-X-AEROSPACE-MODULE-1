@@ -12,7 +12,7 @@
 class SchurSequentialSolver {
 
 public:
-    SchurSequentialSolver(int globalSize, int numDomains, BoundaryType type);
+    SchurSequentialSolver(int globalSize, int numDomains);
 
     /**
      * @brief Phase 0: Pre-processing.

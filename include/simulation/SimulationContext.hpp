@@ -58,6 +58,7 @@ struct SimulationData {
 
     // Pressure field
     Field p;
+    Field predictor;
 
     // Boundary conditions
     Func bcu;
@@ -68,7 +69,7 @@ struct SimulationData {
     double nu;
 
     // Permeability of the (porous) medium (solid: very low; fluid: very high)
-    Field k;
+    VectorField k;
 
     // Body force acting on the medium
     VectorField f;

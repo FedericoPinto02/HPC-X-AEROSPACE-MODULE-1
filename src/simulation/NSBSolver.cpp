@@ -42,8 +42,13 @@ void NSBSolver::setup()
     logger = std::make_unique<LogWriter>(loggingSettings);
     vtkWriter = std::make_unique<VTKWriter>(outputSettings, simData);
 
+    bool vtkWritten = vtkWriter->write_timestep_if_needed(
+            simData.currStep,
+            simData.p,
+            simData.u);
+
     // Logging
-    logger->printSimulationHeader(input, simData);
+    logger->printSimulationHeader(input, simData, vtkWritten);
 }
 
 void NSBSolver::solve()
@@ -60,7 +65,7 @@ void NSBSolver::solve()
         simData.currStep++;
         simData.currTime += simData.dt;
 
-        simData.f.populate(simData.currTime);
+        simData.f.populate(simData.currTime - simData.dt * 0.5);
 
         // 2. Physics Steps (Timed)
         auto start = std::chrono::high_resolution_clock::now();

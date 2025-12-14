@@ -29,7 +29,7 @@ void LogWriter::write(const std::string &msg)
     file_ << msg << std::flush;
 }
 
-void LogWriter::printSimulationHeader(const InputData &input, const SimulationData &simData)
+void LogWriter::printSimulationHeader(const InputData &input, const SimulationData &simData, bool vtkWritten)
 {
   std::ostringstream s;
   s << "\n";
@@ -41,28 +41,34 @@ void LogWriter::printSimulationHeader(const InputData &input, const SimulationDa
   if (input.mesh.input_for_manufactured_solution)
   {
     s << "[SIMULATION MODE]\n"
-      << "  Type       : MANUFACTURED SOLUTION (Validation)\n"
-      << "  Note       : Grid overridden to isotropic, L = nu (Re = 1)\n\n";
+      << "  Type            : MANUFACTURED SOLUTION (Validation)\n"
+      << "  Note            : Grid overridden to isotropic, L = nu (Re = 1)\n\n";
   }
 
   // GRID INFO
   s << "[GRID CONFIGURATION]\n"
-    << "  Dimensions : " << simData.grid->Nx << " x " << simData.grid->Ny << " x " << simData.grid->Nz << "\n"
-    << "  Domain Size: " << simData.grid->Lx << " x " << simData.grid->Ly << " x " << simData.grid->Lz << "\n"
-    << "  Spacing    : " << "dx=" << simData.grid->dx << ", dy=" << simData.grid->dy << ", dz=" << simData.grid->dz << "\n"
-    << "  Total Cells: " << (simData.grid->Nx * simData.grid->Ny * simData.grid->Nz) << "\n\n";
+    << "  Dimensions      : " << simData.grid->Nx << " x " << simData.grid->Ny << " x " << simData.grid->Nz << "\n"
+    << "  Domain Size     : " << simData.grid->Lx << " x " << simData.grid->Ly << " x " << simData.grid->Lz << "\n"
+    << "  Spacing         : " << "dx=" << simData.grid->dx << ", dy=" << simData.grid->dy << ", dz=" << simData.grid->dz << "\n"
+    << "  Total Cells     : " << (simData.grid->Nx * simData.grid->Ny * simData.grid->Nz) << "\n\n";
 
   // TIME
   s << "[TIME SETTINGS]\n"
-    << "  Time Step (dt) : " << simData.dt << "\n"
-    << "  End Time       : " << simData.totalSimTime << "\n"
-    << "  Total Steps    : " << simData.totalSteps << "\n\n";
+    << "  Time Step (dt)  : " << simData.dt << "\n"
+    << "  End Time        : " << simData.totalSimTime << "\n"
+    << "  Total Steps     : " << simData.totalSteps << "\n\n";
 
   // SETUP
   s << "[SETUP]\n"
-    << "  Schur Domains  : " << input.parallelization.schurDomains << "\n"
-    << "  Output File    : " << input.output.baseFilename << "\n"
-    << "  Log File       : " << input.logging.filename << "\n\n";
+    << "  Schur Domains   : " << input.parallelization.schurDomains << "\n"
+    << "  Log File        : " << input.logging.filename << "\n\n";
+
+  // VTK OUTPUT
+  s << "[VTK OUTPUT]\n"
+    << "  Enabled         : " << (input.output.enabled ? "YES" : "NO") << "\n"
+    << "  Output File     : " << input.output.baseFilename << "\n"
+    << "  Output Freq.    : " << input.output.outputFrequency << " timesteps\n"
+    << "  First VTK Saved : " << (vtkWritten ? "YES" : "NO") << "\n\n";
 
   s << separator() << "\n";
 
@@ -76,7 +82,8 @@ void LogWriter::printStepHeader()
   std::ostringstream s;
   s << std::left
     << std::setw(8) << "STEP"
-    << std::setw(12) << "TIME [s]"
+    << std::setw(12) << "TIME"
+    << std::setw(16) << "CPU TIME [s]"
     << "STATUS" << "\n";
   s << separator(60, '-');
   write(s.str());
@@ -89,7 +96,8 @@ void LogWriter::printStepProgress(int step, double time, double dt, double elaps
   // Use fixed and setprecision to align numbers
   s << std::left
     << std::setw(8) << step
-    << std::fixed << std::setprecision(3) << std::setw(12) << elapsedSec;
+    << std::fixed << std::setprecision(4) << std::setw(12) << time
+    << std::fixed << std::setprecision(4) << std::setw(16) << elapsedSec;
 
   if (isOutputStep)
   {

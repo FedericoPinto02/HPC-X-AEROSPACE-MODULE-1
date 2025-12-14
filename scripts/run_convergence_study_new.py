@@ -21,8 +21,10 @@ OUTPUT_DIR = "../output/"              # Output directory (must match JSON)
 # Choose one of the following modes:
 # 1. SPATIAL_ONLY: Fix dt, vary Nx. Studies spatial order (Expected O(h^2)).
 # 2. TEMPORAL_ONLY: Fix Nx (fine grid), vary dt. Studies temporal order (Expected O(dt^2)).
-# 3. SPACE_TIME_COUPLED: Vary both (dt ~ 1/Nx^2). Maintains constant CFL (Expected O(h^2) or O(dt^2)).
-STUDY_MODE = "TEMPORAL_ONLY" 
+# 3. SPACE_TIME_COUPLED: Vary both (dt ~ 1/Nx). Maintains constant CFL (Expected O(h^2) or O(dt^2)).
+STUDY_MODE = "SPACE_TIME_COUPLED" 
+#STUDY_MODE = "SPATIAL_ONLY" 
+#STUDY_MODE = "TEMPORAL_ONLY"
 
 # --- BASELINE & RESOLUTION PARAMETERS ---
 BASE_NX = 20           # Reference resolution
@@ -31,13 +33,14 @@ T_END = 0.03           # Fixed physical end time for ALL simulations
 
 # --- RESOLUTION SETS ---
 # Set used when STUDY_MODE is SPATIAL_ONLY or SPACE_TIME_COUPLED
-NX_VALUES_FOR_SPATIAL_STUDY = [20, 25, 30, 35, 40, 45, 50, 60, 80] 
+NX_VALUES_FOR_SPATIAL_STUDY = [20, 25, 30, 35, 40, 45, 50, 60, 80, 100, 120] 
 
 # Set used when STUDY_MODE is TEMPORAL_ONLY
 # Multipliers relative to BASE_DT (e.g., 0.5 means dt = 0.0005)
-DT_MULTIPLIERS_FOR_TEMPORAL_STUDY = [1.0, 0.5, 0.25, 0.125, 0.0625]
-# *** FIX DISCUSSED ***: Use a very fine grid to eliminate spatial error
-FIXED_NX_FOR_TEMPORAL_STUDY = 50
+DT_MULTIPLIERS_FOR_TEMPORAL_STUDY = [1.0, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01]
+# BASE_DT = 0.2  
+# T_END = 1.0
+FIXED_NX_FOR_TEMPORAL_STUDY = 70
 
 
 def calculate_params_for_mode(loop_val, base_dt, study_mode):
@@ -52,9 +55,8 @@ def calculate_params_for_mode(loop_val, base_dt, study_mode):
     
     elif study_mode == "SPACE_TIME_COUPLED":
         nx = loop_val
-        # dt scales as 1/Nx^2 (constant CFL for diffusion/viscous terms)
-        ratio = BASE_NX / nx
-        dt = base_dt * (ratio ** 2)
+        # dt scales as 1/Nx (constant CFL for diffusion/viscous terms)
+        dt = base_dt * (BASE_NX / nx)
 
     elif study_mode == "TEMPORAL_ONLY":
         # loop_val is the dt multiplier

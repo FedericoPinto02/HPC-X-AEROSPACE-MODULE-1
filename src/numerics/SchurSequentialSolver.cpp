@@ -5,11 +5,10 @@
 #include <iostream> 
 
 // --- CONSTRUCTOR (MODIFIED) ---
-SchurSequentialSolver::SchurSequentialSolver(int globalSize, int numDomains, BoundaryType type)
+SchurSequentialSolver::SchurSequentialSolver(int globalSize, int numDomains)
     : nGlobal(globalSize),
       num_domains(numDomains),
-      num_interfaces(numDomains > 0 ? numDomains - 1 : 0),
-      bType(type)
+      num_interfaces(numDomains > 0 ? numDomains - 1 : 0)
       // schurSolver is no longer initialized here in the initializer list
 {
     if (numDomains <= 0) {
@@ -25,7 +24,7 @@ SchurSequentialSolver::SchurSequentialSolver(int globalSize, int numDomains, Bou
     if (numDomains == 1) {
         domain_sizes.push_back(nGlobal);
         domain_starts.push_back(0);
-        localSolvers.emplace_back(nGlobal, bType);
+        localSolvers.emplace_back(nGlobal);
         // schurSolver remains nullptr, not needed
         return; 
     }
@@ -34,7 +33,7 @@ SchurSequentialSolver::SchurSequentialSolver(int globalSize, int numDomains, Bou
 
     // Initialize schurSolver ONLY if it's a system with N >= 2
     if (num_interfaces >= 2) { // P >= 3
-        schurSolver = std::make_unique<LinearSys>(num_interfaces, type);
+        schurSolver = std::make_unique<LinearSys>(num_interfaces);
     }
     // If P=2 (num_interfaces=1), schurSolver remains nullptr.
     // We'll use schurScalarS.
@@ -59,7 +58,7 @@ SchurSequentialSolver::SchurSequentialSolver(int globalSize, int numDomains, Bou
         domain_sizes[p] = n_i;
         domain_starts[p] = current_global_idx;
         
-        localSolvers.emplace_back(n_i, bType); // Create local solver
+        localSolvers.emplace_back(n_i); // Create local solver
         
         current_global_idx += n_i; 
 

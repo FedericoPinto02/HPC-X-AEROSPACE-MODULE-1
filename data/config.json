@@ -1,38 +1,33 @@
 {
-  "mesh": {
-    "nx": 60,
-    "ny": 60,
-    "nz": 60,
-    "dx": 0.01,
-    "dy": 0.01,
-    "dz": 0.01,
-    "input_for_manufactured_solution": true
-  },
-
-  "time": {
-    "dt": 0.001,
-    "t_end": 0.03
-  },
-
-  "parallelization": {
-    "schur_domains": 1
-  },
-
-  "physics": {
-    "nu": 6.0
-  },
-
-  "output": {
-    "enabled": true,
-    "dir": "../output",
-    "base_filename": "simulation_output",
-    "output_frequency": 30
-  },
-
-  "logging": {
-    "log_to_file": false,
-    "log_to_console": true,
-    "dir": "../output",
-    "filename": "simulation.log"
-  }
+    "mesh": {
+        "nx": 50,
+        "ny": 60,
+        "nz": 60,
+        "dx": 0.01,
+        "dy": 0.01,
+        "dz": 0.01,
+        "input_for_manufactured_solution": true
+    },
+    "time": {
+        "dt": 6.25e-05,
+        "t_end": 0.03
+    },
+    "parallelization": {
+        "schur_domains": 1
+    },
+    "physics": {
+        "nu": 6.0
+    },
+    "output": {
+        "enabled": true,
+        "dir": "../output",
+        "base_filename": "temporal_n50_mult_00625_output",
+        "output_frequency": 480
+    },
+    "logging": {
+        "log_to_file": false,
+        "log_to_console": true,
+        "dir": "../output",
+        "filename": "simulation.log"
+    }
 }
