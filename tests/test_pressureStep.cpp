@@ -14,7 +14,7 @@ protected:
     const double dt = 0.1;
 
     // Grid managed via shared_ptr to match Field's internal storage requirement
-    std::shared_ptr<Grid> grid;
+    std::shared_ptr<const Grid> grid;
 
     // Context objects
     SimulationData data_;
@@ -24,7 +24,7 @@ protected:
 
     PressureStepTest() {
         // Initialize 10x10x10 grid with spacing 1.0
-        grid = std::make_shared<Grid>(10, 10, 10, 1.0, 1.0, 1.0);
+        grid = std::make_shared<const Grid>(10, 10, 10, 1.0, 1.0, 1.0);
 
         // Setup SimulationData context
         data_.grid = grid;
@@ -37,6 +37,8 @@ protected:
         // Define Pressure: p(x,y,z) = 0.0
         data_.p.setup(grid, ZERO_FUNC);
         data_.p.populate(0.0);
+        data_.predictor.setup(grid, ZERO_FUNC);
+        data_.predictor.populate(0.0);
 
         // Define Velocity: u(x,y,z) = [sin(x), cos(y), sin(z)]
         auto funcX = [](double x, double, double, double) { return std::sin(x); };
@@ -45,6 +47,9 @@ protected:
 
         data_.u.setup(grid, funcX, funcY, funcZ);
         data_.u.populate(0.0);
+        data_.bcu = funcX;
+        data_.bcv = funcY;
+        data_.bcw = funcZ;
 
         // Create the object under test
         pressureStep = std::make_unique<PressureStep>(data_, parallel_);
@@ -74,15 +79,22 @@ TEST_F(PressureStepTest, Run_CalculatesDivU_Correctness) {
     const double x = i * grid->dx, y = j * grid->dy, z = k * grid->dz;
     const double dx = grid->dx, dy = grid->dy, dz = grid->dz;
 
-    // The Derivatives class uses Backward Difference for divergence
-    // u.x = sin(x) -> d/dx ~ (sin(x) - sin(x-dx)) / dx
-    double du_dx = (std::sin(x) - std::sin(x - dx)) / dx;
+    // 1. X-Term: U is staggered in X.
+    // We want (u[i] - u[i-1])/dx.
+    // u[i] is at (i+0.5)dx, u[i-1] is at (i-0.5)dx
+    double x_curr = grid->to_x(i, GridStaggering::FACE_CENTERED, Axis::X);
+    double x_prev = grid->to_x(i - 1, GridStaggering::FACE_CENTERED, Axis::X);
+    double du_dx = (std::sin(x_curr) - std::sin(x_prev)) / dx;
 
-    // u.y = cos(y) -> d/dy ~ (cos(y) - cos(y-dy)) / dy
-    double du_dy = (std::cos(y) - std::cos(y - dy)) / dy;
+    // 2. Y-Term: V is staggered in Y.
+    double y_curr = grid->to_y(j, GridStaggering::FACE_CENTERED, Axis::Y);
+    double y_prev = grid->to_y(j - 1, GridStaggering::FACE_CENTERED, Axis::Y);
+    double du_dy = (std::cos(y_curr) - std::cos(y_prev)) / dy;
 
-    // u.z = sin(z) -> d/dz ~ (sin(z) - sin(z-dz)) / dz
-    double du_dz = (std::sin(z) - std::sin(z - dz)) / dz;
+    // 3. Z-Term: W is staggered in Z.
+    double z_curr = grid->to_z(k, GridStaggering::FACE_CENTERED, Axis::Z);
+    double z_prev = grid->to_z(k - 1, GridStaggering::FACE_CENTERED, Axis::Z);
+    double du_dz = (std::sin(z_curr) - std::sin(z_prev)) / dz;
 
     double expected_divU = du_dx + du_dy + du_dz;
 
@@ -94,6 +106,10 @@ TEST_F(PressureStepTest, Run_WithZeroDivergence_PressureIsUnchanged) {
     // Setup U = 0, P = 1.0
     data_.u.setup(grid, ZERO_FUNC, ZERO_FUNC, ZERO_FUNC);
     data_.u.populate(0.0);
+
+    data_.bcu = ZERO_FUNC;
+    data_.bcv = ZERO_FUNC;
+    data_.bcw = ZERO_FUNC;
 
     data_.p.setup(grid, [](double, double, double, double) { return 1.0; });
     data_.p.populate(0.0);
@@ -134,6 +150,9 @@ protected:
         data_.p.setup(grid, funcP);
         data_.p.populate(0.0);
 
+        data_.predictor.setup(grid, ZERO_FUNC);
+        data_.predictor.populate(0.0);
+
         // Define Velocity: u = [x^2, y^2, z^2]
         auto funcU_x = [](double x, double, double, double) { return x * x; };
         auto funcU_y = [](double, double y, double, double) { return y * y; };
@@ -141,6 +160,9 @@ protected:
 
         data_.u.setup(grid, funcU_x, funcU_y, funcU_z);
         data_.u.populate(0.0);
+        data_.bcu = funcU_x;
+        data_.bcv = funcU_y;
+        data_.bcw = funcU_z;
 
         pressureStep = std::make_unique<PressureStep>(data_, parallel_);
     }

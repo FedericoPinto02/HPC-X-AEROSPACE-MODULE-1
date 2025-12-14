@@ -52,6 +52,10 @@ protected:
         data_.p.setup(grid, funcP);
         data_.p.populate(0.0);
 
+        // Define Pressure predictor: same as p
+        data_.predictor.setup(grid, funcP);
+        data_.predictor.populate(0.0);
+
         // Define Velocity: u = [sin(x), sin(y), sin(z)]
         auto sinX = [](double x, double, double, double) { return std::sin(x); };
         auto sinY = [](double, double y, double, double) { return std::sin(y); };
@@ -116,23 +120,28 @@ TEST_F(ViscousStepTest, RunDoesNotCrash) {
 
 TEST_F(ViscousStepTest, ComputeG_Correctness) {
     const size_t i = 5, j = 5, k_ = 5;
-    const double x = i * grid->dx;
+    const double dx = grid->dx;
+    const double k_permeability = 1.0;
 
     ASSERT_NO_THROW(callComputeG());
 
+    // The G term for the X-component lives at (i+0.5)
+    double x = grid->to_x(i, GridStaggering::FACE_CENTERED, Axis::X);
+    double x_prev = grid->to_x(i - 1, GridStaggering::FACE_CENTERED, Axis::X);
+    double x_next = grid->to_x(i + 1, GridStaggering::FACE_CENTERED, Axis::X);
+
     double f_term = 0.0;
     double gradP_term = 1.0; // d/dx(x + 2y + 3z) = 1
-    double u_term = (nu / 1.0) * std::sin(x);
+    double u_term = (nu / k_permeability) * std::sin(x);
 
 // Laplacian approximation
-    double dxx_term = std::cos(x + 1.0) - 2.0 * std::cos(x) + std::cos(x - 1.0);
-    double dyy_term = 0.0;
-    double dzz_term = 0.0;
-
+    double dxx_term = (std::cos(x_next) - 2.0 * std::cos(x) + std::cos(x_prev)) / (dx * dx);
+    double dyy_term = 0.0; // Assume constant in Y for this test
+    double dzz_term = 0.0; // Assume constant in Z for this test
     double deriv_term = nu * (dxx_term + dyy_term + dzz_term);
 
 // Expected G formula from implementation
-    double expected_g_x = f_term - gradP_term - u_term * 0.5 + deriv_term * 0.5;
+    double expected_g_x = f_term - gradP_term - u_term + deriv_term;
 
     double g_x_computed = getG(Axis::X, i, j, k_);
     EXPECT_NEAR(g_x_computed, expected_g_x, 1e-9);
@@ -140,7 +149,7 @@ TEST_F(ViscousStepTest, ComputeG_Correctness) {
 
 TEST_F(ViscousStepTest, ComputeXi_Correctness) {
     const size_t i = 5, j = 5, k_ = 5;
-    const double x = i * grid->dx;
+    const double x = grid->to_x(i, GridStaggering::FACE_CENTERED, Axis::X);
     double u_val = std::sin(x);
 
     setGConstant(10.0);
@@ -186,6 +195,11 @@ protected:
         // Define Pressure p = x*y + z
         data_.p.setup(grid, [](double x, double y, double z, double) { return x * y + z; });
         data_.p.populate(0.0);
+
+        // Define Pressure predictor: same as p
+        data_.predictor.setup(grid, [](double x, double y, double z, double) { return x * y + z; });
+        data_.predictor.populate(0.0);
+
 
         // Define Velocity u = [x^2, y^2, z^2]
         auto sqX = [](double x, double, double, double) { return x * x; };

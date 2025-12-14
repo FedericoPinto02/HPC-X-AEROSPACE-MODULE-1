@@ -117,9 +117,9 @@ if (BUILD_TESTS)
              ${PROJECT_TESTS_DIR}/test_derivatives.cpp
              ${PROJECT_TESTS_DIR}/test_grid.cpp
              ${PROJECT_TESTS_DIR}/test_fields.cpp
-             #${PROJECT_TESTS_DIR}/test_pressureStep.cpp
-             #${PROJECT_TESTS_DIR}/test_viscousStep.cpp
-             #${PROJECT_TESTS_DIR}/test_schurSolver.cpp
+             ${PROJECT_TESTS_DIR}/test_pressureStep.cpp
+             ${PROJECT_TESTS_DIR}/test_viscousStep.cpp
+             ${PROJECT_TESTS_DIR}/test_schurSolver.cpp
              ${PROJECT_TESTS_DIR}/test_tridiag.cpp
     )
 
