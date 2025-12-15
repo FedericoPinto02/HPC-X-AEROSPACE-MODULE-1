@@ -66,7 +66,7 @@ public:
         populateFunction_ = populateFunction;
         offset_ = offset;
         offsetAxis_ = offsetAxis;
-        data_.resize(gridPtr_->size(), Scalar(0));
+        data_.resize(gridPtr_->sizeWithHalo(), Scalar(0));
     }
 
     /**
@@ -88,6 +88,23 @@ public:
     /// @overload
     [[nodiscard]] inline const Grid &getGrid() const { return *gridPtr_; }
 
+    /**
+     * @brief Getter for the field offset in the staggered grid.
+     * @return the field offset in the staggered grid
+     */
+    [[nodiscard]] inline const GridStaggering &getOffset() { return offset_; }
+
+    /// Overload
+    [[nodiscard]] inline const GridStaggering &getOffset() const { return offset_; }
+
+    /**
+     * @brief Getter for the axis where the offset is applied in the staggered grid.
+     * @return the axis where the offset is applied in the staggered grid
+     */
+    [[nodiscard]] inline const Axis &getOffsetAxis() { return offsetAxis_; }
+
+    /// Overload
+    [[nodiscard]] inline const Axis &getOffsetAxis() const { return offsetAxis_; }
 
     //==================================================================================================================
     //--- Data accessors -----------------------------------------------------------------------------------------------
@@ -100,7 +117,10 @@ public:
      * @return the corresponding 1D index
      */
     [[nodiscard]] inline size_t idx(size_t i, size_t j, size_t k) const {
-        return (k * gridPtr_->Ny + j) * gridPtr_->Nx + i;
+        const size_t H = gridPtr_->n_halo;
+        const size_t Nx_tot = gridPtr_->Nx + 2 * H;
+        const size_t Ny_tot = gridPtr_->Ny + 2 * H;
+        return ((k + H) * Ny_tot + (j + H)) * Nx_tot + (i + H);
     }
 
     /**

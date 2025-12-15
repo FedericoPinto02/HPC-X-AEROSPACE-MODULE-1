@@ -5,8 +5,8 @@ Grid::Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
         : Nx_glob(Nx_g), Ny_glob(Ny_g), Nz_glob(Nz_g),
           Nx(Nx_g), Ny(Ny_g), Nz(Nz_g),
           dx(dx_), dy(dy_), dz(dz_),
-          i_start(0), j_start(0), k_start(0),
-          n_halo(0) {
+          i_start(0L), j_start(0L), k_start(0L),
+          n_halo(1) {
     if (dx <= 0.0 || dy <= 0.0 || dz <= 0.0) {
         throw std::runtime_error("Grid spacing must be positive.");
     }

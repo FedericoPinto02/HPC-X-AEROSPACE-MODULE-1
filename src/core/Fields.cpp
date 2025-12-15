@@ -46,19 +46,22 @@ Field::valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int o
 }
 
 void Field::populate(double time) {
+    const size_t H = gridPtr_->n_halo;
     const size_t Nx = gridPtr_->Nx;
     const size_t Ny = gridPtr_->Ny;
     const size_t Nz = gridPtr_->Nz;
+    const size_t Nx_tot = Nx + 2 * H;
+    const size_t Ny_tot = Ny + 2 * H;
 
-    for (auto k = 0; k < Nz; ++k) {
-        const size_t kOffset = k * Nx * Ny;
-        for (auto j = 0; j < Ny; ++j) {
-            const size_t jOffset = j * Nx;
-            for (auto i = 0; i < Nx; ++i) {
+    for (size_t k = 0; k < Nz; ++k) {
+        const size_t kOffset = (k + H) * Ny_tot * Nx_tot;
+        for (size_t j = 0; j < Ny; ++j) {
+            const size_t jOffset = (j + H) * Nx_tot;
+            for (size_t i = 0; i < Nx; ++i) {
                 auto x = gridPtr_->to_x(i, offset_, offsetAxis_);
                 auto y = gridPtr_->to_y(j, offset_, offsetAxis_);
                 auto z = gridPtr_->to_z(k, offset_, offsetAxis_);
-                data_[kOffset + jOffset + i] = populateFunction_(x, y, z, time);
+                data_[kOffset + jOffset + (i + H)] = populateFunction_(x, y, z, time);
             }
         }
     }
@@ -112,15 +115,6 @@ Field::Scalar &VectorField::operator()(Axis componentDirection, size_t i, size_t
 const Field::Scalar &VectorField::operator()(Axis componentDirection, size_t i, size_t j, size_t k) const {
     return component(componentDirection).value(i, j, k);
 }
-
-/*void VectorField::update(std::vector<Field::Scalar> newX,
-                         std::vector<Field::Scalar> newY,
-                         std::vector<Field::Scalar> newZ) {
-    component(Axis::X).update(std::move(newX));
-    component(Axis::Y).update(std::move(newY));
-    component(Axis::Z).update(std::move(newZ));
-}
- todo - remove */
 
 void VectorField::add(const Field::Scalar value) {
     component(Axis::X).add(value);

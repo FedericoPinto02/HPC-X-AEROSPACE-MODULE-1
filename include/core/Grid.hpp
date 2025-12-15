@@ -32,7 +32,7 @@ struct Grid {
     /// Number of grid points in the local grid chunk in each direction (derived from global info and Cartesian topology).
     size_t Nx, Ny, Nz; // derived, owned by this rank
     /// Index-offset in each dimension of this local grid chunk in the global grid.
-    size_t i_start, j_start, k_start;
+    long i_start, j_start, k_start;
     /// Number of halo points along each direction.
     size_t n_halo;
 
@@ -63,7 +63,7 @@ struct Grid {
     Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
          double dx_, double dy_, double dz_,
          const MpiEnv &env,
-         size_t n_halo = 2);
+         size_t n_halo = 1);
 
     /**
      * @brief Decompose the grid along a target dimension, identifying local information of the chunk owned by a process
@@ -104,7 +104,7 @@ struct Grid {
      * @param offsetAxis the axis where to apply the offset
      * @return the physical x-coordinate
      */
-    [[nodiscard]] inline double to_x(size_t i, GridStaggering offset, Axis offsetAxis) const {
+    [[nodiscard]] inline double to_x(long i, GridStaggering offset, Axis offsetAxis) const {
         const auto i_glob = (double) (i_start + i);
         const auto i_offset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::X) ? 0.5 : 0.0;
         return (i_glob + i_offset) * dx;
@@ -117,7 +117,7 @@ struct Grid {
      * @param offsetAxis the axis where to apply the offset
      * @return the physical y-coordinate
      */
-    [[nodiscard]] inline double to_y(size_t j, GridStaggering offset, Axis offsetAxis) const {
+    [[nodiscard]] inline double to_y(long j, GridStaggering offset, Axis offsetAxis) const {
         const auto j_glob = (double) (j_start + j);
         const auto j_offset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::Y) ? 0.5 : 0.0;
         return (j_glob + j_offset) * dy;
@@ -130,7 +130,7 @@ struct Grid {
      * @param offsetAxis the axis where to apply the offset
      * @return the physical z-coordinate
      */
-    [[nodiscard]] inline double to_z(size_t k, GridStaggering offset, Axis offsetAxis) const {
+    [[nodiscard]] inline double to_z(long k, GridStaggering offset, Axis offsetAxis) const {
         const auto k_glob = (double) (k_start + k);
         const auto k_offset = (offset == GridStaggering::FACE_CENTERED && offsetAxis == Axis::Z) ? 0.5 : 0.0;
         return (k_glob + k_offset) * dz;
