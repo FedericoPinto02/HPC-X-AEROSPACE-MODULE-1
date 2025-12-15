@@ -116,7 +116,7 @@ public:
      * @param k the z-index
      * @return the corresponding 1D index
      */
-    [[nodiscard]] inline size_t idx(size_t i, size_t j, size_t k) const {
+    [[nodiscard]] inline size_t idx(long i, long j, long k) const {
         const size_t H = gridPtr_->n_halo;
         const size_t Nx_tot = gridPtr_->Nx + 2 * H;
         const size_t Ny_tot = gridPtr_->Ny + 2 * H;
@@ -144,26 +144,26 @@ public:
      * @param k the z-index
      * @return the value in the field at position (i,j,k)
      */
-    [[nodiscard]] inline Scalar &operator()(size_t i, size_t j, size_t k) {
+    [[nodiscard]] inline Scalar &operator()(long i, long j, long k) {
         return data_[idx(i, j, k)];
     }
 
     /// @overload
-    [[nodiscard]] inline const Scalar &operator()(size_t i, size_t j, size_t k) const {
+    [[nodiscard]] inline const Scalar &operator()(long i, long j, long k) const {
         return data_[idx(i, j, k)];
     }
 
     /**
-     * @copydoc Field::operator()(size_t, size_t, size_t)
+     * @copydoc Field::operator()(long, long, long)
      *
      * This method is a named alias for the access operator.
      */
-    [[nodiscard]] inline Scalar &value(size_t i, size_t j, size_t k) {
+    [[nodiscard]] inline Scalar &value(long i, long j, long k) {
         return data_[idx(i, j, k)];
     }
 
     /// @overload
-    [[nodiscard]] inline const Scalar &value(size_t i, size_t j, size_t k) const {
+    [[nodiscard]] inline const Scalar &value(long i, long j, long k) const {
         return data_[idx(i, j, k)];
     }
 
@@ -176,10 +176,10 @@ public:
      * @param offset the offset value (can be positive or negative)
      * @return the value in the field at position (i,j,k)
      */
-    [[nodiscard]] Scalar &valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int offset);
+    [[nodiscard]] Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset);
 
     /// @overload
-    [[nodiscard]] const Scalar &valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int offset) const;
+    [[nodiscard]] const Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) const;
 
 
     //==================================================================================================================
@@ -308,22 +308,22 @@ public:
      * @param k the z-index
      * @return the component value of the vector field in the specified direction at position (i,j,k)
      */
-    [[nodiscard]] Scalar &operator()(Axis componentDirection, size_t i, size_t j, size_t k);
+    [[nodiscard]] Scalar &operator()(Axis componentDirection, long i, long j, long k);
 
     /// @overload
-    [[nodiscard]] const Scalar &operator()(Axis componentDirection, size_t i, size_t j, size_t k) const;
+    [[nodiscard]] const Scalar &operator()(Axis componentDirection, long i, long j, long k) const;
 
     /**
-     * @copydoc VectorField::operator()(Axis, size_t, size_t, size_t)
+     * @copydoc VectorField::operator()(Axis, long, long, long)
      *
      * This method is a named alias for the access operator.
      */
-    [[nodiscard]] Scalar &value(Axis componentDirection, size_t i, size_t j, size_t k) {
+    [[nodiscard]] Scalar &value(Axis componentDirection, long i, long j, long k) {
         return this->operator()(componentDirection, i, j, k);
     }
 
     /// @overload
-    [[nodiscard]] const Scalar &value(Axis componentDirection, size_t i, size_t j, size_t k) const {
+    [[nodiscard]] const Scalar &value(Axis componentDirection, long i, long j, long k) const {
         return this->operator()(componentDirection, i, j, k);
     }
 

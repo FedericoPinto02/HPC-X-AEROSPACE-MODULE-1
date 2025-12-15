@@ -6,18 +6,18 @@
 // Field class methods
 // ---------------------------------------------------------------------------------------------------------------------
 Field::Scalar &
-Field::valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int offset) {
+Field::valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) {
     switch (offsetDirection) {
         case Axis::X: {
-            const auto i_new = static_cast<size_t>(static_cast<ssize_t>(i) + offset);
+            const auto i_new = i + offset;
             return data_[idx(i_new, j, k)];
         }
         case Axis::Y: {
-            const auto j_new = static_cast<size_t>(static_cast<ssize_t>(j) + offset);
+            const auto j_new = j + offset;
             return data_[idx(i, j_new, k)];
         }
         case Axis::Z: {
-            const auto k_new = static_cast<size_t>(static_cast<ssize_t>(k) + offset);
+            const auto k_new = k + offset;
             return data_[idx(i, j, k_new)];
         }
         default:
@@ -26,18 +26,18 @@ Field::valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int o
 }
 
 const Field::Scalar &
-Field::valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int offset) const {
+Field::valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) const {
     switch (offsetDirection) {
         case Axis::X: {
-            const auto i_new = static_cast<size_t>(static_cast<ssize_t>(i) + offset);
+            const auto i_new = i + offset;
             return data_[idx(i_new, j, k)];
         }
         case Axis::Y: {
-            const auto j_new = static_cast<size_t>(static_cast<ssize_t>(j) + offset);
+            const auto j_new = j + offset;
             return data_[idx(i, j_new, k)];
         }
         case Axis::Z: {
-            const auto k_new = static_cast<size_t>(static_cast<ssize_t>(k) + offset);
+            const auto k_new = k + offset;
             return data_[idx(i, j, k_new)];
         }
         default:
@@ -46,18 +46,18 @@ Field::valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int o
 }
 
 void Field::populate(double time) {
-    const size_t H = gridPtr_->n_halo;
-    const size_t Nx = gridPtr_->Nx;
-    const size_t Ny = gridPtr_->Ny;
-    const size_t Nz = gridPtr_->Nz;
-    const size_t Nx_tot = Nx + 2 * H;
-    const size_t Ny_tot = Ny + 2 * H;
+    const long H = (long) gridPtr_->n_halo;
+    const long Nx = (long) gridPtr_->Nx;
+    const long Ny = (long) gridPtr_->Ny;
+    const long Nz = (long) gridPtr_->Nz;
+    const long Nx_tot = Nx + 2 * H;
+    const long Ny_tot = Ny + 2 * H;
 
-    for (size_t k = 0; k < Nz; ++k) {
-        const size_t kOffset = (k + H) * Ny_tot * Nx_tot;
-        for (size_t j = 0; j < Ny; ++j) {
-            const size_t jOffset = (j + H) * Nx_tot;
-            for (size_t i = 0; i < Nx; ++i) {
+    for (long k = 0; k < Nz; ++k) {
+        const long kOffset = (k + H) * Ny_tot * Nx_tot;
+        for (long j = 0; j < Ny; ++j) {
+            const long jOffset = (j + H) * Nx_tot;
+            for (long i = 0; i < Nx; ++i) {
                 auto x = gridPtr_->to_x(i, offset_, offsetAxis_);
                 auto y = gridPtr_->to_y(j, offset_, offsetAxis_);
                 auto z = gridPtr_->to_z(k, offset_, offsetAxis_);
@@ -108,11 +108,11 @@ void Field::multiply(const Field::Scalar value) {
 // ---------------------------------------------------------------------------------------------------------------------
 // VectorField class methods
 // ---------------------------------------------------------------------------------------------------------------------
-Field::Scalar &VectorField::operator()(Axis componentDirection, size_t i, size_t j, size_t k) {
+Field::Scalar &VectorField::operator()(Axis componentDirection, long i, long j, long k) {
     return component(componentDirection).value(i, j, k);
 }
 
-const Field::Scalar &VectorField::operator()(Axis componentDirection, size_t i, size_t j, size_t k) const {
+const Field::Scalar &VectorField::operator()(Axis componentDirection, long i, long j, long k) const {
     return component(componentDirection).value(i, j, k);
 }
 
