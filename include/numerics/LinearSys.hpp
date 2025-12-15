@@ -17,14 +17,13 @@ class LinearSys {
     friend class SchurSolverTestFixture;
     friend class SchurSequentialSolver;
 
-private: 
+private:
     TridiagMat matA;
     std::vector<double> rhsC;
     std::vector<double> unknownX;
-    BoundaryType boundaryType;
 
 public:
-     
+
     /**
      * @brief Constructor.
      * @param n Size of the linear system (n x n)

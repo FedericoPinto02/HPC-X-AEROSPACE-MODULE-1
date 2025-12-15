@@ -62,7 +62,7 @@ void LinearSys::fillSystemVelocity(
         const Axis fieldComponent, const Axis derivativeDirection,
         const size_t iStart, const size_t jStart, const size_t kStart) {
 
-    boundaryType = (fieldComponent == derivativeDirection)
+    BoundaryType boundaryType = (fieldComponent == derivativeDirection)
                ? BoundaryType::Normal
                : BoundaryType::Tangent;
 
