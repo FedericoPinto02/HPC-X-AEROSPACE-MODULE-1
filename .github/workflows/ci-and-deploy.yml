@@ -1,0 +1,69 @@
+name: CI with Tests and Pages Deployment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  # 1. JOB: Esegue i Test (Continuous Integration)
+  test:
+    name: Run Compiled Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Install C++ and CMake Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ make
+
+      - name: Configure and Build Tests (with CMake)
+        # Questo crea la cartella 'build', configura il progetto e lo compila.
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
+
+      - name: Execute Tests (using CTest)
+        # Se i test falliscono, l'intero workflow si ferma qui.
+        run: cd build && ctest --output-on-failure
+
+  # 2. JOB: Genera la Documentazione Doxygen
+  build:
+    name: Build Doxygen
+    runs-on: ubuntu-latest
+    needs: test # <-- DIPENDE DAL SUCCESSO DEI TEST
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      # Installa Doxygen
+      - name: Install Doxygen
+        run: sudo apt-get install -y doxygen
+
+      # Genera la documentazione
+      - name: Generate Doxygen Documentation
+        run: doxygen Doxyfile
+
+      # Carica gli artifacts per il deployment
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'docs/html' # Adatta questo percorso se il tuo output Doxygen è diverso
+
+  # 3. JOB: Deployment su GitHub Pages (Continuous Deployment)
+  deploy:
+    name: Deploy to Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: [test, build] # <-- DIPENDE DA TEST E BUILD
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
