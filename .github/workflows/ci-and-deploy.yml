@@ -18,7 +18,7 @@ jobs:
       - name: Install C++ and CMake Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake g++ make
+          sudo apt-get install -y cmake g++ make libopenmpi-dev openmpi-bin
 
       - name: Configure and Build Tests (with CMake)
         # Questo crea la cartella 'build', configura il progetto e lo compila.
