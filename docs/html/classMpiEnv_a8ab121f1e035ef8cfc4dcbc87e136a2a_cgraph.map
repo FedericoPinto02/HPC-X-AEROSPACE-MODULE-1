@@ -1,0 +1,4 @@
+<map id="MpiEnv::setupTopology" name="MpiEnv::setupTopology">
+<area shape="rect" id="node1" title="Setup the MPI Cartesian topology with given dimensions and periodicity." alt="" coords="5,5,176,32"/>
+<area shape="rect" id="node2" href="$classMpiEnv.html#ac7e914837a093621d908ef6a61853fbd" title="Getter for the dimensions of the Cartesian grid." alt="" coords="224,5,333,32"/>
+</map>

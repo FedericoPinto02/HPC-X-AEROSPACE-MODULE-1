@@ -1,0 +1,238 @@
+\hypertarget{namespaceplotProbe}{}\doxysection{plot\+Probe Namespace Reference}
+\label{namespaceplotProbe}\index{plotProbe@{plotProbe}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespaceplotProbe_a2bd7976192cc249d0ceee0a412a9918a}{get\+\_\+step\+\_\+from\+\_\+filename}} (filename)
+\item 
+def \mbox{\hyperlink{namespaceplotProbe_a2690d7c3ddd15194a042983a223b3a7e}{get\+\_\+config\+\_\+json}} ()
+\item 
+def \mbox{\hyperlink{namespaceplotProbe_a56631fd78365dded85d6ebaf0fa49790}{get\+\_\+dt\+\_\+from\+\_\+config}} ()
+\item 
+def \mbox{\hyperlink{namespaceplotProbe_a80e39e9ff4570e1e6b2c0fba06634f7f}{get\+\_\+re\+\_\+from\+\_\+config}} (default\+\_\+re)
+\item 
+def \mbox{\hyperlink{namespaceplotProbe_a9c323f2dd2b28ebaff23af133cd4ce1d}{p\+\_\+analytical}} (t\+\_\+array, x, y, z, re\+\_\+number)
+\item 
+def \mbox{\hyperlink{namespaceplotProbe_a9c1ee7a9e7c3ee011708806126d1cf0e}{vel\+\_\+analytical}} (t, x, y, z)
+\item 
+def \mbox{\hyperlink{namespaceplotProbe_ab9bbfa1d8110279d76a1307c78e72c2d}{vel\+\_\+spatial\+\_\+coeffs}} (x, z)
+\item 
+def \mbox{\hyperlink{namespaceplotProbe_a7231e25df295e217dbb45401bf3d800b}{main}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{namespaceplotProbe_a38ba60bd0dad7b966a8093712d674b64}{RE\+\_\+\+NUMBER}} = 1.\+0
+\item 
+string \mbox{\hyperlink{namespaceplotProbe_ad4a84eb237c576327818776d216d6150}{DATA\+\_\+\+DIR}} = \char`\"{}../output/\char`\"{}
+\item 
+string \mbox{\hyperlink{namespaceplotProbe_ab7d8cfbbb3cc1c5eede1b7b7813d938f}{CONFIG\+\_\+\+FILE}} = \char`\"{}../data/\mbox{\hyperlink{inputReader_8cpp_ab701e3ac61a85b337ec5c1abaad6742d}{config.\+json}}\char`\"{}
+\item 
+string \mbox{\hyperlink{namespaceplotProbe_acefd77a858ff2d5d6adc0ef9800c150d}{FILE\+\_\+\+PREFIX}} = \char`\"{}find\+Tot7\char`\"{}
+\item 
+string \mbox{\hyperlink{namespaceplotProbe_ac10fd89f91903425af7bd8d2cef1dc97}{FIELD\+\_\+P}} = \char`\"{}pressure\char`\"{}
+\item 
+string \mbox{\hyperlink{namespaceplotProbe_acacf41c9b0bf198ecf1261d8f7ade42d}{FIELD\+\_\+\+DIV}} = \char`\"{}divU\char`\"{}
+\item 
+int \mbox{\hyperlink{namespaceplotProbe_a355d7d4e09c7b5cc6def7e124a01a760}{NUM\+\_\+\+PROBES\+\_\+\+TOTAL}} = 1000
+\item 
+int \mbox{\hyperlink{namespaceplotProbe_a51fe400fd50423c0653b47e7b9be19f0}{NUM\+\_\+\+PROBES\+\_\+\+TO\+\_\+\+PLOT}} = 50
+\item 
+int \mbox{\hyperlink{namespaceplotProbe_abaa9058ae998c1fd897795d1f819249e}{RANDOM\+\_\+\+SEED}} = 42
+\item 
+float \mbox{\hyperlink{namespaceplotProbe_af5a5d1581d83518d0b19056a0fe71375}{PROBE\+\_\+\+BOUNDARY\+\_\+\+RATIO}} = 0.\+2
+\item 
+float \mbox{\hyperlink{namespaceplotProbe_a3a8198602476193ed89c28193fae827e}{DEFAULT\+\_\+\+DT}} = 0.\+07
+\item 
+int \mbox{\hyperlink{namespaceplotProbe_a2e12b3059fee9815090442162a956a2b}{VTK\+\_\+\+SAMPLE\+\_\+\+STEP}} = 4
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceplotProbe_a2690d7c3ddd15194a042983a223b3a7e}\label{namespaceplotProbe_a2690d7c3ddd15194a042983a223b3a7e}} 
+\index{plotProbe@{plotProbe}!get\_config\_json@{get\_config\_json}}
+\index{get\_config\_json@{get\_config\_json}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{get\_config\_json()}{get\_config\_json()}}
+{\footnotesize\ttfamily def plot\+Probe.\+get\+\_\+config\+\_\+json (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceplotProbe_a2690d7c3ddd15194a042983a223b3a7e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceplotProbe_a56631fd78365dded85d6ebaf0fa49790}\label{namespaceplotProbe_a56631fd78365dded85d6ebaf0fa49790}} 
+\index{plotProbe@{plotProbe}!get\_dt\_from\_config@{get\_dt\_from\_config}}
+\index{get\_dt\_from\_config@{get\_dt\_from\_config}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{get\_dt\_from\_config()}{get\_dt\_from\_config()}}
+{\footnotesize\ttfamily def plot\+Probe.\+get\+\_\+dt\+\_\+from\+\_\+config (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceplotProbe_a56631fd78365dded85d6ebaf0fa49790_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=332pt]{namespaceplotProbe_a56631fd78365dded85d6ebaf0fa49790_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceplotProbe_a80e39e9ff4570e1e6b2c0fba06634f7f}\label{namespaceplotProbe_a80e39e9ff4570e1e6b2c0fba06634f7f}} 
+\index{plotProbe@{plotProbe}!get\_re\_from\_config@{get\_re\_from\_config}}
+\index{get\_re\_from\_config@{get\_re\_from\_config}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{get\_re\_from\_config()}{get\_re\_from\_config()}}
+{\footnotesize\ttfamily def plot\+Probe.\+get\+\_\+re\+\_\+from\+\_\+config (\begin{DoxyParamCaption}\item[{}]{default\+\_\+re }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceplotProbe_a80e39e9ff4570e1e6b2c0fba06634f7f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=332pt]{namespaceplotProbe_a80e39e9ff4570e1e6b2c0fba06634f7f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceplotProbe_a2bd7976192cc249d0ceee0a412a9918a}\label{namespaceplotProbe_a2bd7976192cc249d0ceee0a412a9918a}} 
+\index{plotProbe@{plotProbe}!get\_step\_from\_filename@{get\_step\_from\_filename}}
+\index{get\_step\_from\_filename@{get\_step\_from\_filename}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{get\_step\_from\_filename()}{get\_step\_from\_filename()}}
+{\footnotesize\ttfamily def plot\+Probe.\+get\+\_\+step\+\_\+from\+\_\+filename (\begin{DoxyParamCaption}\item[{}]{filename }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=315pt]{namespaceplotProbe_a2bd7976192cc249d0ceee0a412a9918a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceplotProbe_a7231e25df295e217dbb45401bf3d800b}\label{namespaceplotProbe_a7231e25df295e217dbb45401bf3d800b}} 
+\index{plotProbe@{plotProbe}!main@{main}}
+\index{main@{main}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily def plot\+Probe.\+main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceplotProbe_a7231e25df295e217dbb45401bf3d800b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceplotProbe_a9c323f2dd2b28ebaff23af133cd4ce1d}\label{namespaceplotProbe_a9c323f2dd2b28ebaff23af133cd4ce1d}} 
+\index{plotProbe@{plotProbe}!p\_analytical@{p\_analytical}}
+\index{p\_analytical@{p\_analytical}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{p\_analytical()}{p\_analytical()}}
+{\footnotesize\ttfamily def plot\+Probe.\+p\+\_\+analytical (\begin{DoxyParamCaption}\item[{}]{t\+\_\+array,  }\item[{}]{x,  }\item[{}]{y,  }\item[{}]{z,  }\item[{}]{re\+\_\+number }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=332pt]{namespaceplotProbe_a9c323f2dd2b28ebaff23af133cd4ce1d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceplotProbe_a9c1ee7a9e7c3ee011708806126d1cf0e}\label{namespaceplotProbe_a9c1ee7a9e7c3ee011708806126d1cf0e}} 
+\index{plotProbe@{plotProbe}!vel\_analytical@{vel\_analytical}}
+\index{vel\_analytical@{vel\_analytical}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{vel\_analytical()}{vel\_analytical()}}
+{\footnotesize\ttfamily def plot\+Probe.\+vel\+\_\+analytical (\begin{DoxyParamCaption}\item[{}]{t,  }\item[{}]{x,  }\item[{}]{y,  }\item[{}]{z }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceplotProbe_ab9bbfa1d8110279d76a1307c78e72c2d}\label{namespaceplotProbe_ab9bbfa1d8110279d76a1307c78e72c2d}} 
+\index{plotProbe@{plotProbe}!vel\_spatial\_coeffs@{vel\_spatial\_coeffs}}
+\index{vel\_spatial\_coeffs@{vel\_spatial\_coeffs}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{vel\_spatial\_coeffs()}{vel\_spatial\_coeffs()}}
+{\footnotesize\ttfamily def plot\+Probe.\+vel\+\_\+spatial\+\_\+coeffs (\begin{DoxyParamCaption}\item[{}]{x,  }\item[{}]{z }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespaceplotProbe_ab7d8cfbbb3cc1c5eede1b7b7813d938f}\label{namespaceplotProbe_ab7d8cfbbb3cc1c5eede1b7b7813d938f}} 
+\index{plotProbe@{plotProbe}!CONFIG\_FILE@{CONFIG\_FILE}}
+\index{CONFIG\_FILE@{CONFIG\_FILE}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{CONFIG\_FILE}{CONFIG\_FILE}}
+{\footnotesize\ttfamily string plot\+Probe.\+CONFIG\+\_\+\+FILE = \char`\"{}../data/\mbox{\hyperlink{inputReader_8cpp_ab701e3ac61a85b337ec5c1abaad6742d}{config.\+json}}\char`\"{}}
+
+\mbox{\Hypertarget{namespaceplotProbe_ad4a84eb237c576327818776d216d6150}\label{namespaceplotProbe_ad4a84eb237c576327818776d216d6150}} 
+\index{plotProbe@{plotProbe}!DATA\_DIR@{DATA\_DIR}}
+\index{DATA\_DIR@{DATA\_DIR}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{DATA\_DIR}{DATA\_DIR}}
+{\footnotesize\ttfamily string plot\+Probe.\+DATA\+\_\+\+DIR = \char`\"{}../output/\char`\"{}}
+
+\mbox{\Hypertarget{namespaceplotProbe_a3a8198602476193ed89c28193fae827e}\label{namespaceplotProbe_a3a8198602476193ed89c28193fae827e}} 
+\index{plotProbe@{plotProbe}!DEFAULT\_DT@{DEFAULT\_DT}}
+\index{DEFAULT\_DT@{DEFAULT\_DT}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{DEFAULT\_DT}{DEFAULT\_DT}}
+{\footnotesize\ttfamily float plot\+Probe.\+DEFAULT\+\_\+\+DT = 0.\+07}
+
+\mbox{\Hypertarget{namespaceplotProbe_acacf41c9b0bf198ecf1261d8f7ade42d}\label{namespaceplotProbe_acacf41c9b0bf198ecf1261d8f7ade42d}} 
+\index{plotProbe@{plotProbe}!FIELD\_DIV@{FIELD\_DIV}}
+\index{FIELD\_DIV@{FIELD\_DIV}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{FIELD\_DIV}{FIELD\_DIV}}
+{\footnotesize\ttfamily string plot\+Probe.\+FIELD\+\_\+\+DIV = \char`\"{}divU\char`\"{}}
+
+\mbox{\Hypertarget{namespaceplotProbe_ac10fd89f91903425af7bd8d2cef1dc97}\label{namespaceplotProbe_ac10fd89f91903425af7bd8d2cef1dc97}} 
+\index{plotProbe@{plotProbe}!FIELD\_P@{FIELD\_P}}
+\index{FIELD\_P@{FIELD\_P}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{FIELD\_P}{FIELD\_P}}
+{\footnotesize\ttfamily string plot\+Probe.\+FIELD\+\_\+P = \char`\"{}pressure\char`\"{}}
+
+\mbox{\Hypertarget{namespaceplotProbe_acefd77a858ff2d5d6adc0ef9800c150d}\label{namespaceplotProbe_acefd77a858ff2d5d6adc0ef9800c150d}} 
+\index{plotProbe@{plotProbe}!FILE\_PREFIX@{FILE\_PREFIX}}
+\index{FILE\_PREFIX@{FILE\_PREFIX}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{FILE\_PREFIX}{FILE\_PREFIX}}
+{\footnotesize\ttfamily string plot\+Probe.\+FILE\+\_\+\+PREFIX = \char`\"{}find\+Tot7\char`\"{}}
+
+\mbox{\Hypertarget{namespaceplotProbe_a51fe400fd50423c0653b47e7b9be19f0}\label{namespaceplotProbe_a51fe400fd50423c0653b47e7b9be19f0}} 
+\index{plotProbe@{plotProbe}!NUM\_PROBES\_TO\_PLOT@{NUM\_PROBES\_TO\_PLOT}}
+\index{NUM\_PROBES\_TO\_PLOT@{NUM\_PROBES\_TO\_PLOT}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{NUM\_PROBES\_TO\_PLOT}{NUM\_PROBES\_TO\_PLOT}}
+{\footnotesize\ttfamily int plot\+Probe.\+NUM\+\_\+\+PROBES\+\_\+\+TO\+\_\+\+PLOT = 50}
+
+\mbox{\Hypertarget{namespaceplotProbe_a355d7d4e09c7b5cc6def7e124a01a760}\label{namespaceplotProbe_a355d7d4e09c7b5cc6def7e124a01a760}} 
+\index{plotProbe@{plotProbe}!NUM\_PROBES\_TOTAL@{NUM\_PROBES\_TOTAL}}
+\index{NUM\_PROBES\_TOTAL@{NUM\_PROBES\_TOTAL}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{NUM\_PROBES\_TOTAL}{NUM\_PROBES\_TOTAL}}
+{\footnotesize\ttfamily int plot\+Probe.\+NUM\+\_\+\+PROBES\+\_\+\+TOTAL = 1000}
+
+\mbox{\Hypertarget{namespaceplotProbe_af5a5d1581d83518d0b19056a0fe71375}\label{namespaceplotProbe_af5a5d1581d83518d0b19056a0fe71375}} 
+\index{plotProbe@{plotProbe}!PROBE\_BOUNDARY\_RATIO@{PROBE\_BOUNDARY\_RATIO}}
+\index{PROBE\_BOUNDARY\_RATIO@{PROBE\_BOUNDARY\_RATIO}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{PROBE\_BOUNDARY\_RATIO}{PROBE\_BOUNDARY\_RATIO}}
+{\footnotesize\ttfamily float plot\+Probe.\+PROBE\+\_\+\+BOUNDARY\+\_\+\+RATIO = 0.\+2}
+
+\mbox{\Hypertarget{namespaceplotProbe_abaa9058ae998c1fd897795d1f819249e}\label{namespaceplotProbe_abaa9058ae998c1fd897795d1f819249e}} 
+\index{plotProbe@{plotProbe}!RANDOM\_SEED@{RANDOM\_SEED}}
+\index{RANDOM\_SEED@{RANDOM\_SEED}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{RANDOM\_SEED}{RANDOM\_SEED}}
+{\footnotesize\ttfamily int plot\+Probe.\+RANDOM\+\_\+\+SEED = 42}
+
+\mbox{\Hypertarget{namespaceplotProbe_a38ba60bd0dad7b966a8093712d674b64}\label{namespaceplotProbe_a38ba60bd0dad7b966a8093712d674b64}} 
+\index{plotProbe@{plotProbe}!RE\_NUMBER@{RE\_NUMBER}}
+\index{RE\_NUMBER@{RE\_NUMBER}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{RE\_NUMBER}{RE\_NUMBER}}
+{\footnotesize\ttfamily float plot\+Probe.\+RE\+\_\+\+NUMBER = 1.\+0}
+
+\mbox{\Hypertarget{namespaceplotProbe_a2e12b3059fee9815090442162a956a2b}\label{namespaceplotProbe_a2e12b3059fee9815090442162a956a2b}} 
+\index{plotProbe@{plotProbe}!VTK\_SAMPLE\_STEP@{VTK\_SAMPLE\_STEP}}
+\index{VTK\_SAMPLE\_STEP@{VTK\_SAMPLE\_STEP}!plotProbe@{plotProbe}}
+\doxysubsubsection{\texorpdfstring{VTK\_SAMPLE\_STEP}{VTK\_SAMPLE\_STEP}}
+{\footnotesize\ttfamily int plot\+Probe.\+VTK\+\_\+\+SAMPLE\+\_\+\+STEP = 4}
+

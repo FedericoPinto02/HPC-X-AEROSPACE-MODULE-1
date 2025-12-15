@@ -1,0 +1,4382 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.11.26)  1 DEC 2025 17:38
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**refman
+(./refman.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-01-21>
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo
+File: bk10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count185
+\c@chapter=\count186
+\c@section=\count187
+\c@subsection=\count188
+\c@subsubsection=\count189
+\c@paragraph=\count190
+\c@subparagraph=\count191
+\c@figure=\count192
+\c@table=\count193
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2020/11/24 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Rollback for package 'array' requested -> date 2016-10-06.
+         Best approximation is the release introduced on 2016-10-06.
+
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array-2016-10-06.sty
+Package: array 2016/10/06 v2.4d Tabular extension package (FMi)
+\col@sep=\dimen139
+\extrarowheight=\dimen140
+\NC@list=\toks16
+\extratabsurround=\skip49
+\backup@length=\skip50
+))
+(/usr/share/texlive/texmf-dist/tex/latex/base/fixltx2e.sty
+Package: fixltx2e 2016/12/29 v2.1a fixes to LaTeX (obsolete)
+Applying: [2015/01/01] Old fixltx2e package on input line 46.
+
+
+Package fixltx2e Warning: fixltx2e is not required with releases after 2015
+(fixltx2e)                All fixes are now in the LaTeX kernel.
+(fixltx2e)                See the latexrelease package for details.
+
+Already applied: [0000/00/00] Old fixltx2e package on input line 53.
+) (./doxygen.sty
+Package: doxygen 
+ (/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty
+Package: alltt 2021/01/29 v2.0g defines alltt environment
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count194
+\calc@Bcount=\count195
+\calc@Adimen=\dimen141
+\calc@Bdimen=\dimen142
+\calc@Askip=\skip51
+\calc@Bskip=\skip52
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count196
+\calc@Cskip=\skip53
+)
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count197
+\float@exts=\toks17
+\float@box=\box50
+\@float@everytoks=\toks18
+\@floatcapt=\box51
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2020-07-07 v1.5u LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks19
+\verbatim@line=\toks20
+\verbatim@in@stream=\read2
+)
+(/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2021/10/31 v2.13 LaTeX color extensions (UK)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 227.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+)
+(/usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2020/01/04 v1.0e Color table columns (DPC)
+\everycr=\toks21
+\minrowclearance=\skip54
+)
+\rownum=\count198
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1352.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1356.
+Package xcolor Info: Model `RGB' extended on input line 1368.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1370.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1374.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1375.
+)
+(./longtable_doxygen.sty
+Package: longtable_doxygen 2014/10/28 v4.11 Multi-page Table package (DPC) - fr
+ozen version for doxygen
+\LTleft=\skip55
+\LTright=\skip56
+\LTpre=\skip57
+\LTpost=\skip58
+\LTchunksize=\count199
+\LTcapwidth=\dimen143
+\LT@head=\box52
+\LT@firsthead=\box53
+\LT@foot=\box54
+\LT@lastfoot=\box55
+\LT@cols=\count266
+\LT@rows=\count267
+\c@LT@tables=\count268
+\c@LT@chunks=\count269
+\LT@p@ftn=\toks22
+) (./tabu_doxygen.sty
+Package: tabu_doxygen 2011/02/26 v2.8 - flexible LaTeX tabulars (FC), frozen ve
+rsion for doxygen
+
+(/usr/share/texlive/texmf-dist/tex/latex/varwidth/varwidth.sty
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box56
+\sift@deathcycles=\count270
+\@vwid@loff=\dimen144
+\@vwid@roff=\dimen145
+)
+\c@taburow=\count271
+\tabu@nbcols=\count272
+\tabu@cnt=\count273
+\tabu@Xcol=\count274
+\tabu@alloc=\count275
+\tabu@nested=\count276
+\tabu@target=\dimen146
+\tabu@spreadtarget=\dimen147
+\tabu@naturalX=\dimen148
+\tabucolX=\dimen149
+\tabu@Xsum=\dimen150
+\extrarowdepth=\dimen151
+\abovetabulinesep=\dimen152
+\belowtabulinesep=\dimen153
+\tabustrutrule=\dimen154
+\tabu@thebody=\toks23
+\tabu@footnotes=\toks24
+\tabu@box=\box57
+\tabu@arstrutbox=\box58
+\tabu@hleads=\box59
+\tabu@vleads=\box60
+\tabu@cellskip=\skip59
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2021/12/21 4.1b verbatim text (tvz,hv)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks25
+)
+\FV@CodeLineNo=\count277
+\FV@InFile=\read3
+\FV@TabBox=\box61
+\c@FancyVerbLine=\count278
+\FV@StepNumber=\count279
+\FV@OutFile=\write3
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
+\TX@col@width=\dimen155
+\TX@old@table=\dimen156
+\TX@old@col=\dimen157
+\TX@target=\dimen158
+\TX@delta=\dimen159
+\TX@cols=\count280
+\TX@ftn=\toks26
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/multicol.sty
+Package: multicol 2021/10/28 v1.9b multicolumn formatting (FMi)
+\c@tracingmulticols=\count281
+\mult@box=\box62
+\multicol@leftmargin=\dimen160
+\c@unbalance=\count282
+\c@collectmore=\count283
+\doublecol@number=\count284
+\multicoltolerance=\count285
+\multicolpretolerance=\count286
+\full@width=\dimen161
+\page@free=\dimen162
+\premulticols=\dimen163
+\postmulticols=\dimen164
+\multicolsep=\skip60
+\multicolbaselineskip=\skip61
+\partial@page=\box63
+\last@line=\box64
+\maxbalancingoverflow=\dimen165
+\mult@rightbox=\box65
+\mult@grightbox=\box66
+\mult@firstbox=\box67
+\mult@gfirstbox=\box68
+\@tempa=\box69
+\@tempa=\box70
+\@tempa=\box71
+\@tempa=\box72
+\@tempa=\box73
+\@tempa=\box74
+\@tempa=\box75
+\@tempa=\box76
+\@tempa=\box77
+\@tempa=\box78
+\@tempa=\box79
+\@tempa=\box80
+\@tempa=\box81
+\@tempa=\box82
+\@tempa=\box83
+\@tempa=\box84
+\@tempa=\box85
+\@tempa=\box86
+\@tempa=\box87
+\@tempa=\box88
+\@tempa=\box89
+\@tempa=\box90
+\@tempa=\box91
+\@tempa=\box92
+\@tempa=\box93
+\@tempa=\box94
+\@tempa=\box95
+\@tempa=\box96
+\@tempa=\box97
+\@tempa=\box98
+\@tempa=\box99
+\@tempa=\box100
+\@tempa=\box101
+\@tempa=\box102
+\@tempa=\box103
+\@tempa=\box104
+\c@minrows=\count287
+\c@columnbadness=\count288
+\c@finalcolumnbadness=\count289
+\last@try=\dimen166
+\multicolovershoot=\dimen167
+\multicolundershoot=\dimen168
+\mult@nat@firstbox=\box105
+\colbreak@box=\box106
+\mc@col@check@num=\count290
+)
+(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip62
+\multirow@cntb=\count291
+\multirow@dima=\skip63
+\bigstrutjot=\dimen169
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hanging/hanging.sty
+Package: hanging 2009/09/02 v1.2b hanging paragraphs and punctuation
+\h@ngcommawd=\skip64
+\h@ngfstopwd=\skip65
+\h@ngquotewd=\skip66
+\h@ngdquotewd=\skip67
+\h@ngquerywd=\skip68
+\h@ngexclwd=\skip69
+\h@ngcolonwd=\skip70
+\h@ngscolonwd=\skip71
+)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifpdf.sty
+Package: ifpdf 2019/10/25 v3.4 ifpdf legacy package. Use iftex instead.
+
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+))
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+Package: adjustbox 2020/08/19 v1.3 Adjusting TeX boxes (trim, clip, ...)
+
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2020/11/20 v2.8 package option processing (HA)
+
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks27
+\XKV@tempa@toks=\toks28
+)
+\XKV@depth=\count292
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjcalc.sty
+Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back
+-ends (calc, etex, pgfmath)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/trimclip.sty
+Package: trimclip 2020/08/19 v1.2 Trim and clip general TeX material
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+)
+\Gin@req@height=\dimen170
+\Gin@req@width=\dimen171
+)
+(/usr/share/texlive/texmf-dist/tex/latex/collectbox/collectbox.sty
+Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
+\collectedbox=\box107
+)
+\tc@llx=\dimen172
+\tc@lly=\dimen173
+\tc@urx=\dimen174
+\tc@ury=\dimen175
+Package trimclip Info: Using driver 'tc-pdftex.def'.
+
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/tc-pdftex.def
+File: tc-pdftex.def 2019/01/04 v2.2 Clipping driver for pdftex
+))
+\adjbox@Width=\dimen176
+\adjbox@Height=\dimen177
+\adjbox@Depth=\dimen178
+\adjbox@Totalheight=\dimen179
+\adjbox@pwidth=\dimen180
+\adjbox@pheight=\dimen181
+\adjbox@pdepth=\dimen182
+\adjbox@ptotalheight=\dimen183
+
+(/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
+Package: ifoddpage 2016/04/23 v1.1 Conditionals for odd/even page detection
+\c@checkoddpage=\count293
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\@emptytoks=\toks29
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/share/texlive/texmf-dist/tex/latex/stackengine/stackengine.sty
+Package: stackengine 2021/07/22 v4.11\ Stacking text and objects in convenient 
+ways
+
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count294
+)
+(/usr/share/texlive/texmf-dist/tex/generic/listofitems/listofitems.sty
+(/usr/share/texlive/texmf-dist/tex/generic/listofitems/listofitems.tex
+\loi_cnt_foreach_nest=\count295
+\loi_nestcnt=\count296
+)
+Package: listofitems 2019/08/21 v1.63 Grab items in lists using user-specified 
+sep char (CT)
+)
+\c@@stackindex=\count297
+\@boxshift=\skip72
+\stack@tmplength=\skip73
+\temp@stkl=\skip74
+\@stackedboxwidth=\skip75
+\@addedbox=\box108
+\@anchorbox=\box109
+\@insetbox=\box110
+\se@backgroundbox=\box111
+\stackedbox=\box112
+\@centerbox=\box113
+\c@ROWcellindex@=\count298
+)
+(/usr/share/texlive/texmf-dist/tex/generic/ulem/ulem.sty
+\UL@box=\box114
+\UL@hyphenbox=\box115
+\UL@skip=\skip76
+\UL@hook=\toks30
+\UL@height=\dimen184
+\UL@pe=\count299
+\UL@pixel=\dimen185
+\ULC@box=\box116
+Package: ulem 2019/11/18
+\ULdepth=\dimen186
+)
+\xrefbox=\box117
+\xreflength=\skip77
+\CodeWidthChar=\skip78
+\CodeHeightChar=\skip79
+\DoxyCodeWidth=\skip80
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks31
+\inpenc@posthook=\toks32
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/makeidx.sty
+Package: makeidx 2021/10/04 v1.0m Standard LaTeX package
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+)
+(/usr/share/texlive/texmf-dist/tex/latex/wasysym/wasysym.sty
+Package: wasysym 2020/01/19 v2.4 Wasy-2 symbol support package
+\symwasy=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `wasy' in version `bold'
+(Font)                  U/wasy/m/n --> U/wasy/b/n on input line 93.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifxetex.sty
+Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/helvet.sty
+Package: helvet 2020/03/25 PSNFSS-v9.3 (WaS) 
+)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/courier.sty
+Package: courier 2020/03/25 PSNFSS-v9.3 (WaS) 
+)
+(/usr/share/texlive/texmf-dist/tex/latex/sectsty/sectsty.sty
+Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading sty
+les
+
+
+LaTeX Warning: Command \underbar  has changed.
+               Check if current package is valid.
+
+
+LaTeX Warning: Command \underline  has changed.
+               Check if current package is valid.
+
+) (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+)
+\Gm@cnth=\count300
+\Gm@cntv=\count301
+\c@Gm@tempcnt=\count302
+\Gm@bindingoffset=\dimen187
+\Gm@wd@mp=\dimen188
+\Gm@odd@mp=\dimen189
+\Gm@even@mp=\dimen190
+\Gm@layoutwidth=\dimen191
+\Gm@layoutheight=\dimen192
+\Gm@layouthoffset=\dimen193
+\Gm@layoutvoffset=\dimen194
+\Gm@dimlist=\toks33
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2021/01/28 v4.0.1 Extensive control of page headers and foote
+rs
+\f@nch@headwidth=\skip81
+\f@nch@O@elh=\skip82
+\f@nch@O@erh=\skip83
+\f@nch@O@olh=\skip84
+\f@nch@O@orh=\skip85
+\f@nch@O@elf=\skip86
+\f@nch@O@erf=\skip87
+\f@nch@O@olf=\skip88
+\f@nch@O@orf=\skip89
+)
+(/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip90
+\bibsep=\skip91
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count303
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tocloft/tocloft.sty
+Package: tocloft 2017/08/31 v2.3i parameterised ToC, etc., typesetting
+Package tocloft Info: The document has chapter divisions on input line 51.
+\cftparskip=\skip92
+\cftbeforetoctitleskip=\skip93
+\cftaftertoctitleskip=\skip94
+\cftbeforepartskip=\skip95
+\cftpartnumwidth=\skip96
+\cftpartindent=\skip97
+\cftbeforechapskip=\skip98
+\cftchapindent=\skip99
+\cftchapnumwidth=\skip100
+\cftbeforesecskip=\skip101
+\cftsecindent=\skip102
+\cftsecnumwidth=\skip103
+\cftbeforesubsecskip=\skip104
+\cftsubsecindent=\skip105
+\cftsubsecnumwidth=\skip106
+\cftbeforesubsubsecskip=\skip107
+\cftsubsubsecindent=\skip108
+\cftsubsubsecnumwidth=\skip109
+\cftbeforeparaskip=\skip110
+\cftparaindent=\skip111
+\cftparanumwidth=\skip112
+\cftbeforesubparaskip=\skip113
+\cftsubparaindent=\skip114
+\cftsubparanumwidth=\skip115
+\cftbeforeloftitleskip=\skip116
+\cftafterloftitleskip=\skip117
+\cftbeforefigskip=\skip118
+\cftfigindent=\skip119
+\cftfignumwidth=\skip120
+\c@lofdepth=\count304
+\c@lotdepth=\count305
+\cftbeforelottitleskip=\skip121
+\cftafterlottitleskip=\skip122
+\cftbeforetabskip=\skip123
+\cfttabindent=\skip124
+\cfttabnumwidth=\skip125
+)
+\@indexfile=\write4
+\openout4 = `refman.idx'.
+
+
+Writing index file refman.idx
+(/usr/share/texlive/texmf-dist/tex/latex/newunicodechar/newunicodechar.sty
+Package: newunicodechar 2018/04/08 v1.2 Defining Unicode characters
+)
+
+Package newunicodechar Warning: Redefining Unicode character on input line 115.
+
+
+
+Package newunicodechar Warning: Redefining Unicode character on input line 116.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2021-06-07 v7.00m Hypertext links for LaTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
+)
+\@linkdim=\dimen195
+\Hy@linkcounter=\count306
+\Hy@pagecounter=\count307
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2021-06-07 v7.00m Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def
+File: hyperref-langpatches.def 2021-06-07 v7.00m Hyperref: patches for babel la
+nguages
+)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count308
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2021-06-07 v7.00m Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Hyper figures OFF on input line 4192.
+Package hyperref Info: Link nesting OFF on input line 4197.
+Package hyperref Info: Hyper index ON on input line 4200.
+Package hyperref Info: Plain pages OFF on input line 4207.
+Package hyperref Info: Backreferencing ON on input line 4210.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4445.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/backref.sty
+Package: backref 2021/02/04 v1.41 Bibliographical back referencing
+
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend pac
+kage
+with kernel methods
+)
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+86.
+))
+\c@Hy@tempcnt=\count309
+
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip16
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4804.
+\XeTeXLinkMargin=\dimen196
+
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+)
+\Fld@menulength=\count310
+\Field@Width=\dimen197
+\Fld@charsize=\dimen198
+Package hyperref Info: Hyper figures OFF on input line 6076.
+Package hyperref Info: Link nesting OFF on input line 6081.
+Package hyperref Info: Hyper index ON on input line 6084.
+Package hyperref Info: backreferencing ON on input line 6089.
+Package hyperref Info: Link coloring OFF on input line 6096.
+Package hyperref Info: Link coloring with OCG OFF on input line 6101.
+Package hyperref Info: PDF/A mode OFF on input line 6106.
+LaTeX Info: Redefining \ref on input line 6146.
+LaTeX Info: Redefining \pageref on input line 6150.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count311
+\c@Item=\count312
+\c@Hfootnote=\count313
+
+
+LaTeX Warning: Command \LT@p@ftntext  has changed.
+               Check if current package is valid.
+
+)
+Package hyperref Info: Driver: hpdftex.
+ (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2021-06-07 v7.00m Hyperref driver for pdfTeX
+\Fld@listcount=\count314
+\c@bookmark@seq@number=\count315
+\Hy@SectionHShift=\skip126
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 134.
+Package hyperref Info: Option `unicode' set `true' on input line 134.
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2020/10/26 v3.5g Customizing captions (AR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2020/10/21 v2.2e caption3 kernel (AR)
+\captionmargin=\dimen199
+\captionmargin@=\dimen256
+\captionwidth=\dimen257
+\caption@tempdima=\dimen258
+\caption@indent=\dimen259
+\caption@parindent=\dimen260
+\caption@hangindent=\dimen261
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count316
+\c@continuedfloat=\count317
+Package caption Info: float package is loaded.
+Package caption Info: hyperref package is loaded.
+Package caption Info: longtable package is loaded.
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2020/05/30 v1.4b longtable captions (AR)
+))
+(/usr/share/texlive/texmf-dist/tex/latex/etoc/etoc.sty
+Package: etoc 2021/09/23 v1.09e Completely customisable TOCs (JFB)
+\Etoc@toctoks=\toks34
+\c@etoc@tocid=\count318
+\c@etoc@tocdepth=\count319
+\etoc@framed@titlebox=\box118
+\etoc@framed@contentsbox=\box119
+)
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 14
+9.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
+File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
+)
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 8.99994pt on input line 149.
+
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count320
+\l__pdf_internal_box=\box120
+)
+No file refman.aux.
+\openout1 = `refman.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count321
+\scratchdimen=\dimen262
+\scratchbox=\box121
+\nofMPsegments=\count322
+\nofMParguments=\count323
+\everyMPshowfont=\toks35
+\MPscratchCnt=\count324
+\MPscratchDim=\dimen263
+\MPnumerator=\count325
+\makeMPintoPDFobject=\count326
+\everyMPtoPDFconversion=\toks36
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
+* v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=455.24411pt
+* \textheight=702.78308pt
+* \oddsidemargin=-1.1381pt
+* \evensidemargin=-1.1381pt
+* \topmargin=-31.2056pt
+* \headheight=12.0pt
+* \headsep=18.06749pt
+* \topskip=10.0pt
+* \footskip=25.29494pt
+* \marginparwidth=125.0pt
+* \marginparsep=7.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+Package hyperref Info: Link coloring ON on input line 149.
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
+
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count327
+)
+LaTeX Info: Redefining \ref on input line 149.
+LaTeX Info: Redefining \pageref on input line 149.
+LaTeX Info: Redefining \nameref on input line 149.
+\@outlinefile=\write5
+\openout5 = `refman.out'.
+
+Package backref Info: ** backref set up for natbib ** on input line 149.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+
+No file refman.toc.
+Package hyperref Info: Option `pageanchor' set `false' on input line 156.
+Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 156.
+
+Package hyperref Info: Option `unicode' set `true' on input line 156.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 12.9599pt on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 10.79993pt on input line 163.
+[1
+
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
+
+]
+\tf@toc=\write6
+\openout6 = `refman.toc'.
+
+Package hyperref Info: Option `pageanchor' set `true' on input line 171.
+
+Chapter 1.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 18.66588pt on input line 174.
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 18.66588pt on input line 174.
+LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
+(Font)              scaled to size 18.66588pt on input line 174.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 22.39185pt on input line 174.
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 22.39185pt on input line 174.
+LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
+(Font)              scaled to size 22.39185pt on input line 174.
+(./index.tex
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 12.9599pt on input line 1.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1 ...come to the NSB Solver project}\end{center}
+                                                  
+? 
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 8.99994pt on input line 5.
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 6.29996pt on input line 5.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 5.
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 5.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+wasy on input line 5.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/wasysym/uwasy.fd
+File: uwasy.fd 2020/01/19 v2.4 Wasy-2 symbol font definitions
+)
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 10.79993pt on input line 10.
+
+
+! LaTeX Error: Unicode character 🔗 (U+1F517)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.10 ...toc_md1}{}\doxysubsection{🔗 Navigation}
+                                                  \label{index_autotoc_md1}
+? 
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 10.
+
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 6.29996pt on input line 11.
+LaTeX Font Info:    Trying to load font information for TS1+phv on input line 1
+3.
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1phv.fd
+File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
+)
+LaTeX Font Info:    Font shape `TS1/phv/m/n' will be
+(Font)              scaled to size 8.99994pt on input line 13.
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 13
+.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)) [1
+
+
+] [2
+
+]
+Chapter 2.
+(./deprecated.tex) [3] [4
+
+]
+Chapter 3.
+(./namespaces.tex
+
+LaTeX Warning: Reference `namespaceConfigFuncs' on page 5 undefined on input li
+ne 3.
+
+
+LaTeX Warning: Reference `namespacedisplayError' on page 5 undefined on input l
+ine 4.
+
+
+LaTeX Warning: Reference `namespaceInitializer' on page 5 undefined on input li
+ne 5.
+
+
+LaTeX Warning: Reference `namespaceInputReader' on page 5 undefined on input li
+ne 6.
+
+
+LaTeX Warning: Reference `namespaceplot__convergence' on page 5 undefined on in
+put line 7.
+
+
+LaTeX Warning: Reference `namespaceplot__convergence__new' on page 5 undefined 
+on input line 8.
+
+
+LaTeX Warning: Reference `namespacerun__convergence__study' on page 5 undefined
+ on input line 9.
+
+
+LaTeX Warning: Reference `namespacerun__convergence__study__new' on page 5 unde
+fined on input line 10.
+
+) [5] [6
+
+]
+Chapter 4.
+(./annotated.tex
+
+LaTeX Warning: Reference `classDerivatives' on page 7 undefined on input line 3
+.
+
+
+LaTeX Warning: Reference `classField' on page 7 undefined on input line 4.
+
+
+LaTeX Warning: Reference `structGrid' on page 7 undefined on input line 5.
+
+
+LaTeX Warning: Reference `structInputData' on page 7 undefined on input line 6.
+
+
+
+LaTeX Warning: Reference `classLinearSys' on page 7 undefined on input line 7.
+
+
+LaTeX Warning: Reference `structLoggingSettings' on page 7 undefined on input l
+ine 8.
+
+
+LaTeX Warning: Reference `classLogWriter' on page 7 undefined on input line 9.
+
+
+LaTeX Warning: Reference `structMeshData' on page 7 undefined on input line 10.
+
+
+
+LaTeX Warning: Reference `classNSBSolver' on page 7 undefined on input line 11.
+
+
+
+LaTeX Warning: Reference `structOutputSettings' on page 7 undefined on input li
+ne 12.
+
+
+LaTeX Warning: Reference `structParallelizationSettings' on page 7 undefined on
+ input line 13.
+
+
+LaTeX Warning: Reference `structPhysicsData' on page 7 undefined on input line 
+14.
+
+
+LaTeX Warning: Reference `classPressureStep' on page 7 undefined on input line 
+15.
+
+
+LaTeX Warning: Reference `classSchurSequentialSolver' on page 7 undefined on in
+put line 16.
+
+
+LaTeX Warning: Reference `structSimulationData' on page 7 undefined on input li
+ne 17.
+
+
+LaTeX Warning: Reference `structTimeData' on page 7 undefined on input line 18.
+
+
+
+LaTeX Warning: Reference `classTridiagMat' on page 7 undefined on input line 19
+.
+
+
+LaTeX Warning: Reference `classVectorField' on page 7 undefined on input line 2
+0.
+
+
+LaTeX Warning: Reference `classViscousStep' on page 7 undefined on input line 2
+1.
+
+
+LaTeX Warning: Reference `classVTKWriter' on page 7 undefined on input line 22.
+
+
+[7]) [8]
+Chapter 5.
+(./files.tex
+
+LaTeX Warning: Reference `configFunctions_8hpp' on page 9 undefined on input li
+ne 3.
+
+
+LaTeX Warning: Reference `Fields_8hpp' on page 9 undefined on input line 4.
+
+
+LaTeX Warning: Reference `Grid_8hpp' on page 9 undefined on input line 5.
+
+
+LaTeX Warning: Reference `TridiagMat_8hpp' on page 9 undefined on input line 6.
+
+
+
+LaTeX Warning: Reference `inputReader_8hpp' on page 9 undefined on input line 7
+.
+
+
+LaTeX Warning: Reference `logWriter_8hpp' on page 9 undefined on input line 8.
+
+
+LaTeX Warning: Reference `VTKWriter_8hpp' on page 9 undefined on input line 9.
+
+
+LaTeX Warning: Reference `derivatives_8hpp' on page 9 undefined on input line 1
+0.
+
+
+LaTeX Warning: Reference `LinearSys_8hpp' on page 9 undefined on input line 11.
+
+
+
+LaTeX Warning: Reference `SchurSequentialSolver_8hpp' on page 9 undefined on in
+put line 12.
+
+
+LaTeX Warning: Reference `initializer_8hpp' on page 9 undefined on input line 1
+3.
+
+
+LaTeX Warning: Reference `NSBSolver_8hpp' on page 9 undefined on input line 14.
+
+
+
+LaTeX Warning: Reference `pressureStep_8hpp' on page 9 undefined on input line 
+15.
+
+
+LaTeX Warning: Reference `SimulationContext_8hpp' on page 9 undefined on input 
+line 16.
+
+
+LaTeX Warning: Reference `viscousStep_8hpp' on page 9 undefined on input line 1
+7.
+
+
+LaTeX Warning: Reference `displayError_8py' on page 9 undefined on input line 1
+8.
+
+
+LaTeX Warning: Reference `plot__convergence_8py' on page 9 undefined on input l
+ine 19.
+
+
+LaTeX Warning: Reference `plot__convergence__new_8py' on page 9 undefined on in
+put line 20.
+
+
+LaTeX Warning: Reference `run__convergence__study_8py' on page 9 undefined on i
+nput line 21.
+
+
+LaTeX Warning: Reference `run__convergence__study__new_8py' on page 9 undefined
+ on input line 22.
+
+
+LaTeX Warning: Reference `main_8cpp' on page 9 undefined on input line 23.
+
+
+LaTeX Warning: Reference `Fields_8cpp' on page 9 undefined on input line 24.
+
+
+LaTeX Warning: Reference `TridiagMat_8cpp' on page 9 undefined on input line 25
+.
+
+
+LaTeX Warning: Reference `inputReader_8cpp' on page 9 undefined on input line 2
+6.
+
+
+LaTeX Warning: Reference `logWriter_8cpp' on page 9 undefined on input line 27.
+
+
+
+LaTeX Warning: Reference `VTKWriter_8cpp' on page 9 undefined on input line 28.
+
+
+
+LaTeX Warning: Reference `derivatives_8cpp' on page 9 undefined on input line 2
+9.
+
+
+LaTeX Warning: Reference `derivativesOpt_8cpp' on page 9 undefined on input lin
+e 30.
+
+
+LaTeX Warning: Reference `LinearSys_8cpp' on page 9 undefined on input line 31.
+
+
+
+LaTeX Warning: Reference `SchurSequentialSolver_8cpp' on page 9 undefined on in
+put line 32.
+
+
+LaTeX Warning: Reference `initializer_8cpp' on page 9 undefined on input line 3
+3.
+
+
+LaTeX Warning: Reference `NSBSolver_8cpp' on page 9 undefined on input line 34.
+
+
+
+LaTeX Warning: Reference `pressureStep_8cpp' on page 9 undefined on input line 
+35.
+
+
+LaTeX Warning: Reference `viscousStep_8cpp' on page 9 undefined on input line 3
+6.
+
+) [9
+
+] [10
+
+]
+Chapter 6.
+(./namespaceConfigFuncs.tex
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 7.19995pt on input line 35.
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <8> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 35.
+ <./namespaceConfigFuncs_a9d7c208968a863df7d17781b9ed10356_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceConfigFuncs_a9d7c208968a863df7d17781b
+9ed10356_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespaceConfigFuncs_a9d7c208968a863df7d17781b9ed10356_icgraph.pdf, id=216, 55
+2.0625pt x 100.375pt>
+File: namespaceConfigFuncs_a9d7c208968a863df7d17781b9ed10356_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceConfigFuncs_a9d7c208968a863df7d17781b9ed10356_icgraph.pdf>
+Package pdftex.def Info: namespaceConfigFuncs_a9d7c208968a863df7d17781b9ed10356
+_icgraph.pdf  used on input line 41.
+(pdftex.def)             Requested size: 350.0pt x 63.63937pt.
+ [11] <./namespaceConfigFuncs_a03a24d0ef4e46bdafbcffe16161a4b68_icgraph.pdf>
+<namespaceConfigFuncs_a03a24d0ef4e46bdafbcffe16161a4b68_icgraph.pdf, id=256, 55
+2.0625pt x 100.375pt>
+File: namespaceConfigFuncs_a03a24d0ef4e46bdafbcffe16161a4b68_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceConfigFuncs_a03a24d0ef4e46bdafbcffe16161a4b68_icgraph.pdf>
+Package pdftex.def Info: namespaceConfigFuncs_a03a24d0ef4e46bdafbcffe16161a4b68
+_icgraph.pdf  used on input line 54.
+(pdftex.def)             Requested size: 350.0pt x 63.63937pt.
+ <./namespaceConfigFuncs_af4bfa49d2de953a1ec03b6c318940568_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceConfigFuncs_af4bfa49d2de953a1ec03b6c3
+18940568_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespaceConfigFuncs_af4bfa49d2de953a1ec03b6c318940568_icgraph.pdf, id=271, 55
+4.07pt x 100.375pt>
+File: namespaceConfigFuncs_af4bfa49d2de953a1ec03b6c318940568_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceConfigFuncs_af4bfa49d2de953a1ec03b6c318940568_icgraph.pdf>
+Package pdftex.def Info: namespaceConfigFuncs_af4bfa49d2de953a1ec03b6c318940568
+_icgraph.pdf  used on input line 67.
+(pdftex.def)             Requested size: 350.0pt x 63.40504pt.
+ <./namespaceConfigFuncs_ad7d92434b13f327295ca39fb4906c9ea_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceConfigFuncs_ad7d92434b13f327295ca39fb
+4906c9ea_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespaceConfigFuncs_ad7d92434b13f327295ca39fb4906c9ea_icgraph.pdf, id=286, 54
+4.0325pt x 100.375pt>
+File: namespaceConfigFuncs_ad7d92434b13f327295ca39fb4906c9ea_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceConfigFuncs_ad7d92434b13f327295ca39fb4906c9ea_icgraph.pdf>
+Package pdftex.def Info: namespaceConfigFuncs_ad7d92434b13f327295ca39fb4906c9ea
+_icgraph.pdf  used on input line 80.
+(pdftex.def)             Requested size: 350.0pt x 64.57825pt.
+ <./namespaceConfigFuncs_ad0fb898ee4fa97ae585cb9b55739894f_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceConfigFuncs_ad0fb898ee4fa97ae585cb9b5
+5739894f_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespaceConfigFuncs_ad0fb898ee4fa97ae585cb9b55739894f_icgraph.pdf, id=301, 54
+3.02875pt x 100.375pt>
+File: namespaceConfigFuncs_ad0fb898ee4fa97ae585cb9b55739894f_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceConfigFuncs_ad0fb898ee4fa97ae585cb9b55739894f_icgraph.pdf>
+Package pdftex.def Info: namespaceConfigFuncs_ad0fb898ee4fa97ae585cb9b55739894f
+_icgraph.pdf  used on input line 93.
+(pdftex.def)             Requested size: 350.0pt x 64.69771pt.
+ [12] <./namespaceConfigFuncs_ac419f0da352a3a2f376d7f1b020a8620_icgraph.pdf>
+<namespaceConfigFuncs_ac419f0da352a3a2f376d7f1b020a8620_icgraph.pdf, id=328, 54
+3.02875pt x 100.375pt>
+File: namespaceConfigFuncs_ac419f0da352a3a2f376d7f1b020a8620_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceConfigFuncs_ac419f0da352a3a2f376d7f1b020a8620_icgraph.pdf>
+Package pdftex.def Info: namespaceConfigFuncs_ac419f0da352a3a2f376d7f1b020a8620
+_icgraph.pdf  used on input line 106.
+(pdftex.def)             Requested size: 350.0pt x 64.69771pt.
+ <./namespaceConfigFuncs_adbedde9d6948c3351309fbdcd828eb71_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceConfigFuncs_adbedde9d6948c3351309fbdc
+d828eb71_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespaceConfigFuncs_adbedde9d6948c3351309fbdcd828eb71_icgraph.pdf, id=343, 54
+0.0175pt x 100.375pt>
+File: namespaceConfigFuncs_adbedde9d6948c3351309fbdcd828eb71_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceConfigFuncs_adbedde9d6948c3351309fbdcd828eb71_icgraph.pdf>
+Package pdftex.def Info: namespaceConfigFuncs_adbedde9d6948c3351309fbdcd828eb71
+_icgraph.pdf  used on input line 119.
+(pdftex.def)             Requested size: 350.0pt x 65.05763pt.
+ <./namespaceConfigFuncs_afb0ca0998e95d74aa5ade488a7f12582_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceConfigFuncs_afb0ca0998e95d74aa5ade488
+a7f12582_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespaceConfigFuncs_afb0ca0998e95d74aa5ade488a7f12582_icgraph.pdf, id=358, 56
+1.09625pt x 100.375pt>
+File: namespaceConfigFuncs_afb0ca0998e95d74aa5ade488a7f12582_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceConfigFuncs_afb0ca0998e95d74aa5ade488a7f12582_icgraph.pdf>
+Package pdftex.def Info: namespaceConfigFuncs_afb0ca0998e95d74aa5ade488a7f12582
+_icgraph.pdf  used on input line 132.
+(pdftex.def)             Requested size: 350.0pt x 62.61168pt.
+ [13] <./namespaceConfigFuncs_a885e55fe8c3e3302d8e89e3a9042672c_icgraph.pdf>
+<namespaceConfigFuncs_a885e55fe8c3e3302d8e89e3a9042672c_icgraph.pdf, id=384, 56
+1.09625pt x 100.375pt>
+File: namespaceConfigFuncs_a885e55fe8c3e3302d8e89e3a9042672c_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceConfigFuncs_a885e55fe8c3e3302d8e89e3a9042672c_icgraph.pdf>
+Package pdftex.def Info: namespaceConfigFuncs_a885e55fe8c3e3302d8e89e3a9042672c
+_icgraph.pdf  used on input line 145.
+(pdftex.def)             Requested size: 350.0pt x 62.61168pt.
+ <./namespaceConfigFuncs_a48533f3f063ddfc4bad672565013f720_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceConfigFuncs_a48533f3f063ddfc4bad67256
+5013f720_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespaceConfigFuncs_a48533f3f063ddfc4bad672565013f720_icgraph.pdf, id=399, 56
+1.09625pt x 100.375pt>
+File: namespaceConfigFuncs_a48533f3f063ddfc4bad672565013f720_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceConfigFuncs_a48533f3f063ddfc4bad672565013f720_icgraph.pdf>
+Package pdftex.def Info: namespaceConfigFuncs_a48533f3f063ddfc4bad672565013f720
+_icgraph.pdf  used on input line 158.
+(pdftex.def)             Requested size: 350.0pt x 62.61168pt.
+ <./namespaceConfigFuncs_a548b92fc232b26882dcf1149359af111_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceConfigFuncs_a548b92fc232b26882dcf1149
+359af111_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespaceConfigFuncs_a548b92fc232b26882dcf1149359af111_icgraph.pdf, id=414, 56
+4.1075pt x 100.375pt>
+File: namespaceConfigFuncs_a548b92fc232b26882dcf1149359af111_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceConfigFuncs_a548b92fc232b26882dcf1149359af111_icgraph.pdf>
+Package pdftex.def Info: namespaceConfigFuncs_a548b92fc232b26882dcf1149359af111
+_icgraph.pdf  used on input line 171.
+(pdftex.def)             Requested size: 350.0pt x 62.27779pt.
+) (./namespacedisplayError.tex [14] <./namespacedisplayError_a9b10a8ccd77768cce
+527f2f37efe2b49_icgraph.pdf>
+<namespacedisplayError_a9b10a8ccd77768cce527f2f37efe2b49_icgraph.pdf, id=458, 3
+38.26375pt x 111.41624pt>
+File: namespacedisplayError_a9b10a8ccd77768cce527f2f37efe2b49_icgraph.pdf Graph
+ic file (type pdf)
+<use namespacedisplayError_a9b10a8ccd77768cce527f2f37efe2b49_icgraph.pdf>
+Package pdftex.def Info: namespacedisplayError_a9b10a8ccd77768cce527f2f37efe2b4
+9_icgraph.pdf  used on input line 52.
+(pdftex.def)             Requested size: 337.0pt x 111.00284pt.
+ <./namespacedisplayError_a625e503f0b00e7b5ae4e0409722acc31_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespacedisplayError_a625e503f0b00e7b5ae4e040
+9722acc31_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespacedisplayError_a625e503f0b00e7b5ae4e0409722acc31_cgraph.pdf, id=474, 33
+8.26375pt x 264.99pt>
+File: namespacedisplayError_a625e503f0b00e7b5ae4e0409722acc31_cgraph.pdf Graphi
+c file (type pdf)
+<use namespacedisplayError_a625e503f0b00e7b5ae4e0409722acc31_cgraph.pdf>
+Package pdftex.def Info: namespacedisplayError_a625e503f0b00e7b5ae4e0409722acc3
+1_cgraph.pdf  used on input line 65.
+(pdftex.def)             Requested size: 337.0pt x 264.00679pt.
+ [15] <./namespacedisplayError_ade56026b71fcde5e43cc4fa7581b1f85_icgraph.pdf>
+<namespacedisplayError_ade56026b71fcde5e43cc4fa7581b1f85_icgraph.pdf, id=517, 3
+26.21875pt x 100.375pt>
+File: namespacedisplayError_ade56026b71fcde5e43cc4fa7581b1f85_icgraph.pdf Graph
+ic file (type pdf)
+<use namespacedisplayError_ade56026b71fcde5e43cc4fa7581b1f85_icgraph.pdf>
+Package pdftex.def Info: namespacedisplayError_ade56026b71fcde5e43cc4fa7581b1f8
+5_icgraph.pdf  used on input line 78.
+(pdftex.def)             Requested size: 325.0pt x 100.00868pt.
+ <./namespacedisplayError_a189a1f74a46af29a18d4a2264165d413_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespacedisplayError_a189a1f74a46af29a18d4a22
+64165d413_icgraph.pdf): PDF inclusion: multiple pdfs with page group included i
+n a single page
+>
+<namespacedisplayError_a189a1f74a46af29a18d4a2264165d413_icgraph.pdf, id=525, 3
+26.21875pt x 100.375pt>
+File: namespacedisplayError_a189a1f74a46af29a18d4a2264165d413_icgraph.pdf Graph
+ic file (type pdf)
+<use namespacedisplayError_a189a1f74a46af29a18d4a2264165d413_icgraph.pdf>
+Package pdftex.def Info: namespacedisplayError_a189a1f74a46af29a18d4a2264165d41
+3_icgraph.pdf  used on input line 91.
+(pdftex.def)             Requested size: 325.0pt x 100.00868pt.
+ [16] <./namespacedisplayError_aab2060ec67668542e815a5dff48d443a_icgraph.pdf>
+<namespacedisplayError_aab2060ec67668542e815a5dff48d443a_icgraph.pdf, id=543, 3
+26.21875pt x 100.375pt>
+File: namespacedisplayError_aab2060ec67668542e815a5dff48d443a_icgraph.pdf Graph
+ic file (type pdf)
+<use namespacedisplayError_aab2060ec67668542e815a5dff48d443a_icgraph.pdf>
+Package pdftex.def Info: namespacedisplayError_aab2060ec67668542e815a5dff48d443
+a_icgraph.pdf  used on input line 104.
+(pdftex.def)             Requested size: 325.0pt x 100.00868pt.
+ <./namespacedisplayError_a2c91d3499f1914eb8a6026561112d36b_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespacedisplayError_a2c91d3499f1914eb8a60265
+61112d36b_icgraph.pdf): PDF inclusion: multiple pdfs with page group included i
+n a single page
+>
+<namespacedisplayError_a2c91d3499f1914eb8a6026561112d36b_icgraph.pdf, id=551, 3
+28.22626pt x 100.375pt>
+File: namespacedisplayError_a2c91d3499f1914eb8a6026561112d36b_icgraph.pdf Graph
+ic file (type pdf)
+<use namespacedisplayError_a2c91d3499f1914eb8a6026561112d36b_icgraph.pdf>
+Package pdftex.def Info: namespacedisplayError_a2c91d3499f1914eb8a6026561112d36
+b_icgraph.pdf  used on input line 117.
+(pdftex.def)             Requested size: 327.0pt x 100.00102pt.
+ [17]) (./namespaceInitializer.tex
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 8.09995pt on input line 7.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 7.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 8.09995pt on input line 7.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 7.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 6.29996pt on input line 7.
+ [18] <./namespaceInitializer_a84757b22926f400a6aec78c2b1e2aa69_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceInitializer_a84757b22926f400a6aec78c2
+b1e2aa69_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in 
+a single page
+>
+<namespaceInitializer_a84757b22926f400a6aec78c2b1e2aa69_cgraph.pdf, id=614, 340
+.27126pt x 138.5175pt>
+File: namespaceInitializer_a84757b22926f400a6aec78c2b1e2aa69_cgraph.pdf Graphic
+ file (type pdf)
+<use namespaceInitializer_a84757b22926f400a6aec78c2b1e2aa69_cgraph.pdf>
+Package pdftex.def Info: namespaceInitializer_a84757b22926f400a6aec78c2b1e2aa69
+_cgraph.pdf  used on input line 25.
+(pdftex.def)             Requested size: 339.0pt x 138.00777pt.
+ <./namespaceInitializer_a84757b22926f400a6aec78c2b1e2aa69_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceInitializer_a84757b22926f400a6aec78c2
+b1e2aa69_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespaceInitializer_a84757b22926f400a6aec78c2b1e2aa69_icgraph.pdf, id=622, 56
+1.09625pt x 111.41624pt>
+File: namespaceInitializer_a84757b22926f400a6aec78c2b1e2aa69_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceInitializer_a84757b22926f400a6aec78c2b1e2aa69_icgraph.pdf>
+Package pdftex.def Info: namespaceInitializer_a84757b22926f400a6aec78c2b1e2aa69
+_icgraph.pdf  used on input line 32.
+(pdftex.def)             Requested size: 350.0pt x 69.49896pt.
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <7> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 39.
+ <./namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb2244203d_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb
+2244203d_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in 
+a single page
+>
+<namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb2244203d_cgraph.pdf, id=635, 545
+.03625pt x 176.66pt>
+File: namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb2244203d_cgraph.pdf Graphic
+ file (type pdf)
+<use namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb2244203d_cgraph.pdf>
+Package pdftex.def Info: namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb2244203d
+_cgraph.pdf  used on input line 45.
+(pdftex.def)             Requested size: 350.0pt x 113.44208pt.
+ <./namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb2244203d_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb
+2244203d_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb2244203d_icgraph.pdf, id=643, 56
+8.1225pt x 111.41624pt>
+File: namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb2244203d_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb2244203d_icgraph.pdf>
+Package pdftex.def Info: namespaceInitializer_ad0df7e265dd3a6f2b2aaefcb2244203d
+_icgraph.pdf  used on input line 52.
+(pdftex.def)             Requested size: 350.0pt x 68.64214pt.
+ [19] <./namespaceInitializer_ab08ce6fc3e43c623779edfdfb7ea3855_cgraph.pdf>
+<namespaceInitializer_ab08ce6fc3e43c623779edfdfb7ea3855_cgraph.pdf, id=664, 691
+.58376pt x 570.13pt>
+File: namespaceInitializer_ab08ce6fc3e43c623779edfdfb7ea3855_cgraph.pdf Graphic
+ file (type pdf)
+<use namespaceInitializer_ab08ce6fc3e43c623779edfdfb7ea3855_cgraph.pdf>
+Package pdftex.def Info: namespaceInitializer_ab08ce6fc3e43c623779edfdfb7ea3855
+_cgraph.pdf  used on input line 69.
+(pdftex.def)             Requested size: 350.0pt x 288.53539pt.
+ <./namespaceInitializer_ab08ce6fc3e43c623779edfdfb7ea3855_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceInitializer_ab08ce6fc3e43c623779edfdf
+b7ea3855_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>
+<namespaceInitializer_ab08ce6fc3e43c623779edfdfb7ea3855_icgraph.pdf, id=679, 39
+0.45876pt x 100.375pt>
+File: namespaceInitializer_ab08ce6fc3e43c623779edfdfb7ea3855_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceInitializer_ab08ce6fc3e43c623779edfdfb7ea3855_icgraph.pdf>
+Package pdftex.def Info: namespaceInitializer_ab08ce6fc3e43c623779edfdfb7ea3855
+_icgraph.pdf  used on input line 76.
+(pdftex.def)             Requested size: 350.0pt x 89.97826pt.
+) (./namespaceInputReader.tex [20]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 6.1 on input line 25.
+
+
+Underfull \hbox (badness 10000) detected at line 26
+[][][]
+ []
+
+ <./namespaceInputReader_a727137059f29ce31ea17ec99608c372b_icgraph.pdf>
+<namespaceInputReader_a727137059f29ce31ea17ec99608c372b_icgraph.pdf, id=700, 39
+9.4925pt x 100.375pt>
+File: namespaceInputReader_a727137059f29ce31ea17ec99608c372b_icgraph.pdf Graphi
+c file (type pdf)
+<use namespaceInputReader_a727137059f29ce31ea17ec99608c372b_icgraph.pdf>
+Package pdftex.def Info: namespaceInputReader_a727137059f29ce31ea17ec99608c372b
+_icgraph.pdf  used on input line 33.
+(pdftex.def)             Requested size: 350.0pt x 87.94429pt.
+)
+(./namespaceplot__convergence.tex [21] <./namespaceplot__convergence_a86f4b7292
+316d5209cdb9f9a8729a3a1_icgraph.pdf>
+<namespaceplot__convergence_a86f4b7292316d5209cdb9f9a8729a3a1_icgraph.pdf, id=7
+52, 770.88pt x 111.41624pt>
+File: namespaceplot__convergence_a86f4b7292316d5209cdb9f9a8729a3a1_icgraph.pdf 
+Graphic file (type pdf)
+<use namespaceplot__convergence_a86f4b7292316d5209cdb9f9a8729a3a1_icgraph.pdf>
+Package pdftex.def Info: namespaceplot__convergence_a86f4b7292316d5209cdb9f9a87
+29a3a1_icgraph.pdf  used on input line 76.
+(pdftex.def)             Requested size: 350.0pt x 50.58566pt.
+ <./namespaceplot__convergence_a29cf4ff6696e41332aaa9418b382885e_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence_a29cf4ff6696e41332a
+aa9418b382885e_cgraph.pdf): PDF inclusion: multiple pdfs with page group includ
+ed in a single page
+>
+<namespaceplot__convergence_a29cf4ff6696e41332aaa9418b382885e_cgraph.pdf, id=76
+0, 417.56pt x 111.41624pt>
+File: namespaceplot__convergence_a29cf4ff6696e41332aaa9418b382885e_cgraph.pdf G
+raphic file (type pdf)
+<use namespaceplot__convergence_a29cf4ff6696e41332aaa9418b382885e_cgraph.pdf>
+Package pdftex.def Info: namespaceplot__convergence_a29cf4ff6696e41332aaa9418b3
+82885e_cgraph.pdf  used on input line 92.
+(pdftex.def)             Requested size: 350.0pt x 93.39519pt.
+ <./namespaceplot__convergence_a29cf4ff6696e41332aaa9418b382885e_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence_a29cf4ff6696e41332a
+aa9418b382885e_icgraph.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+>
+<namespaceplot__convergence_a29cf4ff6696e41332aaa9418b382885e_icgraph.pdf, id=7
+68, 584.1825pt x 111.41624pt>
+File: namespaceplot__convergence_a29cf4ff6696e41332aaa9418b382885e_icgraph.pdf 
+Graphic file (type pdf)
+<use namespaceplot__convergence_a29cf4ff6696e41332aaa9418b382885e_icgraph.pdf>
+Package pdftex.def Info: namespaceplot__convergence_a29cf4ff6696e41332aaa9418b3
+82885e_icgraph.pdf  used on input line 99.
+(pdftex.def)             Requested size: 350.0pt x 66.75505pt.
+ [22] <./namespaceplot__convergence_afefebe4bf93b54608bcc4eb36d03d587_icgraph.p
+df>
+<namespaceplot__convergence_afefebe4bf93b54608bcc4eb36d03d587_icgraph.pdf, id=7
+87, 583.17876pt x 111.41624pt>
+File: namespaceplot__convergence_afefebe4bf93b54608bcc4eb36d03d587_icgraph.pdf 
+Graphic file (type pdf)
+<use namespaceplot__convergence_afefebe4bf93b54608bcc4eb36d03d587_icgraph.pdf>
+Package pdftex.def Info: namespaceplot__convergence_afefebe4bf93b54608bcc4eb36d
+03d587_icgraph.pdf  used on input line 115.
+(pdftex.def)             Requested size: 350.0pt x 66.86896pt.
+ <./namespaceplot__convergence_a9d194ce0680046fcab4dc84a30985795_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence_a9d194ce0680046fcab
+4dc84a30985795_icgraph.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+>
+<namespaceplot__convergence_a9d194ce0680046fcab4dc84a30985795_icgraph.pdf, id=7
+95, 583.17876pt x 111.41624pt>
+File: namespaceplot__convergence_a9d194ce0680046fcab4dc84a30985795_icgraph.pdf 
+Graphic file (type pdf)
+<use namespaceplot__convergence_a9d194ce0680046fcab4dc84a30985795_icgraph.pdf>
+Package pdftex.def Info: namespaceplot__convergence_a9d194ce0680046fcab4dc84a30
+985795_icgraph.pdf  used on input line 133.
+(pdftex.def)             Requested size: 350.0pt x 66.86896pt.
+ [23] <./namespaceplot__convergence_a6c2284685104840a9071e4012cf24cd4_icgraph.p
+df>
+<namespaceplot__convergence_a6c2284685104840a9071e4012cf24cd4_icgraph.pdf, id=8
+15, 583.17876pt x 111.41624pt>
+File: namespaceplot__convergence_a6c2284685104840a9071e4012cf24cd4_icgraph.pdf 
+Graphic file (type pdf)
+<use namespaceplot__convergence_a6c2284685104840a9071e4012cf24cd4_icgraph.pdf>
+Package pdftex.def Info: namespaceplot__convergence_a6c2284685104840a9071e4012c
+f24cd4_icgraph.pdf  used on input line 151.
+(pdftex.def)             Requested size: 350.0pt x 66.86896pt.
+ <./namespaceplot__convergence_aeaba55980f3984a336b6a0808e21f13b_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence_aeaba55980f3984a336
+b6a0808e21f13b_icgraph.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+>
+<namespaceplot__convergence_aeaba55980f3984a336b6a0808e21f13b_icgraph.pdf, id=8
+23, 583.17876pt x 111.41624pt>
+File: namespaceplot__convergence_aeaba55980f3984a336b6a0808e21f13b_icgraph.pdf 
+Graphic file (type pdf)
+<use namespaceplot__convergence_aeaba55980f3984a336b6a0808e21f13b_icgraph.pdf>
+Package pdftex.def Info: namespaceplot__convergence_aeaba55980f3984a336b6a0808e
+21f13b_icgraph.pdf  used on input line 169.
+(pdftex.def)             Requested size: 350.0pt x 66.86896pt.
+ <./namespaceplot__convergence_a87393486292e635e9ba0f41aa3187f9b_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence_a87393486292e635e9b
+a0f41aa3187f9b_icgraph.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+>
+<namespaceplot__convergence_a87393486292e635e9ba0f41aa3187f9b_icgraph.pdf, id=8
+31, 556.0775pt x 111.41624pt>
+File: namespaceplot__convergence_a87393486292e635e9ba0f41aa3187f9b_icgraph.pdf 
+Graphic file (type pdf)
+<use namespaceplot__convergence_a87393486292e635e9ba0f41aa3187f9b_icgraph.pdf>
+Package pdftex.def Info: namespaceplot__convergence_a87393486292e635e9ba0f41aa3
+187f9b_icgraph.pdf  used on input line 185.
+(pdftex.def)             Requested size: 350.0pt x 70.12799pt.
+ [24] <./namespaceplot__convergence_a619471dc6a944337f477b6a70bb21773_cgraph.pd
+f>
+<namespaceplot__convergence_a619471dc6a944337f477b6a70bb21773_cgraph.pdf, id=85
+7, 576.1525pt x 357.335pt>
+File: namespaceplot__convergence_a619471dc6a944337f477b6a70bb21773_cgraph.pdf G
+raphic file (type pdf)
+<use namespaceplot__convergence_a619471dc6a944337f477b6a70bb21773_cgraph.pdf>
+Package pdftex.def Info: namespaceplot__convergence_a619471dc6a944337f477b6a70b
+b21773_cgraph.pdf  used on input line 207.
+(pdftex.def)             Requested size: 350.0pt x 217.07982pt.
+ <./namespaceplot__convergence_a619471dc6a944337f477b6a70bb21773_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence_a619471dc6a944337f4
+77b6a70bb21773_icgraph.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+>
+<namespaceplot__convergence_a619471dc6a944337f477b6a70bb21773_icgraph.pdf, id=8
+72, 397.485pt x 111.41624pt>
+File: namespaceplot__convergence_a619471dc6a944337f477b6a70bb21773_icgraph.pdf 
+Graphic file (type pdf)
+<use namespaceplot__convergence_a619471dc6a944337f477b6a70bb21773_icgraph.pdf>
+Package pdftex.def Info: namespaceplot__convergence_a619471dc6a944337f477b6a70b
+b21773_icgraph.pdf  used on input line 214.
+(pdftex.def)             Requested size: 350.0pt x 98.1095pt.
+ [25]) (./namespaceplot__convergence__new.tex [26] <./namespaceplot__convergenc
+e__new_ab842eab38fdd39e4c675987a551ae935_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence__new_ab842eab38fdd3
+9e4c675987a551ae935_icgraph.pdf): PDF inclusion: multiple pdfs with page group 
+included in a single page
+>
+<namespaceplot__convergence__new_ab842eab38fdd39e4c675987a551ae935_icgraph.pdf,
+ id=933, 819.06pt x 111.41624pt>
+File: namespaceplot__convergence__new_ab842eab38fdd39e4c675987a551ae935_icgraph
+.pdf Graphic file (type pdf)
+<use namespaceplot__convergence__new_ab842eab38fdd39e4c675987a551ae935_icgraph.
+pdf>
+Package pdftex.def Info: namespaceplot__convergence__new_ab842eab38fdd39e4c6759
+87a551ae935_icgraph.pdf  used on input line 73.
+(pdftex.def)             Requested size: 350.0pt x 47.61053pt.
+ <./namespaceplot__convergence__new_a9c50096fadd00dca9d78dada9685d58c_cgraph.pd
+f
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence__new_a9c50096fadd00
+dca9d78dada9685d58c_cgraph.pdf): PDF inclusion: multiple pdfs with page group i
+ncluded in a single page
+>
+<namespaceplot__convergence__new_a9c50096fadd00dca9d78dada9685d58c_cgraph.pdf, 
+id=941, 467.7475pt x 111.41624pt>
+File: namespaceplot__convergence__new_a9c50096fadd00dca9d78dada9685d58c_cgraph.
+pdf Graphic file (type pdf)
+<use namespaceplot__convergence__new_a9c50096fadd00dca9d78dada9685d58c_cgraph.p
+df>
+Package pdftex.def Info: namespaceplot__convergence__new_a9c50096fadd00dca9d78d
+ada9685d58c_cgraph.pdf  used on input line 86.
+(pdftex.def)             Requested size: 350.0pt x 83.37326pt.
+ <./namespaceplot__convergence__new_a9c50096fadd00dca9d78dada9685d58c_icgraph.p
+df
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence__new_a9c50096fadd00
+dca9d78dada9685d58c_icgraph.pdf): PDF inclusion: multiple pdfs with page group 
+included in a single page
+>
+<namespaceplot__convergence__new_a9c50096fadd00dca9d78dada9685d58c_icgraph.pdf,
+ id=949, 607.26875pt x 111.41624pt>
+File: namespaceplot__convergence__new_a9c50096fadd00dca9d78dada9685d58c_icgraph
+.pdf Graphic file (type pdf)
+<use namespaceplot__convergence__new_a9c50096fadd00dca9d78dada9685d58c_icgraph.
+pdf>
+Package pdftex.def Info: namespaceplot__convergence__new_a9c50096fadd00dca9d78d
+ada9685d58c_icgraph.pdf  used on input line 93.
+(pdftex.def)             Requested size: 350.0pt x 64.21515pt.
+ [27] <./namespaceplot__convergence__new_a662be3d365f1f16fd9f6745d2f426528_icgr
+aph.pdf>
+<namespaceplot__convergence__new_a662be3d365f1f16fd9f6745d2f426528_icgraph.pdf,
+ id=969, 605.26125pt x 111.41624pt>
+File: namespaceplot__convergence__new_a662be3d365f1f16fd9f6745d2f426528_icgraph
+.pdf Graphic file (type pdf)
+<use namespaceplot__convergence__new_a662be3d365f1f16fd9f6745d2f426528_icgraph.
+pdf>
+Package pdftex.def Info: namespaceplot__convergence__new_a662be3d365f1f16fd9f67
+45d2f426528_icgraph.pdf  used on input line 106.
+(pdftex.def)             Requested size: 350.0pt x 64.42766pt.
+ <./namespaceplot__convergence__new_a4604579fccce1eebf3e02daeb5a46960_icgraph.p
+df
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence__new_a4604579fccce1
+eebf3e02daeb5a46960_icgraph.pdf): PDF inclusion: multiple pdfs with page group 
+included in a single page
+>
+<namespaceplot__convergence__new_a4604579fccce1eebf3e02daeb5a46960_icgraph.pdf,
+ id=978, 605.26125pt x 111.41624pt>
+File: namespaceplot__convergence__new_a4604579fccce1eebf3e02daeb5a46960_icgraph
+.pdf Graphic file (type pdf)
+<use namespaceplot__convergence__new_a4604579fccce1eebf3e02daeb5a46960_icgraph.
+pdf>
+Package pdftex.def Info: namespaceplot__convergence__new_a4604579fccce1eebf3e02
+daeb5a46960_icgraph.pdf  used on input line 119.
+(pdftex.def)             Requested size: 350.0pt x 64.42766pt.
+ <./namespaceplot__convergence__new_ad1d155df43e8f0dbca56872943a7ce25_icgraph.p
+df
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence__new_ad1d155df43e8f
+0dbca56872943a7ce25_icgraph.pdf): PDF inclusion: multiple pdfs with page group 
+included in a single page
+>
+<namespaceplot__convergence__new_ad1d155df43e8f0dbca56872943a7ce25_icgraph.pdf,
+ id=986, 605.26125pt x 111.41624pt>
+File: namespaceplot__convergence__new_ad1d155df43e8f0dbca56872943a7ce25_icgraph
+.pdf Graphic file (type pdf)
+<use namespaceplot__convergence__new_ad1d155df43e8f0dbca56872943a7ce25_icgraph.
+pdf>
+Package pdftex.def Info: namespaceplot__convergence__new_ad1d155df43e8f0dbca568
+72943a7ce25_icgraph.pdf  used on input line 132.
+(pdftex.def)             Requested size: 350.0pt x 64.42766pt.
+ <./namespaceplot__convergence__new_ab7f18d6f9e179035b874c252ce20d625_icgraph.p
+df
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence__new_ab7f18d6f9e179
+035b874c252ce20d625_icgraph.pdf): PDF inclusion: multiple pdfs with page group 
+included in a single page
+>
+<namespaceplot__convergence__new_ab7f18d6f9e179035b874c252ce20d625_icgraph.pdf,
+ id=994, 605.26125pt x 111.41624pt>
+File: namespaceplot__convergence__new_ab7f18d6f9e179035b874c252ce20d625_icgraph
+.pdf Graphic file (type pdf)
+<use namespaceplot__convergence__new_ab7f18d6f9e179035b874c252ce20d625_icgraph.
+pdf>
+Package pdftex.def Info: namespaceplot__convergence__new_ab7f18d6f9e179035b874c
+252ce20d625_icgraph.pdf  used on input line 145.
+(pdftex.def)             Requested size: 350.0pt x 64.42766pt.
+ [28] <./namespaceplot__convergence__new_ad3cefda5828164fbae5cea7cd911fe4b_icgr
+aph.pdf>
+<namespaceplot__convergence__new_ad3cefda5828164fbae5cea7cd911fe4b_icgraph.pdf,
+ id=1013, 578.16pt x 111.41624pt>
+File: namespaceplot__convergence__new_ad3cefda5828164fbae5cea7cd911fe4b_icgraph
+.pdf Graphic file (type pdf)
+<use namespaceplot__convergence__new_ad3cefda5828164fbae5cea7cd911fe4b_icgraph.
+pdf>
+Package pdftex.def Info: namespaceplot__convergence__new_ad3cefda5828164fbae5ce
+a7cd911fe4b_icgraph.pdf  used on input line 160.
+(pdftex.def)             Requested size: 350.0pt x 67.44698pt.
+ <./namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236_cgraph.pd
+f
+
+pdfTeX warning: pdflatex (file ./namespaceplot__convergence__new_a58e62c353c732
+69c9dd3067ffd2bb236_cgraph.pdf): PDF inclusion: multiple pdfs with page group i
+ncluded in a single page
+>
+<namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236_cgraph.pdf, 
+id=1028, 650.43pt x 357.335pt>
+File: namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236_cgraph.
+pdf Graphic file (type pdf)
+<use namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236_cgraph.p
+df>
+Package pdftex.def Info: namespaceplot__convergence__new_a58e62c353c73269c9dd30
+67ffd2bb236_cgraph.pdf  used on input line 184.
+(pdftex.def)             Requested size: 350.0pt x 192.28737pt.
+ [29] <./namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236_icgr
+aph.pdf>
+<namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236_icgraph.pdf,
+ id=1054, 395.4775pt x 111.41624pt>
+File: namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236_icgraph
+.pdf Graphic file (type pdf)
+<use namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236_icgraph.
+pdf>
+Package pdftex.def Info: namespaceplot__convergence__new_a58e62c353c73269c9dd30
+67ffd2bb236_icgraph.pdf  used on input line 191.
+(pdftex.def)             Requested size: 350.0pt x 98.60591pt.
+) (./namespacerun__convergence__study.tex [30] <./namespacerun__convergence__st
+udy_af4623f6e0c3bdcb143bbbd5692514da5_cgraph.pdf>
+<namespacerun__convergence__study_af4623f6e0c3bdcb143bbbd5692514da5_cgraph.pdf,
+ id=1082, 770.88pt x 357.335pt>
+File: namespacerun__convergence__study_af4623f6e0c3bdcb143bbbd5692514da5_cgraph
+.pdf Graphic file (type pdf)
+<use namespacerun__convergence__study_af4623f6e0c3bdcb143bbbd5692514da5_cgraph.
+pdf>
+Package pdftex.def Info: namespacerun__convergence__study_af4623f6e0c3bdcb143bb
+bd5692514da5_cgraph.pdf  used on input line 34.
+(pdftex.def)             Requested size: 350.0pt x 162.23871pt.
+ [31])
+(./namespacerun__convergence__study__new.tex <./namespacerun__convergence__stud
+y__new_a818983f67452ba032a6e97c58790c373_icgraph.pdf>
+<namespacerun__convergence__study__new_a818983f67452ba032a6e97c58790c373_icgrap
+h.pdf, id=1135, 381.425pt x 122.4575pt>
+File: namespacerun__convergence__study__new_a818983f67452ba032a6e97c58790c373_i
+cgraph.pdf Graphic file (type pdf)
+<use namespacerun__convergence__study__new_a818983f67452ba032a6e97c58790c373_ic
+graph.pdf>
+Package pdftex.def Info: namespacerun__convergence__study__new_a818983f67452ba0
+32a6e97c58790c373_icgraph.pdf  used on input line 47.
+(pdftex.def)             Requested size: 350.0pt x 112.37262pt.
+ [32] <./namespacerun__convergence__study__new_a674dacf5482960c02a917f80afd3ef5
+0_cgraph.pdf>
+<namespacerun__convergence__study__new_a674dacf5482960c02a917f80afd3ef50_cgraph
+.pdf, id=1169, 819.06pt x 357.335pt>
+File: namespacerun__convergence__study__new_a674dacf5482960c02a917f80afd3ef50_c
+graph.pdf Graphic file (type pdf)
+<use namespacerun__convergence__study__new_a674dacf5482960c02a917f80afd3ef50_cg
+raph.pdf>
+Package pdftex.def Info: namespacerun__convergence__study__new_a674dacf5482960c
+02a917f80afd3ef50_cgraph.pdf  used on input line 60.
+(pdftex.def)             Requested size: 350.0pt x 152.69687pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 88--89
+\T1/pcr/m/n/8 list run[]_[]convergence[]_[]study[]_[]new.[]DT[]_[][]MULTIPLIERS
+[]_[][]FOR[]_[][]TEMPORAL[]_[][]STUDY = []1.[]0, 0.[]5, 0.[]25, 0.[]125,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 106--107
+\T1/pcr/m/n/8 list run[]_[]convergence[]_[]study[]_[]new.[]NX[]_[][]VALUES[]_[]
+[]FOR[]_[][]SPATIAL[]_[][]STUDY = []20, 25, 30, 35, 40, 45, 50, 60,
+ []
+
+[33]) [34]
+Chapter 7.
+(./classDerivatives.tex
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.44 ...em Compute the local second derivative ∂
+                                                  ²f/∂x² at a single gri...
+
+? 
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.44 ...ute the local second derivative ∂²f/∂
+                                                  x² at a single grid point...
+
+? 
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.46 ...em Compute the local second derivative ∂
+                                                  ²f/∂y² at a single gri...
+
+? 
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.46 ...ute the local second derivative ∂²f/∂
+                                                  y² at a single grid point...
+
+? 
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.48 ...em Compute the local second derivative ∂
+                                                  ²f/∂z² at a single gri...
+
+? 
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.48 ...ute the local second derivative ∂²f/∂
+                                                  z² at a single grid point...
+
+? 
+[35
+
+]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.1 on input line 71.
+
+ <./classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a4c4cdfa3c2c5b4d9c4c52e771307
+05af_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_cgraph.pdf, id=1285, 671.50
+874pt x 252.945pt>
+File: classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_cgr
+aph.pdf  used on input line 76.
+(pdftex.def)             Requested size: 350.0pt x 131.83707pt.
+ <./classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a4c4cdfa3c2c5b4d9c4c52e771307
+05af_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_icgraph.pdf, id=1293, 396.4
+8125pt x 100.375pt>
+File: classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_icgraph.pdf Graphic fi
+le (type pdf)
+<use classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_icgraph.pdf>
+Package pdftex.def Info: classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_icg
+raph.pdf  used on input line 83.
+(pdftex.def)             Requested size: 350.0pt x 88.60901pt.
+ [36] [37]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.2 on input line 102.
+
+ <./classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a2365f0c81b6422e3ed1bba2e1fc4
+4545_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_cgraph.pdf, id=1320, 360.34
+625pt x 100.375pt>
+File: classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_cgr
+aph.pdf  used on input line 107.
+(pdftex.def)             Requested size: 350.0pt x 97.49226pt.
+ <./classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a2365f0c81b6422e3ed1bba2e1fc4
+4545_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_icgraph.pdf, id=1328, 594.2
+2pt x 100.375pt>
+File: classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_icgraph.pdf Graphic fi
+le (type pdf)
+<use classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_icgraph.pdf>
+Package pdftex.def Info: classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_icg
+raph.pdf  used on input line 114.
+(pdftex.def)             Requested size: 350.0pt x 59.12424pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.3 on input line 133.
+
+ <./classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a0ef8b5e2a9e76abb839e9907bd12
+7b76_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_cgraph.pdf, id=1338, 357.33
+5pt x 100.375pt>
+File: classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_cgr
+aph.pdf  used on input line 138.
+(pdftex.def)             Requested size: 350.0pt x 98.31934pt.
+ <./classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a0ef8b5e2a9e76abb839e9907bd12
+7b76_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_icgraph.pdf, id=1347, 742.7
+75pt x 100.375pt>
+File: classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_icgraph.pdf Graphic fi
+le (type pdf)
+<use classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_icgraph.pdf>
+Package pdftex.def Info: classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76_icg
+raph.pdf  used on input line 145.
+(pdftex.def)             Requested size: 350.0pt x 47.29724pt.
+ [38]
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 7.19995pt on input line 151.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.4 on input line 164.
+
+ <./classDerivatives_a28f03b6e1467e93fddf29b81f8c5ec16_cgraph.pdf>
+<classDerivatives_a28f03b6e1467e93fddf29b81f8c5ec16_cgraph.pdf, id=1368, 340.27
+126pt x 100.375pt>
+File: classDerivatives_a28f03b6e1467e93fddf29b81f8c5ec16_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a28f03b6e1467e93fddf29b81f8c5ec16_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a28f03b6e1467e93fddf29b81f8c5ec16_cgr
+aph.pdf  used on input line 169.
+(pdftex.def)             Requested size: 339.0pt x 100.00562pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.5 on input line 188.
+
+ <./classDerivatives_a50f5b9c159f7071eca24da47339f094c_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a50f5b9c159f7071eca24da47339f
+094c_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classDerivatives_a50f5b9c159f7071eca24da47339f094c_icgraph.pdf, id=1378, 524.9
+6124pt x 100.375pt>
+File: classDerivatives_a50f5b9c159f7071eca24da47339f094c_icgraph.pdf Graphic fi
+le (type pdf)
+<use classDerivatives_a50f5b9c159f7071eca24da47339f094c_icgraph.pdf>
+Package pdftex.def Info: classDerivatives_a50f5b9c159f7071eca24da47339f094c_icg
+raph.pdf  used on input line 193.
+(pdftex.def)             Requested size: 350.0pt x 66.92313pt.
+ [39]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.6 on input line 212.
+
+ <./classDerivatives_ae29cfbcadce2127aa49c690547514b66_cgraph.pdf>
+<classDerivatives_ae29cfbcadce2127aa49c690547514b66_cgraph.pdf, id=1401, 360.34
+625pt x 100.375pt>
+File: classDerivatives_ae29cfbcadce2127aa49c690547514b66_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_ae29cfbcadce2127aa49c690547514b66_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_ae29cfbcadce2127aa49c690547514b66_cgr
+aph.pdf  used on input line 217.
+(pdftex.def)             Requested size: 350.0pt x 97.49226pt.
+ <./classDerivatives_ae29cfbcadce2127aa49c690547514b66_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_ae29cfbcadce2127aa49c69054751
+4b66_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classDerivatives_ae29cfbcadce2127aa49c690547514b66_icgraph.pdf, id=1409, 594.2
+2pt x 100.375pt>
+File: classDerivatives_ae29cfbcadce2127aa49c690547514b66_icgraph.pdf Graphic fi
+le (type pdf)
+<use classDerivatives_ae29cfbcadce2127aa49c690547514b66_icgraph.pdf>
+Package pdftex.def Info: classDerivatives_ae29cfbcadce2127aa49c690547514b66_icg
+raph.pdf  used on input line 224.
+(pdftex.def)             Requested size: 350.0pt x 59.12424pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.7 on input line 243.
+
+ <./classDerivatives_aee26f33635f34433d93ca5790849bd95_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_aee26f33635f34433d93ca5790849
+bd95_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classDerivatives_aee26f33635f34433d93ca5790849bd95_cgraph.pdf, id=1419, 357.33
+5pt x 100.375pt>
+File: classDerivatives_aee26f33635f34433d93ca5790849bd95_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_aee26f33635f34433d93ca5790849bd95_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_aee26f33635f34433d93ca5790849bd95_cgr
+aph.pdf  used on input line 248.
+(pdftex.def)             Requested size: 350.0pt x 98.31934pt.
+ [40] <./classDerivatives_aee26f33635f34433d93ca5790849bd95_icgraph.pdf>
+<classDerivatives_aee26f33635f34433d93ca5790849bd95_icgraph.pdf, id=1438, 742.7
+75pt x 100.375pt>
+File: classDerivatives_aee26f33635f34433d93ca5790849bd95_icgraph.pdf Graphic fi
+le (type pdf)
+<use classDerivatives_aee26f33635f34433d93ca5790849bd95_icgraph.pdf>
+Package pdftex.def Info: classDerivatives_aee26f33635f34433d93ca5790849bd95_icg
+raph.pdf  used on input line 255.
+(pdftex.def)             Requested size: 350.0pt x 47.29724pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.8 on input line 274.
+
+ <./classDerivatives_a8dfd9d551bf8de4c26bf318cede4abda_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a8dfd9d551bf8de4c26bf318cede4
+abda_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classDerivatives_a8dfd9d551bf8de4c26bf318cede4abda_cgraph.pdf, id=1448, 340.27
+126pt x 100.375pt>
+File: classDerivatives_a8dfd9d551bf8de4c26bf318cede4abda_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a8dfd9d551bf8de4c26bf318cede4abda_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a8dfd9d551bf8de4c26bf318cede4abda_cgr
+aph.pdf  used on input line 279.
+(pdftex.def)             Requested size: 339.0pt x 100.00562pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.9 on input line 298.
+
+[41] <./classDerivatives_a8f62d63f77d17bf5d4469b1038ee0c1a_icgraph.pdf>
+<classDerivatives_a8f62d63f77d17bf5d4469b1038ee0c1a_icgraph.pdf, id=1472, 524.9
+6124pt x 100.375pt>
+File: classDerivatives_a8f62d63f77d17bf5d4469b1038ee0c1a_icgraph.pdf Graphic fi
+le (type pdf)
+<use classDerivatives_a8f62d63f77d17bf5d4469b1038ee0c1a_icgraph.pdf>
+Package pdftex.def Info: classDerivatives_a8f62d63f77d17bf5d4469b1038ee0c1a_icg
+raph.pdf  used on input line 303.
+(pdftex.def)             Requested size: 350.0pt x 66.92313pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.10 on input line 322.
+
+ <./classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a08e9ebe4a51fd2b918fa37fef529
+ed66_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_cgraph.pdf, id=1482, 359.34
+25pt x 100.375pt>
+File: classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_cgr
+aph.pdf  used on input line 327.
+(pdftex.def)             Requested size: 350.0pt x 97.77255pt.
+ <./classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a08e9ebe4a51fd2b918fa37fef529
+ed66_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_icgraph.pdf, id=1490, 593.2
+1625pt x 100.375pt>
+File: classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_icgraph.pdf Graphic fi
+le (type pdf)
+<use classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_icgraph.pdf>
+Package pdftex.def Info: classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_icg
+raph.pdf  used on input line 334.
+(pdftex.def)             Requested size: 350.0pt x 59.22379pt.
+ [42]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.11 on input line 353.
+
+ <./classDerivatives_a41f8f51d76f35343b09b8711af339480_cgraph.pdf>
+<classDerivatives_a41f8f51d76f35343b09b8711af339480_cgraph.pdf, id=1511, 356.33
+125pt x 100.375pt>
+File: classDerivatives_a41f8f51d76f35343b09b8711af339480_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a41f8f51d76f35343b09b8711af339480_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a41f8f51d76f35343b09b8711af339480_cgr
+aph.pdf  used on input line 358.
+(pdftex.def)             Requested size: 350.0pt x 98.59502pt.
+ <./classDerivatives_a41f8f51d76f35343b09b8711af339480_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a41f8f51d76f35343b09b8711af33
+9480_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classDerivatives_a41f8f51d76f35343b09b8711af339480_icgraph.pdf, id=1519, 741.7
+7126pt x 100.375pt>
+File: classDerivatives_a41f8f51d76f35343b09b8711af339480_icgraph.pdf Graphic fi
+le (type pdf)
+<use classDerivatives_a41f8f51d76f35343b09b8711af339480_icgraph.pdf>
+Package pdftex.def Info: classDerivatives_a41f8f51d76f35343b09b8711af339480_icg
+raph.pdf  used on input line 365.
+(pdftex.def)             Requested size: 350.0pt x 47.36157pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.12 on input line 384.
+
+ <./classDerivatives_a0db4507f057f9ab64081cdd3116cc076_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a0db4507f057f9ab64081cdd3116c
+c076_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classDerivatives_a0db4507f057f9ab64081cdd3116cc076_cgraph.pdf, id=1529, 339.26
+75pt x 100.375pt>
+File: classDerivatives_a0db4507f057f9ab64081cdd3116cc076_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a0db4507f057f9ab64081cdd3116cc076_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a0db4507f057f9ab64081cdd3116cc076_cgr
+aph.pdf  used on input line 389.
+(pdftex.def)             Requested size: 338.0pt x 100.00409pt.
+ [43]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.13 on input line 408.
+
+ <./classDerivatives_a99280512fa8db2e9703d721141fb7c17_icgraph.pdf>
+<classDerivatives_a99280512fa8db2e9703d721141fb7c17_icgraph.pdf, id=1551, 523.9
+575pt x 100.375pt>
+File: classDerivatives_a99280512fa8db2e9703d721141fb7c17_icgraph.pdf Graphic fi
+le (type pdf)
+<use classDerivatives_a99280512fa8db2e9703d721141fb7c17_icgraph.pdf>
+Package pdftex.def Info: classDerivatives_a99280512fa8db2e9703d721141fb7c17_icg
+raph.pdf  used on input line 413.
+(pdftex.def)             Requested size: 350.0pt x 67.05177pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.14 on input line 432.
+
+ <./classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a9d509cd4c682cc79ebebce1df694
+74a9_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_cgraph.pdf, id=1561, 558.08
+5pt x 176.66pt>
+File: classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_cgr
+aph.pdf  used on input line 437.
+(pdftex.def)             Requested size: 350.0pt x 110.795pt.
+ <./classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a9d509cd4c682cc79ebebce1df694
+74a9_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_icgraph.pdf, id=1569, 548.0
+475pt x 100.375pt>
+File: classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_icgraph.pdf Graphic fi
+le (type pdf)
+<use classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_icgraph.pdf>
+Package pdftex.def Info: classDerivatives_a9d509cd4c682cc79ebebce1df69474a9_icg
+raph.pdf  used on input line 444.
+(pdftex.def)             Requested size: 350.0pt x 64.10345pt.
+ [44]
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.455 Compute the local second derivative ∂
+                                             ²f/∂x² at a single grid point.
+
+? 
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.455 ...te the local second derivative ∂²f/∂
+                                                  x² at a single grid point.
+? 
+
+! LaTeX Error: Unicode character − (U+2212)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.457 ...i,j,k)\+: ( f(i+1,j,k) + f(i-\/1,j,k) −
+                                                   2 f(i,j,k) ) / dx². Perf...
+
+? 
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.15 on input line 469.
+
+
+Underfull \hbox (badness 10000) detected at line 470
+[][][]
+ []
+
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.471 The second derivative ∂
+                               ²f/∂x² at (i,j,k).
+? 
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.471 The second derivative ∂²f/∂
+                                      x² at (i,j,k).
+? 
+ <./classDerivatives_a192787b8808ab051708d9c7a1987ba26_cgraph.pdf>
+<classDerivatives_a192787b8808ab051708d9c7a1987ba26_cgraph.pdf, id=1598, 326.21
+875pt x 100.375pt>
+File: classDerivatives_a192787b8808ab051708d9c7a1987ba26_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a192787b8808ab051708d9c7a1987ba26_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a192787b8808ab051708d9c7a1987ba26_cgr
+aph.pdf  used on input line 477.
+(pdftex.def)             Requested size: 325.0pt x 100.00868pt.
+
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.488 Compute the local second derivative ∂
+                                             ²f/∂y² at a single grid point.
+
+? 
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.488 ...te the local second derivative ∂²f/∂
+                                                  y² at a single grid point.
+? 
+
+! LaTeX Error: Unicode character − (U+2212)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.490 ...i,j,k)\+: ( f(i,j+1,k) + f(i,j-\/1,k) −
+                                                   2 f(i,j,k) ) / dy². Perf...
+
+? 
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.16 on input line 502.
+
+[45]
+Underfull \hbox (badness 10000) detected at line 503
+[][][]
+ []
+
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.504 The second derivative ∂
+                               ²f/∂y² at (i,j,k).
+? 
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.504 The second derivative ∂²f/∂
+                                      y² at (i,j,k).
+? 
+ <./classDerivatives_a355ace855ad6c919b284d2624ba38d86_cgraph.pdf>
+<classDerivatives_a355ace855ad6c919b284d2624ba38d86_cgraph.pdf, id=1628, 326.21
+875pt x 100.375pt>
+File: classDerivatives_a355ace855ad6c919b284d2624ba38d86_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a355ace855ad6c919b284d2624ba38d86_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a355ace855ad6c919b284d2624ba38d86_cgr
+aph.pdf  used on input line 510.
+(pdftex.def)             Requested size: 325.0pt x 100.00868pt.
+
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.521 Compute the local second derivative ∂
+                                             ²f/∂z² at a single grid point.
+
+? 
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.521 ...te the local second derivative ∂²f/∂
+                                                  z² at a single grid point.
+? 
+
+! LaTeX Error: Unicode character − (U+2212)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.523 ...i,j,k)\+: ( f(i,j,k+1) + f(i,j,k-\/1) −
+                                                   2 f(i,j,k) ) / dz². Perf...
+
+? 
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.17 on input line 535.
+
+
+Underfull \hbox (badness 10000) detected at line 536
+[][][]
+ []
+
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.537 The second derivative ∂
+                               ²f/∂z² at (i,j,k).
+? 
+
+! LaTeX Error: Unicode character ∂ (U+2202)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.537 The second derivative ∂²f/∂
+                                      z² at (i,j,k).
+? 
+ <./classDerivatives_a390aa9768dd08a39aa377a8670a6ab33_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classDerivatives_a390aa9768dd08a39aa377a8670a6
+ab33_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classDerivatives_a390aa9768dd08a39aa377a8670a6ab33_cgraph.pdf, id=1646, 324.21
+124pt x 100.375pt>
+File: classDerivatives_a390aa9768dd08a39aa377a8670a6ab33_cgraph.pdf Graphic fil
+e (type pdf)
+<use classDerivatives_a390aa9768dd08a39aa377a8670a6ab33_cgraph.pdf>
+Package pdftex.def Info: classDerivatives_a390aa9768dd08a39aa377a8670a6ab33_cgr
+aph.pdf  used on input line 543.
+(pdftex.def)             Requested size: 323.0pt x 100.00562pt.
+) (./classField.tex [46]
+Overfull \hbox (114.66296pt too wide) in paragraph at lines 24--25
+[]\T1/phv/m/n/10 void [] (const [] &grid, const [] &populate[]Function=[], [] o
+ffset=[],
+ []
+
+[47]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.18 on input line 105.
+
+ <./classField_ae4c17e820e1e00a569bdcb91cecc8851_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classField_ae4c17e820e1e00a569bdcb91cecc8851_c
+graph.pdf): PDF inclusion: multiple pdfs with page group included in a single p
+age
+>
+<classField_ae4c17e820e1e00a569bdcb91cecc8851_cgraph.pdf, id=1760, 262.9825pt x
+ 100.375pt>
+File: classField_ae4c17e820e1e00a569bdcb91cecc8851_cgraph.pdf Graphic file (typ
+e pdf)
+<use classField_ae4c17e820e1e00a569bdcb91cecc8851_cgraph.pdf>
+Package pdftex.def Info: classField_ae4c17e820e1e00a569bdcb91cecc8851_cgraph.pd
+f  used on input line 110.
+(pdftex.def)             Requested size: 262.0pt x 100.00409pt.
+ [48]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.19 on input line 127.
+
+ <./classField_af0b46b220f47ffcc3a76b70da049ce3c_cgraph.pdf>
+<classField_af0b46b220f47ffcc3a76b70da049ce3c_cgraph.pdf, id=1789, 351.3125pt x
+ 100.375pt>
+File: classField_af0b46b220f47ffcc3a76b70da049ce3c_cgraph.pdf Graphic file (typ
+e pdf)
+<use classField_af0b46b220f47ffcc3a76b70da049ce3c_cgraph.pdf>
+Package pdftex.def Info: classField_af0b46b220f47ffcc3a76b70da049ce3c_cgraph.pd
+f  used on input line 132.
+(pdftex.def)             Requested size: 350.0pt x 100.00716pt.
+ <./classField_af0b46b220f47ffcc3a76b70da049ce3c_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classField_af0b46b220f47ffcc3a76b70da049ce3c_i
+cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a single 
+page
+>
+<classField_af0b46b220f47ffcc3a76b70da049ce3c_icgraph.pdf, id=1797, 496.85625pt
+ x 157.58875pt>
+File: classField_af0b46b220f47ffcc3a76b70da049ce3c_icgraph.pdf Graphic file (ty
+pe pdf)
+<use classField_af0b46b220f47ffcc3a76b70da049ce3c_icgraph.pdf>
+Package pdftex.def Info: classField_af0b46b220f47ffcc3a76b70da049ce3c_icgraph.p
+df  used on input line 139.
+(pdftex.def)             Requested size: 350.0pt x 111.0111pt.
+ <./classField_a86c44d11fbaee4e973679fceac4bf0be_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classField_a86c44d11fbaee4e973679fceac4bf0be_i
+cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a single 
+page
+>
+<classField_a86c44d11fbaee4e973679fceac4bf0be_icgraph.pdf, id=1807, 470.75874pt
+ x 138.5175pt>
+File: classField_a86c44d11fbaee4e973679fceac4bf0be_icgraph.pdf Graphic file (ty
+pe pdf)
+<use classField_a86c44d11fbaee4e973679fceac4bf0be_icgraph.pdf>
+Package pdftex.def Info: classField_a86c44d11fbaee4e973679fceac4bf0be_icgraph.p
+df  used on input line 157.
+(pdftex.def)             Requested size: 350.0pt x 102.98535pt.
+ [49]
+Underfull \hbox (badness 10000) detected at line 181
+[][][]
+ []
+
+ <./classField_afe97c0b04f25f6322696a22ea9df8628_icgraph.pdf>
+<classField_afe97c0b04f25f6322696a22ea9df8628_icgraph.pdf, id=1830, 877.2775pt 
+x 596.2275pt>
+File: classField_afe97c0b04f25f6322696a22ea9df8628_icgraph.pdf Graphic file (ty
+pe pdf)
+<use classField_afe97c0b04f25f6322696a22ea9df8628_icgraph.pdf>
+Package pdftex.def Info: classField_afe97c0b04f25f6322696a22ea9df8628_icgraph.p
+df  used on input line 188.
+(pdftex.def)             Requested size: 350.0pt x 237.87723pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.20 on input line 219.
+
+
+Overfull \vbox (24.44893pt too high) has occurred while \output is active []
+
+
+[50]
+Underfull \hbox (badness 10000) detected at line 220
+[][][]
+ []
+
+ <./classField_ab4240a7cb1cae0917ff698837485f399_icgraph.pdf>
+<classField_ab4240a7cb1cae0917ff698837485f399_icgraph.pdf, id=1857, 850.17625pt
+ x 252.945pt>
+File: classField_ab4240a7cb1cae0917ff698837485f399_icgraph.pdf Graphic file (ty
+pe pdf)
+<use classField_ab4240a7cb1cae0917ff698837485f399_icgraph.pdf>
+Package pdftex.def Info: classField_ab4240a7cb1cae0917ff698837485f399_icgraph.p
+df  used on input line 227.
+(pdftex.def)             Requested size: 350.0pt x 104.13268pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.21 on input line 244.
+
+ <./classField_a6edac7bcf17e1422a9dcbddbeaca2153_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classField_a6edac7bcf17e1422a9dcbddbeaca2153_c
+graph.pdf): PDF inclusion: multiple pdfs with page group included in a single p
+age
+>
+<classField_a6edac7bcf17e1422a9dcbddbeaca2153_cgraph.pdf, id=1874, 373.395pt x 
+100.375pt>
+File: classField_a6edac7bcf17e1422a9dcbddbeaca2153_cgraph.pdf Graphic file (typ
+e pdf)
+<use classField_a6edac7bcf17e1422a9dcbddbeaca2153_cgraph.pdf>
+Package pdftex.def Info: classField_a6edac7bcf17e1422a9dcbddbeaca2153_cgraph.pd
+f  used on input line 249.
+(pdftex.def)             Requested size: 350.0pt x 94.09059pt.
+ <./classField_a6edac7bcf17e1422a9dcbddbeaca2153_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classField_a6edac7bcf17e1422a9dcbddbeaca2153_i
+cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a single 
+page
+>
+<classField_a6edac7bcf17e1422a9dcbddbeaca2153_icgraph.pdf, id=1882, 320.19624pt
+ x 100.375pt>
+File: classField_a6edac7bcf17e1422a9dcbddbeaca2153_icgraph.pdf Graphic file (ty
+pe pdf)
+<use classField_a6edac7bcf17e1422a9dcbddbeaca2153_icgraph.pdf>
+Package pdftex.def Info: classField_a6edac7bcf17e1422a9dcbddbeaca2153_icgraph.p
+df  used on input line 256.
+(pdftex.def)             Requested size: 319.0pt x 100.00102pt.
+ [51]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.22 on input line 277.
+
+
+Underfull \hbox (badness 10000) detected at line 278
+[][][]
+ []
+
+ <./classField_ade27340b1247c816b86ef5e6cede81b8_cgraph.pdf>
+<classField_ade27340b1247c816b86ef5e6cede81b8_cgraph.pdf, id=1902, 273.02pt x 1
+00.375pt>
+File: classField_ade27340b1247c816b86ef5e6cede81b8_cgraph.pdf Graphic file (typ
+e pdf)
+<use classField_ade27340b1247c816b86ef5e6cede81b8_cgraph.pdf>
+Package pdftex.def Info: classField_ade27340b1247c816b86ef5e6cede81b8_cgraph.pd
+f  used on input line 285.
+(pdftex.def)             Requested size: 272.0pt x 100.00562pt.
+ <./classField_a8b0ab56ab12d9539daf8682bb5d19013_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classField_a8b0ab56ab12d9539daf8682bb5d19013_c
+graph.pdf): PDF inclusion: multiple pdfs with page group included in a single p
+age
+>
+<classField_a8b0ab56ab12d9539daf8682bb5d19013_cgraph.pdf, id=1911, 273.02pt x 1
+00.375pt>
+File: classField_a8b0ab56ab12d9539daf8682bb5d19013_cgraph.pdf Graphic file (typ
+e pdf)
+<use classField_a8b0ab56ab12d9539daf8682bb5d19013_cgraph.pdf>
+Package pdftex.def Info: classField_a8b0ab56ab12d9539daf8682bb5d19013_cgraph.pd
+f  used on input line 302.
+(pdftex.def)             Requested size: 272.0pt x 100.00562pt.
+ [52]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.23 on input line 319.
+
+
+Underfull \hbox (badness 10000) detected at line 320
+[][][]
+ []
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.24 on input line 347.
+
+ <./classField_a17a19acc3a519f5e37a802e76c992f46_icgraph.pdf>
+<classField_a17a19acc3a519f5e37a802e76c992f46_icgraph.pdf, id=1931, 869.2475pt 
+x 193.72375pt>
+File: classField_a17a19acc3a519f5e37a802e76c992f46_icgraph.pdf Graphic file (ty
+pe pdf)
+<use classField_a17a19acc3a519f5e37a802e76c992f46_icgraph.pdf>
+Package pdftex.def Info: classField_a17a19acc3a519f5e37a802e76c992f46_icgraph.p
+df  used on input line 352.
+(pdftex.def)             Requested size: 350.0pt x 78.00246pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.25 on input line 369.
+
+ <./classField_a6bcf4ac8ae2f75b3caee656c6e260249_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classField_a6bcf4ac8ae2f75b3caee656c6e260249_c
+graph.pdf): PDF inclusion: multiple pdfs with page group included in a single p
+age
+>
+<classField_a6bcf4ac8ae2f75b3caee656c6e260249_cgraph.pdf, id=1941, 358.33875pt 
+x 100.375pt>
+File: classField_a6bcf4ac8ae2f75b3caee656c6e260249_cgraph.pdf Graphic file (typ
+e pdf)
+<use classField_a6bcf4ac8ae2f75b3caee656c6e260249_cgraph.pdf>
+Package pdftex.def Info: classField_a6bcf4ac8ae2f75b3caee656c6e260249_cgraph.pd
+f  used on input line 374.
+(pdftex.def)             Requested size: 350.0pt x 98.04518pt.
+ [53] <./classField_a6bcf4ac8ae2f75b3caee656c6e260249_icgraph.pdf>
+<classField_a6bcf4ac8ae2f75b3caee656c6e260249_icgraph.pdf, id=1962, 503.8825pt 
+x 100.375pt>
+File: classField_a6bcf4ac8ae2f75b3caee656c6e260249_icgraph.pdf Graphic file (ty
+pe pdf)
+<use classField_a6bcf4ac8ae2f75b3caee656c6e260249_icgraph.pdf>
+Package pdftex.def Info: classField_a6bcf4ac8ae2f75b3caee656c6e260249_icgraph.p
+df  used on input line 381.
+(pdftex.def)             Requested size: 350.0pt x 69.72134pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.26 on input line 404.
+
+ <./classField_acc812182b3d806c93491194ae821d9a3_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classField_acc812182b3d806c93491194ae821d9a3_i
+cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a single 
+page
+>
+<classField_acc812182b3d806c93491194ae821d9a3_icgraph.pdf, id=1977, 930.47626pt
+ x 250.9375pt>
+File: classField_acc812182b3d806c93491194ae821d9a3_icgraph.pdf Graphic file (ty
+pe pdf)
+<use classField_acc812182b3d806c93491194ae821d9a3_icgraph.pdf>
+Package pdftex.def Info: classField_acc812182b3d806c93491194ae821d9a3_icgraph.p
+df  used on input line 409.
+(pdftex.def)             Requested size: 350.0pt x 94.38849pt.
+ [54]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.27 on input line 430.
+
+
+Underfull \hbox (badness 10000) detected at line 431
+[][][]
+ []
+
+ <./classField_aea5fcf3a1776d0fc317815e373fcb371_cgraph.pdf>
+<classField_aea5fcf3a1776d0fc317815e373fcb371_cgraph.pdf, id=1998, 250.9375pt x
+ 100.375pt>
+File: classField_aea5fcf3a1776d0fc317815e373fcb371_cgraph.pdf Graphic file (typ
+e pdf)
+<use classField_aea5fcf3a1776d0fc317815e373fcb371_cgraph.pdf>
+Package pdftex.def Info: classField_aea5fcf3a1776d0fc317815e373fcb371_cgraph.pd
+f  used on input line 438.
+(pdftex.def)             Requested size: 250.0pt x 100.00562pt.
+ <./classField_aea5fcf3a1776d0fc317815e373fcb371_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classField_aea5fcf3a1776d0fc317815e373fcb371_i
+cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a single 
+page
+>
+<classField_aea5fcf3a1776d0fc317815e373fcb371_icgraph.pdf, id=2006, 667.49374pt
+ x 252.945pt>
+File: classField_aea5fcf3a1776d0fc317815e373fcb371_icgraph.pdf Graphic file (ty
+pe pdf)
+<use classField_aea5fcf3a1776d0fc317815e373fcb371_icgraph.pdf>
+Package pdftex.def Info: classField_aea5fcf3a1776d0fc317815e373fcb371_icgraph.p
+df  used on input line 445.
+(pdftex.def)             Requested size: 350.0pt x 132.636pt.
+ <./classField_aeddda00ed67ae7af3891d0d64bedef35_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classField_aeddda00ed67ae7af3891d0d64bedef35_c
+graph.pdf): PDF inclusion: multiple pdfs with page group included in a single p
+age
+>
+<classField_aeddda00ed67ae7af3891d0d64bedef35_cgraph.pdf, id=2015, 250.9375pt x
+ 100.375pt>
+File: classField_aeddda00ed67ae7af3891d0d64bedef35_cgraph.pdf Graphic file (typ
+e pdf)
+<use classField_aeddda00ed67ae7af3891d0d64bedef35_cgraph.pdf>
+Package pdftex.def Info: classField_aeddda00ed67ae7af3891d0d64bedef35_cgraph.pd
+f  used on input line 462.
+(pdftex.def)             Requested size: 250.0pt x 100.00562pt.
+ [55]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.28 on input line 487.
+
+
+Underfull \hbox (badness 10000) detected at line 488
+[][][]
+ []
+
+ <./classField_ae8b4623a9fe837b3eff02e02ffe1c365_cgraph.pdf>
+<classField_ae8b4623a9fe837b3eff02e02ffe1c365_cgraph.pdf, id=2043, 303.1325pt x
+ 100.375pt>
+File: classField_ae8b4623a9fe837b3eff02e02ffe1c365_cgraph.pdf Graphic file (typ
+e pdf)
+<use classField_ae8b4623a9fe837b3eff02e02ffe1c365_cgraph.pdf>
+Package pdftex.def Info: classField_ae8b4623a9fe837b3eff02e02ffe1c365_cgraph.pd
+f  used on input line 495.
+(pdftex.def)             Requested size: 302.0pt x 100.00102pt.
+ <./classField_ae8b4623a9fe837b3eff02e02ffe1c365_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classField_ae8b4623a9fe837b3eff02e02ffe1c365_i
+cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a single 
+page
+>
+<classField_ae8b4623a9fe837b3eff02e02ffe1c365_icgraph.pdf, id=2058, 738.76pt x 
+100.375pt>
+File: classField_ae8b4623a9fe837b3eff02e02ffe1c365_icgraph.pdf Graphic file (ty
+pe pdf)
+<use classField_ae8b4623a9fe837b3eff02e02ffe1c365_icgraph.pdf>
+Package pdftex.def Info: classField_ae8b4623a9fe837b3eff02e02ffe1c365_icgraph.p
+df  used on input line 502.
+(pdftex.def)             Requested size: 350.0pt x 47.55455pt.
+ [56] <./classField_a7588c082aa80a322077aaa4357855ed8_cgraph.pdf>
+<classField_a7588c082aa80a322077aaa4357855ed8_cgraph.pdf, id=2087, 303.1325pt x
+ 100.375pt>
+File: classField_a7588c082aa80a322077aaa4357855ed8_cgraph.pdf Graphic file (typ
+e pdf)
+<use classField_a7588c082aa80a322077aaa4357855ed8_cgraph.pdf>
+Package pdftex.def Info: classField_a7588c082aa80a322077aaa4357855ed8_cgraph.pd
+f  used on input line 519.
+(pdftex.def)             Requested size: 302.0pt x 100.00102pt.
+ [57])
+(./structGrid.tex [58]
+Overfull \hbox (3.9776pt too wide) in paragraph at lines 1--1
+[]\T1/phv/m/sl/10 Nx[] 
+ []
+
+
+Overfull \hbox (3.9776pt too wide) in paragraph at lines 3--3
+[]\T1/phv/m/sl/10 Ny[] 
+ []
+
+
+Overfull \hbox (3.9776pt too wide) in paragraph at lines 5--5
+[]\T1/phv/m/sl/10 Nz[] 
+ []
+
+
+Overfull \hbox (2.48358pt too wide) in paragraph at lines 7--7
+[]\T1/phv/m/sl/10 dx[] 
+ []
+
+
+Overfull \hbox (2.48358pt too wide) in paragraph at lines 9--9
+[]\T1/phv/m/sl/10 dy[] 
+ []
+
+
+Overfull \hbox (2.48358pt too wide) in paragraph at lines 11--11
+[]\T1/phv/m/sl/10 dz[] 
+ []
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.29 on input line 78.
+
+
+Underfull \hbox (badness 10000) detected at line 92
+[][][]
+ []
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.30 on input line 119.
+
+
+Overfull \vbox (19.7418pt too high) has occurred while \output is active []
+
+
+[59]
+Underfull \hbox (badness 10000) detected at line 120
+[][][]
+ []
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.31 on input line 141.
+
+
+Underfull \hbox (badness 10000) detected at line 142
+[][][]
+ []
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.32 on input line 163.
+
+
+Underfull \hbox (badness 10000) detected at line 164
+[][][]
+ []
+
+[60]) (./structInputData.tex <./structInputData__coll__graph.pdf
+
+pdfTeX warning: pdflatex (file ./structInputData__coll__graph.pdf): PDF inclusi
+on: multiple pdfs with page group included in a single page
+>
+<structInputData__coll__graph.pdf, id=2203, 690.58pt x 167.62625pt>
+File: structInputData__coll__graph.pdf Graphic file (type pdf)
+<use structInputData__coll__graph.pdf>
+Package pdftex.def Info: structInputData__coll__graph.pdf  used on input line 1
+8.
+(pdftex.def)             Requested size: 350.0pt x 84.95622pt.
+ [61]) (./classLinearSys.tex <./classLinearSys__coll__graph.pdf>
+<classLinearSys__coll__graph.pdf, id=2249, 148.555pt x 167.62625pt>
+File: classLinearSys__coll__graph.pdf Graphic file (type pdf)
+<use classLinearSys__coll__graph.pdf>
+Package pdftex.def Info: classLinearSys__coll__graph.pdf  used on input line 19
+.
+(pdftex.def)             Requested size: 148.0pt x 167.00684pt.
+ [62] [63]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.33 on input line 83.
+
+ <./classLinearSys_a4a1b948b08605b422212a8b79dd8737d_cgraph.pdf>
+<classLinearSys_a4a1b948b08605b422212a8b79dd8737d_cgraph.pdf, id=2328, 390.4587
+6pt x 176.66pt>
+File: classLinearSys_a4a1b948b08605b422212a8b79dd8737d_cgraph.pdf Graphic file 
+(type pdf)
+<use classLinearSys_a4a1b948b08605b422212a8b79dd8737d_cgraph.pdf>
+Package pdftex.def Info: classLinearSys_a4a1b948b08605b422212a8b79dd8737d_cgrap
+h.pdf  used on input line 101.
+(pdftex.def)             Requested size: 350.0pt x 158.36174pt.
+ <./classLinearSys_a4a1b948b08605b422212a8b79dd8737d_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classLinearSys_a4a1b948b08605b422212a8b79dd873
+7d_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sin
+gle page
+>
+<classLinearSys_a4a1b948b08605b422212a8b79dd8737d_icgraph.pdf, id=2343, 380.421
+25pt x 100.375pt>
+File: classLinearSys_a4a1b948b08605b422212a8b79dd8737d_icgraph.pdf Graphic file
+ (type pdf)
+<use classLinearSys_a4a1b948b08605b422212a8b79dd8737d_icgraph.pdf>
+Package pdftex.def Info: classLinearSys_a4a1b948b08605b422212a8b79dd8737d_icgra
+ph.pdf  used on input line 108.
+(pdftex.def)             Requested size: 350.0pt x 92.3507pt.
+ [64] <./classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_cgraph.pdf>
+<classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_cgraph.pdf, id=2375, 497.86pt
+ x 214.8025pt>
+File: classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_cgraph.pdf Graphic file 
+(type pdf)
+<use classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_cgraph.pdf>
+Package pdftex.def Info: classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_cgrap
+h.pdf  used on input line 125.
+(pdftex.def)             Requested size: 350.0pt x 151.00969pt.
+ <./classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classLinearSys_adc38bb02a25f7a917500b6a5ee0917
+c5_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sin
+gle page
+>
+<classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_icgraph.pdf, id=2390, 577.156
+25pt x 100.375pt>
+File: classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_icgraph.pdf Graphic file
+ (type pdf)
+<use classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_icgraph.pdf>
+Package pdftex.def Info: classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_icgra
+ph.pdf  used on input line 132.
+(pdftex.def)             Requested size: 350.0pt x 60.87178pt.
+ <./classLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classLinearSys_af3658eaf4a88aa14bbe2f5add8b842
+ac_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sin
+gle page
+>
+<classLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac_icgraph.pdf, id=2406, 721.696
+24pt x 138.5175pt>
+File: classLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac_icgraph.pdf Graphic file
+ (type pdf)
+<use classLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac_icgraph.pdf>
+Package pdftex.def Info: classLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac_icgra
+ph.pdf  used on input line 149.
+(pdftex.def)             Requested size: 350.0pt x 67.17667pt.
+ <./classLinearSys_af0256caf9d237026696a6ca545503d7a_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classLinearSys_af0256caf9d237026696a6ca545503d
+7a_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sin
+gle page
+>
+<classLinearSys_af0256caf9d237026696a6ca545503d7a_icgraph.pdf, id=2414, 708.647
+5pt x 138.5175pt>
+File: classLinearSys_af0256caf9d237026696a6ca545503d7a_icgraph.pdf Graphic file
+ (type pdf)
+<use classLinearSys_af0256caf9d237026696a6ca545503d7a_icgraph.pdf>
+Package pdftex.def Info: classLinearSys_af0256caf9d237026696a6ca545503d7a_icgra
+ph.pdf  used on input line 166.
+(pdftex.def)             Requested size: 350.0pt x 68.41524pt.
+ [65]
+Underfull \hbox (badness 10000) detected at line 179
+[][][]
+ []
+
+ <./classLinearSys_ab5e1dc2bef1794dec1b232f2fbc5b077_icgraph.pdf>
+<classLinearSys_ab5e1dc2bef1794dec1b232f2fbc5b077_icgraph.pdf, id=2434, 892.333
+76pt x 141.52875pt>
+File: classLinearSys_ab5e1dc2bef1794dec1b232f2fbc5b077_icgraph.pdf Graphic file
+ (type pdf)
+<use classLinearSys_ab5e1dc2bef1794dec1b232f2fbc5b077_icgraph.pdf>
+Package pdftex.def Info: classLinearSys_ab5e1dc2bef1794dec1b232f2fbc5b077_icgra
+ph.pdf  used on input line 186.
+(pdftex.def)             Requested size: 350.0pt x 55.51128pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.34 on input line 203.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.35 on input line 208.
+
+ <./classLinearSys_a257096829bb54fc3e45084b5c94beaa8_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classLinearSys_a257096829bb54fc3e45084b5c94bea
+a8_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sing
+le page
+>
+<classLinearSys_a257096829bb54fc3e45084b5c94beaa8_cgraph.pdf, id=2442, 330.2337
+5pt x 100.375pt>
+File: classLinearSys_a257096829bb54fc3e45084b5c94beaa8_cgraph.pdf Graphic file 
+(type pdf)
+<use classLinearSys_a257096829bb54fc3e45084b5c94beaa8_cgraph.pdf>
+Package pdftex.def Info: classLinearSys_a257096829bb54fc3e45084b5c94beaa8_cgrap
+h.pdf  used on input line 213.
+(pdftex.def)             Requested size: 329.0pt x 100.00409pt.
+ <./classLinearSys_a257096829bb54fc3e45084b5c94beaa8_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classLinearSys_a257096829bb54fc3e45084b5c94bea
+a8_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sin
+gle page
+>
+<classLinearSys_a257096829bb54fc3e45084b5c94beaa8_icgraph.pdf, id=2450, 870.251
+25pt x 166.6225pt>
+File: classLinearSys_a257096829bb54fc3e45084b5c94beaa8_icgraph.pdf Graphic file
+ (type pdf)
+<use classLinearSys_a257096829bb54fc3e45084b5c94beaa8_icgraph.pdf>
+Package pdftex.def Info: classLinearSys_a257096829bb54fc3e45084b5c94beaa8_icgra
+ph.pdf  used on input line 220.
+(pdftex.def)             Requested size: 350.0pt x 67.01392pt.
+ [66] <./classLinearSys_a60600d4d91ff996ab642bbc424f16525_cgraph.pdf>
+<classLinearSys_a60600d4d91ff996ab642bbc424f16525_cgraph.pdf, id=2470, 363.3575
+pt x 138.5175pt>
+File: classLinearSys_a60600d4d91ff996ab642bbc424f16525_cgraph.pdf Graphic file 
+(type pdf)
+<use classLinearSys_a60600d4d91ff996ab642bbc424f16525_cgraph.pdf>
+Package pdftex.def Info: classLinearSys_a60600d4d91ff996ab642bbc424f16525_cgrap
+h.pdf  used on input line 237.
+(pdftex.def)             Requested size: 350.0pt x 133.4297pt.
+ <./classLinearSys_a60600d4d91ff996ab642bbc424f16525_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classLinearSys_a60600d4d91ff996ab642bbc424f165
+25_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sin
+gle page
+>
+<classLinearSys_a60600d4d91ff996ab642bbc424f16525_icgraph.pdf, id=2478, 901.367
+5pt x 141.52875pt>
+File: classLinearSys_a60600d4d91ff996ab642bbc424f16525_icgraph.pdf Graphic file
+ (type pdf)
+<use classLinearSys_a60600d4d91ff996ab642bbc424f16525_icgraph.pdf>
+Package pdftex.def Info: classLinearSys_a60600d4d91ff996ab642bbc424f16525_icgra
+ph.pdf  used on input line 244.
+(pdftex.def)             Requested size: 350.0pt x 54.95627pt.
+ [67]) (./structLoggingSettings.tex [68]) (./classLogWriter.tex [69] <./classLo
+gWriter_afa1aee893d0731d546986049b901ca3c_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classLogWriter_afa1aee893d0731d546986049b901ca
+3c_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sing
+le page
+>
+<classLogWriter_afa1aee893d0731d546986049b901ca3c_cgraph.pdf, id=2573, 396.4812
+5pt x 138.5175pt>
+File: classLogWriter_afa1aee893d0731d546986049b901ca3c_cgraph.pdf Graphic file 
+(type pdf)
+<use classLogWriter_afa1aee893d0731d546986049b901ca3c_cgraph.pdf>
+Package pdftex.def Info: classLogWriter_afa1aee893d0731d546986049b901ca3c_cgrap
+h.pdf  used on input line 70.
+(pdftex.def)             Requested size: 350.0pt x 122.28044pt.
+ <./classLogWriter_abfbe02b4d8a36520ab748a8def1a3326_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classLogWriter_abfbe02b4d8a36520ab748a8def1a33
+26_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sing
+le page
+>
+<classLogWriter_abfbe02b4d8a36520ab748a8def1a3326_cgraph.pdf, id=2583, 378.4137
+6pt x 138.5175pt>
+File: classLogWriter_abfbe02b4d8a36520ab748a8def1a3326_cgraph.pdf Graphic file 
+(type pdf)
+<use classLogWriter_abfbe02b4d8a36520ab748a8def1a3326_cgraph.pdf>
+Package pdftex.def Info: classLogWriter_abfbe02b4d8a36520ab748a8def1a3326_cgrap
+h.pdf  used on input line 83.
+(pdftex.def)             Requested size: 350.0pt x 128.11821pt.
+ <./classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classLogWriter_a431302a6b0729e4cd626d1b01a1a8e
+f2_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sing
+le page
+>
+<classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2_cgraph.pdf, id=2591, 382.4287
+6pt x 138.5175pt>
+File: classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2_cgraph.pdf Graphic file 
+(type pdf)
+<use classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2_cgraph.pdf>
+Package pdftex.def Info: classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2_cgrap
+h.pdf  used on input line 96.
+(pdftex.def)             Requested size: 350.0pt x 126.77818pt.
+ [70] <./classLogWriter_a1d66aebf8de216f3a0b9fd0b023c5149_cgraph.pdf>
+<classLogWriter_a1d66aebf8de216f3a0b9fd0b023c5149_cgraph.pdf, id=2611, 368.3762
+5pt x 100.375pt>
+File: classLogWriter_a1d66aebf8de216f3a0b9fd0b023c5149_cgraph.pdf Graphic file 
+(type pdf)
+<use classLogWriter_a1d66aebf8de216f3a0b9fd0b023c5149_cgraph.pdf>
+Package pdftex.def Info: classLogWriter_a1d66aebf8de216f3a0b9fd0b023c5149_cgrap
+h.pdf  used on input line 109.
+(pdftex.def)             Requested size: 350.0pt x 95.36641pt.
+LaTeX Font Info:    Trying to load font information for TS1+pcr on input line 1
+16.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd
+File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
+)
+LaTeX Font Info:    Font shape `TS1/pcr/m/it' in size <8> not available
+(Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 116.
+ <./classLogWriter_a1a9dcc3f29001d9cdd621c2458a6dff3_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classLogWriter_a1a9dcc3f29001d9cdd621c2458a6df
+f3_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sin
+gle page
+>
+<classLogWriter_a1a9dcc3f29001d9cdd621c2458a6dff3_icgraph.pdf, id=2619, 396.481
+25pt x 188.705pt>
+File: classLogWriter_a1a9dcc3f29001d9cdd621c2458a6dff3_icgraph.pdf Graphic file
+ (type pdf)
+<use classLogWriter_a1a9dcc3f29001d9cdd621c2458a6dff3_icgraph.pdf>
+Package pdftex.def Info: classLogWriter_a1a9dcc3f29001d9cdd621c2458a6dff3_icgra
+ph.pdf  used on input line 122.
+(pdftex.def)             Requested size: 350.0pt x 166.58495pt.
+ [71] <./classLogWriter_a2fecac5d4c69afc68e441fce63b9298f_icgraph.pdf>
+<classLogWriter_a2fecac5d4c69afc68e441fce63b9298f_icgraph.pdf, id=2637, 375.402
+5pt x 226.8475pt>
+File: classLogWriter_a2fecac5d4c69afc68e441fce63b9298f_icgraph.pdf Graphic file
+ (type pdf)
+<use classLogWriter_a2fecac5d4c69afc68e441fce63b9298f_icgraph.pdf>
+Package pdftex.def Info: classLogWriter_a2fecac5d4c69afc68e441fce63b9298f_icgra
+ph.pdf  used on input line 135.
+(pdftex.def)             Requested size: 350.0pt x 211.50943pt.
+
+[72]) (./structMeshData.tex [73]) (./classNSBSolver.tex <./classNSBSolver__coll
+__graph.pdf
+
+pdfTeX warning: pdflatex (file ./classNSBSolver__coll__graph.pdf): PDF inclusio
+n: multiple pdfs with page group included in a single page
+>
+<classNSBSolver__coll__graph.pdf, id=2687, 917.4275pt x 268.00125pt>
+File: classNSBSolver__coll__graph.pdf Graphic file (type pdf)
+<use classNSBSolver__coll__graph.pdf>
+Package pdftex.def Info: classNSBSolver__coll__graph.pdf  used on input line 18
+.
+(pdftex.def)             Requested size: 350.0pt x 102.24228pt.
+ [74] <./classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_cgraph.pdf>
+<classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_cgraph.pdf, id=2745, 838.1312
+6pt x 570.13pt>
+File: classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_cgraph.pdf Graphic file 
+(type pdf)
+<use classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_cgraph.pdf>
+Package pdftex.def Info: classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_cgrap
+h.pdf  used on input line 78.
+(pdftex.def)             Requested size: 350.0pt x 238.07845pt.
+ <./classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4
+f6_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sin
+gle page
+>
+<classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_icgraph.pdf, id=2760, 258.967
+5pt x 100.375pt>
+File: classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_icgraph.pdf Graphic file
+ (type pdf)
+<use classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_icgraph.pdf>
+Package pdftex.def Info: classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_icgra
+ph.pdf  used on input line 85.
+(pdftex.def)             Requested size: 258.0pt x 100.01021pt.
+ [75] <./classNSBSolver_ada676d7f89d6183a6666976991e4e868_cgraph.pdf>
+<classNSBSolver_ada676d7f89d6183a6666976991e4e868_cgraph.pdf, id=2780, 503.8825
+pt x 138.5175pt>
+File: classNSBSolver_ada676d7f89d6183a6666976991e4e868_cgraph.pdf Graphic file 
+(type pdf)
+<use classNSBSolver_ada676d7f89d6183a6666976991e4e868_cgraph.pdf>
+Package pdftex.def Info: classNSBSolver_ada676d7f89d6183a6666976991e4e868_cgrap
+h.pdf  used on input line 98.
+(pdftex.def)             Requested size: 350.0pt x 96.21547pt.
+ <./classNSBSolver_ada676d7f89d6183a6666976991e4e868_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classNSBSolver_ada676d7f89d6183a6666976991e4e8
+68_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sin
+gle page
+>
+<classNSBSolver_ada676d7f89d6183a6666976991e4e868_icgraph.pdf, id=2788, 257.963
+75pt x 100.375pt>
+File: classNSBSolver_ada676d7f89d6183a6666976991e4e868_icgraph.pdf Graphic file
+ (type pdf)
+<use classNSBSolver_ada676d7f89d6183a6666976991e4e868_icgraph.pdf>
+Package pdftex.def Info: classNSBSolver_ada676d7f89d6183a6666976991e4e868_icgra
+ph.pdf  used on input line 105.
+(pdftex.def)             Requested size: 257.0pt x 100.00868pt.
+ [76]) (./structOutputSettings.tex [77]) (./structParallelizationSettings.tex) 
+(./structPhysicsData.tex) (./classPressureStep.tex <./classPressureStep__coll__
+graph.pdf
+
+pdfTeX warning: pdflatex (file ./classPressureStep__coll__graph.pdf): PDF inclu
+sion: multiple pdfs with page group included in a single page
+>
+<classPressureStep__coll__graph.pdf, id=2852, 373.395pt x 292.09125pt>
+File: classPressureStep__coll__graph.pdf Graphic file (type pdf)
+<use classPressureStep__coll__graph.pdf>
+Package pdftex.def Info: classPressureStep__coll__graph.pdf  used on input line
+ 18.
+(pdftex.def)             Requested size: 350.0pt x 273.80365pt.
+ [78] [79]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.36 on input line 77.
+
+ <./classPressureStep_a52d71f53887abc1f443855ff462c68ac_cgraph.pdf>
+<classPressureStep_a52d71f53887abc1f443855ff462c68ac_cgraph.pdf, id=2925, 504.8
+8625pt x 111.41624pt>
+File: classPressureStep_a52d71f53887abc1f443855ff462c68ac_cgraph.pdf Graphic fi
+le (type pdf)
+<use classPressureStep_a52d71f53887abc1f443855ff462c68ac_cgraph.pdf>
+Package pdftex.def Info: classPressureStep_a52d71f53887abc1f443855ff462c68ac_cg
+raph.pdf  used on input line 82.
+(pdftex.def)             Requested size: 350.0pt x 77.2377pt.
+ <./classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classPressureStep_a775ec248bc2a5c2b9f7d1457b1c
+97013_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_cgraph.pdf, id=2933, 318.1
+8875pt x 111.41624pt>
+File: classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_cgraph.pdf Graphic fi
+le (type pdf)
+<use classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_cgraph.pdf>
+Package pdftex.def Info: classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_cg
+raph.pdf  used on input line 102.
+(pdftex.def)             Requested size: 317.0pt x 110.99945pt.
+ <./classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classPressureStep_a775ec248bc2a5c2b9f7d1457b1c
+97013_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a 
+single page
+>
+<classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_icgraph.pdf, id=2941, 395.
+4775pt x 111.41624pt>
+File: classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_icgraph.pdf Graphic f
+ile (type pdf)
+<use classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_icgraph.pdf>
+Package pdftex.def Info: classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_ic
+graph.pdf  used on input line 109.
+(pdftex.def)             Requested size: 350.0pt x 98.60591pt.
+ [80] <./classPressureStep_a837946964627b9513277bd7698c630ce_cgraph.pdf>
+<classPressureStep_a837946964627b9513277bd7698c630ce_cgraph.pdf, id=2963, 913.4
+125pt x 767.86874pt>
+File: classPressureStep_a837946964627b9513277bd7698c630ce_cgraph.pdf Graphic fi
+le (type pdf)
+<use classPressureStep_a837946964627b9513277bd7698c630ce_cgraph.pdf>
+Package pdftex.def Info: classPressureStep_a837946964627b9513277bd7698c630ce_cg
+raph.pdf  used on input line 126.
+(pdftex.def)             Requested size: 350.0pt x 294.23022pt.
+ <./classPressureStep_a5420590f473164b5d861a62dc270ac08_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classPressureStep_a5420590f473164b5d861a62dc27
+0ac08_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classPressureStep_a5420590f473164b5d861a62dc270ac08_cgraph.pdf, id=2980, 711.6
+5875pt x 615.29875pt>
+File: classPressureStep_a5420590f473164b5d861a62dc270ac08_cgraph.pdf Graphic fi
+le (type pdf)
+<use classPressureStep_a5420590f473164b5d861a62dc270ac08_cgraph.pdf>
+Package pdftex.def Info: classPressureStep_a5420590f473164b5d861a62dc270ac08_cg
+raph.pdf  used on input line 143.
+(pdftex.def)             Requested size: 350.0pt x 302.60689pt.
+ [81] <./classPressureStep_a5420590f473164b5d861a62dc270ac08_icgraph.pdf>
+<classPressureStep_a5420590f473164b5d861a62dc270ac08_icgraph.pdf, id=2997, 368.
+37625pt x 100.375pt>
+File: classPressureStep_a5420590f473164b5d861a62dc270ac08_icgraph.pdf Graphic f
+ile (type pdf)
+<use classPressureStep_a5420590f473164b5d861a62dc270ac08_icgraph.pdf>
+Package pdftex.def Info: classPressureStep_a5420590f473164b5d861a62dc270ac08_ic
+graph.pdf  used on input line 150.
+(pdftex.def)             Requested size: 350.0pt x 95.36641pt.
+
+[82]) (./classSchurSequentialSolver.tex
+LaTeX Font Info:    Font shape `TS1/phv/m/it' in size <9> not available
+(Font)              Font shape `TS1/phv/m/sl' tried instead on input line 18.
+LaTeX Font Info:    Font shape `TS1/phv/m/sl' will be
+(Font)              scaled to size 8.09995pt on input line 18.
+ [83] <./classSchurSequentialSolver_ae84b28ee0ff1e33bae823b780e88c1c2_icgraph.p
+df
+
+pdfTeX warning: pdflatex (file ./classSchurSequentialSolver_ae84b28ee0ff1e33bae
+823b780e88c1c2_icgraph.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+>
+<classSchurSequentialSolver_ae84b28ee0ff1e33bae823b780e88c1c2_icgraph.pdf, id=3
+075, 893.3375pt x 138.5175pt>
+File: classSchurSequentialSolver_ae84b28ee0ff1e33bae823b780e88c1c2_icgraph.pdf 
+Graphic file (type pdf)
+<use classSchurSequentialSolver_ae84b28ee0ff1e33bae823b780e88c1c2_icgraph.pdf>
+Package pdftex.def Info: classSchurSequentialSolver_ae84b28ee0ff1e33bae823b780e
+88c1c2_icgraph.pdf  used on input line 90.
+(pdftex.def)             Requested size: 350.0pt x 54.271pt.
+ <./classSchurSequentialSolver_a046a2bbdb46a799a963f44c3ef15bf49_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classSchurSequentialSolver_a046a2bbdb46a799a96
+3f44c3ef15bf49_icgraph.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+>
+<classSchurSequentialSolver_a046a2bbdb46a799a963f44c3ef15bf49_icgraph.pdf, id=3
+083, 893.3375pt x 138.5175pt>
+File: classSchurSequentialSolver_a046a2bbdb46a799a963f44c3ef15bf49_icgraph.pdf 
+Graphic file (type pdf)
+<use classSchurSequentialSolver_a046a2bbdb46a799a963f44c3ef15bf49_icgraph.pdf>
+Package pdftex.def Info: classSchurSequentialSolver_a046a2bbdb46a799a963f44c3ef
+15bf49_icgraph.pdf  used on input line 103.
+(pdftex.def)             Requested size: 350.0pt x 54.271pt.
+ [84] <./classSchurSequentialSolver_afc572bd947a97f8aebc82714013d6d41_icgraph.p
+df>
+<classSchurSequentialSolver_afc572bd947a97f8aebc82714013d6d41_icgraph.pdf, id=3
+118, 893.3375pt x 138.5175pt>
+File: classSchurSequentialSolver_afc572bd947a97f8aebc82714013d6d41_icgraph.pdf 
+Graphic file (type pdf)
+<use classSchurSequentialSolver_afc572bd947a97f8aebc82714013d6d41_icgraph.pdf>
+Package pdftex.def Info: classSchurSequentialSolver_afc572bd947a97f8aebc8271401
+3d6d41_icgraph.pdf  used on input line 116.
+(pdftex.def)             Requested size: 350.0pt x 54.271pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.37 on input line 133.
+
+ <./classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classSchurSequentialSolver_a8b7aec052a578c5fd6
+ca38d279728212_cgraph.pdf): PDF inclusion: multiple pdfs with page group includ
+ed in a single page
+>
+<classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212_cgraph.pdf, id=31
+27, 525.965pt x 285.065pt>
+File: classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212_cgraph.pdf G
+raphic file (type pdf)
+<use classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212_cgraph.pdf>
+Package pdftex.def Info: classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279
+728212_cgraph.pdf  used on input line 138.
+(pdftex.def)             Requested size: 350.0pt x 189.70068pt.
+ [85] <./classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212_icgraph.p
+df>
+<classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212_icgraph.pdf, id=3
+146, 730.73pt x 138.5175pt>
+File: classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212_icgraph.pdf 
+Graphic file (type pdf)
+<use classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212_icgraph.pdf>
+Package pdftex.def Info: classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279
+728212_icgraph.pdf  used on input line 145.
+(pdftex.def)             Requested size: 350.0pt x 66.34602pt.
+ <./classSchurSequentialSolver_aeae72f30176c219c7d60a206f54865c4_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classSchurSequentialSolver_aeae72f30176c219c7d
+60a206f54865c4_icgraph.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+>
+<classSchurSequentialSolver_aeae72f30176c219c7d60a206f54865c4_icgraph.pdf, id=3
+154, 893.3375pt x 138.5175pt>
+File: classSchurSequentialSolver_aeae72f30176c219c7d60a206f54865c4_icgraph.pdf 
+Graphic file (type pdf)
+<use classSchurSequentialSolver_aeae72f30176c219c7d60a206f54865c4_icgraph.pdf>
+Package pdftex.def Info: classSchurSequentialSolver_aeae72f30176c219c7d60a206f5
+4865c4_icgraph.pdf  used on input line 158.
+(pdftex.def)             Requested size: 350.0pt x 54.271pt.
+ <./classSchurSequentialSolver_aebe81742570d50e62bf86d13a1fd8d93_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classSchurSequentialSolver_aebe81742570d50e62b
+f86d13a1fd8d93_icgraph.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+>
+<classSchurSequentialSolver_aebe81742570d50e62bf86d13a1fd8d93_icgraph.pdf, id=3
+162, 893.3375pt x 138.5175pt>
+File: classSchurSequentialSolver_aebe81742570d50e62bf86d13a1fd8d93_icgraph.pdf 
+Graphic file (type pdf)
+<use classSchurSequentialSolver_aebe81742570d50e62bf86d13a1fd8d93_icgraph.pdf>
+Package pdftex.def Info: classSchurSequentialSolver_aebe81742570d50e62bf86d13a1
+fd8d93_icgraph.pdf  used on input line 171.
+(pdftex.def)             Requested size: 350.0pt x 54.271pt.
+ [86]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.38 on input line 188.
+
+
+Underfull \hbox (badness 10000) detected at line 189
+[][][]
+ []
+
+ <./classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e_cgraph.pdf>
+<classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e_cgraph.pdf, id=31
+80, 369.38pt x 258.9675pt>
+File: classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e_cgraph.pdf G
+raphic file (type pdf)
+<use classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e_cgraph.pdf>
+Package pdftex.def Info: classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167
+ff444e_cgraph.pdf  used on input line 196.
+(pdftex.def)             Requested size: 350.0pt x 245.3815pt.
+ <./classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classSchurSequentialSolver_a0c0a6ed80b6df87ae3
+e1c53167ff444e_icgraph.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+>
+<classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e_icgraph.pdf, id=3
+188, 730.73pt x 138.5175pt>
+File: classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e_icgraph.pdf 
+Graphic file (type pdf)
+<use classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e_icgraph.pdf>
+Package pdftex.def Info: classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167
+ff444e_icgraph.pdf  used on input line 203.
+(pdftex.def)             Requested size: 350.0pt x 66.34602pt.
+ [87] [88]) (./structSimulationData.tex <./structSimulationData__coll__graph.pd
+f
+
+pdfTeX warning: pdflatex (file ./structSimulationData__coll__graph.pdf): PDF in
+clusion: multiple pdfs with page group included in a single page
+>
+<structSimulationData__coll__graph.pdf, id=3229, 210.7875pt x 200.75pt>
+File: structSimulationData__coll__graph.pdf Graphic file (type pdf)
+<use structSimulationData__coll__graph.pdf>
+Package pdftex.def Info: structSimulationData__coll__graph.pdf  used on input l
+ine 18.
+(pdftex.def)             Requested size: 210.0pt x 200.00513pt.
+ [89] [90]) (./structTimeData.tex [91]) (./classTridiagMat.tex [92]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.39 on input line 67.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.40 on input line 89.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.41 on input line 104.
+
+ <./classTridiagMat_a1b0209ff66f297a15c9bb0a118b4329f_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classTridiagMat_a1b0209ff66f297a15c9bb0a118b43
+29f_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classTridiagMat_a1b0209ff66f297a15c9bb0a118b4329f_icgraph.pdf, id=3390, 1109.1
+4375pt x 245.91875pt>
+File: classTridiagMat_a1b0209ff66f297a15c9bb0a118b4329f_icgraph.pdf Graphic fil
+e (type pdf)
+<use classTridiagMat_a1b0209ff66f297a15c9bb0a118b4329f_icgraph.pdf>
+Package pdftex.def Info: classTridiagMat_a1b0209ff66f297a15c9bb0a118b4329f_icgr
+aph.pdf  used on input line 109.
+(pdftex.def)             Requested size: 350.0pt x 77.5999pt.
+ [93]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.42 on input line 142.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.43 on input line 157.
+
+ <./classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d
+0a9_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9_icgraph.pdf, id=3421, 1083.0
+4625pt x 417.56pt>
+File: classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9_icgraph.pdf Graphic fil
+e (type pdf)
+<use classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9_icgraph.pdf>
+Package pdftex.def Info: classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9_icgr
+aph.pdf  used on input line 172.
+(pdftex.def)             Requested size: 350.0pt x 134.94081pt.
+ [94]) (./classVectorField.tex [95] [96]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.44 on input line 86.
+
+ <./classVectorField_a7bc378f9fc79bf136b4a4a8053bd6c80_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classVectorField_a7bc378f9fc79bf136b4a4a8053bd
+6c80_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classVectorField_a7bc378f9fc79bf136b4a4a8053bd6c80_cgraph.pdf, id=3551, 550.05
+5pt x 138.5175pt>
+File: classVectorField_a7bc378f9fc79bf136b4a4a8053bd6c80_cgraph.pdf Graphic fil
+e (type pdf)
+<use classVectorField_a7bc378f9fc79bf136b4a4a8053bd6c80_cgraph.pdf>
+Package pdftex.def Info: classVectorField_a7bc378f9fc79bf136b4a4a8053bd6c80_cgr
+aph.pdf  used on input line 91.
+(pdftex.def)             Requested size: 350.0pt x 88.14151pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.45 on input line 108.
+
+ <./classVectorField_aa8f5f5a590e1eb791f2e27e802dd8cb7_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classVectorField_aa8f5f5a590e1eb791f2e27e802dd
+8cb7_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classVectorField_aa8f5f5a590e1eb791f2e27e802dd8cb7_cgraph.pdf, id=3560, 602.25
+pt x 176.66pt>
+File: classVectorField_aa8f5f5a590e1eb791f2e27e802dd8cb7_cgraph.pdf Graphic fil
+e (type pdf)
+<use classVectorField_aa8f5f5a590e1eb791f2e27e802dd8cb7_cgraph.pdf>
+Package pdftex.def Info: classVectorField_aa8f5f5a590e1eb791f2e27e802dd8cb7_cgr
+aph.pdf  used on input line 113.
+(pdftex.def)             Requested size: 350.0pt x 102.67043pt.
+ [97]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.46 on input line 130.
+
+
+Underfull \hbox (badness 10000) detected at line 131
+[][][]
+ []
+
+ <./classVectorField_ad0d70e28de0a1efeaa1e3ffe8a86b175_icgraph.pdf>
+<classVectorField_ad0d70e28de0a1efeaa1e3ffe8a86b175_icgraph.pdf, id=3593, 979.6
+6pt x 289.08pt>
+File: classVectorField_ad0d70e28de0a1efeaa1e3ffe8a86b175_icgraph.pdf Graphic fi
+le (type pdf)
+<use classVectorField_ad0d70e28de0a1efeaa1e3ffe8a86b175_icgraph.pdf>
+Package pdftex.def Info: classVectorField_ad0d70e28de0a1efeaa1e3ffe8a86b175_icg
+raph.pdf  used on input line 138.
+(pdftex.def)             Requested size: 350.0pt x 103.27473pt.
+
+Underfull \hbox (badness 10000) detected at line 161
+[][][]
+ []
+
+ <./classVectorField_a44e6ba866c7ab75a4608062f16f702b9_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classVectorField_a44e6ba866c7ab75a4608062f16f7
+02b9_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classVectorField_a44e6ba866c7ab75a4608062f16f702b9_icgraph.pdf, id=3604, 726.7
+15pt x 100.375pt>
+File: classVectorField_a44e6ba866c7ab75a4608062f16f702b9_icgraph.pdf Graphic fi
+le (type pdf)
+<use classVectorField_a44e6ba866c7ab75a4608062f16f702b9_icgraph.pdf>
+Package pdftex.def Info: classVectorField_a44e6ba866c7ab75a4608062f16f702b9_icg
+raph.pdf  used on input line 168.
+(pdftex.def)             Requested size: 350.0pt x 48.34332pt.
+ [98]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.47 on input line 195.
+
+ <./classVectorField_a6cde8853c3eb1d5ba60b4a61e467c7c0_cgraph.pdf>
+<classVectorField_a6cde8853c3eb1d5ba60b4a61e467c7c0_cgraph.pdf, id=3632, 624.33
+25pt x 176.66pt>
+File: classVectorField_a6cde8853c3eb1d5ba60b4a61e467c7c0_cgraph.pdf Graphic fil
+e (type pdf)
+<use classVectorField_a6cde8853c3eb1d5ba60b4a61e467c7c0_cgraph.pdf>
+Package pdftex.def Info: classVectorField_a6cde8853c3eb1d5ba60b4a61e467c7c0_cgr
+aph.pdf  used on input line 200.
+(pdftex.def)             Requested size: 350.0pt x 99.03674pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.48 on input line 217.
+
+
+Underfull \hbox (badness 10000) detected at line 218
+[][][]
+ []
+
+ <./classVectorField_a0f142a00acaedd2b302e978c2623b8a7_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classVectorField_a0f142a00acaedd2b302e978c2623
+b8a7_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classVectorField_a0f142a00acaedd2b302e978c2623b8a7_icgraph.pdf, id=3651, 499.8
+675pt x 138.5175pt>
+File: classVectorField_a0f142a00acaedd2b302e978c2623b8a7_icgraph.pdf Graphic fi
+le (type pdf)
+<use classVectorField_a0f142a00acaedd2b302e978c2623b8a7_icgraph.pdf>
+Package pdftex.def Info: classVectorField_a0f142a00acaedd2b302e978c2623b8a7_icg
+raph.pdf  used on input line 225.
+(pdftex.def)             Requested size: 350.0pt x 96.99117pt.
+ [99]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.49 on input line 258.
+
+
+Underfull \hbox (badness 10000) detected at line 259
+[][][]
+ []
+
+ <./classVectorField_a8ed16373ed36283478770b599908deda_cgraph.pdf>
+<classVectorField_a8ed16373ed36283478770b599908deda_cgraph.pdf, id=3685, 470.75
+874pt x 138.5175pt>
+File: classVectorField_a8ed16373ed36283478770b599908deda_cgraph.pdf Graphic fil
+e (type pdf)
+<use classVectorField_a8ed16373ed36283478770b599908deda_cgraph.pdf>
+Package pdftex.def Info: classVectorField_a8ed16373ed36283478770b599908deda_cgr
+aph.pdf  used on input line 266.
+(pdftex.def)             Requested size: 350.0pt x 102.98535pt.
+ <./classVectorField_a92c6e367b585b7bcb3ef378c10c7104e_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classVectorField_a92c6e367b585b7bcb3ef378c10c7
+104e_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classVectorField_a92c6e367b585b7bcb3ef378c10c7104e_cgraph.pdf, id=3695, 470.75
+874pt x 138.5175pt>
+File: classVectorField_a92c6e367b585b7bcb3ef378c10c7104e_cgraph.pdf Graphic fil
+e (type pdf)
+<use classVectorField_a92c6e367b585b7bcb3ef378c10c7104e_cgraph.pdf>
+Package pdftex.def Info: classVectorField_a92c6e367b585b7bcb3ef378c10c7104e_cgr
+aph.pdf  used on input line 283.
+(pdftex.def)             Requested size: 350.0pt x 102.98535pt.
+ [100]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.50 on input line 300.
+
+ <./classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_cgraph.pdf>
+<classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_cgraph.pdf, id=3713, 367.37
+25pt x 138.5175pt>
+File: classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_cgraph.pdf Graphic fil
+e (type pdf)
+<use classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_cgraph.pdf>
+Package pdftex.def Info: classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_cgr
+aph.pdf  used on input line 305.
+(pdftex.def)             Requested size: 350.0pt x 131.97554pt.
+ <./classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classVectorField_afbe1f8fbd8bdbd92996700bbe965
+7f7d_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_icgraph.pdf, id=3721, 728.7
+225pt x 147.55125pt>
+File: classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_icgraph.pdf Graphic fi
+le (type pdf)
+<use classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_icgraph.pdf>
+Package pdftex.def Info: classVectorField_afbe1f8fbd8bdbd92996700bbe9657f7d_icg
+raph.pdf  used on input line 312.
+(pdftex.def)             Requested size: 350.0pt x 70.86656pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.51 on input line 335.
+
+ <./classVectorField_a678cbed69b397d108ea467ac65a9507c_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classVectorField_a678cbed69b397d108ea467ac65a9
+507c_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classVectorField_a678cbed69b397d108ea467ac65a9507c_cgraph.pdf, id=3736, 352.31
+625pt x 138.5175pt>
+File: classVectorField_a678cbed69b397d108ea467ac65a9507c_cgraph.pdf Graphic fil
+e (type pdf)
+<use classVectorField_a678cbed69b397d108ea467ac65a9507c_cgraph.pdf>
+Package pdftex.def Info: classVectorField_a678cbed69b397d108ea467ac65a9507c_cgr
+aph.pdf  used on input line 340.
+(pdftex.def)             Requested size: 350.0pt x 137.60619pt.
+ [101] <./classVectorField_a678cbed69b397d108ea467ac65a9507c_icgraph.pdf>
+<classVectorField_a678cbed69b397d108ea467ac65a9507c_icgraph.pdf, id=3756, 790.9
+55pt x 160.6pt>
+File: classVectorField_a678cbed69b397d108ea467ac65a9507c_icgraph.pdf Graphic fi
+le (type pdf)
+<use classVectorField_a678cbed69b397d108ea467ac65a9507c_icgraph.pdf>
+Package pdftex.def Info: classVectorField_a678cbed69b397d108ea467ac65a9507c_icg
+raph.pdf  used on input line 347.
+(pdftex.def)             Requested size: 350.0pt x 71.0661pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.52 on input line 370.
+
+
+Underfull \hbox (badness 10000) detected at line 371
+[][][]
+ []
+
+ <./classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classVectorField_abed2562f8c20d6ae9861913d10c0
+c7ac_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_cgraph.pdf, id=3775, 346.29
+375pt x 100.375pt>
+File: classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_cgraph.pdf Graphic fil
+e (type pdf)
+<use classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_cgraph.pdf>
+Package pdftex.def Info: classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_cgr
+aph.pdf  used on input line 378.
+(pdftex.def)             Requested size: 345.0pt x 100.00255pt.
+ <./classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classVectorField_abed2562f8c20d6ae9861913d10c0
+c7ac_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_icgraph.pdf, id=3783, 338.2
+6375pt x 138.5175pt>
+File: classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_icgraph.pdf Graphic fi
+le (type pdf)
+<use classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_icgraph.pdf>
+Package pdftex.def Info: classVectorField_abed2562f8c20d6ae9861913d10c0c7ac_icg
+raph.pdf  used on input line 385.
+(pdftex.def)             Requested size: 337.0pt x 138.00354pt.
+ [102] <./classVectorField_a04a582970451f7ebca74b9b5a33327f3_cgraph.pdf>
+<classVectorField_a04a582970451f7ebca74b9b5a33327f3_cgraph.pdf, id=3804, 346.29
+375pt x 100.375pt>
+File: classVectorField_a04a582970451f7ebca74b9b5a33327f3_cgraph.pdf Graphic fil
+e (type pdf)
+<use classVectorField_a04a582970451f7ebca74b9b5a33327f3_cgraph.pdf>
+Package pdftex.def Info: classVectorField_a04a582970451f7ebca74b9b5a33327f3_cgr
+aph.pdf  used on input line 402.
+(pdftex.def)             Requested size: 345.0pt x 100.00255pt.
+)
+(./classViscousStep.tex [103] <./classViscousStep__coll__graph.pdf>
+<classViscousStep__coll__graph.pdf, id=3828, 394.47375pt x 314.17375pt>
+File: classViscousStep__coll__graph.pdf Graphic file (type pdf)
+<use classViscousStep__coll__graph.pdf>
+Package pdftex.def Info: classViscousStep__coll__graph.pdf  used on input line 
+18.
+(pdftex.def)             Requested size: 350.0pt x 278.75565pt.
+ [104]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.53 on input line 89.
+
+ <./classViscousStep_a3c394708ab3435546917bbc8787e6d83_cgraph.pdf>
+<classViscousStep_a3c394708ab3435546917bbc8787e6d83_cgraph.pdf, id=3888, 743.77
+875pt x 138.5175pt>
+File: classViscousStep_a3c394708ab3435546917bbc8787e6d83_cgraph.pdf Graphic fil
+e (type pdf)
+<use classViscousStep_a3c394708ab3435546917bbc8787e6d83_cgraph.pdf>
+Package pdftex.def Info: classViscousStep_a3c394708ab3435546917bbc8787e6d83_cgr
+aph.pdf  used on input line 94.
+(pdftex.def)             Requested size: 350.0pt x 65.18353pt.
+ <./classViscousStep_a1e0082f2456e9fb9d6e8059d712f97a3_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classViscousStep_a1e0082f2456e9fb9d6e8059d712f
+97a3_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classViscousStep_a1e0082f2456e9fb9d6e8059d712f97a3_cgraph.pdf, id=3896, 1045.9
+075pt x 581.17125pt>
+File: classViscousStep_a1e0082f2456e9fb9d6e8059d712f97a3_cgraph.pdf Graphic fil
+e (type pdf)
+<use classViscousStep_a1e0082f2456e9fb9d6e8059d712f97a3_cgraph.pdf>
+Package pdftex.def Info: classViscousStep_a1e0082f2456e9fb9d6e8059d712f97a3_cgr
+aph.pdf  used on input line 114.
+(pdftex.def)             Requested size: 350.0pt x 194.48296pt.
+ [105] <./classViscousStep_a1e0082f2456e9fb9d6e8059d712f97a3_icgraph.pdf>
+<classViscousStep_a1e0082f2456e9fb9d6e8059d712f97a3_icgraph.pdf, id=3933, 382.4
+2876pt x 100.375pt>
+File: classViscousStep_a1e0082f2456e9fb9d6e8059d712f97a3_icgraph.pdf Graphic fi
+le (type pdf)
+<use classViscousStep_a1e0082f2456e9fb9d6e8059d712f97a3_icgraph.pdf>
+Package pdftex.def Info: classViscousStep_a1e0082f2456e9fb9d6e8059d712f97a3_icg
+raph.pdf  used on input line 121.
+(pdftex.def)             Requested size: 350.0pt x 91.86824pt.
+ <./classViscousStep_a08b79ebee5c10dce0129239db85d0e8a_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classViscousStep_a08b79ebee5c10dce0129239db85d
+0e8a_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classViscousStep_a08b79ebee5c10dce0129239db85d0e8a_cgraph.pdf, id=3941, 726.71
+5pt x 252.945pt>
+File: classViscousStep_a08b79ebee5c10dce0129239db85d0e8a_cgraph.pdf Graphic fil
+e (type pdf)
+<use classViscousStep_a08b79ebee5c10dce0129239db85d0e8a_cgraph.pdf>
+Package pdftex.def Info: classViscousStep_a08b79ebee5c10dce0129239db85d0e8a_cgr
+aph.pdf  used on input line 138.
+(pdftex.def)             Requested size: 350.0pt x 121.8252pt.
+ <./classViscousStep_a08b79ebee5c10dce0129239db85d0e8a_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classViscousStep_a08b79ebee5c10dce0129239db85d
+0e8a_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classViscousStep_a08b79ebee5c10dce0129239db85d0e8a_icgraph.pdf, id=3949, 347.2
+975pt x 100.375pt>
+File: classViscousStep_a08b79ebee5c10dce0129239db85d0e8a_icgraph.pdf Graphic fi
+le (type pdf)
+<use classViscousStep_a08b79ebee5c10dce0129239db85d0e8a_icgraph.pdf>
+Package pdftex.def Info: classViscousStep_a08b79ebee5c10dce0129239db85d0e8a_icg
+raph.pdf  used on input line 145.
+(pdftex.def)             Requested size: 346.0pt x 100.00409pt.
+ [106] <./classViscousStep_a2c153fd3ee426405516d51b04546a5df_cgraph.pdf>
+<classViscousStep_a2c153fd3ee426405516d51b04546a5df_cgraph.pdf, id=3966, 336.25
+626pt x 100.375pt>
+File: classViscousStep_a2c153fd3ee426405516d51b04546a5df_cgraph.pdf Graphic fil
+e (type pdf)
+<use classViscousStep_a2c153fd3ee426405516d51b04546a5df_cgraph.pdf>
+Package pdftex.def Info: classViscousStep_a2c153fd3ee426405516d51b04546a5df_cgr
+aph.pdf  used on input line 162.
+(pdftex.def)             Requested size: 335.0pt x 100.00102pt.
+ <./classViscousStep_a2c153fd3ee426405516d51b04546a5df_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classViscousStep_a2c153fd3ee426405516d51b04546
+a5df_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classViscousStep_a2c153fd3ee426405516d51b04546a5df_icgraph.pdf, id=3974, 349.3
+05pt x 100.375pt>
+File: classViscousStep_a2c153fd3ee426405516d51b04546a5df_icgraph.pdf Graphic fi
+le (type pdf)
+<use classViscousStep_a2c153fd3ee426405516d51b04546a5df_icgraph.pdf>
+Package pdftex.def Info: classViscousStep_a2c153fd3ee426405516d51b04546a5df_icg
+raph.pdf  used on input line 169.
+(pdftex.def)             Requested size: 348.0pt x 100.00562pt.
+ <./classViscousStep_a9ad97cebe4b5966259b6d205f62a392e_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classViscousStep_a9ad97cebe4b5966259b6d205f62a
+392e_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classViscousStep_a9ad97cebe4b5966259b6d205f62a392e_cgraph.pdf, id=3982, 566.11
+5pt x 138.5175pt>
+File: classViscousStep_a9ad97cebe4b5966259b6d205f62a392e_cgraph.pdf Graphic fil
+e (type pdf)
+<use classViscousStep_a9ad97cebe4b5966259b6d205f62a392e_cgraph.pdf>
+Package pdftex.def Info: classViscousStep_a9ad97cebe4b5966259b6d205f62a392e_cgr
+aph.pdf  used on input line 186.
+(pdftex.def)             Requested size: 350.0pt x 85.64111pt.
+ <./classViscousStep_a9ad97cebe4b5966259b6d205f62a392e_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classViscousStep_a9ad97cebe4b5966259b6d205f62a
+392e_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a s
+ingle page
+>
+<classViscousStep_a9ad97cebe4b5966259b6d205f62a392e_icgraph.pdf, id=3990, 435.6
+275pt x 111.41624pt>
+File: classViscousStep_a9ad97cebe4b5966259b6d205f62a392e_icgraph.pdf Graphic fi
+le (type pdf)
+<use classViscousStep_a9ad97cebe4b5966259b6d205f62a392e_icgraph.pdf>
+Package pdftex.def Info: classViscousStep_a9ad97cebe4b5966259b6d205f62a392e_icg
+raph.pdf  used on input line 193.
+(pdftex.def)             Requested size: 350.0pt x 89.51563pt.
+ [107] <./classViscousStep_af53b70819c9d7a6af545f310020ff37d_cgraph.pdf>
+<classViscousStep_af53b70819c9d7a6af545f310020ff37d_cgraph.pdf, id=4010, 1231.6
+0126pt x 658.46pt>
+File: classViscousStep_af53b70819c9d7a6af545f310020ff37d_cgraph.pdf Graphic fil
+e (type pdf)
+<use classViscousStep_af53b70819c9d7a6af545f310020ff37d_cgraph.pdf>
+Package pdftex.def Info: classViscousStep_af53b70819c9d7a6af545f310020ff37d_cgr
+aph.pdf  used on input line 210.
+(pdftex.def)             Requested size: 350.0pt x 187.1205pt.
+ <./classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classViscousStep_a98b2a51b32509c2323cb32a7bfb2
+e93c_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>
+<classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_cgraph.pdf, id=4027, 707.64
+375pt x 615.29875pt>
+File: classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_cgraph.pdf Graphic fil
+e (type pdf)
+<use classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_cgraph.pdf>
+Package pdftex.def Info: classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_cgr
+aph.pdf  used on input line 227.
+(pdftex.def)             Requested size: 350.0pt x 304.32501pt.
+ [108] <./classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_icgraph.pdf>
+<classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_icgraph.pdf, id=4044, 564.1
+075pt x 100.375pt>
+File: classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_icgraph.pdf Graphic fi
+le (type pdf)
+<use classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_icgraph.pdf>
+Package pdftex.def Info: classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_icg
+raph.pdf  used on input line 234.
+(pdftex.def)             Requested size: 350.0pt x 62.27779pt.
+
+[109]) (./classVTKWriter.tex [110]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.54 on input line 67.
+
+ <./classVTKWriter_a1c7294261cd8988037532e53439a2756_icgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classVTKWriter_a1c7294261cd8988037532e53439a27
+56_icgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sin
+gle page
+>
+<classVTKWriter_a1c7294261cd8988037532e53439a2756_icgraph.pdf, id=4115, 396.481
+25pt x 111.41624pt>
+File: classVTKWriter_a1c7294261cd8988037532e53439a2756_icgraph.pdf Graphic file
+ (type pdf)
+<use classVTKWriter_a1c7294261cd8988037532e53439a2756_icgraph.pdf>
+Package pdftex.def Info: classVTKWriter_a1c7294261cd8988037532e53439a2756_icgra
+ph.pdf  used on input line 85.
+(pdftex.def)             Requested size: 350.0pt x 98.356pt.
+ [111]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 7.55 on input line 106.
+
+
+Underfull \hbox (badness 10000) detected at line 107
+[][][]
+ []
+
+ <./classVTKWriter_a417b6b9cdc035a67ca976cdd3b620789_cgraph.pdf
+
+pdfTeX warning: pdflatex (file ./classVTKWriter_a417b6b9cdc035a67ca976cdd3b6207
+89_cgraph.pdf): PDF inclusion: multiple pdfs with page group included in a sing
+le page
+>
+<classVTKWriter_a417b6b9cdc035a67ca976cdd3b620789_cgraph.pdf, id=4147, 396.4812
+5pt x 111.41624pt>
+File: classVTKWriter_a417b6b9cdc035a67ca976cdd3b620789_cgraph.pdf Graphic file 
+(type pdf)
+<use classVTKWriter_a417b6b9cdc035a67ca976cdd3b620789_cgraph.pdf>
+Package pdftex.def Info: classVTKWriter_a417b6b9cdc035a67ca976cdd3b620789_cgrap
+h.pdf  used on input line 114.
+(pdftex.def)             Requested size: 350.0pt x 98.356pt.
+ [112]) [113] [114
+
+]
+Chapter 8.
+(./configFunctions_8hpp.tex <./configFunctions_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./configFunctions_8hpp__incl.pdf): PDF inclusion
+: multiple pdfs with page group included in a single page
+>
+<configFunctions_8hpp__incl.pdf, id=4186, 218.8175pt x 156.585pt>
+File: configFunctions_8hpp__incl.pdf Graphic file (type pdf)
+<use configFunctions_8hpp__incl.pdf>
+Package pdftex.def Info: configFunctions_8hpp__incl.pdf  used on input line 8.
+(pdftex.def)             Requested size: 218.0pt x 156.00162pt.
+) (./Fields_8hpp.tex <./Fields_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./Fields_8hpp__incl.pdf): PDF inclusion: multipl
+e pdfs with page group included in a single page
+>
+<Fields_8hpp__incl.pdf, id=4213, 593.21625pt x 212.795pt>
+File: Fields_8hpp__incl.pdf Graphic file (type pdf)
+<use Fields_8hpp__incl.pdf>
+Package pdftex.def Info: Fields_8hpp__incl.pdf  used on input line 14.
+(pdftex.def)             Requested size: 350.0pt x 125.55444pt.
+ [115] <./Fields_8hpp__dep__incl.pdf>
+<Fields_8hpp__dep__incl.pdf, id=4232, 2302.6025pt x 481.8pt>
+File: Fields_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use Fields_8hpp__dep__incl.pdf>
+Package pdftex.def Info: Fields_8hpp__dep__incl.pdf  used on input line 21.
+(pdftex.def)             Requested size: 350.0pt x 73.22993pt.
+ [116]) (./Grid_8hpp.tex <./Grid_8hpp__incl.pdf>
+<Grid_8hpp__incl.pdf, id=4260, 200.75pt x 156.585pt>
+File: Grid_8hpp__incl.pdf Graphic file (type pdf)
+<use Grid_8hpp__incl.pdf>
+Package pdftex.def Info: Grid_8hpp__incl.pdf  used on input line 8.
+(pdftex.def)             Requested size: 200.0pt x 156.01117pt.
+ <./Grid_8hpp__dep__incl.pdf
+
+pdfTeX warning: pdflatex (file ./Grid_8hpp__dep__incl.pdf): PDF inclusion: mult
+iple pdfs with page group included in a single page
+>
+<Grid_8hpp__dep__incl.pdf, id=4268, 2162.0775pt x 538.01pt>
+File: Grid_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use Grid_8hpp__dep__incl.pdf>
+Package pdftex.def Info: Grid_8hpp__dep__incl.pdf  used on input line 15.
+(pdftex.def)             Requested size: 350.0pt x 87.09311pt.
+ [117]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 8.1 on input line 84.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 8.2 on input line 104.
+
+) (./TridiagMat_8hpp.tex <./TridiagMat_8hpp__incl.pdf>
+<TridiagMat_8hpp__incl.pdf, id=4307, 276.03125pt x 156.585pt>
+File: TridiagMat_8hpp__incl.pdf Graphic file (type pdf)
+<use TridiagMat_8hpp__incl.pdf>
+Package pdftex.def Info: TridiagMat_8hpp__incl.pdf  used on input line 10.
+(pdftex.def)             Requested size: 275.0pt x 156.01595pt.
+ [118] <./TridiagMat_8hpp__dep__incl.pdf
+
+pdfTeX warning: pdflatex (file ./TridiagMat_8hpp__dep__incl.pdf): PDF inclusion
+: multiple pdfs with page group included in a single page
+>
+<TridiagMat_8hpp__dep__incl.pdf, id=4330, 933.4875pt x 347.2975pt>
+File: TridiagMat_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use TridiagMat_8hpp__dep__incl.pdf>
+Package pdftex.def Info: TridiagMat_8hpp__dep__incl.pdf  used on input line 17.
+
+(pdftex.def)             Requested size: 350.0pt x 130.21504pt.
+) (./inputReader_8hpp.tex <./inputReader_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./inputReader_8hpp__incl.pdf): PDF inclusion: mu
+ltiple pdfs with page group included in a single page
+>
+<inputReader_8hpp__incl.pdf, id=4339, 640.3925pt x 325.215pt>
+File: inputReader_8hpp__incl.pdf Graphic file (type pdf)
+<use inputReader_8hpp__incl.pdf>
+Package pdftex.def Info: inputReader_8hpp__incl.pdf  used on input line 11.
+(pdftex.def)             Requested size: 350.0pt x 177.7473pt.
+ [119] <./inputReader_8hpp__dep__incl.pdf>
+<inputReader_8hpp__dep__incl.pdf, id=4357, 1177.39874pt x 358.33875pt>
+File: inputReader_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use inputReader_8hpp__dep__incl.pdf>
+Package pdftex.def Info: inputReader_8hpp__dep__incl.pdf  used on input line 18
+.
+(pdftex.def)             Requested size: 350.0pt x 106.51825pt.
+) (./logWriter_8hpp.tex <./logWriter_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./logWriter_8hpp__incl.pdf): PDF inclusion: mult
+iple pdfs with page group included in a single page
+>
+<logWriter_8hpp__incl.pdf, id=4372, 775.89874pt x 381.425pt>
+File: logWriter_8hpp__incl.pdf Graphic file (type pdf)
+<use logWriter_8hpp__incl.pdf>
+Package pdftex.def Info: logWriter_8hpp__incl.pdf  used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 172.0587pt.
+ [120] <./logWriter_8hpp__dep__incl.pdf>
+<logWriter_8hpp__dep__incl.pdf, id=4391, 396.48125pt x 223.83624pt>
+File: logWriter_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use logWriter_8hpp__dep__incl.pdf>
+Package pdftex.def Info: logWriter_8hpp__dep__incl.pdf  used on input line 20.
+(pdftex.def)             Requested size: 350.0pt x 197.59811pt.
+) (./VTKWriter_8hpp.tex <./VTKWriter_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./VTKWriter_8hpp__incl.pdf): PDF inclusion: mult
+iple pdfs with page group included in a single page
+>
+<VTKWriter_8hpp__incl.pdf, id=4401, 793.96625pt x 381.425pt>
+File: VTKWriter_8hpp__incl.pdf Graphic file (type pdf)
+<use VTKWriter_8hpp__incl.pdf>
+Package pdftex.def Info: VTKWriter_8hpp__incl.pdf  used on input line 12.
+(pdftex.def)             Requested size: 350.0pt x 168.1418pt.
+ [121] <./VTKWriter_8hpp__dep__incl.pdf>
+<VTKWriter_8hpp__dep__incl.pdf, id=4418, 400.49625pt x 223.83624pt>
+File: VTKWriter_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use VTKWriter_8hpp__dep__incl.pdf>
+Package pdftex.def Info: VTKWriter_8hpp__dep__incl.pdf  used on input line 19.
+(pdftex.def)             Requested size: 350.0pt x 195.62398pt.
+) (./main_8dox.tex)
+(./derivatives_8hpp.tex <./derivatives_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./derivatives_8hpp__incl.pdf): PDF inclusion: mu
+ltiple pdfs with page group included in a single page
+>
+<derivatives_8hpp__incl.pdf, id=4427, 594.22pt x 269.005pt>
+File: derivatives_8hpp__incl.pdf Graphic file (type pdf)
+<use derivatives_8hpp__incl.pdf>
+Package pdftex.def Info: derivatives_8hpp__incl.pdf  used on input line 9.
+(pdftex.def)             Requested size: 350.0pt x 158.45297pt.
+ [122] <./derivatives_8hpp__dep__incl.pdf>
+<derivatives_8hpp__dep__incl.pdf, id=4446, 1015.795pt x 291.0875pt>
+File: derivatives_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use derivatives_8hpp__dep__incl.pdf>
+Package pdftex.def Info: derivatives_8hpp__dep__incl.pdf  used on input line 16
+.
+(pdftex.def)             Requested size: 350.0pt x 100.29648pt.
+) (./LinearSys_8hpp.tex <./LinearSys_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./LinearSys_8hpp__incl.pdf): PDF inclusion: mult
+iple pdfs with page group included in a single page
+>
+<LinearSys_8hpp__incl.pdf, id=4455, 676.5275pt x 325.215pt>
+File: LinearSys_8hpp__incl.pdf Graphic file (type pdf)
+<use LinearSys_8hpp__incl.pdf>
+Package pdftex.def Info: LinearSys_8hpp__incl.pdf  used on input line 12.
+(pdftex.def)             Requested size: 350.0pt x 168.25427pt.
+ [123] <./LinearSys_8hpp__dep__incl.pdf>
+<LinearSys_8hpp__dep__incl.pdf, id=4472, 855.195pt x 291.0875pt>
+File: LinearSys_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use LinearSys_8hpp__dep__incl.pdf>
+Package pdftex.def Info: LinearSys_8hpp__dep__incl.pdf  used on input line 19.
+(pdftex.def)             Requested size: 350.0pt x 119.129pt.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 8.3 on input line 52.
+
+) (./SchurSequentialSolver_8hpp.tex <./SchurSequentialSolver_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./SchurSequentialSolver_8hpp__incl.pdf): PDF inc
+lusion: multiple pdfs with page group included in a single page
+>
+<SchurSequentialSolver_8hpp__incl.pdf, id=4485, 616.3025pt x 392.46625pt>
+File: SchurSequentialSolver_8hpp__incl.pdf Graphic file (type pdf)
+<use SchurSequentialSolver_8hpp__incl.pdf>
+Package pdftex.def Info: SchurSequentialSolver_8hpp__incl.pdf  used on input li
+ne 11.
+(pdftex.def)             Requested size: 350.0pt x 222.88763pt.
+ [124] <./SchurSequentialSolver_8hpp__dep__incl.pdf>
+<SchurSequentialSolver_8hpp__dep__incl.pdf, id=4507, 619.31375pt x 178.6675pt>
+File: SchurSequentialSolver_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use SchurSequentialSolver_8hpp__dep__incl.pdf>
+Package pdftex.def Info: SchurSequentialSolver_8hpp__dep__incl.pdf  used on inp
+ut line 18.
+(pdftex.def)             Requested size: 350.0pt x 100.9773pt.
+) (./initializer_8hpp.tex <./initializer_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./initializer_8hpp__incl.pdf): PDF inclusion: mu
+ltiple pdfs with page group included in a single page
+>
+<initializer_8hpp__incl.pdf, id=4516, 758.835pt x 392.46625pt>
+File: initializer_8hpp__incl.pdf Graphic file (type pdf)
+<use initializer_8hpp__incl.pdf>
+Package pdftex.def Info: initializer_8hpp__incl.pdf  used on input line 14.
+(pdftex.def)             Requested size: 350.0pt x 181.02173pt.
+ [125] <./initializer_8hpp__dep__incl.pdf>
+<initializer_8hpp__dep__incl.pdf, id=4543, 756.8275pt x 302.12875pt>
+File: initializer_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use initializer_8hpp__dep__incl.pdf>
+Package pdftex.def Info: initializer_8hpp__dep__incl.pdf  used on input line 21
+.
+(pdftex.def)             Requested size: 350.0pt x 139.72313pt.
+) (./NSBSolver_8hpp.tex <./NSBSolver_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./NSBSolver_8hpp__incl.pdf): PDF inclusion: mult
+iple pdfs with page group included in a single page
+>
+<NSBSolver_8hpp__incl.pdf, id=4566, 1798.72pt x 504.88625pt>
+File: NSBSolver_8hpp__incl.pdf Graphic file (type pdf)
+<use NSBSolver_8hpp__incl.pdf>
+Package pdftex.def Info: NSBSolver_8hpp__incl.pdf  used on input line 17.
+(pdftex.def)             Requested size: 350.0pt x 98.24055pt.
+ [126] <./NSBSolver_8hpp__dep__incl.pdf>
+<NSBSolver_8hpp__dep__incl.pdf, id=4591, 337.26pt x 167.62625pt>
+File: NSBSolver_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use NSBSolver_8hpp__dep__incl.pdf>
+Package pdftex.def Info: NSBSolver_8hpp__dep__incl.pdf  used on input line 24.
+(pdftex.def)             Requested size: 336.0pt x 167.00427pt.
+) (./pressureStep_8hpp.tex <./pressureStep_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./pressureStep_8hpp__incl.pdf): PDF inclusion: m
+ultiple pdfs with page group included in a single page
+>
+<pressureStep_8hpp__incl.pdf, id=4600, 1157.32375pt x 448.67625pt>
+File: pressureStep_8hpp__incl.pdf Graphic file (type pdf)
+<use pressureStep_8hpp__incl.pdf>
+Package pdftex.def Info: pressureStep_8hpp__incl.pdf  used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 135.68561pt.
+ [127] <./pressureStep_8hpp__dep__incl.pdf>
+<pressureStep_8hpp__dep__incl.pdf, id=4624, 459.7175pt x 234.8775pt>
+File: pressureStep_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use pressureStep_8hpp__dep__incl.pdf>
+Package pdftex.def Info: pressureStep_8hpp__dep__incl.pdf  used on input line 2
+0.
+(pdftex.def)             Requested size: 350.0pt x 178.8313pt.
+) (./SimulationContext_8hpp.tex <./SimulationContext_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./SimulationContext_8hpp__incl.pdf): PDF inclusi
+on: multiple pdfs with page group included in a single page
+>
+<SimulationContext_8hpp__incl.pdf, id=4633, 607.26875pt x 280.04625pt>
+File: SimulationContext_8hpp__incl.pdf Graphic file (type pdf)
+<use SimulationContext_8hpp__incl.pdf>
+Package pdftex.def Info: SimulationContext_8hpp__incl.pdf  used on input line 1
+3.
+(pdftex.def)             Requested size: 350.0pt x 161.40564pt.
+ [128] <./SimulationContext_8hpp__dep__incl.pdf>
+<SimulationContext_8hpp__dep__incl.pdf, id=4651, 1451.4225pt x 425.59pt>
+File: SimulationContext_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use SimulationContext_8hpp__dep__incl.pdf>
+Package pdftex.def Info: SimulationContext_8hpp__dep__incl.pdf  used on input l
+ine 20.
+(pdftex.def)             Requested size: 350.0pt x 102.62424pt.
+) (./viscousStep_8hpp.tex <./viscousStep_8hpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./viscousStep_8hpp__incl.pdf): PDF inclusion: mu
+ltiple pdfs with page group included in a single page
+>
+<viscousStep_8hpp__incl.pdf, id=4663, 1157.32375pt x 448.67625pt>
+File: viscousStep_8hpp__incl.pdf Graphic file (type pdf)
+<use viscousStep_8hpp__incl.pdf>
+Package pdftex.def Info: viscousStep_8hpp__incl.pdf  used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 135.68561pt.
+ [129] <./viscousStep_8hpp__dep__incl.pdf>
+<viscousStep_8hpp__dep__incl.pdf, id=4687, 452.69125pt x 234.8775pt>
+File: viscousStep_8hpp__dep__incl.pdf Graphic file (type pdf)
+<use viscousStep_8hpp__dep__incl.pdf>
+Package pdftex.def Info: viscousStep_8hpp__dep__incl.pdf  used on input line 20
+.
+(pdftex.def)             Requested size: 350.0pt x 181.59451pt.
+) (./displayError_8py.tex [130])
+(./plot__convergence_8py.tex) (./plot__convergence__new_8py.tex [131])
+(./run__convergence__study_8py.tex) (./run__convergence__study__new_8py.tex)
+(./Fields_8cpp.tex <./Fields_8cpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./Fields_8cpp__incl.pdf): PDF inclusion: multipl
+e pdfs with page group included in a single page
+>
+<Fields_8cpp__incl.pdf, id=4794, 594.22pt x 269.005pt>
+File: Fields_8cpp__incl.pdf Graphic file (type pdf)
+<use Fields_8cpp__incl.pdf>
+Package pdftex.def Info: Fields_8cpp__incl.pdf  used on input line 9.
+(pdftex.def)             Requested size: 350.0pt x 158.45297pt.
+) (./TridiagMat_8cpp.tex [132] <./TridiagMat_8cpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./TridiagMat_8cpp__incl.pdf): PDF inclusion: mul
+tiple pdfs with page group included in a single page
+>
+<TridiagMat_8cpp__incl.pdf, id=4815, 305.14pt x 212.795pt>
+File: TridiagMat_8cpp__incl.pdf Graphic file (type pdf)
+<use TridiagMat_8cpp__incl.pdf>
+Package pdftex.def Info: TridiagMat_8cpp__incl.pdf  used on input line 11.
+(pdftex.def)             Requested size: 304.0pt x 212.00868pt.
+) (./inputReader_8cpp.tex <./inputReader_8cpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./inputReader_8cpp__incl.pdf): PDF inclusion: mu
+ltiple pdfs with page group included in a single page
+>
+<inputReader_8cpp__incl.pdf, id=4823, 615.29875pt x 381.425pt>
+File: inputReader_8cpp__incl.pdf Graphic file (type pdf)
+<use inputReader_8cpp__incl.pdf>
+Package pdftex.def Info: inputReader_8cpp__incl.pdf  used on input line 12.
+(pdftex.def)             Requested size: 350.0pt x 216.96635pt.
+ [133]) (./logWriter_8cpp.tex <./logWriter_8cpp__incl.pdf>
+<logWriter_8cpp__incl.pdf, id=4843, 775.89874pt x 437.635pt>
+File: logWriter_8cpp__incl.pdf Graphic file (type pdf)
+<use logWriter_8cpp__incl.pdf>
+Package pdftex.def Info: logWriter_8cpp__incl.pdf  used on input line 10.
+(pdftex.def)             Requested size: 350.0pt x 197.41472pt.
+)
+(./VTKWriter_8cpp.tex [134] <./VTKWriter_8cpp__incl.pdf>
+<VTKWriter_8cpp__incl.pdf, id=4861, 861.2175pt x 437.635pt>
+File: VTKWriter_8cpp__incl.pdf Graphic file (type pdf)
+<use VTKWriter_8cpp__incl.pdf>
+Package pdftex.def Info: VTKWriter_8cpp__incl.pdf  used on input line 12.
+(pdftex.def)             Requested size: 350.0pt x 177.85555pt.
+) (./main_8cpp.tex <./main_8cpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./main_8cpp__incl.pdf): PDF inclusion: multiple 
+pdfs with page group included in a single page
+>
+<main_8cpp__incl.pdf, id=4869, 1798.72pt x 550.055pt>
+File: main_8cpp__incl.pdf Graphic file (type pdf)
+<use main_8cpp__incl.pdf>
+Package pdftex.def Info: main_8cpp__incl.pdf  used on input line 8.
+(pdftex.def)             Requested size: 350.0pt x 107.02948pt.
+ [135] <./main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph.pdf>
+<main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph.pdf, id=4894, 915.42pt x 59
+0.205pt>
+File: main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph.pdf Graphic file (type
+ pdf)
+<use main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph.pdf>
+Package pdftex.def Info: main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph.pdf
+  used on input line 29.
+(pdftex.def)             Requested size: 350.0pt x 225.65811pt.
+)
+(./derivatives_8cpp.tex <./derivatives_8cpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./derivatives_8cpp__incl.pdf): PDF inclusion: mu
+ltiple pdfs with page group included in a single page
+>
+<derivatives_8cpp__incl.pdf, id=4909, 593.21625pt x 325.215pt>
+File: derivatives_8cpp__incl.pdf Graphic file (type pdf)
+<use derivatives_8cpp__incl.pdf>
+Package pdftex.def Info: derivatives_8cpp__incl.pdf  used on input line 10.
+(pdftex.def)             Requested size: 350.0pt x 191.8851pt.
+) (./derivativesOpt_8cpp.tex [136] <./derivativesOpt_8cpp__incl.pdf>
+<derivativesOpt_8cpp__incl.pdf, id=4929, 593.21625pt x 336.25626pt>
+File: derivativesOpt_8cpp__incl.pdf Graphic file (type pdf)
+<use derivativesOpt_8cpp__incl.pdf>
+Package pdftex.def Info: derivativesOpt_8cpp__incl.pdf  used on input line 10.
+(pdftex.def)             Requested size: 350.0pt x 198.39973pt.
+)
+(./LinearSys_8cpp.tex <./LinearSys_8cpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./LinearSys_8cpp__incl.pdf): PDF inclusion: mult
+iple pdfs with page group included in a single page
+>
+<LinearSys_8cpp__incl.pdf, id=4937, 863.225pt x 381.425pt>
+File: LinearSys_8cpp__incl.pdf Graphic file (type pdf)
+<use LinearSys_8cpp__incl.pdf>
+Package pdftex.def Info: LinearSys_8cpp__incl.pdf  used on input line 13.
+(pdftex.def)             Requested size: 350.0pt x 154.65088pt.
+) (./SchurSequentialSolver_8cpp.tex [137] <./SchurSequentialSolver_8cpp__incl.p
+df>
+<SchurSequentialSolver_8cpp__incl.pdf, id=4955, 880.28876pt x 459.7175pt>
+File: SchurSequentialSolver_8cpp__incl.pdf Graphic file (type pdf)
+<use SchurSequentialSolver_8cpp__incl.pdf>
+Package pdftex.def Info: SchurSequentialSolver_8cpp__incl.pdf  used on input li
+ne 12.
+(pdftex.def)             Requested size: 350.0pt x 182.78242pt.
+) (./initializer_8cpp.tex <./initializer_8cpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./initializer_8cpp__incl.pdf): PDF inclusion: mu
+ltiple pdfs with page group included in a single page
+>
+<initializer_8cpp__incl.pdf, id=4963, 809.0225pt x 437.635pt>
+File: initializer_8cpp__incl.pdf Graphic file (type pdf)
+<use initializer_8cpp__incl.pdf>
+Package pdftex.def Info: initializer_8cpp__incl.pdf  used on input line 11.
+(pdftex.def)             Requested size: 350.0pt x 189.33463pt.
+) (./NSBSolver_8cpp.tex [138] <./NSBSolver_8cpp__incl.pdf>
+<NSBSolver_8cpp__incl.pdf, id=4987, 1750.54pt x 550.055pt>
+File: NSBSolver_8cpp__incl.pdf Graphic file (type pdf)
+<use NSBSolver_8cpp__incl.pdf>
+Package pdftex.def Info: NSBSolver_8cpp__incl.pdf  used on input line 22.
+(pdftex.def)             Requested size: 350.0pt x 109.97546pt.
+)
+(./pressureStep_8cpp.tex <./pressureStep_8cpp__incl.pdf
+
+pdfTeX warning: pdflatex (file ./pressureStep_8cpp__incl.pdf): PDF inclusion: m
+ultiple pdfs with page group included in a single page
+>
+<pressureStep_8cpp__incl.pdf, id=5002, 1244.65pt x 504.88625pt>
+File: pressureStep_8cpp__incl.pdf Graphic file (type pdf)
+<use pressureStep_8cpp__incl.pdf>
+Package pdftex.def Info: pressureStep_8cpp__incl.pdf  used on input line 15.
+(pdftex.def)             Requested size: 350.0pt x 141.97578pt.
+ [139]) (./viscousStep_8cpp.tex <./viscousStep_8cpp__incl.pdf>
+<viscousStep_8cpp__incl.pdf, id=5027, 1230.5975pt x 504.88625pt>
+File: viscousStep_8cpp__incl.pdf Graphic file (type pdf)
+<use viscousStep_8cpp__incl.pdf>
+Package pdftex.def Info: viscousStep_8cpp__incl.pdf  used on input line 15.
+(pdftex.def)             Requested size: 350.0pt x 143.59361pt.
+) [140]
+No file refman.ind.
+
+Package longtable Warning: Table widths have changed. Rerun LaTeX.
+
+(./refman.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `refman.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `refman.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  478D54DE0A493985E6FB153C47284D12;99107.
+ ) 
+Here is how much of TeX's memory you used:
+ 21114 strings out of 480247
+ 443565 string characters out of 5896150
+ 605090 words of memory out of 5000000
+ 37201 multiletter control sequences out of 15000+600000
+ 531552 words of font info for 109 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 99i,16n,117p,973b,642s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/urw/courier/ucrro8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helve
+tic/uhvb8ac.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on refman.pdf (142 pages, 2070816 bytes).
+PDF statistics:
+ 5408 PDF objects out of 6186 (max. 8388607)
+ 4399 compressed objects within 44 object streams
+ 1395 named destinations out of 1440 (max. 500000)
+ 1046 words of extra memory for PDF output out of 10000 (max. 10000000)
+

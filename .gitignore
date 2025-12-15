@@ -13,7 +13,4 @@ Thumbs.db
 __pycache__/
 *.pyc
 
-# Ignore Doxygen output folder
-/docs/
-
 gmon.out

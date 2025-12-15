@@ -1,0 +1,7 @@
+<map id="MpiEnv::dims" name="MpiEnv::dims">
+<area shape="rect" id="node1" title="Getter for the dimensions of the Cartesian grid." alt="" coords="509,31,619,57"/>
+<area shape="rect" id="node2" href="$structGrid.html#ad23ba8bffd7ee02f2b19ba5c252a96fe" title="Constructor to initialize the grid in a parallel environment. Automatically decomposes the global dom..." alt="" coords="334,5,418,32"/>
+<area shape="rect" id="node3" href="$classMpiEnv.html#a8ab121f1e035ef8cfc4dcbc87e136a2a" title="Setup the MPI Cartesian topology with given dimensions and periodicity." alt="" coords="291,56,461,83"/>
+<area shape="rect" id="node4" href="$classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6" title=" " alt="" coords="108,56,243,83"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,56,60,83"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="MpiEnv::coords" name="MpiEnv::coords">
+<area shape="rect" id="node1" title="Getter for the coordinates of the current process in the Cartesian topology." alt="" coords="137,5,257,32"/>
+<area shape="rect" id="node2" href="$structGrid.html#ad23ba8bffd7ee02f2b19ba5c252a96fe" title="Constructor to initialize the grid in a parallel environment. Automatically decomposes the global dom..." alt="" coords="5,5,89,32"/>
+</map>

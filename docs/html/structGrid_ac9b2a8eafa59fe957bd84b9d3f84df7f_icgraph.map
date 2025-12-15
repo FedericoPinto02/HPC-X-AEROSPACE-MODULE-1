@@ -1,0 +1,4 @@
+<map id="Grid::decompose1D" name="Grid::decompose1D">
+<area shape="rect" id="node1" title="Decompose the grid along a target dimension, identifying local information of the chunk owned by a pr..." alt="" coords="137,5,288,32"/>
+<area shape="rect" id="node2" href="$structGrid.html#ad23ba8bffd7ee02f2b19ba5c252a96fe" title="Constructor to initialize the grid in a parallel environment. Automatically decomposes the global dom..." alt="" coords="5,5,89,32"/>
+</map>

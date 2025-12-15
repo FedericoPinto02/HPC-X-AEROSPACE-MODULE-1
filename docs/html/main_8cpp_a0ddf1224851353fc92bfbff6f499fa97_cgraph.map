@@ -1,0 +1,28 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title=" " alt="" coords="5,228,60,255"/>
+<area shape="rect" id="node2" href="$classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6" title=" " alt="" coords="108,253,243,280"/>
+<area shape="rect" id="node26" href="$classNSBSolver.html#ada676d7f89d6183a6666976991e4e868" title=" " alt="" coords="109,89,242,116"/>
+<area shape="rect" id="node3" href="$namespaceInputReader.html#a727137059f29ce31ea17ec99608c372b" title="Read and parse input data from a JSON configuration file." alt="" coords="307,396,445,423"/>
+<area shape="rect" id="node4" href="$namespaceInitializer.html#a0741ee296f266920808094cbb8475064" title="Setup and initialize the SimulationData from input data." alt="" coords="313,345,439,372"/>
+<area shape="rect" id="node24" href="$classMpiEnv.html#a8ab121f1e035ef8cfc4dcbc87e136a2a" title="Setup the MPI Cartesian topology with given dimensions and periodicity." alt="" coords="291,160,461,187"/>
+<area shape="rect" id="node5" href="$namespaceConfigFuncs.html#a9d7c208968a863df7d17781b9ed10356" title=" " alt="" coords="751,248,918,275"/>
+<area shape="rect" id="node6" href="$namespaceConfigFuncs.html#a03a24d0ef4e46bdafbcffe16161a4b68" title=" " alt="" coords="751,371,918,397"/>
+<area shape="rect" id="node7" href="$namespaceConfigFuncs.html#af4bfa49d2de953a1ec03b6c318940568" title=" " alt="" coords="750,472,919,499"/>
+<area shape="rect" id="node8" href="$namespaceConfigFuncs.html#ad7d92434b13f327295ca39fb4906c9ea" title=" " alt="" coords="525,700,681,727"/>
+<area shape="rect" id="node10" href="$namespaceConfigFuncs.html#ad0fb898ee4fa97ae585cb9b55739894f" title=" " alt="" coords="526,548,681,575"/>
+<area shape="rect" id="node11" href="$namespaceConfigFuncs.html#ac419f0da352a3a2f376d7f1b020a8620" title=" " alt="" coords="526,599,681,625"/>
+<area shape="rect" id="node12" href="$namespaceInitializer.html#a84757b22926f400a6aec78c2b1e2aa69" title=" " alt="" coords="745,135,924,177"/>
+<area shape="rect" id="node15" href="$namespaceInitializer.html#ad0df7e265dd3a6f2b2aaefcb2244203d" title=" " alt="" coords="509,77,697,118"/>
+<area shape="rect" id="node19" href="$namespaceConfigFuncs.html#ad19b0e94f67f64c493cff903c92a2efb" title=" " alt="" coords="528,649,679,676"/>
+<area shape="rect" id="node20" href="$namespaceConfigFuncs.html#afb0ca0998e95d74aa5ade488a7f12582" title=" " alt="" coords="514,244,693,271"/>
+<area shape="rect" id="node21" href="$namespaceConfigFuncs.html#a885e55fe8c3e3302d8e89e3a9042672c" title=" " alt="" coords="514,193,693,220"/>
+<area shape="rect" id="node22" href="$namespaceConfigFuncs.html#a48533f3f063ddfc4bad672565013f720" title=" " alt="" coords="514,345,693,372"/>
+<area shape="rect" id="node23" href="$namespaceConfigFuncs.html#a548b92fc232b26882dcf1149359af111" title=" " alt="" coords="512,497,695,524"/>
+<area shape="rect" id="node9" href="$namespaceConfigFuncs.html#a36d1eab882a6024fffb46cadb9bc198d" title=" " alt="" coords="760,624,909,651"/>
+<area shape="rect" id="node13" href="$classField.html#a17a19acc3a519f5e37a802e76c992f46" title="Populates the underlying field based on the stored function in (x,y,z,t)." alt="" coords="1000,87,1119,113"/>
+<area shape="rect" id="node14" href="$classField.html#acc812182b3d806c93491194ae821d9a3" title="Setup the field with a function to populate it (e.g., initial condition)." alt="" coords="1011,139,1108,165"/>
+<area shape="rect" id="node16" href="$classVectorField.html#afbe1f8fbd8bdbd92996700bbe9657f7d" title="Populates each component of the underlying vector field based on the stored functions in (x,..." alt="" coords="755,33,914,60"/>
+<area shape="rect" id="node18" href="$classVectorField.html#a678cbed69b397d108ea467ac65a9507c" title="Setup the vector field with functions to populate each component (e.g., initial conditions)." alt="" coords="765,84,904,111"/>
+<area shape="rect" id="node17" href="$classVectorField.html#ad0d70e28de0a1efeaa1e3ffe8a86b175" title="Access the component of the vector field in the specified direction." alt="" coords="972,35,1147,61"/>
+<area shape="rect" id="node25" href="$classMpiEnv.html#ac7e914837a093621d908ef6a61853fbd" title="Getter for the dimensions of the Cartesian grid." alt="" coords="549,25,658,52"/>
+</map>
