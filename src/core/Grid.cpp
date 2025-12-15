@@ -46,21 +46,36 @@ std::pair<size_t, size_t> Grid::decompose1D(
         int n_procs,
         int proc_coord
 ) {
-    if (n_procs == 0) return {N_glob, 0}; // Safety for non-MPI runs
-
-    size_t base = N_glob / n_procs;
-    size_t remainder = N_glob % n_procs;
-
-    size_t proc_count = base;
-    size_t proc_start = proc_coord * base;
-
-    // Distribute the remainder points to the first few processors
-    if (static_cast<size_t>(proc_coord) < remainder) {
-        proc_count++;
-        proc_start += proc_coord; // I have 'coord' extra points before me
-    } else {
-        proc_start += remainder; // All remainders are before me
+    // Safety check for trivial cases
+    if (n_procs <= 1) return {N_glob, 0};
+    if (N_glob < static_cast<size_t>(n_procs) + 1) {
+        throw std::runtime_error("Grid too small for the requested number of processors (Overlapping Decomposition).");
     }
+
+    // --- OVERLAPPING STRATEGY ---
+    // 1. Decompose the INTERVALS (edges) between points.
+    //    If there are N points, there are N-1 intervals.
+    size_t n_intervals = N_glob - 1;
+
+    size_t base = n_intervals / n_procs;
+    size_t remainder = n_intervals % n_procs;
+
+    size_t my_intervals = base;
+    size_t start_interval = proc_coord * base;
+
+    // Distribute remainder intervals
+    if (static_cast<size_t>(proc_coord) < remainder) {
+        my_intervals++;
+        start_interval += proc_coord;
+    } else {
+        start_interval += remainder;
+    }
+
+    // 2. Convert back to POINTS.
+    //    A segment of M intervals contains M+1 points (vertices).
+    //    The start index matches the start interval index.
+    size_t proc_count = my_intervals + 1;
+    size_t proc_start = start_interval;
 
     return {proc_count, proc_start};
 }
