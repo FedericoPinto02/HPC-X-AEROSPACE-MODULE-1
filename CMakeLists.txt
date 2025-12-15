@@ -127,6 +127,7 @@ if (BUILD_TESTS)
             ${PROJECT_TESTS_DIR}/test_schurSolver.cpp
             ${PROJECT_TESTS_DIR}/test_tridiag.cpp
             #${PROJECT_TESTS_DIR}/test_schurSolverPar.cpp
+            #${PROJECT_TESTS_DIR}/test_schurNonOverlappingSolver.cpp
     )
 
     # Link test executable with the libraries to be tested and GoogleTest tests runner
