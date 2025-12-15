@@ -136,8 +136,6 @@ void Derivatives::computeDx_bwd(const Field &field, Field &dx, Func &bcu, double
     const double C1 = -1.0 / 3.0 * inv_dx;          // Coefficient for field(1, j, k)
     const double C2 = 3.0 * inv_dx;                 // Coefficient for field(0, j, k)
     const double C3 = -(8.0 / 3.0) * inv_dx;        // Coefficient for bcu(...)
-    const double dy = grid.dy;
-    const double dz = grid.dz;
 
     // Flatten Y and Z dimensions into a single 'xLine' count
     const size_t totalXLines = Ny_tot * Nz_tot;
@@ -186,8 +184,6 @@ void Derivatives::computeDy_bwd(const Field &field, Field &dy, Func &bcv, double
     const double C1 = -1.0 / 3.0 * inv_dy;          // Coefficient for field(i, 1, k)
     const double C2 = 3.0 * inv_dy;                 // Coefficient for field(i, 0, k)
     const double C3 = -(8.0 / 3.0) * inv_dy;        // Coefficient for bcv(...)
-    const double dx = grid.dx;
-    const double dz = grid.dz;
 
     // The distance in memory between (i, j, k) and (i, j-1, k), and (i, j, k) and (i, j, k-1)
     const size_t strideY = Nx_tot;
@@ -240,8 +236,6 @@ void Derivatives::computeDz_bwd(const Field &field, Field &dz, Func &bcw, double
     const double C1 = -1.0 / 3.0 * inv_dz;          // Coefficient for field(i, j, 1)
     const double C2 = 3.0 * inv_dz;                 // Coefficient for field(i, j, 0)
     const double C3 = -(8.0 / 3.0) * inv_dz;        // Coefficient for bcw(...)
-    const double dx = grid.dx;
-    const double dy = grid.dy;
 
     // The distance in memory between (i, j, k) and (i, j, k-1)
     const size_t strideZ = Ny_tot * Nx_tot; // stride is one full XY plane
