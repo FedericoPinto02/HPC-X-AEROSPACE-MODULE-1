@@ -102,17 +102,17 @@ TEST(GridHaloTest, CalculatesSizeWithHaloCorrectly) {
 }
 
 TEST(GridHaloTest, ParallelConstructorSetsHaloDefault) {
-    // Use Parallel Constructor (default halo = 2)
+    // Use Parallel Constructor (default halo = 1)
     int argc = 0;
     char ** argv = nullptr;
     Grid grid(10, 10, 10, 1.0, 1.0, 1.0, MpiEnv(argc, argv));
 
-    EXPECT_EQ(grid.n_halo, 2);
+    EXPECT_EQ(grid.n_halo, 1);
 
     // Check math roughly (if 1 proc, Nx=10. If >1 proc, Nx < 10)
-    size_t expected_Nx = grid.Nx + 4;
-    size_t expected_Ny = grid.Ny + 4;
-    size_t expected_Nz = grid.Nz + 4;
+    size_t expected_Nx = grid.Nx + 2;
+    size_t expected_Ny = grid.Ny + 2;
+    size_t expected_Nz = grid.Nz + 2;
 
     EXPECT_EQ(grid.sizeWithHalo(), expected_Nx * expected_Ny * expected_Nz);
 }

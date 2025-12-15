@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_CXX_FLAGS_RELEASE
-   "-O3 -DNDEBUG -march=native -flto -funroll-loops -fno-math-errno")
+        "-O3 -DNDEBUG -march=native -flto -funroll-loops -fno-math-errno")
 set(CMAKE_EXE_LINKER_FLAGS "-flto")
 
 # Find MPI
@@ -45,6 +45,8 @@ add_library(NSBSolver
         include/numerics/derivatives.hpp
         include/numerics/LinearSys.hpp
         include/numerics/SchurSequentialSolver.hpp
+        include/numerics/SchurSolver.hpp
+        include/numerics/ThomasSolver.hpp
         include/simulation/initializer.hpp
         include/simulation/pressureStep.hpp
         include/simulation/viscousStep.hpp
@@ -59,8 +61,11 @@ add_library(NSBSolver
         src/io/logWriter.cpp
         # -- src/numerics/derivatives.cpp use this source file to compile a non-optimized version
         src/numerics/derivativesOpt.cpp
+        #src/numerics/derivatives.cpp
         src/numerics/LinearSys.cpp
         src/numerics/SchurSequentialSolver.cpp
+        src/numerics/SchurSolver.cpp
+        src/numerics/ThomasSolver.cpp
         src/simulation/initializer.cpp
         src/simulation/pressureStep.cpp
         src/simulation/viscousStep.cpp
@@ -114,13 +119,14 @@ if (BUILD_TESTS)
 
     # Create executable target for tests
     add_executable(alltests
-             ${PROJECT_TESTS_DIR}/test_derivatives.cpp
-             ${PROJECT_TESTS_DIR}/test_grid.cpp
-             ${PROJECT_TESTS_DIR}/test_fields.cpp
-             ${PROJECT_TESTS_DIR}/test_pressureStep.cpp
-             ${PROJECT_TESTS_DIR}/test_viscousStep.cpp
-             ${PROJECT_TESTS_DIR}/test_schurSolver.cpp
-             ${PROJECT_TESTS_DIR}/test_tridiag.cpp
+            ${PROJECT_TESTS_DIR}/test_derivatives.cpp
+            ${PROJECT_TESTS_DIR}/test_grid.cpp
+            ${PROJECT_TESTS_DIR}/test_fields.cpp
+            ${PROJECT_TESTS_DIR}/test_pressureStep.cpp
+            ${PROJECT_TESTS_DIR}/test_viscousStep.cpp
+            ${PROJECT_TESTS_DIR}/test_schurSolver.cpp
+            ${PROJECT_TESTS_DIR}/test_tridiag.cpp
+            #${PROJECT_TESTS_DIR}/test_schurSolverPar.cpp
     )
 
     # Link test executable with the libraries to be tested and GoogleTest tests runner
@@ -136,6 +142,10 @@ if (BUILD_TESTS)
 
     message(STATUS "Building tests - done")
 endif ()
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 # ========================================================
 # ---- PROFILING -----------------------------------------
@@ -158,7 +168,7 @@ if (PROFILING)
 
     target_compile_options(NSBSolver PRIVATE ${PROFILING_FLAGS})
     target_link_libraries(NSBSolver PRIVATE ${PROFILING_FLAGS})
-    
+
     target_compile_options(main PRIVATE ${PROFILING_FLAGS})
     target_link_libraries(main PRIVATE ${PROFILING_FLAGS})
 
@@ -166,21 +176,21 @@ if (PROFILING)
         target_compile_options(alltests PRIVATE ${PROFILING_FLAGS})
         target_link_libraries(alltests PRIVATE ${PROFILING_FLAGS})
     endif ()
-     
+
 
     message(STATUS "Building with profiling enabled - done")
 
     message(STATUS "Auto-profiling enabled: gmon.out -> profiling.txt")
 
     add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/.profile.stamp
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/main
-    COMMAND gprof ${CMAKE_CURRENT_BINARY_DIR}/main gmon.out > ${CMAKE_CURRENT_BINARY_DIR}/profiling.txt
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    DEPENDS main
-        )
+            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/.profile.stamp
+            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/main
+            COMMAND gprof ${CMAKE_CURRENT_BINARY_DIR}/main gmon.out > ${CMAKE_CURRENT_BINARY_DIR}/profiling.txt
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            DEPENDS main
+    )
 
     add_custom_target(profile
-    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/.profile.stamp
-        )
+            DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/.profile.stamp
+    )
 endif ()
