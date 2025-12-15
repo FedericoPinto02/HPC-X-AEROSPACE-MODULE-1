@@ -58,7 +58,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'docs/html' 
+          path: 'docs' 
 
   # 3. JOB: Deployment on GitHub Pages (Continuous Deployment)
   deploy:
