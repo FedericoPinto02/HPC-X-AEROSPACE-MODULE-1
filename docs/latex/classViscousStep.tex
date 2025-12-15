@@ -11,7 +11,8 @@ Handles all viscous step maniplation. This class does not own data but regulates
 
 
 
-Collaboration diagram for Viscous\+Step\+:\nopagebreak
+Collaboration diagram for Viscous\+Step\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -36,7 +37,7 @@ void \mbox{\hyperlink{classViscousStep_a2c153fd3ee426405516d51b04546a5df}{comput
 \begin{DoxyCompactList}\small\item\em Compute xi term. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classViscousStep_a1e0082f2456e9fb9d6e8059d712f97a3}{close\+Viscous\+Step}} ()
 \begin{DoxyCompactList}\small\item\em Closes viscous step filling and solving three linear systems. \end{DoxyCompactList}\item 
-std\+::vector$<$ double $>$ \mbox{\hyperlink{classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c}{solve\+System}} (\mbox{\hyperlink{classLinearSys}{Linear\+Sys}} \&sys, \mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}} b\+Type)
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classViscousStep_a368a04b10b537c84532da3a983920370}{solve\+System}} (\mbox{\hyperlink{classLinearSys}{Linear\+Sys}} \&sys)
 \begin{DoxyCompactList}\small\item\em Wrapper that chooses whether to use Thomas (P=1) or Schur (P$>$1). \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
@@ -107,7 +108,8 @@ Here is the call graph for this function\+:\nopagebreak
 
 Closes viscous step filling and solving three linear systems. 
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -131,7 +133,8 @@ Here is the caller graph for this function\+:\nopagebreak
 
 Compute G term. 
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -155,13 +158,6 @@ Here is the caller graph for this function\+:\nopagebreak
 
 Compute xi term. 
 
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=335pt]{classViscousStep_a2c153fd3ee426405516d51b04546a5df_cgraph}
-\end{center}
-\end{figure}
 Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -203,35 +199,38 @@ Here is the caller graph for this function\+:\nopagebreak
 
 Run viscous step. 
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classViscousStep_af53b70819c9d7a6af545f310020ff37d_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c}\label{classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c}} 
+\mbox{\Hypertarget{classViscousStep_a368a04b10b537c84532da3a983920370}\label{classViscousStep_a368a04b10b537c84532da3a983920370}} 
 \index{ViscousStep@{ViscousStep}!solveSystem@{solveSystem}}
 \index{solveSystem@{solveSystem}!ViscousStep@{ViscousStep}}
 \doxysubsubsection{\texorpdfstring{solveSystem()}{solveSystem()}}
-{\footnotesize\ttfamily std\+::vector$<$ double $>$ Viscous\+Step\+::solve\+System (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSys}{Linear\+Sys}} \&}]{sys,  }\item[{\mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}}}]{b\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ Viscous\+Step\+::solve\+System (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSys}{Linear\+Sys}} \&}]{sys }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 
 Wrapper that chooses whether to use Thomas (P=1) or Schur (P$>$1). 
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_cgraph}
+\includegraphics[width=350pt]{classViscousStep_a368a04b10b537c84532da3a983920370_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classViscousStep_a98b2a51b32509c2323cb32a7bfb2e93c_icgraph}
+\includegraphics[width=350pt]{classViscousStep_a368a04b10b537c84532da3a983920370_icgraph}
 \end{center}
 \end{figure}
 

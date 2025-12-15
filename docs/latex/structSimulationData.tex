@@ -11,7 +11,8 @@ Central structure containing all transient data, fields, and physical properties
 
 
 
-Collaboration diagram for Simulation\+Data\+:\nopagebreak
+Collaboration diagram for Simulation\+Data\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -41,6 +42,8 @@ size\+\_\+t \mbox{\hyperlink{structSimulationData_ac8fb5110609ffb68412d97bc8653e
 \item 
 \mbox{\hyperlink{classField}{Field}} \mbox{\hyperlink{structSimulationData_a4ae06e6437c7a9307c519ff0fcc0f873}{p}}
 \item 
+\mbox{\hyperlink{classField}{Field}} \mbox{\hyperlink{structSimulationData_a7f44cdc2a6cbddaf6359fa3a64169474}{predictor}}
+\item 
 \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \mbox{\hyperlink{structSimulationData_a1e332a48c4872864362d75879701d2e6}{bcu}}
 \item 
 \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \mbox{\hyperlink{structSimulationData_a0320d5c5308b452b05f2bb30616fbcff}{bcv}}
@@ -49,7 +52,7 @@ size\+\_\+t \mbox{\hyperlink{structSimulationData_ac8fb5110609ffb68412d97bc8653e
 \item 
 double \mbox{\hyperlink{structSimulationData_a601b6e3895425e7874d4bfb8ca556bf1}{nu}}
 \item 
-\mbox{\hyperlink{classField}{Field}} \mbox{\hyperlink{structSimulationData_a879a0828cbbea0b77a1120ec92469bce}{k}}
+\mbox{\hyperlink{classVectorField}{Vector\+Field}} \mbox{\hyperlink{structSimulationData_aab7e6c43e53cb2fa3fe7b96bcec976a2}{inv\+\_\+k}}
 \item 
 \mbox{\hyperlink{classVectorField}{Vector\+Field}} \mbox{\hyperlink{structSimulationData_ad77a73fa59324c76b0281f1eac4c3a3b}{f}}
 \item 
@@ -137,11 +140,11 @@ Central structure containing all transient data, fields, and physical properties
 \doxysubsubsection{\texorpdfstring{grid}{grid}}
 {\footnotesize\ttfamily \mbox{\hyperlink{Grid_8hpp_a90e0015df12e0e71b9457e226d49c125}{Grid\+Ptr}} Simulation\+Data\+::grid}
 
-\mbox{\Hypertarget{structSimulationData_a879a0828cbbea0b77a1120ec92469bce}\label{structSimulationData_a879a0828cbbea0b77a1120ec92469bce}} 
-\index{SimulationData@{SimulationData}!k@{k}}
-\index{k@{k}!SimulationData@{SimulationData}}
-\doxysubsubsection{\texorpdfstring{k}{k}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classField}{Field}} Simulation\+Data\+::k}
+\mbox{\Hypertarget{structSimulationData_aab7e6c43e53cb2fa3fe7b96bcec976a2}\label{structSimulationData_aab7e6c43e53cb2fa3fe7b96bcec976a2}} 
+\index{SimulationData@{SimulationData}!inv\_k@{inv\_k}}
+\index{inv\_k@{inv\_k}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{inv\_k}{inv\_k}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classVectorField}{Vector\+Field}} Simulation\+Data\+::inv\+\_\+k}
 
 \mbox{\Hypertarget{structSimulationData_a601b6e3895425e7874d4bfb8ca556bf1}\label{structSimulationData_a601b6e3895425e7874d4bfb8ca556bf1}} 
 \index{SimulationData@{SimulationData}!nu@{nu}}
@@ -154,6 +157,12 @@ Central structure containing all transient data, fields, and physical properties
 \index{p@{p}!SimulationData@{SimulationData}}
 \doxysubsubsection{\texorpdfstring{p}{p}}
 {\footnotesize\ttfamily \mbox{\hyperlink{classField}{Field}} Simulation\+Data\+::p}
+
+\mbox{\Hypertarget{structSimulationData_a7f44cdc2a6cbddaf6359fa3a64169474}\label{structSimulationData_a7f44cdc2a6cbddaf6359fa3a64169474}} 
+\index{SimulationData@{SimulationData}!predictor@{predictor}}
+\index{predictor@{predictor}!SimulationData@{SimulationData}}
+\doxysubsubsection{\texorpdfstring{predictor}{predictor}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classField}{Field}} Simulation\+Data\+::predictor}
 
 \mbox{\Hypertarget{structSimulationData_aba3c240216b32668a59505a6cb18ce91}\label{structSimulationData_aba3c240216b32668a59505a6cb18ce91}} 
 \index{SimulationData@{SimulationData}!totalSimTime@{totalSimTime}}

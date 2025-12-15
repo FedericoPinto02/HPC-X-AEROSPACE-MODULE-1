@@ -1,28 +1,28 @@
 <map id="PressureStep::run" name="PressureStep::run">
-<area shape="rect" id="node1" title="Run pressure step." alt="" coords="5,259,141,285"/>
-<area shape="rect" id="node2" href="$classField.html#af0b46b220f47ffcc3a76b70da049ce3c" title="Add a scalar value to all elements in the field." alt="" coords="538,5,623,32"/>
-<area shape="rect" id="node5" href="$classDerivatives.html#a4c4cdfa3c2c5b4d9c4c52e77130705af" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,132,425,159"/>
-<area shape="rect" id="node11" href="$classLinearSys.html#a4a1b948b08605b422212a8b79dd8737d" title="Fill the linear system for Pressure variables." alt="" coords="473,259,688,285"/>
-<area shape="rect" id="node14" href="$classLinearSys.html#a257096829bb54fc3e45084b5c94beaa8" title="Sets the right&#45;hand side (rhsC) vector for the solver." alt="" coords="757,892,894,919"/>
-<area shape="rect" id="node15" href="$classPressureStep.html#a5420590f473164b5d861a62dc270ac08" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="208,648,407,675"/>
-<area shape="rect" id="node3" href="$classField.html#aea5fcf3a1776d0fc317815e373fcb371" title="Access the value in the field at given position." alt="" coords="777,31,874,57"/>
-<area shape="rect" id="node4" href="$classField.html#ab4240a7cb1cae0917ff698837485f399" title="Computes the linear index for 3D access in row&#45;major order." alt="" coords="997,31,1078,57"/>
-<area shape="rect" id="node6" href="$classDerivatives.html#a2365f0c81b6422e3ed1bba2e1fc44545" title="Compute the derivative of a scalar field in the x&#45;direction (backward difference)." alt="" coords="473,208,688,235"/>
-<area shape="rect" id="node8" href="$classDerivatives.html#ae29cfbcadce2127aa49c690547514b66" title="Compute the derivative of a scalar field in the y&#45;direction (backward difference)." alt="" coords="473,107,688,133"/>
-<area shape="rect" id="node9" href="$classDerivatives.html#a08e9ebe4a51fd2b918fa37fef529ed66" title="Compute the derivative of a scalar field in the z&#45;direction (backward difference)." alt="" coords="474,157,687,184"/>
-<area shape="rect" id="node10" href="$classField.html#a6bcf4ac8ae2f75b3caee656c6e260249" title="Reset the field values to a specified value (default is zero)." alt="" coords="533,56,628,83"/>
-<area shape="rect" id="node7" href="$classField.html#afe97c0b04f25f6322696a22ea9df8628" title="Getter for the grid information." alt="" coords="771,157,880,184"/>
-<area shape="rect" id="node12" href="$classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="963,597,1112,624"/>
-<area shape="rect" id="node13" href="$classTridiagMat.html#a46d96fb5ae69f72ff1f56c12b390d0a9" title="Get the matrix size." alt="" coords="964,648,1111,675"/>
-<area shape="rect" id="node16" href="$classLinearSys.html#af3658eaf4a88aa14bbe2f5add8b842ac" title="Getter to access the internal matrix (needed for Schur)." alt="" coords="503,724,659,751"/>
-<area shape="rect" id="node17" href="$classLinearSys.html#af0256caf9d237026696a6ca545503d7a" title="Getter to access the internal RHS (modified by fillSystem)." alt="" coords="511,775,650,801"/>
-<area shape="rect" id="node18" href="$classLinearSys.html#ab5e1dc2bef1794dec1b232f2fbc5b077" title="Gets the solution vector (unknownX) computed by the solver." alt="" coords="742,673,909,700"/>
-<area shape="rect" id="node19" href="$classSchurSequentialSolver.html#a8b7aec052a578c5fd6ca38d279728212" title="Phase 0: Pre&#45;processing. Builds the submatrices A_ii, extracts interface coefficients,..." alt="" coords="497,826,665,867"/>
-<area shape="rect" id="node21" href="$classLinearSys.html#a60600d4d91ff996ab642bbc424f16525" title="Solve the linear system." alt="" coords="736,623,915,649"/>
-<area shape="rect" id="node22" href="$classSchurSequentialSolver.html#a0c0a6ed80b6df87ae3e1c53167ff444e" title="Phase 1: Solve. Solves the system A*x = f using the Schur algorithm. &#39;PreProcess&#39; must have been call..." alt="" coords="497,441,665,482"/>
-<area shape="rect" id="node20" href="$classSchurSequentialSolver.html#ae84b28ee0ff1e33bae823b780e88c1c2" title=" " alt="" coords="741,775,909,817"/>
-<area shape="rect" id="node23" href="$classSchurSequentialSolver.html#a046a2bbdb46a799a963f44c3ef15bf49" title=" " alt="" coords="741,506,909,547"/>
-<area shape="rect" id="node24" href="$classSchurSequentialSolver.html#afc572bd947a97f8aebc82714013d6d41" title=" " alt="" coords="741,310,909,351"/>
-<area shape="rect" id="node25" href="$classSchurSequentialSolver.html#aeae72f30176c219c7d60a206f54865c4" title=" " alt="" coords="741,375,909,417"/>
-<area shape="rect" id="node26" href="$classSchurSequentialSolver.html#aebe81742570d50e62bf86d13a1fd8d93" title=" " alt="" coords="741,441,909,482"/>
+<area shape="rect" id="node1" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="5,360,141,387"/>
+<area shape="rect" id="node2" href="$classDerivatives.html#a9516515b562a7699e9b226e6030ef86c" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,132,425,159"/>
+<area shape="rect" id="node11" href="$classLinearSys.html#a6ffd1b18f1754d6634573f053d742df0" title="Fill the linear system for Pressure variables." alt="" coords="736,892,951,919"/>
+<area shape="rect" id="node14" href="$classLinearSys.html#a257096829bb54fc3e45084b5c94beaa8" title="Sets the right&#45;hand side (rhsC) vector for the solver." alt="" coords="775,309,912,336"/>
+<area shape="rect" id="node15" href="$classPressureStep.html#a9ebc8796e971246693693124240782b3" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="208,436,407,463"/>
+<area shape="rect" id="node3" href="$classField.html#af0b46b220f47ffcc3a76b70da049ce3c" title="Add a scalar value to all elements in the field." alt="" coords="538,56,623,83"/>
+<area shape="rect" id="node6" href="$classDerivatives.html#a0046bc8ee2db86bf451dc85dd19dd7f9" title="Compute the derivative of a scalar field in the x&#45;direction (backward difference)." alt="" coords="473,208,688,235"/>
+<area shape="rect" id="node8" href="$classDerivatives.html#a4a5487a38ca52d1bb20c95efe6966bd0" title="Compute the derivative of a scalar field in the y&#45;direction (backward difference)." alt="" coords="473,107,688,133"/>
+<area shape="rect" id="node9" href="$classDerivatives.html#ae1d79e3c78f83f9d82c53805c426583e" title="Compute the derivative of a scalar field in the z&#45;direction (backward difference)." alt="" coords="474,157,687,184"/>
+<area shape="rect" id="node10" href="$classField.html#a6bcf4ac8ae2f75b3caee656c6e260249" title="Reset the field values to a specified value (default is zero)." alt="" coords="533,5,628,32"/>
+<area shape="rect" id="node4" href="$classField.html#aea5fcf3a1776d0fc317815e373fcb371" title="Access the value in the field at given position." alt="" coords="795,31,892,57"/>
+<area shape="rect" id="node5" href="$classField.html#ab4240a7cb1cae0917ff698837485f399" title="Computes the linear index for 3D access in row&#45;major order." alt="" coords="1033,31,1114,57"/>
+<area shape="rect" id="node7" href="$classField.html#afe97c0b04f25f6322696a22ea9df8628" title="Getter for the grid information." alt="" coords="789,157,898,184"/>
+<area shape="rect" id="node12" href="$classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="999,579,1148,605"/>
+<area shape="rect" id="node13" href="$classTridiagMat.html#a926ab35a1c697a419508318505f701a3" title="Get the matrix size." alt="" coords="1000,411,1147,437"/>
+<area shape="rect" id="node16" href="$classLinearSys.html#a347428c173bf3507fb43006f663b45f9" title="Getter to access the internal matrix." alt="" coords="503,411,659,437"/>
+<area shape="rect" id="node17" href="$classLinearSys.html#af0256caf9d237026696a6ca545503d7a" title="Getter to access the internal RHS (modified by fillSystem)." alt="" coords="511,461,650,488"/>
+<area shape="rect" id="node18" href="$classLinearSys.html#ab5e1dc2bef1794dec1b232f2fbc5b077" title="Gets the solution vector (unknownX) computed by the solver." alt="" coords="760,360,927,387"/>
+<area shape="rect" id="node19" href="$classSchurSequentialSolver.html#a8b7aec052a578c5fd6ca38d279728212" title="Phase 0: Pre&#45;processing. Builds the submatrices A_ii, extracts interface coefficients,..." alt="" coords="497,513,665,554"/>
+<area shape="rect" id="node21" href="$classLinearSys.html#a60600d4d91ff996ab642bbc424f16525" title="Solve the linear system." alt="" coords="754,528,933,555"/>
+<area shape="rect" id="node22" href="$classSchurSequentialSolver.html#a0c0a6ed80b6df87ae3e1c53167ff444e" title="Phase 1: Solve. Solves the system A*x = f using the Schur algorithm. &#39;PreProcess&#39; must have been call..." alt="" coords="497,695,665,737"/>
+<area shape="rect" id="node20" href="$classSchurSequentialSolver.html#ae84b28ee0ff1e33bae823b780e88c1c2" title=" " alt="" coords="759,462,927,503"/>
+<area shape="rect" id="node23" href="$classSchurSequentialSolver.html#a046a2bbdb46a799a963f44c3ef15bf49" title=" " alt="" coords="759,761,927,802"/>
+<area shape="rect" id="node24" href="$classSchurSequentialSolver.html#afc572bd947a97f8aebc82714013d6d41" title=" " alt="" coords="759,826,927,867"/>
+<area shape="rect" id="node25" href="$classSchurSequentialSolver.html#aeae72f30176c219c7d60a206f54865c4" title=" " alt="" coords="759,630,927,671"/>
+<area shape="rect" id="node26" href="$classSchurSequentialSolver.html#aebe81742570d50e62bf86d13a1fd8d93" title=" " alt="" coords="759,695,927,737"/>
 </map>

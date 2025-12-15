@@ -1,17 +1,14 @@
 <map id="Field::idx" name="Field::idx">
-<area shape="rect" id="node1" title="Computes the linear index for 3D access in row&#45;major order." alt="" coords="947,107,1028,133"/>
-<area shape="rect" id="node2" href="$classField.html#ade27340b1247c816b86ef5e6cede81b8" title="Access the value in the field at given position." alt="" coords="752,56,879,83"/>
-<area shape="rect" id="node3" href="$classField.html#aea5fcf3a1776d0fc317815e373fcb371" title="Access the value in the field at given position." alt="" coords="767,107,864,133"/>
-<area shape="rect" id="node12" href="$classField.html#ae8b4623a9fe837b3eff02e02ffe1c365" title="Access the value in the field at given position considering direction offset." alt="" coords="732,183,899,209"/>
-<area shape="rect" id="node4" href="$classField.html#af0b46b220f47ffcc3a76b70da049ce3c" title="Add a scalar value to all elements in the field." alt="" coords="536,56,621,83"/>
-<area shape="rect" id="node8" href="$classField.html#a6edac7bcf17e1422a9dcbddbeaca2153" title="Multiply all elements in the field by a scalar value." alt="" coords="521,107,636,133"/>
-<area shape="rect" id="node10" href="$classVectorField.html#a8ed16373ed36283478770b599908deda" title="Access the component value of the vector field in the specified direction at the given position." alt="" coords="495,157,662,184"/>
-<area shape="rect" id="node11" href="$classField.html#a6bcf4ac8ae2f75b3caee656c6e260249" title="Reset the field values to a specified value (default is zero)." alt="" coords="531,5,626,32"/>
+<area shape="rect" id="node1" title="Computes the linear index for 3D access in row&#45;major order." alt="" coords="903,81,984,108"/>
+<area shape="rect" id="node2" href="$classField.html#ade27340b1247c816b86ef5e6cede81b8" title="Access the value in the field at given position." alt="" coords="708,31,835,57"/>
+<area shape="rect" id="node3" href="$classField.html#aea5fcf3a1776d0fc317815e373fcb371" title="Access the value in the field at given position." alt="" coords="723,81,820,108"/>
+<area shape="rect" id="node12" href="$classField.html#ae8b4623a9fe837b3eff02e02ffe1c365" title="Access the value in the field at given position considering direction offset." alt="" coords="688,132,855,159"/>
+<area shape="rect" id="node4" href="$classField.html#af0b46b220f47ffcc3a76b70da049ce3c" title="Add a scalar value to all elements in the field." alt="" coords="514,56,599,83"/>
+<area shape="rect" id="node8" href="$classField.html#a6edac7bcf17e1422a9dcbddbeaca2153" title="Multiply all elements in the field by a scalar value." alt="" coords="499,5,614,32"/>
+<area shape="rect" id="node10" href="$classVectorField.html#a8ed16373ed36283478770b599908deda" title="Access the component value of the vector field in the specified direction at the given position." alt="" coords="473,107,640,133"/>
+<area shape="rect" id="node11" href="$classField.html#a6bcf4ac8ae2f75b3caee656c6e260249" title="Reset the field values to a specified value (default is zero)." alt="" coords="509,157,604,184"/>
 <area shape="rect" id="node5" href="$classVectorField.html#aa8f5f5a590e1eb791f2e27e802dd8cb7" title="Add a scalar value to all components of the vector field." alt="" coords="244,56,371,83"/>
-<area shape="rect" id="node6" href="$classDerivatives.html#a4c4cdfa3c2c5b4d9c4c52e77130705af" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,5,425,32"/>
-<area shape="rect" id="node7" href="$classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="5,56,141,83"/>
-<area shape="rect" id="node9" href="$classVectorField.html#a6cde8853c3eb1d5ba60b4a61e467c7c0" title="Multiply all components of the vector field by a scalar value." alt="" coords="229,157,385,184"/>
-<area shape="rect" id="node13" href="$classLinearSys.html#adc38bb02a25f7a917500b6a5ee0917c5" title="Fill the linear system for Velocity variables." alt="" coords="473,208,684,235"/>
-<area shape="rect" id="node14" href="$classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="196,208,419,235"/>
-<area shape="rect" id="node15" href="$classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="8,208,139,235"/>
+<area shape="rect" id="node6" href="$classDerivatives.html#a9516515b562a7699e9b226e6030ef86c" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,132,425,159"/>
+<area shape="rect" id="node7" href="$classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="5,132,141,159"/>
+<area shape="rect" id="node9" href="$classVectorField.html#a6cde8853c3eb1d5ba60b4a61e467c7c0" title="Multiply all components of the vector field by a scalar value." alt="" coords="229,5,385,32"/>
 </map>

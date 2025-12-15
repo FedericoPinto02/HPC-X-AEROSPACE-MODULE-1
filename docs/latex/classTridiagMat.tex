@@ -12,13 +12,13 @@ Class representing a tridiagonal matrix and providing access to its elements.
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classTridiagMat_a0ff0d49fdabd7ae4ac08f09fc1f80cbc}{Tridiag\+Mat}} (int n)
+\mbox{\hyperlink{classTridiagMat_a60c4deefc5d7e2aa03e26cbd63b59457}{Tridiag\+Mat}} (size\+\_\+t n)
 \begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classTridiagMat_abb999fb0247f2d43586e929d109b47c2}{fill\+Mat}} (std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ae68c17c204ec8286119ef83834086c13}{diag}}, std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ab747fb4465e0e06b19d344470bcb5b6f}{subdiag}}, std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ae34b23e42c9abfe43a27727fc062f3ad}{supdiag}})
 \begin{DoxyCompactList}\small\item\em Fill the matrix. \end{DoxyCompactList}\item 
-const unsigned int \mbox{\hyperlink{classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9}{get\+Size}} () const
+size\+\_\+t \mbox{\hyperlink{classTridiagMat_a926ab35a1c697a419508318505f701a3}{get\+Size}} () const
 \begin{DoxyCompactList}\small\item\em Get the matrix size. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{classTridiagMat_ac10d2cf6286df2c24386429f4f2b0699}{get\+Element}} (int i, int j) const
+double \mbox{\hyperlink{classTridiagMat_a29c42fb1640f53d3f1f666d6e0c06aca}{get\+Element}} (size\+\_\+t i, size\+\_\+t j) const
 \begin{DoxyCompactList}\small\item\em Get the (i,j) element of the matrix. \end{DoxyCompactList}\item 
 std\+::vector$<$ double $>$ \& \mbox{\hyperlink{classTridiagMat_a1b0209ff66f297a15c9bb0a118b4329f}{get\+Diag}} (int w)
 \begin{DoxyCompactList}\small\item\em Get the whole diagonal, subdiagonal or supdiagonal. \end{DoxyCompactList}\item 
@@ -36,8 +36,6 @@ std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ae68c17c204ec828611
 std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ab747fb4465e0e06b19d344470bcb5b6f}{subdiag}}
 \item 
 std\+::vector$<$ double $>$ \mbox{\hyperlink{classTridiagMat_ae34b23e42c9abfe43a27727fc062f3ad}{supdiag}}
-\item 
-const unsigned int \mbox{\hyperlink{classTridiagMat_a2110bb598a84a5326cab90807831dd94}{size}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Friends}
 \begin{DoxyCompactItemize}
@@ -50,11 +48,11 @@ class \mbox{\hyperlink{classTridiagMat_a748e2c9fb0527c6ba8c840aaf91501f8}{Schur\
 Class representing a tridiagonal matrix and providing access to its elements. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classTridiagMat_a0ff0d49fdabd7ae4ac08f09fc1f80cbc}\label{classTridiagMat_a0ff0d49fdabd7ae4ac08f09fc1f80cbc}} 
+\mbox{\Hypertarget{classTridiagMat_a60c4deefc5d7e2aa03e26cbd63b59457}\label{classTridiagMat_a60c4deefc5d7e2aa03e26cbd63b59457}} 
 \index{TridiagMat@{TridiagMat}!TridiagMat@{TridiagMat}}
 \index{TridiagMat@{TridiagMat}!TridiagMat@{TridiagMat}}
 \doxysubsubsection{\texorpdfstring{TridiagMat()}{TridiagMat()}}
-{\footnotesize\ttfamily Tridiag\+Mat\+::\+Tridiag\+Mat (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily Tridiag\+Mat\+::\+Tridiag\+Mat (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
 
 
 
@@ -102,7 +100,8 @@ Get the whole diagonal, subdiagonal or supdiagonal.
 {\em w} & number indicating sub (-\/1), diag (0) or sup (1) \\
 \hline
 \end{DoxyParams}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -115,11 +114,11 @@ Here is the caller graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{getDiag()}{getDiag()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily std\+::vector$<$ double $>$ Tridiag\+Mat\+::get\+Diag (\begin{DoxyParamCaption}\item[{int}]{w }\end{DoxyParamCaption}) const}
 
-This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \mbox{\Hypertarget{classTridiagMat_ac10d2cf6286df2c24386429f4f2b0699}\label{classTridiagMat_ac10d2cf6286df2c24386429f4f2b0699}} 
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \mbox{\Hypertarget{classTridiagMat_a29c42fb1640f53d3f1f666d6e0c06aca}\label{classTridiagMat_a29c42fb1640f53d3f1f666d6e0c06aca}} 
 \index{TridiagMat@{TridiagMat}!getElement@{getElement}}
 \index{getElement@{getElement}!TridiagMat@{TridiagMat}}
 \doxysubsubsection{\texorpdfstring{getElement()}{getElement()}}
-{\footnotesize\ttfamily double Tridiag\+Mat\+::get\+Element (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{int}]{j }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily double Tridiag\+Mat\+::get\+Element (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j }\end{DoxyParamCaption}) const}
 
 
 
@@ -155,21 +154,22 @@ Get the last element from the diagonal w.
 {\em w} & number indicating sub (-\/1), main (0) or sup (1) diagonal \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9}\label{classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9}} 
+\mbox{\Hypertarget{classTridiagMat_a926ab35a1c697a419508318505f701a3}\label{classTridiagMat_a926ab35a1c697a419508318505f701a3}} 
 \index{TridiagMat@{TridiagMat}!getSize@{getSize}}
 \index{getSize@{getSize}!TridiagMat@{TridiagMat}}
 \doxysubsubsection{\texorpdfstring{getSize()}{getSize()}}
-{\footnotesize\ttfamily const unsigned int Tridiag\+Mat\+::get\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily size\+\_\+t Tridiag\+Mat\+::get\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
 Get the matrix size. 
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classTridiagMat_a46d96fb5ae69f72ff1f56c12b390d0a9_icgraph}
+\includegraphics[width=350pt]{classTridiagMat_a926ab35a1c697a419508318505f701a3_icgraph}
 \end{center}
 \end{figure}
 
@@ -189,12 +189,6 @@ Here is the caller graph for this function\+:\nopagebreak
 \index{diag@{diag}!TridiagMat@{TridiagMat}}
 \doxysubsubsection{\texorpdfstring{diag}{diag}}
 {\footnotesize\ttfamily std\+::vector$<$double$>$ Tridiag\+Mat\+::diag\hspace{0.3cm}{\ttfamily [private]}}
-
-\mbox{\Hypertarget{classTridiagMat_a2110bb598a84a5326cab90807831dd94}\label{classTridiagMat_a2110bb598a84a5326cab90807831dd94}} 
-\index{TridiagMat@{TridiagMat}!size@{size}}
-\index{size@{size}!TridiagMat@{TridiagMat}}
-\doxysubsubsection{\texorpdfstring{size}{size}}
-{\footnotesize\ttfamily const unsigned int Tridiag\+Mat\+::size\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classTridiagMat_ab747fb4465e0e06b19d344470bcb5b6f}\label{classTridiagMat_ab747fb4465e0e06b19d344470bcb5b6f}} 
 \index{TridiagMat@{TridiagMat}!subdiag@{subdiag}}

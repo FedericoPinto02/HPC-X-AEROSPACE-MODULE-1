@@ -12,7 +12,7 @@ Implements the Schur Complement method for solving large tridiagonal systems by 
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classSchurSequentialSolver_a1f3826dc32223ad54a8b760106da967c}{Schur\+Sequential\+Solver}} (int global\+Size, int num\+Domains, \mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}} type)
+\mbox{\hyperlink{classSchurSequentialSolver_a5cf095bad2dda9c7472b76141a8963e7}{Schur\+Sequential\+Solver}} (int global\+Size, int num\+Domains)
 \item 
 void \mbox{\hyperlink{classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212}{Pre\+Process}} (const \mbox{\hyperlink{classTridiagMat}{Tridiag\+Mat}} \&A\+\_\+global)
 \begin{DoxyCompactList}\small\item\em Phase 0\+: Pre-\/processing. Builds the submatrices A\+\_\+ii, extracts interface coefficients, and assembles the Schur matrix \textquotesingle{}S\textquotesingle{}. \end{DoxyCompactList}\item 
@@ -68,11 +68,11 @@ std\+::vector$<$ double $>$ \mbox{\hyperlink{classSchurSequentialSolver_a2383d89
 Implements the Schur Complement method for solving large tridiagonal systems by decomposing them into smaller sub-\/systems solved sequentially. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classSchurSequentialSolver_a1f3826dc32223ad54a8b760106da967c}\label{classSchurSequentialSolver_a1f3826dc32223ad54a8b760106da967c}} 
+\mbox{\Hypertarget{classSchurSequentialSolver_a5cf095bad2dda9c7472b76141a8963e7}\label{classSchurSequentialSolver_a5cf095bad2dda9c7472b76141a8963e7}} 
 \index{SchurSequentialSolver@{SchurSequentialSolver}!SchurSequentialSolver@{SchurSequentialSolver}}
 \index{SchurSequentialSolver@{SchurSequentialSolver}!SchurSequentialSolver@{SchurSequentialSolver}}
 \doxysubsubsection{\texorpdfstring{SchurSequentialSolver()}{SchurSequentialSolver()}}
-{\footnotesize\ttfamily Schur\+Sequential\+Solver\+::\+Schur\+Sequential\+Solver (\begin{DoxyParamCaption}\item[{int}]{global\+Size,  }\item[{int}]{num\+Domains,  }\item[{\mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}}}]{type }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily Schur\+Sequential\+Solver\+::\+Schur\+Sequential\+Solver (\begin{DoxyParamCaption}\item[{int}]{global\+Size,  }\item[{int}]{num\+Domains }\end{DoxyParamCaption})}
 
 
 
@@ -83,7 +83,8 @@ Implements the Schur Complement method for solving large tridiagonal systems by 
 \doxysubsubsection{\texorpdfstring{createSparseVector()}{createSparseVector()}}
 {\footnotesize\ttfamily std\+::vector$<$ double $>$ Schur\+Sequential\+Solver\+::create\+Sparse\+Vector (\begin{DoxyParamCaption}\item[{int}]{size,  }\item[{int}]{index,  }\item[{double}]{value }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -96,7 +97,8 @@ Here is the caller graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{getGlobalSubVector()}{getGlobalSubVector()}}
 {\footnotesize\ttfamily std\+::vector$<$ double $>$ Schur\+Sequential\+Solver\+::get\+Global\+Sub\+Vector (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{global\+Vec,  }\item[{int}]{start,  }\item[{int}]{size }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -109,7 +111,8 @@ Here is the caller graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{getInterfaceVector()}{getInterfaceVector()}}
 {\footnotesize\ttfamily std\+::vector$<$ double $>$ Schur\+Sequential\+Solver\+::get\+Interface\+Vector (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{global\+Vec }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -131,14 +134,16 @@ Phase 0\+: Pre-\/processing. Builds the submatrices A\+\_\+ii, extracts interfac
 {\em A\+\_\+global} & The GLOBAL tridiagonal matrix (N x N). \\
 \hline
 \end{DoxyParams}
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classSchurSequentialSolver_a8b7aec052a578c5fd6ca38d279728212_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -151,7 +156,8 @@ Here is the caller graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{setGlobalSubVector()}{setGlobalSubVector()}}
 {\footnotesize\ttfamily void Schur\+Sequential\+Solver\+::set\+Global\+Sub\+Vector (\begin{DoxyParamCaption}\item[{std\+::vector$<$ double $>$ \&}]{global\+Vec,  }\item[{const std\+::vector$<$ double $>$ \&}]{sub\+Vec,  }\item[{int}]{start }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -164,7 +170,8 @@ Here is the caller graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{setInterfaceVector()}{setInterfaceVector()}}
 {\footnotesize\ttfamily void Schur\+Sequential\+Solver\+::set\+Interface\+Vector (\begin{DoxyParamCaption}\item[{std\+::vector$<$ double $>$ \&}]{global\+Vec,  }\item[{const std\+::vector$<$ double $>$ \&}]{interface\+Vec }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -196,7 +203,8 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classSchurSequentialSolver_a0c0a6ed80b6df87ae3e1c53167ff444e_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

@@ -1,10 +1,24 @@
 var searchData=
 [
-  ['main_168',['main',['../main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;main.cpp'],['../namespacedisplayError.html#a625e503f0b00e7b5ae4e0409722acc31',1,'displayError.main()'],['../namespacerun__convergence__study.html#af4623f6e0c3bdcb143bbbd5692514da5',1,'run_convergence_study.main()'],['../namespacerun__convergence__study__new.html#a674dacf5482960c02a917f80afd3ef50',1,'run_convergence_study_new.main()']]],
-  ['main_2ecpp_169',['main.cpp',['../main_8cpp.html',1,'']]],
-  ['main_2edox_170',['main.dox',['../main_8dox.html',1,'']]],
-  ['mata_171',['matA',['../classLinearSys.html#a5c607c5d06a11f514fd425008f739381',1,'LinearSys']]],
-  ['mesh_172',['mesh',['../structInputData.html#a6104aa9a2112416425462125b89d9abd',1,'InputData']]],
-  ['meshdata_173',['MeshData',['../structMeshData.html',1,'']]],
-  ['multiply_174',['multiply',['../classField.html#a6edac7bcf17e1422a9dcbddbeaca2153',1,'Field::multiply()'],['../classVectorField.html#a6cde8853c3eb1d5ba60b4a61e467c7c0',1,'VectorField::multiply()']]]
+  ['linearsys_169',['LinearSys',['../classLinearSys.html',1,'LinearSys'],['../classLinearSys.html#aa8bce8f5d5d7fa443f15d5ec1596e3ca',1,'LinearSys::LinearSys()']]],
+  ['linearsys_2ecpp_170',['LinearSys.cpp',['../LinearSys_8cpp.html',1,'']]],
+  ['linearsys_2ehpp_171',['LinearSys.hpp',['../LinearSys_8hpp.html',1,'']]],
+  ['linearsystestfixture_172',['LinearSysTestFixture',['../classLinearSys.html#a7dae3f3c163076becbf389249a47d29b',1,'LinearSys']]],
+  ['localsolvers_173',['localSolvers',['../classSchurSequentialSolver.html#a1d38b6d5249fe0ddd2f9b968ccf68968',1,'SchurSequentialSolver']]],
+  ['logdir_5f_174',['logDir_',['../classLogWriter.html#a1499b33fb3fc3b6689af618bb385e1ef',1,'LogWriter']]],
+  ['logger_175',['logger',['../classNSBSolver.html#a8ab8d83c5ace17329900dd9ed6c3cc4e',1,'NSBSolver']]],
+  ['logging_176',['logging',['../structInputData.html#a5339ec0143b2d3f52959263577997c93',1,'InputData']]],
+  ['loggingfrequency_177',['loggingFrequency',['../structLoggingSettings.html#a8078e3455ce82fc22923a9ad2ec19d54',1,'LoggingSettings']]],
+  ['loggingsettings_178',['LoggingSettings',['../structLoggingSettings.html',1,'']]],
+  ['loggingsettings_179',['loggingSettings',['../classNSBSolver.html#aff1acbf42d308b5040e66b2af62e4e09',1,'NSBSolver']]],
+  ['logtoconsole_180',['logToConsole',['../structLoggingSettings.html#a90eac0097eb560caa20a3850da7c0f6f',1,'LoggingSettings']]],
+  ['logtoconsole_5f_181',['logToConsole_',['../classLogWriter.html#a6276f98ffda5bf74a333f21801efba47',1,'LogWriter']]],
+  ['logtofile_182',['logToFile',['../structLoggingSettings.html#a03117be3963f4aba91240db1d5376c05',1,'LoggingSettings']]],
+  ['logtofile_5f_183',['logToFile_',['../classLogWriter.html#afe54f3c3eac30ecc20829282c3f348ce',1,'LogWriter']]],
+  ['logwriter_184',['LogWriter',['../classLogWriter.html',1,'LogWriter'],['../classLogWriter.html#ac4f6000d7a395160be2aa433865e9c28',1,'LogWriter::LogWriter()']]],
+  ['logwriter_2ecpp_185',['logWriter.cpp',['../logWriter_8cpp.html',1,'']]],
+  ['logwriter_2ehpp_186',['logWriter.hpp',['../logWriter_8hpp.html',1,'']]],
+  ['lx_5fglob_187',['Lx_glob',['../structGrid.html#a730fde210b6d4dd0f38ad9e84b504851',1,'Grid']]],
+  ['ly_5fglob_188',['Ly_glob',['../structGrid.html#a781159ea5c1221fa762773382b2379be',1,'Grid']]],
+  ['lz_5fglob_189',['Lz_glob',['../structGrid.html#adfd015b3978a3dd58f1fe4daa0567eb5',1,'Grid']]]
 ];

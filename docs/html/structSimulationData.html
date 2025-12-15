@@ -78,7 +78,7 @@ Collaboration diagram for SimulationData:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSimulationData__coll__graph.png" border="0" usemap="#aSimulationData_coll__map" alt="Collaboration graph"/></div>
 <map name="aSimulationData_coll__map" id="aSimulationData_coll__map">
-<area shape="rect" title="Central structure containing all transient data, fields, and physical properties of the running simul..." alt="" coords="20,139,143,165"/>
+<area shape="rect" title="Central structure containing all transient data, fields, and physical properties of the running simul..." alt="" coords="20,153,143,180"/>
 <area shape="rect" href="classField.html" title="Class representing a scalar field defined on a 3D grid." alt="" coords="5,5,59,32"/>
 <area shape="rect" href="classVectorField.html" title="Class representing a 3D vector field defined on a 3D grid." alt="" coords="83,5,178,32"/>
 </map>
@@ -106,6 +106,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a4d761472a2718230b9453f36cc1f472b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ae06e6437c7a9307c519ff0fcc0f873"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classField.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSimulationData.html#a4ae06e6437c7a9307c519ff0fcc0f873">p</a></td></tr>
 <tr class="separator:a4ae06e6437c7a9307c519ff0fcc0f873"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f44cdc2a6cbddaf6359fa3a64169474"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classField.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSimulationData.html#a7f44cdc2a6cbddaf6359fa3a64169474">predictor</a></td></tr>
+<tr class="separator:a7f44cdc2a6cbddaf6359fa3a64169474"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e332a48c4872864362d75879701d2e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Fields_8hpp.html#acc4ecbca9fc50aa084357cb6504baf28">Func</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSimulationData.html#a1e332a48c4872864362d75879701d2e6">bcu</a></td></tr>
 <tr class="separator:a1e332a48c4872864362d75879701d2e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0320d5c5308b452b05f2bb30616fbcff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Fields_8hpp.html#acc4ecbca9fc50aa084357cb6504baf28">Func</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSimulationData.html#a0320d5c5308b452b05f2bb30616fbcff">bcv</a></td></tr>
@@ -114,8 +116,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:af19a48463a8412a199701b8e55c97d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a601b6e3895425e7874d4bfb8ca556bf1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSimulationData.html#a601b6e3895425e7874d4bfb8ca556bf1">nu</a></td></tr>
 <tr class="separator:a601b6e3895425e7874d4bfb8ca556bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a879a0828cbbea0b77a1120ec92469bce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classField.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSimulationData.html#a879a0828cbbea0b77a1120ec92469bce">k</a></td></tr>
-<tr class="separator:a879a0828cbbea0b77a1120ec92469bce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab7e6c43e53cb2fa3fe7b96bcec976a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classVectorField.html">VectorField</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSimulationData.html#aab7e6c43e53cb2fa3fe7b96bcec976a2">inv_k</a></td></tr>
+<tr class="separator:aab7e6c43e53cb2fa3fe7b96bcec976a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad77a73fa59324c76b0281f1eac4c3a3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classVectorField.html">VectorField</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSimulationData.html#ad77a73fa59324c76b0281f1eac4c3a3b">f</a></td></tr>
 <tr class="separator:ad77a73fa59324c76b0281f1eac4c3a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5f9c49214e13bb67d76cc5efbe156cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Fields_8hpp.html#acc4ecbca9fc50aa084357cb6504baf28">Func</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSimulationData.html#ae5f9c49214e13bb67d76cc5efbe156cf">fx</a></td></tr>
@@ -296,14 +298,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a879a0828cbbea0b77a1120ec92469bce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a879a0828cbbea0b77a1120ec92469bce">&#9670;&nbsp;</a></span>k</h2>
+<a id="aab7e6c43e53cb2fa3fe7b96bcec976a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab7e6c43e53cb2fa3fe7b96bcec976a2">&#9670;&nbsp;</a></span>inv_k</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classField.html">Field</a> SimulationData::k</td>
+          <td class="memname"><a class="el" href="classVectorField.html">VectorField</a> SimulationData::inv_k</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -332,6 +334,20 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classField.html">Field</a> SimulationData::p</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7f44cdc2a6cbddaf6359fa3a64169474"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f44cdc2a6cbddaf6359fa3a64169474">&#9670;&nbsp;</a></span>predictor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classField.html">Field</a> SimulationData::predictor</td>
         </tr>
       </table>
 </div><div class="memdoc">

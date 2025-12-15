@@ -20,13 +20,13 @@ void \mbox{\hyperlink{classDerivatives_aee26f33635f34433d93ca5790849bd95}{comput
 \begin{DoxyCompactList}\small\item\em Compute the derivative of a scalar field in the y-\/direction (forward difference). \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classDerivatives_a41f8f51d76f35343b09b8711af339480}{compute\+Dz\+\_\+fwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dz) const
 \begin{DoxyCompactList}\small\item\em Compute the derivative of a scalar field in the z-\/direction (forward difference). \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545}{compute\+Dx\+\_\+bwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dx) const
+void \mbox{\hyperlink{classDerivatives_a0046bc8ee2db86bf451dc85dd19dd7f9}{compute\+Dx\+\_\+bwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dx, \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&bcu, double time) const
 \begin{DoxyCompactList}\small\item\em Compute the derivative of a scalar field in the x-\/direction (backward difference). \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classDerivatives_ae29cfbcadce2127aa49c690547514b66}{compute\+Dy\+\_\+bwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dy) const
+void \mbox{\hyperlink{classDerivatives_a4a5487a38ca52d1bb20c95efe6966bd0}{compute\+Dy\+\_\+bwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dy, \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&bcv, double time) const
 \begin{DoxyCompactList}\small\item\em Compute the derivative of a scalar field in the y-\/direction (backward difference). \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66}{compute\+Dz\+\_\+bwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dz) const
+void \mbox{\hyperlink{classDerivatives_ae1d79e3c78f83f9d82c53805c426583e}{compute\+Dz\+\_\+bwd}} (const \mbox{\hyperlink{classField}{Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&dz, \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&bcw, double time) const
 \begin{DoxyCompactList}\small\item\em Compute the derivative of a scalar field in the z-\/direction (backward difference). \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af}{compute\+Divergence}} (const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&divergence) const
+void \mbox{\hyperlink{classDerivatives_a9516515b562a7699e9b226e6030ef86c}{compute\+Divergence}} (const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&field, \mbox{\hyperlink{classField}{Field}} \&divergence, \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&bcu, \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&bcv, \mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&bcw, double time) const
 \begin{DoxyCompactList}\small\item\em Compute the divergence of a vector field (backward difference). \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classDerivatives_a50f5b9c159f7071eca24da47339f094c}{compute\+Dxx}} (const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&field, \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&dxx) const
 \begin{DoxyCompactList}\small\item\em Compute the second derivative of a vector field in the x-\/direction. \end{DoxyCompactList}\item 
@@ -52,11 +52,11 @@ double \mbox{\hyperlink{classDerivatives_a390aa9768dd08a39aa377a8670a6ab33}{Dzz\
 Handler for computing spatial derivatives of scalar fields. 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af}\label{classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af}} 
+\mbox{\Hypertarget{classDerivatives_a9516515b562a7699e9b226e6030ef86c}\label{classDerivatives_a9516515b562a7699e9b226e6030ef86c}} 
 \index{Derivatives@{Derivatives}!computeDivergence@{computeDivergence}}
 \index{computeDivergence@{computeDivergence}!Derivatives@{Derivatives}}
 \doxysubsubsection{\texorpdfstring{computeDivergence()}{computeDivergence()}}
-{\footnotesize\ttfamily void Derivatives\+::compute\+Divergence (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{divergence }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Divergence (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classVectorField}{Vector\+Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{divergence,  }\item[{\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&}]{bcu,  }\item[{\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&}]{bcv,  }\item[{\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&}]{bcw,  }\item[{double}]{time }\end{DoxyParamCaption}) const}
 
 
 
@@ -69,25 +69,27 @@ Compute the divergence of a vector field (backward difference).
 {\em divergence} & the output scalar field to store the divergence \\
 \hline
 \end{DoxyParams}
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_cgraph}
+\includegraphics[width=350pt]{classDerivatives_a9516515b562a7699e9b226e6030ef86c_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classDerivatives_a4c4cdfa3c2c5b4d9c4c52e77130705af_icgraph}
+\includegraphics[width=350pt]{classDerivatives_a9516515b562a7699e9b226e6030ef86c_icgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545}\label{classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545}} 
+\mbox{\Hypertarget{classDerivatives_a0046bc8ee2db86bf451dc85dd19dd7f9}\label{classDerivatives_a0046bc8ee2db86bf451dc85dd19dd7f9}} 
 \index{Derivatives@{Derivatives}!computeDx\_bwd@{computeDx\_bwd}}
 \index{computeDx\_bwd@{computeDx\_bwd}!Derivatives@{Derivatives}}
 \doxysubsubsection{\texorpdfstring{computeDx\_bwd()}{computeDx\_bwd()}}
-{\footnotesize\ttfamily void Derivatives\+::compute\+Dx\+\_\+bwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dx }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dx\+\_\+bwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dx,  }\item[{\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&}]{bcu,  }\item[{double}]{time }\end{DoxyParamCaption}) const}
 
 
 
@@ -100,18 +102,20 @@ Compute the derivative of a scalar field in the x-\/direction (backward differen
 {\em dx} & the output field to store the derivative in x-\/direction \\
 \hline
 \end{DoxyParams}
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_cgraph}
+\includegraphics[width=350pt]{classDerivatives_a0046bc8ee2db86bf451dc85dd19dd7f9_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classDerivatives_a2365f0c81b6422e3ed1bba2e1fc44545_icgraph}
+\includegraphics[width=350pt]{classDerivatives_a0046bc8ee2db86bf451dc85dd19dd7f9_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76}\label{classDerivatives_a0ef8b5e2a9e76abb839e9907bd127b76}} 
@@ -193,11 +197,11 @@ Here is the caller graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classDerivatives_a50f5b9c159f7071eca24da47339f094c_icgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classDerivatives_ae29cfbcadce2127aa49c690547514b66}\label{classDerivatives_ae29cfbcadce2127aa49c690547514b66}} 
+\mbox{\Hypertarget{classDerivatives_a4a5487a38ca52d1bb20c95efe6966bd0}\label{classDerivatives_a4a5487a38ca52d1bb20c95efe6966bd0}} 
 \index{Derivatives@{Derivatives}!computeDy\_bwd@{computeDy\_bwd}}
 \index{computeDy\_bwd@{computeDy\_bwd}!Derivatives@{Derivatives}}
 \doxysubsubsection{\texorpdfstring{computeDy\_bwd()}{computeDy\_bwd()}}
-{\footnotesize\ttfamily void Derivatives\+::compute\+Dy\+\_\+bwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dy }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dy\+\_\+bwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dy,  }\item[{\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&}]{bcv,  }\item[{double}]{time }\end{DoxyParamCaption}) const}
 
 
 
@@ -210,18 +214,20 @@ Compute the derivative of a scalar field in the y-\/direction (backward differen
 {\em dy} & the output field to store the derivative in y-\/direction \\
 \hline
 \end{DoxyParams}
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classDerivatives_ae29cfbcadce2127aa49c690547514b66_cgraph}
+\includegraphics[width=350pt]{classDerivatives_a4a5487a38ca52d1bb20c95efe6966bd0_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classDerivatives_ae29cfbcadce2127aa49c690547514b66_icgraph}
+\includegraphics[width=350pt]{classDerivatives_a4a5487a38ca52d1bb20c95efe6966bd0_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{classDerivatives_aee26f33635f34433d93ca5790849bd95}\label{classDerivatives_aee26f33635f34433d93ca5790849bd95}} 
@@ -303,11 +309,11 @@ Here is the caller graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classDerivatives_a8f62d63f77d17bf5d4469b1038ee0c1a_icgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66}\label{classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66}} 
+\mbox{\Hypertarget{classDerivatives_ae1d79e3c78f83f9d82c53805c426583e}\label{classDerivatives_ae1d79e3c78f83f9d82c53805c426583e}} 
 \index{Derivatives@{Derivatives}!computeDz\_bwd@{computeDz\_bwd}}
 \index{computeDz\_bwd@{computeDz\_bwd}!Derivatives@{Derivatives}}
 \doxysubsubsection{\texorpdfstring{computeDz\_bwd()}{computeDz\_bwd()}}
-{\footnotesize\ttfamily void Derivatives\+::compute\+Dz\+\_\+bwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dz }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily void Derivatives\+::compute\+Dz\+\_\+bwd (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classField}{Field}} \&}]{field,  }\item[{\mbox{\hyperlink{classField}{Field}} \&}]{dz,  }\item[{\mbox{\hyperlink{Fields_8hpp_acc4ecbca9fc50aa084357cb6504baf28}{Func}} \&}]{bcw,  }\item[{double}]{time }\end{DoxyParamCaption}) const}
 
 
 
@@ -320,18 +326,20 @@ Compute the derivative of a scalar field in the z-\/direction (backward differen
 {\em dz} & the output field to store the derivative in z-\/direction \\
 \hline
 \end{DoxyParams}
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_cgraph}
+\includegraphics[width=350pt]{classDerivatives_ae1d79e3c78f83f9d82c53805c426583e_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classDerivatives_a08e9ebe4a51fd2b918fa37fef529ed66_icgraph}
+\includegraphics[width=350pt]{classDerivatives_ae1d79e3c78f83f9d82c53805c426583e_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{classDerivatives_a41f8f51d76f35343b09b8711af339480}\label{classDerivatives_a41f8f51d76f35343b09b8711af339480}} 
