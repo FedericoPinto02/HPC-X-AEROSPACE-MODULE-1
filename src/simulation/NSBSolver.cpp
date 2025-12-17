@@ -43,7 +43,7 @@ void NSBSolver::setup()
 
     // Init Logger and Writer
     logger = std::make_unique<LogWriter>(loggingSettings);
-    vtkWriter = std::make_unique<VTKWriter>(outputSettings, simData);
+    vtkWriter = std::make_unique<VTKWriter>(mpi, outputSettings, simData);
 
     bool vtkWritten = vtkWriter->write_timestep_if_needed(
             simData.currStep,

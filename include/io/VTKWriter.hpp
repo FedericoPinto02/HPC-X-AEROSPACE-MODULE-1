@@ -10,15 +10,14 @@
  * @brief Class to write 3D fields to legacy VTK (STRUCTURED_POINTS)
  * for a uniform Cartesian grid, managing output frequency internally.
  */
-class VTKWriter
-{
+class VTKWriter {
 public:
     /**
      * @brief Construct a VTKWriter with output settings and grid dimensions.
      * @param outputSettings Output settings, including frequency.
      * @param simData Simulation data containing grid dimensions (Nx, Ny, Nz, dx, dy, dz).
      */
-    VTKWriter(const OutputSettings &outputSettings, const SimulationData &simData);
+    VTKWriter(const MpiEnv &mpi, const OutputSettings &outputSettings, const SimulationData &simData);
 
     /**
      * @brief Writes a timestep file if the current step matches the output frequency.
@@ -33,6 +32,8 @@ public:
                                   const VectorField &velocity);
 
 private:
+    const MpiEnv &mpi_;
+
     int Nx_, Ny_, Nz_;
     double dx_, dy_, dz_;
     bool enabled_;

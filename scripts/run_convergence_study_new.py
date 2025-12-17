@@ -167,7 +167,7 @@ def main():
                 print("  > Simulation completed successfully.")
 
             # E. Verify output existence
-            expected_filename = f"{base_name}_{num_steps:04d}.vtk"
+            expected_filename = f"{base_name}_{num_steps:04d}_0000.vtk"
             full_path = os.path.join(OUTPUT_DIR, expected_filename)
 
             if os.path.exists(full_path):

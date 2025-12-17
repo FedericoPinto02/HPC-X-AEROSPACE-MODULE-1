@@ -4,8 +4,8 @@
 #include <stdexcept>
 #include <cstdio>
 
-VTKWriter::VTKWriter(const OutputSettings &outputSettings, const SimulationData &simData)
-    : Nx_(simData.grid->Nx), Ny_(simData.grid->Ny), Nz_(simData.grid->Nz),
+VTKWriter::VTKWriter(const MpiEnv &mpi, const OutputSettings &outputSettings, const SimulationData &simData)
+    : mpi_(mpi), Nx_(simData.grid->Nx), Ny_(simData.grid->Ny), Nz_(simData.grid->Nz),
       dx_(simData.grid->dx), dy_(simData.grid->dy), dz_(simData.grid->dz),
       enabled_(outputSettings.enabled),
       outputFrequency_(outputSettings.outputFrequency),
@@ -34,7 +34,7 @@ bool VTKWriter::write_timestep_if_needed(size_t currStep,
     // Prepare data and filename
     int step = static_cast<int>(currStep);
     char buf[256];
-    std::snprintf(buf, sizeof(buf), "%s_%04d.vtk", basePrefix_.c_str(), step);
+    std::snprintf(buf, sizeof(buf), "%s_%04d_%04d.vtk", basePrefix_.c_str(), step, mpi_.rank());
     std::string filename = std::string(buf);
 
     // Create copies for writing (as done by external logic previously)
