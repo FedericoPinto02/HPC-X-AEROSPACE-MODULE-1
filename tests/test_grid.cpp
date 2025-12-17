@@ -1,4 +1,6 @@
 #include <gtest/gtest.h>
+
+#include "MpiEnvFixture.hpp"
 #include "core/Grid.hpp"
 #include "core/MpiEnv.hpp"
 
@@ -151,10 +153,8 @@ TEST(GridHaloTest, ParallelConstructorSetsHaloDefault) {
     // Mocking MPI env usually requires a real MPI environment or a stub.
     // Assuming MpiEnv is robust enough to be instantiated in tests (e.g., serial fallback).
 
-    int argc = 0;
-    char ** argv = nullptr;
     // Note: N_glob must be large enough for overlapping split logic if simulated procs > 1
-    Grid grid(20, 20, 20, 1.0, 1.0, 1.0, MpiEnv(argc, argv));
+    Grid grid(20, 20, 20, 1.0, 1.0, 1.0, *g_mpi);
 
     EXPECT_EQ(grid.n_halo, 1);
 

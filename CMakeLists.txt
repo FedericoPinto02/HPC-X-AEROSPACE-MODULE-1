@@ -37,6 +37,7 @@ add_library(NSBSolver
         # Explicit header files
         include/core/Fields.hpp
         include/core/Grid.hpp
+        include/core/HaloHandler.hpp
         include/core/MpiEnv.hpp
         include/core/TridiagMat.hpp
         include/io/inputReader.hpp
@@ -54,6 +55,7 @@ add_library(NSBSolver
         # Explicit source files
         src/core/Fields.cpp
         src/core/Grid.cpp
+        src/core/HaloHandler.cpp
         src/core/MpiEnv.cpp
         src/core/TridiagMat.cpp
         src/io/inputReader.cpp
@@ -119,13 +121,16 @@ if (BUILD_TESTS)
 
     # Create executable target for tests
     add_executable(alltests
-            ${PROJECT_TESTS_DIR}/test_derivatives.cpp
-            ${PROJECT_TESTS_DIR}/test_grid.cpp
-            ${PROJECT_TESTS_DIR}/test_fields.cpp
-            ${PROJECT_TESTS_DIR}/test_pressureStep.cpp
-            ${PROJECT_TESTS_DIR}/test_viscousStep.cpp
-            ${PROJECT_TESTS_DIR}/test_schurSolver.cpp
-            ${PROJECT_TESTS_DIR}/test_tridiag.cpp
+            ${PROJECT_TESTS_DIR}/main.cpp
+            ${PROJECT_TESTS_DIR}/MpiEnvFixture.hpp
+            ${PROJECT_TESTS_DIR}/test_haloHandler.cpp
+            #${PROJECT_TESTS_DIR}/test_derivatives.cpp
+            #${PROJECT_TESTS_DIR}/test_grid.cpp
+            #${PROJECT_TESTS_DIR}/test_fields.cpp
+            #${PROJECT_TESTS_DIR}/test_pressureStep.cpp
+            #${PROJECT_TESTS_DIR}/test_viscousStep.cpp
+            #${PROJECT_TESTS_DIR}/test_schurSolver.cpp
+            #${PROJECT_TESTS_DIR}/test_tridiag.cpp
             #${PROJECT_TESTS_DIR}/test_schurSolverPar.cpp
             #${PROJECT_TESTS_DIR}/test_schurNonOverlappingSolver.cpp
     )
