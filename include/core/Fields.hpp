@@ -10,10 +10,15 @@
 
 #include "core/Grid.hpp"
 
+/// Type alias for a function of four double variables (x,y,z,t) returning a double.
 using Func = std::function<double(double x, double y, double z, double t)>;
 const Func ZERO_FUNC = [](double /*x*/, double /*y*/, double /*z*/, double /*t*/ = 0) {
     return 0.0;
 };
+
+/// Enum describing the type of boundary condition (Neumann or Dirichlet).
+enum class BoundaryType {Normal, Tangent};
+
 
 /**
  * @brief Class representing a scalar field defined on a 3D grid.
