@@ -4,6 +4,8 @@
 #include <cmath>
 #include <functional>
 
+#include "MpiEnvFixture.hpp"
+
 #include "simulation/viscousStep.hpp"
 #include "simulation/SimulationContext.hpp"
 #include "core/Fields.hpp"
@@ -15,25 +17,22 @@ protected:
     const double nu = 1.0;
 
     // Grid managed via shared_ptr to match Field's internal storage requirement
-    std::shared_ptr<Grid> grid;
+    std::shared_ptr<const Grid> grid;
 
     // Context
     SimulationData data_;
-    ParallelizationSettings parallel_;
 
     std::unique_ptr<ViscousStep> viscousStep;
 
     ViscousStepTest() {
         // Initialize 10x10x10 grid with spacing 1.0
-        grid = std::make_shared<Grid>(10, 10, 10, 1.0, 1.0, 1.0);
+        grid = std::make_shared<const Grid>(10, 10, 10, 1.0, 1.0, 1.0, *g_mpi);
 
         // Setup SimulationData context
         data_.grid = grid;
         data_.dt = dt;
         data_.nu = nu;
         data_.currTime = 0.0;
-
-        parallel_.schurDomains = 1;
     }
 
     void SetUp() override {
@@ -83,7 +82,7 @@ protected:
         data_.bcv = [](double, double y, double, double) { return std::sin(y); };
         data_.bcw = [](double, double, double z, double) { return std::sin(z); };
 
-        viscousStep = std::make_unique<ViscousStep>(data_, parallel_);
+        viscousStep = std::make_unique<ViscousStep>(*g_mpi, data_);
     }
 
     void callComputeG() {
@@ -119,7 +118,9 @@ TEST_F(ViscousStepTest, RunDoesNotCrash) {
 }
 
 TEST_F(ViscousStepTest, ComputeG_Correctness) {
-    const size_t i = 5, j = 5, k_ = 5;
+    const long i = (long) grid->Nx / 2;
+    const long j = (long) grid->Ny / 2;
+    const long k_ = (long) grid->Nz / 2;
     const double dx = grid->dx;
     const double k_permeability = 1.0;
 
@@ -148,7 +149,9 @@ TEST_F(ViscousStepTest, ComputeG_Correctness) {
 }
 
 TEST_F(ViscousStepTest, ComputeXi_Correctness) {
-    const size_t i = 5, j = 5, k_ = 5;
+    const long i = (long) grid->Nx / 2;
+    const long j = (long) grid->Ny / 2;
+    const long k_ = (long) grid->Nz / 2;
     const double x = grid->to_x(i, GridStaggering::FACE_CENTERED, Axis::X);
     double u_val = std::sin(x);
 
@@ -168,18 +171,16 @@ TEST_F(ViscousStepTest, ComputeXi_Correctness) {
 class ViscousStepRobustnessTest : public ::testing::Test {
 protected:
     const size_t N = 10;
-    std::shared_ptr<Grid> grid;
+    std::shared_ptr<const Grid> grid;
     SimulationData data_;
-    ParallelizationSettings parallel_;
     std::unique_ptr<ViscousStep> viscousStep;
 
     ViscousStepRobustnessTest() {
-        grid = std::make_shared<Grid>(N, N, N, 0.1, 0.1, 0.1);
+        grid = std::make_shared<const Grid>(N, N, N, 0.1, 0.1, 0.1, *g_mpi);
         data_.grid = grid;
         data_.dt = 0.1;
         data_.nu = 1.0e-3;
         data_.currTime = 0.0;
-        parallel_.schurDomains = 1;
     }
 
     void SetUp() override {
@@ -221,7 +222,7 @@ protected:
         data_.bcv = sqY;
         data_.bcw = sqZ;
 
-        viscousStep = std::make_unique<ViscousStep>(data_, parallel_);
+        viscousStep = std::make_unique<ViscousStep>(*g_mpi, data_);
     }
 
     void checkFieldFinite(const Field &field, const std::string &fieldName) {
