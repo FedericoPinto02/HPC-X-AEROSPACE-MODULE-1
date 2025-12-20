@@ -1,15 +1,17 @@
+#pragma once
+
 #include <iostream>
-#include <mpi.h>
 #include <vector>
 
 #include "core/MpiEnv.hpp"
+#include "core/TridiagMat.hpp"
 #include "numerics/ThomasSolver.hpp"
 
 /**
  * @brief Class implementing the Schur Complement Method for solving distributed tridiagonal systems.
  *
  * The local system on each MPI process includes two interface points (left and right),
- * leading to a local system of size N = n_inner + 2, where n_inner is the number of inner points.
+ * leading to a local system of size <code>N = n_inner + 2</code>, where n_inner is the number of inner points.
  * The Schur complement reduces the global system to a smaller one involving only the interface points.
  */
 class SchurSolver {
@@ -46,17 +48,15 @@ public:
      */
     SchurSolver(const MpiEnv &env,
                 const Axis axis,
-                const std::vector<double> &a,
-                const std::vector<double> &b,
-                const std::vector<double> &c)
-            : a_(a), b_(b), c_(c),
+                const TridiagMat &matrix)
+            : a_(matrix.getDiag(-1)), b_(matrix.getDiag(0)), c_(matrix.getDiag(1)),
               s00(0.0), s01(0.0), s10(0.0), s11(0.0), // -- temporary
-              thomas_(b.size()) {
+              thomas_(matrix.getSize()) {
         lineComm_ = env.lineComm(axis);
         lineNProcs_ = env.lineSize(axis);
         lineRank_ = env.lineRank(axis);
 
-        N = b.size();
+        N = matrix.getSize();
         n_inner = N - 2;
 
         if (N < 3) { throw std::runtime_error("Local grid too small for Schur!"); }
@@ -109,19 +109,16 @@ private:
     void solveInterface(const std::vector<double> &f, std::vector<double> &u);
 
     /**
-     * @brief Solves the 2Px2P global Schur system.
+     * @brief Solves the ~PxP global Schur system.
      * @param S_all the global Schur complement matrix (tridiagonal, flattened)
      *  the order is <code>[s00_proc0, s01_proc0, s10_proc0, s11_proc0, s00_proc1, ...]</code>
      * @param f_all the global condensed RHS vector
      *  the order is <code>[f_0_proc0, f_N_proc0, f_0_proc1, f_N_proc1, ...]</code>
-     * @param glue_all the global coupling coefficients between processors
-     *  the order is <code>[a_0_proc0, c_N-1_proc0, a_0_proc1, c_N-1_proc1, ...]</code>
      * @param u_all the global interface solution vector (to be filled);
      *  the order is <code>[u_0_proc0, u_N_proc0, u_0_proc1, u_N_proc1, ...]</code>
      */
     void solveGlobalInterfaceSystem(const std::vector<double> &S_all,
                                     const std::vector<double> &f_all,
-                                    const std::vector<double> &glue_all,
                                     std::vector<double> &u_s_all);
 
 

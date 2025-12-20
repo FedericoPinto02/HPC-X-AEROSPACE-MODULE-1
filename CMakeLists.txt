@@ -44,8 +44,6 @@ add_library(NSBSolver
         include/io/VTKWriter.hpp
         include/io/logWriter.hpp
         include/numerics/derivatives.hpp
-        include/numerics/LinearSys.hpp
-        include/numerics/SchurSequentialSolver.hpp
         include/numerics/SchurSolver.hpp
         include/numerics/ThomasSolver.hpp
         include/simulation/initializer.hpp
@@ -62,10 +60,8 @@ add_library(NSBSolver
         src/io/VTKWriter.cpp
         src/io/logWriter.cpp
         # -- src/numerics/derivatives.cpp use this source file to compile a non-optimized version
+        # src/numerics/derivatives.cpp
         src/numerics/derivativesOpt.cpp
-        #src/numerics/derivatives.cpp
-        src/numerics/LinearSys.cpp
-        src/numerics/SchurSequentialSolver.cpp
         src/numerics/SchurSolver.cpp
         src/numerics/ThomasSolver.cpp
         src/simulation/initializer.cpp
@@ -123,7 +119,7 @@ if (BUILD_TESTS)
     add_executable(alltests
             ${PROJECT_TESTS_DIR}/main.cpp
             ${PROJECT_TESTS_DIR}/MpiEnvFixture.hpp
-            ${PROJECT_TESTS_DIR}/test_haloHandler.cpp
+            #${PROJECT_TESTS_DIR}/test_haloHandler.cpp
             #${PROJECT_TESTS_DIR}/test_derivatives.cpp
             #${PROJECT_TESTS_DIR}/test_grid.cpp
             #${PROJECT_TESTS_DIR}/test_fields.cpp
@@ -131,8 +127,7 @@ if (BUILD_TESTS)
             #${PROJECT_TESTS_DIR}/test_viscousStep.cpp
             #${PROJECT_TESTS_DIR}/test_schurSolver.cpp
             #${PROJECT_TESTS_DIR}/test_tridiag.cpp
-            #${PROJECT_TESTS_DIR}/test_schurSolverPar.cpp
-            #${PROJECT_TESTS_DIR}/test_schurNonOverlappingSolver.cpp
+            #${PROJECT_TESTS_DIR}/test_schurSolver.cpp
     )
 
     # Link test executable with the libraries to be tested and GoogleTest tests runner

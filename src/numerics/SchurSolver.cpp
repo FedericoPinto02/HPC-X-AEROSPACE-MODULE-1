@@ -92,9 +92,9 @@ std::pair<double, double> SchurSolver::condenseRHS(const std::vector<double> &f)
 void SchurSolver::solveInterface(const std::vector<double> &f, std::vector<double> &u) {
     /*
      * S_all u_s_all = f_s_condensed_all
-     * - S_all: global Schur matrix (2P x 2P block-tridiagonal)
-     * - u_s_all: global interface unknowns (2P)
-     * - f_s_condensed_all: global condensed RHS (2P)
+     * - S_all: global Schur matrix (~PxP block-tridiagonal)
+     * - u_s_all: global interface unknowns (~P)
+     * - f_s_condensed_all: global condensed RHS (~P)
      */
 
     // 1. Condense *local* RHS for the *local* contribution to the global Schur system
@@ -103,17 +103,14 @@ void SchurSolver::solveInterface(const std::vector<double> &f, std::vector<doubl
     // 2. Prepare data for Schur system global solving (Gather to Rank 0)
     std::vector<double> send_S = {s00, s01, s10, s11};
     std::vector<double> send_f = {f0_cond, fN_cond};
-    std::vector<double> send_glue = {a_[0], c_[N - 1]};
 
     // 3. Receive buffers (only significant on Rank 0)
     std::vector<double> recv_S;
     std::vector<double> recv_f;
-    std::vector<double> recv_glue;
 
     if (lineRank_ == 0) {
         recv_S.resize(NUM_LOCAL_SCHUR_ELEMS * lineNProcs_);
         recv_f.resize(NUM_LOCAL_INTERFACES * lineNProcs_);
-        recv_glue.resize(NUM_LOCAL_INTERFACES * lineNProcs_);
     }
 
     // 4. Gather data
@@ -123,21 +120,28 @@ void SchurSolver::solveInterface(const std::vector<double> &f, std::vector<doubl
     MPI_Gather(send_f.data(), NUM_LOCAL_INTERFACES, MPI_DOUBLE,
                recv_f.data(), NUM_LOCAL_INTERFACES, MPI_DOUBLE,
                0, lineComm_);
-    MPI_Gather(send_glue.data(), NUM_LOCAL_INTERFACES, MPI_DOUBLE,
-               recv_glue.data(), NUM_LOCAL_INTERFACES, MPI_DOUBLE,
-               0, lineComm_);
 
     // 5. Solve global Schur system to find all shared interface values for the given line
-    std::vector<double> u_s_glob(NUM_LOCAL_INTERFACES * lineNProcs_);
+    std::vector<double> u_s_glob(lineNProcs_ + 1);
     if (lineRank_ == 0) {
-        solveGlobalInterfaceSystem(recv_S, recv_f, recv_glue, u_s_glob);
+        solveGlobalInterfaceSystem(recv_S, recv_f, u_s_glob);
     }
 
     // 6. Scatter results back to local processors, to get own local interface unknowns' values
     std::vector<double> u_s_loc(NUM_LOCAL_INTERFACES);
-    MPI_Scatter(u_s_glob.data(), NUM_LOCAL_INTERFACES, MPI_DOUBLE,
-                u_s_loc.data(), NUM_LOCAL_INTERFACES, MPI_DOUBLE,
-                0, lineComm_);
+    if (lineRank_ == 0) {
+        // Send to self (Rank 0)
+        u_s_loc[0] = u_s_glob[0];
+        u_s_loc[1] = u_s_glob[1];
+
+        // Send to others
+        for (int p = 1; p < lineNProcs_; ++p) {
+            std::vector<double> pair = {u_s_glob[p], u_s_glob[p + 1]};
+            MPI_Send(pair.data(), NUM_LOCAL_INTERFACES, MPI_DOUBLE, p, 0, lineComm_);
+        }
+    } else {
+        MPI_Recv(u_s_loc.data(), NUM_LOCAL_INTERFACES, MPI_DOUBLE, 0, 0, lineComm_, MPI_STATUS_IGNORE);
+    }
 
     // 7. Store interface results in u (the final solution vector)
     u[0] = u_s_loc[0];
@@ -147,46 +151,38 @@ void SchurSolver::solveInterface(const std::vector<double> &f, std::vector<doubl
 
 void SchurSolver::solveGlobalInterfaceSystem(const std::vector<double> &S_all,
                                              const std::vector<double> &f_all,
-                                             const std::vector<double> &glue_all,
                                              std::vector<double> &u_s_all) {
-
-    size_t M = NUM_LOCAL_INTERFACES * lineNProcs_; // Total size of global reduced system
+    size_t P = lineNProcs_;
+    size_t M = lineNProcs_ + 1;         // Total size of global reduced system
     std::vector<double> ga(M, 0.0);
     std::vector<double> gb(M, 0.0);
     std::vector<double> gc(M, 0.0);
+    std::vector<double> rhs(M, 0.0);
 
-    // Initialize u_all with RHS (ThomasSolver solves in-place)
-    u_s_all = f_all;
+    // Assembly Loop
+    for (size_t p = 0; p < P; ++p) {
+        // Proc p contributes to Interface p (its Left) and Interface p+1 (its Right)
 
-    for (size_t p = 0; p < lineNProcs_; ++p) {
-        // Indices in the global system for processor p
-        size_t i_left = NUM_LOCAL_INTERFACES * p;
-        size_t i_right = NUM_LOCAL_INTERFACES * p + 1;
+        // --- Contribution to Interface p (Left) ---
+        // S00 adds to diagonal of Interface p
+        gb[p] += S_all[4 * p + 0];
+        // S01 connects Interface p to p+1 (Upper diagonal)
+        gc[p] += S_all[4 * p + 1];
+        // RHS contribution
+        rhs[p] += f_all[2 * p + 0];
 
-        // --- Fill Schur Blocks (Internal to processor p) ---
-        // - Row i_left (Left Interface)
-        gb[i_left] = S_all[NUM_LOCAL_SCHUR_ELEMS * p + 0];  // s00
-        gc[i_left] = S_all[NUM_LOCAL_SCHUR_ELEMS * p + 1];  // s01
-        // - Row i_right (Right Interface)
-        ga[i_right] = S_all[NUM_LOCAL_SCHUR_ELEMS * p + 2]; // s10
-        gb[i_right] = S_all[NUM_LOCAL_SCHUR_ELEMS * p + 3]; // s11
-
-        // --- Fill Coupling Blocks (Between processors) ---
-        if (p < lineNProcs_ - 1) {
-            // Connect Right of P to Left of P+1
-            // - The coefficient is the physical c[N-1] from processor P
-            double c_coupling = glue_all[NUM_LOCAL_INTERFACES * p + 1];
-            gc[i_right] = c_coupling;
-
-            // Connect Left of P+1 to Right of P
-            // - The coefficient is the physical a[0] from processor P+1
-            double a_coupling = glue_all[NUM_LOCAL_INTERFACES * (p + 1) + 0];
-            ga[i_right + 1] = a_coupling;
-        }
+        // --- Contribution to Interface p+1 (Right) ---
+        // S11 adds to diagonal of Interface p+1
+        gb[p + 1] += S_all[4 * p + 3];
+        // S10 connects Interface p+1 to p (Lower diagonal)
+        ga[p + 1] += S_all[4 * p + 2];
+        // RHS contribution
+        rhs[p + 1] += f_all[2 * p + 1];
     }
 
-    // Solve the global skeleton system using the reusable ThomasSolver
-    ThomasSolver globalThomas(M);               // -- temporary solver for this size
+    // Solve global system
+    ThomasSolver globalThomas(M);
+    u_s_all = rhs; // solve in-place
     globalThomas.solve(ga, gb, gc, u_s_all);
 }
 
