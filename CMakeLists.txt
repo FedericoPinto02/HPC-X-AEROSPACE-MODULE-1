@@ -119,15 +119,14 @@ if (BUILD_TESTS)
     add_executable(alltests
             ${PROJECT_TESTS_DIR}/main.cpp
             ${PROJECT_TESTS_DIR}/MpiEnvFixture.hpp
-            #${PROJECT_TESTS_DIR}/test_haloHandler.cpp
-            #${PROJECT_TESTS_DIR}/test_derivatives.cpp
-            #${PROJECT_TESTS_DIR}/test_grid.cpp
-            #${PROJECT_TESTS_DIR}/test_fields.cpp
-            #${PROJECT_TESTS_DIR}/test_pressureStep.cpp
-            #${PROJECT_TESTS_DIR}/test_viscousStep.cpp
-            #${PROJECT_TESTS_DIR}/test_schurSolver.cpp
-            #${PROJECT_TESTS_DIR}/test_tridiag.cpp
-            #${PROJECT_TESTS_DIR}/test_schurSolver.cpp
+            ${PROJECT_TESTS_DIR}/test_haloHandler.cpp
+            ${PROJECT_TESTS_DIR}/test_derivatives.cpp
+            ${PROJECT_TESTS_DIR}/test_grid.cpp
+            ${PROJECT_TESTS_DIR}/test_fields.cpp
+            ${PROJECT_TESTS_DIR}/test_pressureStep.cpp
+            ${PROJECT_TESTS_DIR}/test_viscousStep.cpp
+            ${PROJECT_TESTS_DIR}/test_tridiag.cpp
+            ${PROJECT_TESTS_DIR}/test_schurSolver.cpp
     )
 
     # Link test executable with the libraries to be tested and GoogleTest tests runner

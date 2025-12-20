@@ -19,22 +19,9 @@ public:
     explicit TridiagMat(size_t n);
 
     /**
-     * @brief Fill the matrix.
-     * @param diag the matrix diagonal
-     * @param subdiag the matrix subdiagonal
-     * @param supdiag the matrix upper diagonal
-     */
-    void fillMat(std::vector<double> diag, std::vector<double> subdiag, std::vector<double> supdiag);
-
-    /**
      * @brief Get the matrix size.
      */
     [[nodiscard]] inline size_t getSize() const { return diag.size(); }
-
-    /**
-     * @brief Get the (i,j) element of the matrix.
-     */
-    [[nodiscard]] double getElement(size_t i, size_t j) const;
 
     /**
      * @brief Get the whole diagonal, subdiagonal or supdiagonal

@@ -3,8 +3,12 @@
 #include <cmath>
 #include <iostream>
 #include <array>
+#include <algorithm>
+#include <numeric>
 
-#include "core/MpiEnv.hpp"
+// Include the fixture
+#include "MpiEnvFixture.hpp"
+#include "core/TridiagMat.hpp"
 #include "numerics/SchurSolver.hpp"
 
 // --- Analytical Solution for u'' = -1, u(0)=0, u(1)=0 ---
@@ -12,105 +16,136 @@ double exact_solution(double x) {
     return 0.5 * (x - x * x);
 }
 
-TEST(SchurSolverTest, Solves1DLaplacianCorrectly) {
-    // 1. Initialize MPI Environment
-    // We pass dummy args since GTest main usually handles real args or we assume MPI is up.
-    // Note: This relies on MpiEnv checking if MPI is already initialized.
-    int argc = 0;
-    char **argv = nullptr;
-    MpiEnv env(argc, argv);
+TEST(SchurSolverTest, Solves1DLaplacianOverlapping) {
+    // 1. Access the global MPI Environment from the fixture
+    //    g_mpi is initialized in MpiTestEnvironment::SetUp
+    ASSERT_NE(g_mpi, nullptr) << "MPI Environment not initialized!";
+    MpiEnv& env = *g_mpi;
 
     int rank = env.rank();
     int size = env.size();
 
-    // 2. Setup Topology
-    // We force a 1D decomposition along the X-axis for this test.
-    // dims = {size, 1, 1} means all processors are in a single line along X.
+    // 2. Force a 1D Topology for this test
+    //    We explicitly request a 1D decomposition {size, 1, 1} to ensure
+    //    ranks are ordered linearly 0..N-1 along X for simple indexing logic.
     std::array<int, 3> dims = {size, 1, 1};
     std::array<int, 3> periods = {0, 0, 0};
+    try {
+        env.setupTopology(dims, periods);
+    } catch (const std::exception& e) {
+        // If setup fails (e.g. topology locked), we might need to skip or fail.
+        // For this test logic to work mathematically, we really need 1D.
+        GTEST_SKIP() << "Could not enforce 1D topology: " << e.what();
+    }
 
-    // Check if enough procs are available to allow testing (SchurSolver needs N >= 3 locally)
-    // We want a global grid large enough.
-    env.setupTopology(dims, periods);
-
-    // 3. Define Grid Parameters
-    // We want a decent resolution. Let's say 20 points per processor.
+    // 3. Grid Parameters (Overlapping)
+    //    In an overlapping decomposition, neighboring ranks share 1 point.
+    //    N_global = Sum(N_local - 1) + 1
     int points_per_proc = 20;
-    int global_N = points_per_proc * size;
-    double L = 1.0;
-    double dx = L / (global_N - 1); // Grid spacing
-
-    // 4. Determine Local Grid Chunk
-    // Since we divided evenly (points_per_proc * size), math is simple.
     int local_N = points_per_proc;
-    int global_start_idx = rank * local_N;
 
-    // 5. Construct Local Tridiagonal System
-    // Discretization of -u'' = 1  =>  (-u_L + 2u_C - u_R) / dx^2 = 1
-    // Linear system form: -u_L + 2u_C - u_R = dx^2
-    std::vector<double> a(local_N, -1.0); // Lower
-    std::vector<double> b(local_N, 2.0); // Main
-    std::vector<double> c(local_N, -1.0); // Upper
+    // Calculate global size based on overlap
+    // rank 0 has [0..19], rank 1 has [19..38], etc.
+    // Total intervals = size * (local_N - 1)
+    // Total points = Total intervals + 1
+    int global_N = size * (local_N - 1) + 1;
+
+    double L = 1.0;
+    double dx = L / (static_cast<double>(global_N) - 1.0);
+
+    // 4. Determine Global Start Index
+    //    Rank i starts at index i * (local_N - 1)
+    int global_start_idx = rank * (local_N - 1);
+
+    // 5. Build Matrix using TridiagMat
+    TridiagMat matrix(local_N);
+
+    // Get references to diagonals
+    std::vector<double>& sub = matrix.getDiag(-1);
+    std::vector<double>& main = matrix.getDiag(0);
+    std::vector<double>& sup = matrix.getDiag(1);
+
+    // --- FILL MATRIX (Laplacian Stencil) ---
+    // Stencil: [-1, 2, -1] / dx^2
+    // We put the 1/dx^2 scaling into the RHS for simplicity, or keep coeffs raw.
+    // Here: Matrix * u = dx^2 * f(x).
+    std::fill(sub.begin(), sub.end(), -1.0);
+    std::fill(main.begin(), main.end(), 2.0);
+    std::fill(sup.begin(), sup.end(), -1.0);
+
+    // --- ISOLATE LOCAL CHUNK ---
+    // The solver must treat the local matrix as a standalone block.
+    // Connections to ghosts are handled by the Schur complement Schur matrix S.
+    sub[0] = 0.0;            // No dependency on left ghost
+    sup[local_N - 1] = 0.0;  // No dependency on right ghost
+
+    // 6. Build RHS
+    //    -u'' = 1  =>  RHS = 1 * dx^2
     std::vector<double> rhs(local_N, dx * dx);
 
-    // 6. Apply Boundary Conditions (Dirichlet u=0)
-    // IMPORTANT: The Schur solver expects the system for interfaces to be valid.
-    // We implement Dirichlet BCs by modifying the matrix rows at the physical boundaries.
+    // 7. Apply Boundary Conditions & Overlap Scaling
+    //    Rule: For shared nodes (internal interfaces), we scale the operator
+    //    (diagonal and RHS) by 0.5 so the sum across ranks equals the full operator.
 
-    // Left Boundary (Global Node 0)
+    // --- LEFT END of Local Chunk ---
     if (rank == 0) {
-        // Equation: 1 * u_0 = 0
-        b[0] = 1.0;
-        c[0] = 0.0;
-        // a[0] is theoretically -1 connecting to "left of 0", but boundary cuts it. Set to 0.
-        a[0] = 0.0;
+        // Physical Boundary: Dirichlet u=0
+        main[0] = 1.0;
+        sup[0] = 0.0; // Cut connection to right neighbor (row becomes identity)
         rhs[0] = 0.0;
+    } else {
+        // Internal Interface (Shared with Rank i-1)
+        // Scale contributions
+        main[0] *= 0.5;
+        rhs[0] *= 0.5;
     }
 
-    // Right Boundary (Global Node N-1)
+    // --- RIGHT END of Local Chunk ---
     if (rank == size - 1) {
-        // Equation: 1 * u_N = 0
-        b[local_N - 1] = 1.0;
-        // c[local_N - 1] connecting to right is 0.
-        c[local_N - 1] = 0.0;
-        a[local_N - 1] = 0.0;
+        // Physical Boundary: Dirichlet u=0
+        main[local_N - 1] = 1.0;
+        sub[local_N - 1] = 0.0; // Cut connection to left neighbor
         rhs[local_N - 1] = 0.0;
+    } else {
+        // Internal Interface (Shared with Rank i+1)
+        // Scale contributions
+        main[local_N - 1] *= 0.5;
+        rhs[local_N - 1] *= 0.5;
     }
 
-    // 7. Instantiate and Run Schur Solver
-    // We use Axis::X because we split the topology along X.
-    SchurSolver solver(env, Axis::X, a, b, c);
+    // 8. Instantiate and Run Schur Solver
+    //    We use Axis::X because we set up a 1D topology along X.
+    SchurSolver solver(env, Axis::X, matrix);
 
-    solver.preprocess(); // Compute S matrix
+    solver.preprocess(); // Compute S matrix and local Green's functions
 
     std::vector<double> u(local_N);
     solver.solve(rhs, u);
 
-    // 8. Verification
+    // 9. Verification
     double max_local_error = 0.0;
     for (int i = 0; i < local_N; ++i) {
+        // Map local index 'i' to global physical coordinate 'x'
         int global_i = global_start_idx + i;
         double x = global_i * dx;
-        double u_analytical = exact_solution(x);
+        double u_exact = exact_solution(x);
 
-        double error = std::abs(u[i] - u_analytical);
-        if (error > max_local_error) {
-            max_local_error = error;
-        }
+        double err = std::abs(u[i] - u_exact);
+        if (err > max_local_error) max_local_error = err;
     }
 
-    // Reduce error across all processors to get global max error
+    // Gather max error from all ranks
     double global_max_error = 0.0;
     MPI_Allreduce(&max_local_error, &global_max_error, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
 
     if (rank == 0) {
-        std::cout << "[  INFO ] Global Max Error: " << global_max_error << std::endl;
-        std::cout << "[  INFO ] Grid Spacing dx: " << dx << std::endl;
+        // Optional debug output
+        // std::cout << "[  INFO ] Global N: " << global_N << ", dx: " << dx << std::endl;
+        // std::cout << "[  INFO ] Max Error: " << global_max_error << std::endl;
     }
 
-    // 9. Assertion
-    // Finite Difference error is O(dx^2).
-    // For dx approx 0.01 (if N=100), error should be small (approx 1e-4 range).
-    // We verify it's below a sensible threshold.
+    // Finite Difference Accuracy Check
+    // Error should be O(dx^2). For ~60-80 points, dx ~ 0.015, error ~ 1e-4.
+    // We set a safe upper bound.
     EXPECT_LT(global_max_error, 1e-3);
 }

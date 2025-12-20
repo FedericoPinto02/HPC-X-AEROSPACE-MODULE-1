@@ -1,325 +1,137 @@
 #include <gtest/gtest.h>
-
+#include <vector>
 #include <cmath>
 
 #include "core/TridiagMat.hpp"
 
-// === Constructor tests ===
+// =============================================================================
+// Constructor Tests
+// =============================================================================
 
 TEST(TridiagMatTest, Constructor_invalidArgument) {
-    EXPECT_THROW(TridiagMat matrix{1}, std::invalid_argument);
+    // Constructor throws if n < 2 (assuming implementation enforces this)
+    EXPECT_THROW(TridiagMat matrix(1), std::invalid_argument);
 }
 
 TEST(TridiagMatTest, Constructor_correctCreation) {
     TridiagMat matrix(5);
 
+    // Implementation should resize all vectors to size N
     EXPECT_EQ(matrix.getDiag(0).size(), 5);
-    EXPECT_EQ(matrix.getDiag(-1).size(), 4);
-    EXPECT_EQ(matrix.getDiag(1).size(), 4);
+    EXPECT_EQ(matrix.getDiag(-1).size(), 5);
+    EXPECT_EQ(matrix.getDiag(1).size(), 5);
 }
 
-// === fillMat tests ===
-
-TEST(TridiagMatTest, FillMat_incorrectSizeDiag) {
-    TridiagMat matrix(3);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0};
-    std::vector<double> subdiag = {7.0, 8.0};
-
-    EXPECT_THROW(matrix.fillMat(diag, subdiag, supdiag), std::invalid_argument);
-}
-
-TEST(TridiagMatTest, FillMat_incorrectSizeSubDiag) {
-    TridiagMat matrix(3);
-    std::vector<double> diag = {1.0, 2.0, 3.0};
-    std::vector<double> supdiag = {5.0, 6.0};
-    std::vector<double> subdiag = {7.0};
-
-    EXPECT_THROW(matrix.fillMat(diag, subdiag, supdiag), std::invalid_argument);
-}
-
-TEST(TridiagMatTest, FillMat_incorrectSizeSupDiag) {
-    TridiagMat matrix(3);
-    std::vector<double> diag = {1.0, 2.0, 3.0};
-    std::vector<double> supdiag = {5.0, 6.0, 6.5};
-    std::vector<double> subdiag = {7.0, 8.0};
-
-    EXPECT_THROW(matrix.fillMat(diag, subdiag, supdiag), std::invalid_argument);
-}
-
-TEST(TridiagMatTest, FillMat_correctPopulation) {
-    TridiagMat matrix(3);
-    std::vector<double> diag = {1.0, 2.0, 3.0};
-    std::vector<double> supdiag = {4.0, 5.0};
-    std::vector<double> subdiag = {6.0, 7.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_EQ(matrix.getDiag(0), std::vector<double>({1.0, 2.0, 3.0}));
-    EXPECT_EQ(matrix.getDiag(1), std::vector<double>({4.0, 5.0}));
-    EXPECT_EQ(matrix.getDiag(-1), std::vector<double>({6.0, 7.0}));
-}
-
-// === getSize test ===
+// =============================================================================
+// GetSize Tests
+// =============================================================================
 
 TEST(TridiagMatTest, GetSize) {
     TridiagMat matrix(6);
-
     EXPECT_EQ(matrix.getSize(), 6);
 }
 
-// === getElement tests ===
+// =============================================================================
+// GetDiag Tests (Read/Write)
+// =============================================================================
 
-TEST(TridiagMatTest, GetElement_rowIndexTooSmall) {
+TEST(TridiagMatTest, GetDiag_WriteAndRead) {
     TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
 
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_THROW(matrix.getElement(-2, 1), std::out_of_range);
+    // Create dummy data
+    std::vector<double> main = {1.0, 2.0, 3.0, 4.0};
+    std::vector<double> sub  = {8.0, 9.0, 10.0, 11.0};
+    std::vector<double> sup  = {5.0, 6.0, 7.0, 0.0};
+
+    // Write via non-const reference
+    matrix.getDiag(0) = main;
+    matrix.getDiag(-1) = sub;
+    matrix.getDiag(1) = sup;
+
+    // Verify
+    EXPECT_EQ(matrix.getDiag(0), main);
+    EXPECT_EQ(matrix.getDiag(-1), sub);
+    EXPECT_EQ(matrix.getDiag(1), sup);
 }
 
-TEST(TridiagMatTest, GetElement_columnIndexTooSmall) {
+TEST(TridiagMatTest, GetDiag_InvalidArgument) {
     TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_THROW(matrix.getElement(2, -1), std::out_of_range);
-}
-
-TEST(TridiagMatTest, GetElement_rowIndexTooLarge) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_THROW(matrix.getElement(4, 2), std::out_of_range);
-}
-
-TEST(TridiagMatTest, GetElement_columnIndexTooLarge) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_THROW(matrix.getElement(3, 5), std::out_of_range);
-}
-
-TEST(TridiagMatTest, GetElement_subDiagElement) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_DOUBLE_EQ(matrix.getElement(1, 0), 8.0);
-    EXPECT_DOUBLE_EQ(matrix.getElement(2, 1), 9.0);
-    EXPECT_DOUBLE_EQ(matrix.getElement(3, 2), 10.0);
-}
-
-TEST(TridiagMatTest, GetElement_mainDiagElement) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_DOUBLE_EQ(matrix.getElement(0, 0), 1.0);
-    EXPECT_DOUBLE_EQ(matrix.getElement(1, 1), 2.0);
-    EXPECT_DOUBLE_EQ(matrix.getElement(2, 2), 3.0);
-    EXPECT_DOUBLE_EQ(matrix.getElement(3, 3), 4.0);
-}
-
-TEST(TridiagMatTest, GetElement_supDiagElement) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_DOUBLE_EQ(matrix.getElement(0, 1), 5.0);
-    EXPECT_DOUBLE_EQ(matrix.getElement(1, 2), 6.0);
-    EXPECT_DOUBLE_EQ(matrix.getElement(2, 3), 7.0);
-}
-
-// === getDiag tests ===
-
-TEST(TridiagMatTest, GetDiag_subDiag) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_EQ(matrix.getDiag(-1), std::vector({8.0, 9.0, 10.0}));
-}
-
-TEST(TridiagMatTest, GetDiag_mainDiag) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_EQ(matrix.getDiag(0), std::vector({1.0, 2.0, 3.0, 4.0}));
-}
-
-TEST(TridiagMatTest, GetDiag_supDiag) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_EQ(matrix.getDiag(1), std::vector({5.0, 6.0, 7.0}));
-}
-
-TEST(TridiagMatTest, GetDiag_invalidArgument) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
+    // Should throw if parameter is not -1, 0, or 1
     EXPECT_THROW(matrix.getDiag(-2), std::invalid_argument);
+    EXPECT_THROW(matrix.getDiag(2), std::invalid_argument);
 }
 
-TEST(TridiagMatTest, GetDiag_changingValuesSubDiag) {
+TEST(TridiagMatTest, GetDiag_ModifyReference) {
     TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
+    std::vector<double> sub = {8.0, 9.0, 10.0, 11.0};
+    matrix.getDiag(-1) = sub;
 
-    std::vector<double> &matSubDiag = matrix.getDiag(-1);
+    // Modify via reference
+    std::vector<double> &ref = matrix.getDiag(-1);
+    ref.front() *= 2; // 16.0
+    ref.back() *= 2;  // 22.0
 
-    matrix.fillMat(diag, subdiag, supdiag);
-    matSubDiag.front() *= 2;
-    matSubDiag.back() *= 2;
-
-    EXPECT_DOUBLE_EQ(matrix.getFirstElementFromDiag(-1), 16.0);
-    EXPECT_DOUBLE_EQ(matrix.getDiag(-1).at(1), 9.0);
-    EXPECT_DOUBLE_EQ(matrix.getLastElementFromDiag(-1), 20.0);
+    EXPECT_DOUBLE_EQ(matrix.getDiag(-1)[0], 16.0);
+    EXPECT_DOUBLE_EQ(matrix.getDiag(-1)[3], 22.0);
 }
 
-TEST(TridiagMatTest, GetDiag_changingValuesMainDiag) {
+// =============================================================================
+// GetFirstElementFromDiag Tests
+// =============================================================================
+
+TEST(TridiagMatTest, GetFirstElementFromDiag_Main) {
     TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    std::vector<double> &matMainDiag = matrix.getDiag(0);
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    matMainDiag.front() *= 2;
-    matMainDiag.back() *= 2;
-
-    EXPECT_DOUBLE_EQ(matrix.getFirstElementFromDiag(0), 2.0);
-    EXPECT_DOUBLE_EQ(matrix.getDiag(0).at(1), 2.0);
-    EXPECT_DOUBLE_EQ(matrix.getDiag(0).at(2), 3.0);
-    EXPECT_DOUBLE_EQ(matrix.getLastElementFromDiag(0), 8.0);
+    matrix.getDiag(0) = {10.0, 20.0, 30.0, 40.0};
+    EXPECT_EQ(matrix.getFirstElementFromDiag(0), 10.0);
 }
 
-TEST(TridiagMatTest, GetDiag_changingValuesSupDiag) {
+TEST(TridiagMatTest, GetFirstElementFromDiag_Sub) {
     TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    std::vector<double> &matSupDiag = matrix.getDiag(1);
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    matSupDiag.front() *= 2;
-    matSupDiag.back() *= 2;
-
-    EXPECT_DOUBLE_EQ(matrix.getFirstElementFromDiag(1), 10.0);
-    EXPECT_DOUBLE_EQ(matrix.getDiag(1).at(1), 6.0);
-    EXPECT_DOUBLE_EQ(matrix.getLastElementFromDiag(1), 14.0);
+    matrix.getDiag(-1) = {5.0, 6.0, 7.0, 8.0};
+    EXPECT_EQ(matrix.getFirstElementFromDiag(-1), 5.0);
 }
 
-// === getFirstElementFromDiag tests ===
-
-TEST(TridiagMatTest, GetFirstElementFromDiag_subDiag) {
+TEST(TridiagMatTest, GetFirstElementFromDiag_Sup) {
     TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_EQ(matrix.getFirstElementFromDiag(-1), 8.0);
+    matrix.getDiag(1) = {9.0, 8.0, 7.0, 6.0};
+    EXPECT_EQ(matrix.getFirstElementFromDiag(1), 9.0);
 }
 
-TEST(TridiagMatTest, GetFirstElementFromDiag_mainDiag) {
+TEST(TridiagMatTest, GetFirstElementFromDiag_Invalid) {
     TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_EQ(matrix.getFirstElementFromDiag(0), 1.0);
+    EXPECT_THROW(matrix.getFirstElementFromDiag(5), std::invalid_argument);
 }
 
-TEST(TridiagMatTest, GetFirstElementFromDiag_supDiag) {
+// =============================================================================
+// GetLastElementFromDiag Tests
+// =============================================================================
+
+TEST(TridiagMatTest, GetLastElementFromDiag_Main) {
     TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_EQ(matrix.getFirstElementFromDiag(1), 5.0);
-}
-
-TEST(TridiagMatTest, GetFirstElementFromDiag_invalidArgument) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_THROW(matrix.getFirstElementFromDiag(3), std::invalid_argument);
-}
-
-// === GetLastElementFromDiag tests ===
-
-TEST(TridiagMatTest, GetLastElementFromDiag_subDiag) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
-    EXPECT_EQ(matrix.getLastElementFromDiag(-1), 10.0);
-}
-
-TEST(TridiagMatTest, GetLastElementFromDiag_mainDiag) {
-    TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
+    // Implementation likely returns diag.at(size-1) for main diagonal
+    matrix.getDiag(0) = {1.0, 2.0, 3.0, 4.0};
     EXPECT_EQ(matrix.getLastElementFromDiag(0), 4.0);
 }
 
-TEST(TridiagMatTest, GetLastElementFromDiag_supDiag) {
+TEST(TridiagMatTest, GetLastElementFromDiag_Sub) {
     TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
+    // Implementation usually returns subdiag.at(size-2) for off-diagonals
+    // Indices: 0->8.0, 1->9.0, 2->10.0, 3->11.0
+    // size-2 = index 2 => 10.0
+    matrix.getDiag(-1) = {8.0, 9.0, 10.0, 11.0};
+    EXPECT_EQ(matrix.getLastElementFromDiag(-1), 10.0);
+}
 
-    matrix.fillMat(diag, subdiag, supdiag);
+TEST(TridiagMatTest, GetLastElementFromDiag_Sup) {
+    TridiagMat matrix(4);
+    // Implementation usually returns supdiag.at(size-2) for off-diagonals
+    // Indices: 0->5.0, 1->6.0, 2->7.0, 3->0.0
+    // size-2 = index 2 => 7.0
+    matrix.getDiag(1) = {5.0, 6.0, 7.0, 0.0};
     EXPECT_EQ(matrix.getLastElementFromDiag(1), 7.0);
 }
 
-TEST(TridiagMatTest, GetLastElementFromDiag_invalidArgument) {
+TEST(TridiagMatTest, GetLastElementFromDiag_Invalid) {
     TridiagMat matrix(4);
-    std::vector<double> diag = {1.0, 2.0, 3.0, 4.0};
-    std::vector<double> supdiag = {5.0, 6.0, 7.0};
-    std::vector<double> subdiag = {8.0, 9.0, 10.0};
-
-    matrix.fillMat(diag, subdiag, supdiag);
     EXPECT_THROW(matrix.getLastElementFromDiag(-5), std::invalid_argument);
 }

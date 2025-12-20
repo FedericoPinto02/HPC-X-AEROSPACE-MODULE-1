@@ -3,7 +3,7 @@ set -euo pipefail
 
 BUILD_DIR="build"
 CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON"
-NUM_PROCS=1     # Set the number of MPI processes for testing
+NUM_PROCS=4      # Set the number of MPI processes for testing
 
 # Forces OpenMPI to use a short path for temporary files
 export TMPDIR=/tmp
