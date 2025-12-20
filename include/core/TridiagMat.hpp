@@ -4,19 +4,14 @@
 #include <stdexcept>
 #include <vector>
 
-/**
- * @brief Class representing a tridiagonal matrix and providing access to its elements.
- */
+///Class representing a tridiagonal matrix and providing access to its elements.
 class TridiagMat {
-
-  friend class SchurSequentialSolver;
-
-  private:
+private:
     std::vector<double> diag;
     std::vector<double> subdiag;
     std::vector<double> supdiag;
 
-  public:
+public:
     /**
      * @brief Constructor.
      * @param n Size of the matrix (n x n)
@@ -25,20 +20,19 @@ class TridiagMat {
 
     /**
      * @brief Fill the matrix.
-     * @param diag matrix diagonal.
-     * @param subdiag matrix subdiagonal.
-     * @param supdiag matrix upper diagonal.
+     * @param diag the matrix diagonal
+     * @param subdiag the matrix subdiagonal
+     * @param supdiag the matrix upper diagonal
      */
-    void fillMat(std::vector<double> diag, std::vector<double> subdiag,
-                 std::vector<double> supdiag);
+    void fillMat(std::vector<double> diag, std::vector<double> subdiag, std::vector<double> supdiag);
 
     /**
-     * @brief Get the matrix size
+     * @brief Get the matrix size.
      */
     [[nodiscard]] inline size_t getSize() const { return diag.size(); }
 
     /**
-     * @brief Get the (i,j) element of the matrix
+     * @brief Get the (i,j) element of the matrix.
      */
     [[nodiscard]] double getElement(size_t i, size_t j) const;
 
@@ -48,9 +42,7 @@ class TridiagMat {
      */
     [[nodiscard]] std::vector<double> &getDiag(int w);
 
-    /**
-     * @overload
-     */
+    /// @overload
     [[nodiscard]] std::vector<double> getDiag(int w) const;
 
     /**
