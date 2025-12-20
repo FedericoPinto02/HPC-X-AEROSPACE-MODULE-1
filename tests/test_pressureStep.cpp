@@ -2,12 +2,13 @@
 #include <memory>
 #include <vector>
 #include <cmath>
-#include <functional>
+
+#include "MpiEnvFixture.hpp"
 
 #include "simulation/pressureStep.hpp"
 #include "simulation/SimulationContext.hpp"
 #include "core/Fields.hpp"
-#include "numerics/derivatives.hpp"
+
 
 class PressureStepTest : public ::testing::Test {
 protected:
@@ -18,19 +19,18 @@ protected:
 
     // Context objects
     SimulationData data_;
-    ParallelizationSettings parallel_;
 
     std::unique_ptr<PressureStep> pressureStep;
 
     PressureStepTest() {
+        assert(g_mpi != nullptr);
+
         // Initialize 10x10x10 grid with spacing 1.0
-        grid = std::make_shared<const Grid>(10, 10, 10, 1.0, 1.0, 1.0);
+        grid = std::make_shared<const Grid>(10, 10, 10, 1.0, 1.0, 1.0, *g_mpi);
 
         // Setup SimulationData context
         data_.grid = grid;
         data_.dt = dt;
-
-        parallel_.schurDomains = 1;
     }
 
     void SetUp() override {
@@ -52,7 +52,7 @@ protected:
         data_.bcw = funcZ;
 
         // Create the object under test
-        pressureStep = std::make_unique<PressureStep>(data_, parallel_);
+        pressureStep = std::make_unique<PressureStep>(*g_mpi, data_);
     }
 
     double getDivU(size_t i, size_t j, size_t k) {
@@ -75,8 +75,9 @@ TEST_F(PressureStepTest, RunDoesNotCrash) {
 TEST_F(PressureStepTest, Run_CalculatesDivU_Correctness) {
     ASSERT_NO_THROW(pressureStep->run());
 
-    const size_t i = 5, j = 5, k = 5;
-    const double x = i * grid->dx, y = j * grid->dy, z = k * grid->dz;
+    const long i = (long) grid->Nx / 2;
+    const long j = (long) grid->Ny / 2;
+    const long k = (long) grid->Nz / 2;
     const double dx = grid->dx, dy = grid->dy, dz = grid->dz;
 
     // 1. X-Term: U is staggered in X.
@@ -103,6 +104,10 @@ TEST_F(PressureStepTest, Run_CalculatesDivU_Correctness) {
 }
 
 TEST_F(PressureStepTest, Run_WithZeroDivergence_PressureIsUnchanged) {
+    const long i = (long) grid->Nx / 2;
+    const long j = (long) grid->Ny / 2;
+    const long k = (long) grid->Nz / 2;
+
     // Setup U = 0, P = 1.0
     data_.u.setup(grid, ZERO_FUNC, ZERO_FUNC, ZERO_FUNC);
     data_.u.populate(0.0);
@@ -115,15 +120,15 @@ TEST_F(PressureStepTest, Run_WithZeroDivergence_PressureIsUnchanged) {
     data_.p.populate(0.0);
 
     // Reconstruct with new data
-    pressureStep = std::make_unique<PressureStep>(data_, parallel_);
+    pressureStep = std::make_unique<PressureStep>(*g_mpi, data_);
 
     pressureStep->run();
 
     // If div(u) = 0, pcr should be 0, so p_final == p_initial == 1.0
-    double p_final = getPressure(5, 5, 5);
+    double p_final = getPressure(i, j, k);
     EXPECT_NEAR(p_final, 1.0, 1e-9);
 
-    double divU_computed = getDivU(5, 5, 5);
+    double divU_computed = getDivU(i, j, k);
     EXPECT_NEAR(divU_computed, 0.0, 1e-9);
 }
 
@@ -132,14 +137,14 @@ protected:
     const size_t N = 10;
     std::shared_ptr<Grid> grid;
     SimulationData data_;
-    ParallelizationSettings parallel_;
     std::unique_ptr<PressureStep> pressureStep;
 
     PressureStepRobustnessTest() {
-        grid = std::make_shared<Grid>(N, N, N, 0.1, 0.1, 0.1);
+        assert(g_mpi != nullptr);
+
+        grid = std::make_shared<Grid>(N, N, N, 0.1, 0.1, 0.1, *g_mpi);
         data_.grid = grid;
         data_.dt = 0.1;
-        parallel_.schurDomains = 1;
     }
 
     void SetUp() override {
@@ -164,7 +169,7 @@ protected:
         data_.bcv = funcU_y;
         data_.bcw = funcU_z;
 
-        pressureStep = std::make_unique<PressureStep>(data_, parallel_);
+        pressureStep = std::make_unique<PressureStep>(*g_mpi, data_);
     }
 
     void checkFieldFinite(const Field &field, const std::string &fieldName) {

@@ -2,42 +2,48 @@
 
 #include <vector>
 #include <memory>
-#include <simulation/initializer.hpp>
-#include <numerics/LinearSys.hpp>
-#include <numerics/derivatives.hpp>
-#include <simulation/SimulationContext.hpp>
+
+#include "core/HaloHandler.hpp"
+#include "core/TridiagMat.hpp"
+#include "numerics/derivatives.hpp"
+#include "numerics/SchurSolver.hpp"
+#include "simulation/initializer.hpp"
+#include "simulation/SimulationContext.hpp"
 
 
 /**
  * @brief Handles all pressure step manipulation.
  * This class does not own data but regulates the workflow.
  */
-class PressureStep
-{
+class PressureStep {
     friend class PressureStepTest;
+
     friend class PressureStepRobustnessTest;
+
 public:
 
     /**
      * @brief Constructor.
-     * @param simData the simulation data
-     * @param parallel the parallelization settings
+     * @param mpi the MPI environment
+     * @param simData the whole simulation data
      */
-    PressureStep(SimulationData& simData, ParallelizationSettings& parallel);
+    PressureStep(MpiEnv &mpi, SimulationData &simData);
 
     /// Run the pressure step: pressure correction computation by splitting direction and pressure update.
     void run();
 
 private:
-    SimulationData& data_;
-    ParallelizationSettings parallel_;
+    MpiEnv &mpi;
+    SimulationData &data_;
 
     Field psi, phi, pcr, divU;
     // pcr stands for pressure corrector, it's the second phi
 
     /**
-     * @brief Wrapper that chooses whether to use Thomas (P=1) or Schur (P>1).
+     * @brief Assemble the local linear system matrix for pressure-like variables along a given direction.
+     * @param grid the pointer to the grid information
+     * @param direction the sweep direction i.e., the direction of the line to be solved
+     * @param matrix the tridiagonal matrix to be assembled
      */
-    std::vector<double> solveSystem(LinearSys& sys);
-
+    void assembleLocalMatrix(const GridPtr &grid, const Axis direction, TridiagMat &matrix);
 };
