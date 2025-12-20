@@ -55,6 +55,10 @@ void VTKWriter::write_legacy(const std::string &filename,
 {
 
     const size_t N = static_cast<size_t>(Nx_) * Ny_ * Nz_;
+    const auto &grid = pressure->getGrid();
+    double originX = grid.i_start * grid.dx;
+    double originY = grid.j_start * grid.dy;
+    double originZ = grid.k_start * grid.dz;
 
     std::ofstream out(filename);
     if (!out.is_open())
@@ -65,7 +69,7 @@ void VTKWriter::write_legacy(const std::string &filename,
     out << "ASCII\n";
     out << "DATASET STRUCTURED_POINTS\n";
     out << "DIMENSIONS " << Nx_ << " " << Ny_ << " " << Nz_ << "\n";
-    out << "ORIGIN 0 0 0\n";
+    out << "ORIGIN " << originX << " " << originY << " " << originZ << "\n";
     out << "SPACING " << dx_ << " " << dy_ << " " << dz_ << "\n";
     out << "POINT_DATA " << N << "\n";
 
