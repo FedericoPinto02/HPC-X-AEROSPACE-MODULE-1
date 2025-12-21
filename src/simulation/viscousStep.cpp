@@ -91,6 +91,9 @@ void ViscousStep::computeXi() {
     auto &nx = grid->Nx;
     auto &ny = grid->Ny;
     auto &nz = grid->Nz;
+    auto &dx = grid->dx;
+    auto &dy = grid->dy;
+    auto &dz = grid->dz;
     auto &time = data_.currTime;
 
     if (grid->hasMinBoundary(Axis::X)) {
@@ -319,6 +322,7 @@ void ViscousStep::closeViscousStep() {
 
 
 
+
     // ------------------------------------------
     // Solve U --------------------------------
     // ------------------------------------------
@@ -383,6 +387,7 @@ void ViscousStep::closeViscousStep() {
         }
     }
 }
+
 
 void ViscousStep::assembleLocalSystem(
         const SimulationData &simData, const VectorField &eta, const VectorField &xi,
@@ -497,7 +502,9 @@ void ViscousStep::assembleLocalSystem(
             {
                 diag.front() = 1.0;
                 supdiag.front() = 0.0;
+
                 rhsC.front() = bc(physical_x, physical_y, physical_z, simData.currTime);
+
                 break;
             }
         }
@@ -531,7 +538,17 @@ void ViscousStep::assembleLocalSystem(
             case Axis::Z: bc = simData.bcw; break;
         }
 
-        switch (boundaryType) {
+        switch (boundaryType)
+        {
+            case BoundaryType::Normal:
+            {
+                diag.back() = 1.0;
+                subdiag.back() = 0.0;
+
+                rhsC.back() = bc(physical_x, physical_y, physical_z, simData.currTime);
+
+                break;
+            }
             case BoundaryType::Tangent:
             {
                 // Enforce physical position on the actual wall
@@ -539,16 +556,8 @@ void ViscousStep::assembleLocalSystem(
                 if (derivativeDirection == Axis::Y) physical_y += 0.5 * dy;
                 if (derivativeDirection == Axis::Z) physical_z += 0.5 * dz;
 
-                diag.back() = 1.0;
-                subdiag.back() = 0.0;
-                rhsC.back() = bc(physical_x, physical_y, physical_z, simData.currTime);
-
-                break;
-            }
-            case BoundaryType::Normal:
-            {
-                double inv_k = simData.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection,
-                                                                             endI);
+                double inv_k = simData.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+                                                                             derivativeDirection, endI);
                 double beta = 1.0 + (dt_nu_over_2 * inv_k);
                 double gamma = dt_nu_over_2 / beta;
 
@@ -563,10 +572,9 @@ void ViscousStep::assembleLocalSystem(
                               + 4.0 / 3.0 * gamma * dCoef * eta_Nm1
                               - 4.0 * gamma * dCoef * eta_N
                               + 8.0 / 3.0 * gamma * dCoef * (
-                        bc(physical_x, physical_y, physical_z, simData.currTime - simData.dt) +
-                        bc(physical_x, physical_y, physical_z, simData.currTime)
-                );
-                break;
+                                  bc(physical_x, physical_y, physical_z, simData.currTime - simData.dt) +
+                                  bc(physical_x, physical_y, physical_z, simData.currTime)
+                              );
             }
         }
     }
