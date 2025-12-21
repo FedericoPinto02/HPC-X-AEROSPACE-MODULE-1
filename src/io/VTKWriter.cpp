@@ -1,4 +1,5 @@
 #include "io/VTKWriter.hpp"
+
 #include <fstream>
 #include <iomanip>
 #include <stdexcept>

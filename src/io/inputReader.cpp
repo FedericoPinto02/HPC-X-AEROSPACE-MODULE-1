@@ -1,8 +1,10 @@
 #include "io/inputReader.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
-#include <nlohmann/json.hpp>
+
+#include "nlohmann/json.hpp"
 
 using json = nlohmann::json;
 

@@ -1,4 +1,4 @@
-#include <simulation/pressureStep.hpp>
+#include "simulation/pressureStep.hpp"
 
 PressureStep::PressureStep(MpiEnv &mpi, SimulationData &simData)
         : mpi(mpi), data_(simData) {

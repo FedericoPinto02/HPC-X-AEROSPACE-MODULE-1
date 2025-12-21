@@ -1,5 +1,5 @@
 #include "numerics/derivatives.hpp"
-#include "core/Grid.hpp"
+
 #include <stdexcept>
 
 void Derivatives::computeGradient(const Field &field, VectorField &gradient) const {
