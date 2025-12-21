@@ -23,7 +23,7 @@ class PressureStep {
 public:
 
     /**
-     * @brief Constructor.
+     * @brief Constructor that initializes the <code>PressureStep</code> with MPI environment and simulation data.
      * @param mpi the MPI environment
      * @param simData the whole simulation data
      */

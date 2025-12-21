@@ -18,9 +18,17 @@
 class NSBSolver
 {
 public:
+    /**
+     * @brief Constructor that initializes the solver with a configuration file and MPI environment.
+     * @param configFile path to the configuration file
+     * @param mpi the MPI environment
+     */
     NSBSolver(const std::string &configFile, MpiEnv &mpi);
 
+    /// Sets up the simulation by reading input data, initializing simulation data, and preparing steps and writers.
     void setup();
+
+    /// Executes the time-stepping loop to solve the Navier-Stokes-Brinkman equations.
     void solve();
 
 private:

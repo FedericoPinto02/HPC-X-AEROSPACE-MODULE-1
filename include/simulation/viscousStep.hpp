@@ -10,7 +10,6 @@
 #include "numerics/SchurSolver.hpp"
 #include "simulation/SimulationContext.hpp"
 
-
 /**
  * @brief Handles all viscous step maniplation.
  * This class does not own data but regulates the workflow.
@@ -23,14 +22,13 @@ class ViscousStep
 public:
 
     /**
-     * @brief Constructor
-     * @param contex Contains all simulation data
+     * @brief Constructor that initializes the <code>ViscousStep</code> with MPI environment and simulation data.
+     * @param mpi the MPI environment
+     * @param simData the whole simulation data
      */
     ViscousStep(MpiEnv &mpi, SimulationData &simData);
-    
-    /**
-     * @brief Run viscous step.
-     */
+
+    /// Run viscous step.
     void run();
 
 private:
@@ -39,19 +37,13 @@ private:
 
     VectorField g, gradP, dxxEta, dyyZeta, dzzU, xi;
 
-    /**
-     * @brief Compute G term
-     */
+    /// Compute the g term (necessary for the xi term).
     void computeG();
 
-     /**
-     * @brief Compute xi term
-     */
+    /// Compute the xi term (necessary for the x-sweep).
     void computeXi();
 
-    /**
-     * @brief Closes viscous step filling and solving three linear systems.
-     */
+    /// Solves the viscous step by ADI method (x-, y- and z-sweeps) and updates the velocity field.
     void closeViscousStep();
 
     /**
