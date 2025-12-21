@@ -83,6 +83,7 @@ protected:
         data_.bcw = [](double, double, double z, double) { return std::sin(z); };
 
         viscousStep = std::make_unique<ViscousStep>(*g_mpi, data_);
+        viscousStep->setup();
     }
 
     void callComputeG() {
@@ -223,6 +224,7 @@ protected:
         data_.bcw = sqZ;
 
         viscousStep = std::make_unique<ViscousStep>(*g_mpi, data_);
+        viscousStep->setup();
     }
 
     void checkFieldFinite(const Field &field, const std::string &fieldName) {

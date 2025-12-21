@@ -14,11 +14,11 @@
  * @brief Handles all viscous step maniplation.
  * This class does not own data but regulates the workflow.
  */
-class ViscousStep
-{
+class ViscousStep {
     friend class ViscousStepTest;
 
     friend class ViscousStepRobustnessTest;
+
 public:
 
     /**
@@ -28,16 +28,26 @@ public:
      */
     ViscousStep(MpiEnv &mpi, SimulationData &simData);
 
+    /// Setup fields and linear system scratch variables.
+    void setup();
+
     /// Run viscous step.
     void run();
 
 private:
+    // --- Environment and helpers -------------------------------------------------------------------------------------
     const MpiEnv &mpi;
     HaloHandler haloHandler;
     Derivatives derive;
 
-    SimulationData& data_;
+    // --- Phyisics data -----------------------------------------------------------------------------------------------
+    SimulationData &data_;
     VectorField g, gradP, dxxEta, dyyZeta, dzzU, xi;
+
+    // --- Linear system: O(N) memory overhead, O(1) time setup complexity ---------------------------------------------
+    TridiagMat matrix_u, matrix_v, matrix_w;                // scratch tridiagonal matrices for linear system solving
+    std::vector<double> rhs_u, rhs_v, rhs_w;                // scratch RHS vectors for linear system solving
+    std::vector<double> unknown_u, unknown_v, unknown_w;    // scratch solution vectors for linear system solving
 
     /// Compute the g term (necessary for the xi term).
     void computeG();
