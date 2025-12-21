@@ -4,6 +4,7 @@
 #include <cstddef>
 
 #include "core/MpiEnv.hpp"
+#include <memory>
 
 
 /// Enum describing the (possibly staggered) position of some points in a grid.
