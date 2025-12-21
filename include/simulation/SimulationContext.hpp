@@ -1,5 +1,4 @@
-#ifndef NSBSOLVER_SIMULATIONCONTEXT_HPP
-#define NSBSOLVER_SIMULATIONCONTEXT_HPP
+#pragma once
 
 #include <cstddef>
 #include <string>
@@ -73,5 +72,3 @@ struct SimulationData {
     Func fy;
     Func fz;
 };
-
-#endif //NSBSOLVER_SIMULATIONCONTEXT_HPP

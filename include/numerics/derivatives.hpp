@@ -1,5 +1,4 @@
-#ifndef NSBSOLVER_DERIVATIVES_HPP
-#define NSBSOLVER_DERIVATIVES_HPP
+#pragma once
 
 #include <vector>
 
@@ -121,5 +120,3 @@ public:
      */
     void computeDzz(const Field &field, Field &dzz) const;
 };
-
-#endif // NSBSOLVER_DERIVATIVES_HPP

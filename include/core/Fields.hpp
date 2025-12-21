@@ -1,5 +1,4 @@
-#ifndef NSBSOLVER_FIELDS_HPP
-#define NSBSOLVER_FIELDS_HPP
+#pragma once
 
 #include <algorithm>
 #include <cstddef>
@@ -355,5 +354,3 @@ public:
      */
     void multiply(Scalar value);
 };
-
-#endif // NSBSOLVER_FIELDS_HPP

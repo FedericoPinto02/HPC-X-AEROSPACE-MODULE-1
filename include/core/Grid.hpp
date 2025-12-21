@@ -1,5 +1,4 @@
-#ifndef NSBSOLVER_GRID_HPP
-#define NSBSOLVER_GRID_HPP
+#pragma once
 
 #include <cstddef>
 
@@ -159,5 +158,3 @@ struct Grid {
         return (k_start + Nz) == Nz_glob;
     }
 };
-
-#endif // NSBSOLVER_GRID_HPP
