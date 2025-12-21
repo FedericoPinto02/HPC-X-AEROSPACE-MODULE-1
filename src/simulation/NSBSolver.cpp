@@ -36,6 +36,7 @@ void NSBSolver::setup()
 
     bool vtkWritten = vtkWriter->write_timestep_if_needed(
             simData.currStep,
+            simData.inv_k,
             simData.p,
             simData.u);
 
@@ -71,6 +72,7 @@ void NSBSolver::solve()
         // 3. Output
         bool vtkWritten = vtkWriter->write_timestep_if_needed(
             simData.currStep,
+            simData.inv_k,
             simData.p,
             simData.u);
 

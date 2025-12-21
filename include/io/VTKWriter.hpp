@@ -28,6 +28,7 @@ public:
      * @return true if the file was written, false otherwise.
      */
     bool write_timestep_if_needed(size_t currStep,
+                                  const VectorField &inv_porosity,
                                   const Field &pressure,
                                   const VectorField &velocity);
 
@@ -44,6 +45,7 @@ private:
      * @brief Internal method to write a scalar field and a vector field to a legacy VTK file.
      */
     void write_legacy(const std::string &filename,
+                      const std::shared_ptr<VectorField> &inv_porosity,
                       const std::shared_ptr<Field> &pressure,
                       const std::shared_ptr<VectorField> &velocity) const;
 };
