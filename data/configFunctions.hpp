@@ -1,108 +1,81 @@
 #pragma once
 
-#include <cmath> // For std::sin, std::cos
+#include <cmath>
+#include <algorithm>
 
 namespace ConfigFuncs {
 
     // Physical parameters
-    constexpr double nu = 6.0;
-    constexpr double Re = 1.0;
+    constexpr double nu = 1.0;
+    
+    // Geometry definitions (Straight tube in a 0.32^3 domain)
+    constexpr double L_x = 0.32;
+    constexpr double yc = 0.16; // Center Y
+    constexpr double zc = 0.16; // Center Z
+    constexpr double R_vessel = 0.05; // Slightly larger radius for the simple test
+    
+    // Penalization parameters
+    // K_solid represents "zero porosity" (solid)
+    // K_fluid represents "high porosity" (fluid)
+    constexpr double K_fluid = 1e10;
+    constexpr double K_solid = 1e-8;
+    constexpr double epsilon = 0.005; // Interface smoothness
 
-    // Helper: Permeability field k(x, y, z)
+    // Helper: Distance to a straight cylinder along X-axis
+    inline double get_dist_to_vessel(double /*x*/, double y, double z) {
+        // Distance from the centerline (yc, zc)
+        return std::sqrt(std::pow(y - yc, 2) + std::pow(z - zc, 2));
+    }
+
+    // Brinkman Permeability field
     inline double calc_k(double x, double y, double z) {
-        return 10.0 * (2.0 + std::cos(x) * std::cos(y) * std::cos(z));
+        double dist = get_dist_to_vessel(x, y, z);
+        // Sigmoid transition: 1 inside, 0 outside
+        double indicator = 0.5 * (1.0 - std::tanh((dist - R_vessel) / epsilon));
+        return K_solid + indicator * (K_fluid - K_solid);
     }
 
     // ------------------------------------
-    // Boundary Conditions (BCs) & Exact Solution
+    // Boundary Conditions (BCs)
     // ------------------------------------
 
-    // u = sin(x)cos(t+y)sin(z)
     inline double bcu_func(double x, double y, double z, double t) {
-        return std::sin(x) * std::cos(t + y) * std::sin(z);
-    }
-
-    // v = cos(x)sin(t+y)sin(z)
-    inline double bcv_func(double x, double y, double z, double t) {
-        return std::cos(x) * std::sin(t + y) * std::sin(z);
-    }
-
-    // w = 2cos(x)cos(t+y)cos(z)
-    inline double bcw_func(double x, double y, double z, double t) {
-        return 2.0 * std::cos(x) * std::cos(t + y) * std::cos(z);
-    }
-
-    // ------------------------------------
-    // Forces
-    // f = dt_u - nu*lapl_u + (nu/k)*u + grad_p
-    // Broken down into: Transient + Viscous + Drag + Pressure
-    // ------------------------------------
-
-    inline double fx_func(double x, double y, double z, double t) {
-        double k = calc_k(x, y, z);
+        double dist_sq = std::pow(y - yc, 2) + std::pow(z - zc, 2);
+        double R2 = R_vessel * R_vessel;
         
-        // Terms
-        double transient = -std::sin(x) * std::sin(t + y) * std::sin(z);
-        double viscous   = 3.0 * nu * std::sin(x) * std::cos(t + y) * std::sin(z);
-        double drag      = (nu / k) * std::sin(x) * std::cos(t + y) * std::sin(z);
-        double pressure  = -(3.0 / Re) * std::sin(x) * std::cos(t + y) * std::cos(z);
-
-        return transient + viscous + drag + pressure;
+        // Apply flow only within the cylinder radius at Inlet (x=0) and Outlet (x=Lx)
+        if (x < 1e-5 || x > L_x - 1e-5) {
+            if (dist_sq < R2) {
+                // Time-dependent parabolic profile
+                return 10.0 * (1.0 - dist_sq / R2) * std::sin(t);
+            }
+        }
+        
+        return 0.0; // No-slip on all other boundaries
     }
 
-    inline double fy_func(double x, double y, double z, double t) {
-        double k = calc_k(x, y, z);
-
-        // Terms
-        double transient = std::cos(x) * std::cos(t + y) * std::sin(z);
-        double viscous   = 3.0 * nu * std::cos(x) * std::sin(t + y) * std::sin(z);
-        double drag      = (nu / k) * std::cos(x) * std::sin(t + y) * std::sin(z);
-        double pressure  = -(3.0 / Re) * std::cos(x) * std::sin(t + y) * std::cos(z);
-
-        return transient + viscous + drag + pressure;
+    inline double bcv_func(double /*x*/, double /*y*/, double /*z*/, double /*t*/) {
+        return 0.0;
     }
 
-    inline double fz_func(double x, double y, double z, double t) {
-        double k = calc_k(x, y, z);
-
-        // Terms (Note: w has a factor of 2, so viscous is 3*nu*2 = 6*nu)
-        double transient = -2.0 * std::cos(x) * std::sin(t + y) * std::cos(z);
-        double viscous   = 6.0 * nu * std::cos(x) * std::cos(t + y) * std::cos(z); 
-        double drag      = (2.0 * nu / k) * std::cos(x) * std::cos(t + y) * std::cos(z);
-        double pressure  = -(3.0 / Re) * std::cos(x) * std::cos(t + y) * std::sin(z);
-
-        return transient + viscous + drag + pressure;
+    inline double bcw_func(double /*x*/, double /*y*/, double /*z*/, double /*t*/) {
+        return 0.0;
     }
 
     // ------------------------------------
-    // Initial Conditions (ICs)
-    // t = 0
+    // Source terms & Initial Conditions
     // ------------------------------------
+    inline double fx_func(double x, double y, double z, double t) { return 0.0; }
+    inline double fy_func(double x, double y, double z, double t) { return 0.0; }
+    inline double fz_func(double x, double y, double z, double t) { return 0.0; }
 
-    inline double u_init_func(double x, double y, double z, double t = 0) {
-        return bcu_func(x, y, z, t);
-    }
+    inline double u_init_func(double x, double y, double z, double t = 0) { return 0.0; }
+    inline double v_init_func(double x, double y, double z, double t = 0) { return 0.0; }
+    inline double w_init_func(double x, double y, double z, double t = 0) { return 0.0; }
+    inline double p_init_func(double x, double y, double z, double t = 0) { return 0.0; }
 
-    inline double v_init_func(double x, double y, double z, double t = 0) {
-        return bcv_func(x, y, z, t);
-    }
-
-    inline double w_init_func(double x, double y, double z, double t = 0) {
-        return bcw_func(x, y, z, t);
-    }
-
-    // p = (3/Re) cos(x)cos(t+y)cos(z)
-    inline double p_init_func(double x, double y, double z, double t = 0) {
-        return (3.0 / Re) * std::cos(x) * std::cos(t + y) * std::cos(z);
-    }
-
-    // ------------------------------------
-    // Physics Fields
-    // ------------------------------------
-
-    // Permeability
+    // Physics Fields Export
     inline double k_func(double x, double y, double z, double /*t*/ = 0) {
         return calc_k(x, y, z);
     }
-
 }
