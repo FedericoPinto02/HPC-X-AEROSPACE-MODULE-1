@@ -13,15 +13,21 @@ private:
 
 public:
     /**
-     * @brief Constructor.
-     * @param n Size of the matrix (n x n)
+     * @brief Constructor that initializes the tridiagonal matrix of size n x n.
+     * @param n the size of the matrix
      */
-    explicit TridiagMat(size_t n);
+    explicit TridiagMat(size_t n = 2);
 
     /**
      * @brief Get the matrix size.
      */
     [[nodiscard]] inline size_t getSize() const { return diag.size(); }
+
+    /**
+     * @brief Resize the matrix to new size n x n.
+     * @param n the new size of the matrix
+     */
+    void resize(size_t n);
 
     /**
      * @brief Get the whole diagonal, subdiagonal or supdiagonal

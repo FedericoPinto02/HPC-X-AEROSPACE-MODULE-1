@@ -8,6 +8,14 @@ TridiagMat::TridiagMat(size_t n) {
     supdiag.resize(n, 0.0);
 }
 
+void TridiagMat::resize(size_t n) {
+    if (n < 2)
+        throw std::invalid_argument("Matrix size must be at least 2");
+    diag.resize(n);
+    subdiag.resize(n);
+    supdiag.resize(n);
+}
+
 std::vector<double> TridiagMat::getDiag(int w) const {
     if (w == -1)
         return subdiag;

@@ -185,6 +185,11 @@ void ViscousStep::computeXi() {
 
 
 void ViscousStep::closeViscousStep() {
+    // Linear system variables definition: progressive resizing instead of per-sweep reallocation
+    TridiagMat matrix_u, matrix_v, matrix_w;
+    std::vector<double> rhs_u, rhs_v, rhs_w;
+    std::vector<double> unknown_u, unknown_v, unknown_w;
+
     Axis normalAxis;    // solve on the face orthogonal to normalAxis
 
 
@@ -200,33 +205,33 @@ void ViscousStep::closeViscousStep() {
         normalAxis = Axis::X;
         size_t sysDimension = data_.grid->Nx; // dimension of linear system to solve
 
-        TridiagMat matrix_u(sysDimension);
-        TridiagMat matrix_v(sysDimension);
-        TridiagMat matrix_w(sysDimension);
-        std::vector<double> rhs_u(sysDimension);
-        std::vector<double> rhs_v(sysDimension);
-        std::vector<double> rhs_w(sysDimension);
-        std::vector<double> unknown_u(sysDimension);
-        std::vector<double> unknown_v(sysDimension);
-        std::vector<double> unknown_w(sysDimension);
+        matrix_u.resize(sysDimension);
+        matrix_v.resize(sysDimension);
+        matrix_w.resize(sysDimension);
+        rhs_u.resize(sysDimension);
+        rhs_v.resize(sysDimension);
+        rhs_w.resize(sysDimension);
+        unknown_u.resize(sysDimension);
+        unknown_v.resize(sysDimension);
+        unknown_w.resize(sysDimension);
 
         for (size_t k = 0; k < data_.grid->Nz; ++k)
         {
             for (size_t j = 0; j < data_.grid->Ny; ++j)
             {
-                assembleLocalSystem(data_, data_.eta, xi, Axis::X, Axis::X, 0, j, k,
+                assembleLocalSystem(data_, data_.eta, xi, Axis::X, normalAxis, 0, j, k,
                                     matrix_u, rhs_u);
                 SchurSolver solver_u(mpi, normalAxis, matrix_u);
                 solver_u.preprocess();
                 solver_u.solve(rhs_u, unknown_u);
 
-                assembleLocalSystem(data_, data_.eta, xi, Axis::Y, Axis::X, 0, j, k,
+                assembleLocalSystem(data_, data_.eta, xi, Axis::Y, normalAxis, 0, j, k,
                                     matrix_v, rhs_v);
                 SchurSolver solver_v(mpi, normalAxis, matrix_v);
                 solver_v.preprocess();
                 solver_v.solve(rhs_v, unknown_v);
 
-                assembleLocalSystem(data_, data_.eta, xi, Axis::Z, Axis::X, 0, j, k,
+                assembleLocalSystem(data_, data_.eta, xi, Axis::Z, normalAxis, 0, j, k,
                                     matrix_w, rhs_w);
                 SchurSolver solver_w(mpi, normalAxis, matrix_w);
                 solver_w.preprocess();
@@ -255,33 +260,33 @@ void ViscousStep::closeViscousStep() {
         normalAxis = Axis::Y;
         size_t sysDimension = data_.grid->Ny; // dimension of linear system to solve
 
-        TridiagMat matrix_u(sysDimension);
-        TridiagMat matrix_v(sysDimension);
-        TridiagMat matrix_w(sysDimension);
-        std::vector<double> rhs_u(sysDimension);
-        std::vector<double> rhs_v(sysDimension);
-        std::vector<double> rhs_w(sysDimension);
-        std::vector<double> unknown_u(sysDimension);
-        std::vector<double> unknown_v(sysDimension);
-        std::vector<double> unknown_w(sysDimension);
+        matrix_u.resize(sysDimension);
+        matrix_v.resize(sysDimension);
+        matrix_w.resize(sysDimension);
+        rhs_u.resize(sysDimension);
+        rhs_v.resize(sysDimension);
+        rhs_w.resize(sysDimension);
+        unknown_u.resize(sysDimension);
+        unknown_v.resize(sysDimension);
+        unknown_w.resize(sysDimension);
 
         for (size_t k = 0; k < data_.grid->Nz; ++k)
         {
             for (size_t i = 0; i < data_.grid->Nx; ++i)
             {
-                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::X, Axis::Y, i, 0, k,
+                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::X, normalAxis, i, 0, k,
                                     matrix_u, rhs_u);
                 SchurSolver solver_u(mpi, normalAxis, matrix_u);
                 solver_u.preprocess();
                 solver_u.solve(rhs_u, unknown_u);
 
-                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Y, Axis::Y, i, 0, k,
+                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Y, normalAxis, i, 0, k,
                                     matrix_v, rhs_v);
                 SchurSolver solver_v(mpi, normalAxis, matrix_v);
                 solver_v.preprocess();
                 solver_v.solve(rhs_v, unknown_v);
 
-                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Z, Axis::Y, i, 0, k,
+                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Z, normalAxis, i, 0, k,
                                     matrix_w, rhs_w);
                 SchurSolver solver_w(mpi, normalAxis, matrix_w);
                 solver_w.preprocess();
@@ -310,33 +315,33 @@ void ViscousStep::closeViscousStep() {
         normalAxis = Axis::Z;
         size_t sysDimension = data_.grid->Nz; // dimension of linear system to solve
 
-        TridiagMat matrix_u(sysDimension);
-        TridiagMat matrix_v(sysDimension);
-        TridiagMat matrix_w(sysDimension);
-        std::vector<double> rhs_u(sysDimension);
-        std::vector<double> rhs_v(sysDimension);
-        std::vector<double> rhs_w(sysDimension);
-        std::vector<double> unknown_u(sysDimension);
-        std::vector<double> unknown_v(sysDimension);
-        std::vector<double> unknown_w(sysDimension);
+        matrix_u.resize(sysDimension);
+        matrix_v.resize(sysDimension);
+        matrix_w.resize(sysDimension);
+        rhs_u.resize(sysDimension);
+        rhs_v.resize(sysDimension);
+        rhs_w.resize(sysDimension);
+        unknown_u.resize(sysDimension);
+        unknown_v.resize(sysDimension);
+        unknown_w.resize(sysDimension);
 
         for (size_t j = 0; j < data_.grid->Ny; ++j)
         {
             for (size_t i = 0; i < data_.grid->Nx; ++i)
             {
-                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::X, Axis::Z, i, j, 0,
+                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::X, normalAxis, i, j, 0,
                                     matrix_u, rhs_u);
                 SchurSolver solver_u(mpi, normalAxis, matrix_u);
                 solver_u.preprocess();
                 solver_u.solve(rhs_u, unknown_u);
 
-                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Y, Axis::Z, i, j, 0,
+                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Y, normalAxis, i, j, 0,
                                     matrix_v, rhs_v);
                 SchurSolver solver_v(mpi, normalAxis, matrix_v);
                 solver_v.preprocess();
                 solver_v.solve(rhs_v, unknown_v);
 
-                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Z, Axis::Z, i, j, 0,
+                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Z, normalAxis, i, j, 0,
                                     matrix_w, rhs_w);
                 SchurSolver solver_w(mpi, normalAxis, matrix_w);
                 solver_w.preprocess();
@@ -365,7 +370,8 @@ void ViscousStep::assembleLocalSystem(
     std::vector<double> &subdiag = matA.getDiag(-1);
     std::vector<double> &supdiag = matA.getDiag(1);
 
-    if (rhsC.size() != matA.getSize()) {
+    if (rhsC.size() != matA.getSize())
+    {
         throw std::runtime_error(
                 "Dimension mismatch: rhsC must be size n.");
     }
@@ -376,7 +382,8 @@ void ViscousStep::assembleLocalSystem(
     double dz = grid.dz;
 
     double dCoef = 0;
-    switch (derivativeDirection) {
+    switch (derivativeDirection)
+    {
         case Axis::X: dCoef = 1.0 / (dx * dx); break;
         case Axis::Y: dCoef = 1.0 / (dy * dy); break;
         case Axis::Z: dCoef = 1.0 / (dz * dz); break;
@@ -386,7 +393,8 @@ void ViscousStep::assembleLocalSystem(
     //==================================================================================================================
     // --- DEFAULT SYSTEM COEFFICIENTS (same stencil; boundaries will be then overwritten) -----------------------------
     //==================================================================================================================
-    for (long i = 0; i < matA.getSize(); i++) {
+    for (long i = 0; i < matA.getSize(); i++)
+    {
         double inv_k = simData.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
                                                                      derivativeDirection, i);
         double beta = 1 + (dt_nu_over_2 * inv_k);
