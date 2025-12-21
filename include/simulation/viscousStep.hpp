@@ -33,8 +33,10 @@ public:
 
 private:
     const MpiEnv &mpi;
-    SimulationData& data_;
+    HaloHandler haloHandler;
+    Derivatives derive;
 
+    SimulationData& data_;
     VectorField g, gradP, dxxEta, dyyZeta, dzzU, xi;
 
     /// Compute the g term (necessary for the xi term).

@@ -1,7 +1,7 @@
 #include "simulation/viscousStep.hpp"
 
 ViscousStep::ViscousStep(MpiEnv &mpi, SimulationData &simData)
-        : mpi(mpi), data_(simData) {
+        : mpi(mpi), haloHandler(mpi), data_(simData) {
     g.setup(data_.grid);
     gradP.setup(data_.grid);
     dxxEta.setup(data_.grid);
@@ -12,7 +12,6 @@ ViscousStep::ViscousStep(MpiEnv &mpi, SimulationData &simData)
 
 
 void ViscousStep::run() {
-    HaloHandler haloHandler(mpi);
     haloHandler.exchange(data_.predictor);
     haloHandler.exchange(data_.eta);
     haloHandler.exchange(data_.zeta);
@@ -31,7 +30,6 @@ void ViscousStep::computeG() {
     auto &predictor = data_.predictor;
     double nu_val = data_.nu;
 
-    Derivatives derive;
     derive.computeGradient(predictor, gradP);
     derive.computeDxx(eta, dxxEta);
     derive.computeDyy(zeta, dyyZeta);
@@ -71,18 +69,18 @@ void ViscousStep::computeXi() {
     // xi = u + dt/beta * g
 
     // Let me cook
-    for (Axis axis: {Axis::X, Axis::Y, Axis::Z}) {
-
+    for (Axis axis: {Axis::X, Axis::Y, Axis::Z})
+    {
         auto &u_data = data_.u(axis).getData();
         auto &inv_k_data = data_.inv_k(axis).getData();
         auto &g_data = g(axis).getData();
         auto &xi_data = xi(axis).getData();
 
-        for (size_t i = 0; i < u_data.size(); i++) {
+        for (size_t i = 0; i < u_data.size(); i++)
+        {
             double beta_val = 1 + dt_nu_over_2_val * inv_k_data[i];
             xi_data[i] = u_data[i]
-                         + dt_val * g_data[i]
-                           / beta_val;
+                         + dt_val * g_data[i] / beta_val;
         }
     }
 
