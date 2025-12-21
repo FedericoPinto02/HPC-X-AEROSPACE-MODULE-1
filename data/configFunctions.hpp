@@ -5,32 +5,30 @@
 
 namespace ConfigFuncs {
 
-    // Physical parameters
-    constexpr double nu = 1.0;
+    // --- Physical Parameters ---
+    constexpr double nu = 1.0;          // Kinematic viscosity
     
-    // Geometry definitions (Straight tube in a 0.32^3 domain)
+    // --- Geometry Definitions (Straight tube in a 0.32^3 domain) ---
     constexpr double L_x = 0.32;
-    constexpr double yc = 0.16; // Center Y
-    constexpr double zc = 0.16; // Center Z
-    constexpr double R_vessel = 0.05; // Slightly larger radius for the simple test
+    constexpr double yc = 0.16;         // Cylinder center Y
+    constexpr double zc = 0.16;         // Cylinder center Z
+    constexpr double R_vessel = 0.05;   // Vessel radius
     
-    // Penalization parameters
-    // K_solid represents "zero porosity" (solid)
-    // K_fluid represents "high porosity" (fluid)
-    constexpr double K_fluid = 1e10;
-    constexpr double K_solid = 1e-8;
-    constexpr double epsilon = 0.005; // Interface smoothness
+    // --- Brinkman Penalization Parameters ---
+    constexpr double K_fluid = 1e10;    // High permeability (Fluid region)
+    constexpr double K_solid = 1e-8;    // Low permeability (Solid region)
+    constexpr double epsilon = 0.0001;   // Interface smoothing width
+    constexpr double G_force = 10.0;    // Imposed pressure gradient (Body force)
 
-    // Helper: Distance to a straight cylinder along X-axis
-    inline double get_dist_to_vessel(double /*x*/, double y, double z) {
-        // Distance from the centerline (yc, zc)
-        return std::sqrt(std::pow(y - yc, 2) + std::pow(z - zc, 2));
+    // Helper: Squared distance from the cylinder axis
+    inline double get_dist_to_vessel_sq(double y, double z) {
+        return std::pow(y - yc, 2) + std::pow(z - zc, 2);
     }
 
-    // Brinkman Permeability field
+    // Permeability field calculation
     inline double calc_k(double x, double y, double z) {
-        double dist = get_dist_to_vessel(x, y, z);
-        // Sigmoid transition: 1 inside, 0 outside
+        double dist = std::sqrt(get_dist_to_vessel_sq(y, z));
+        // Sigmoid transition from solid to fluid
         double indicator = 0.5 * (1.0 - std::tanh((dist - R_vessel) / epsilon));
         return K_solid + indicator * (K_fluid - K_solid);
     }
@@ -39,42 +37,55 @@ namespace ConfigFuncs {
     // Boundary Conditions (BCs)
     // ------------------------------------
 
+    // Inlet velocity (U) - Analytical Poiseuille profile
     inline double bcu_func(double x, double y, double z, double t) {
-        double dist_sq = std::pow(y - yc, 2) + std::pow(z - zc, 2);
+        double dist_sq = get_dist_to_vessel_sq(y, z);
         double R2 = R_vessel * R_vessel;
-        
-        // Apply flow only within the cylinder radius at Inlet (x=0) and Outlet (x=Lx)
-        if (x < 1e-5 || x > L_x - 1e-5) {
-            if (dist_sq < R2) {
-                // Time-dependent parabolic profile
-                return 10.0 * (1.0 - dist_sq / R2) * std::sin(t);
-            }
+
+        if (dist_sq < R2) {
+            // Time signal synced with the source term (cosine)
+            double time_signal = std::cos(t); 
+            
+            // Poiseuille solution: u(r) = G/(4*nu) * (R^2 - r^2)
+            double poiseuille = (G_force / (4.0 * nu)) * (R2 - dist_sq);
+            
+            return poiseuille * time_signal;
         }
-        
-        return 0.0; // No-slip on all other boundaries
+
+        return 0.0; // No-slip condition
     }
 
-    inline double bcv_func(double /*x*/, double /*y*/, double /*z*/, double /*t*/) {
+    inline double bcv_func(double, double, double, double) { return 0.0; }
+    inline double bcw_func(double, double, double, double) { return 0.0; }
+
+    // ------------------------------------
+    // Source terms (Driving Force)
+    // ------------------------------------
+
+    // Momentum source term in X (Pressure gradient substitute)
+    inline double fx_func(double x, double y, double z, double t) {
+        double dist_sq = get_dist_to_vessel_sq(y, z);
+        double R_eff_sq = std::pow(R_vessel + epsilon, 2);
+
+        // Apply force G only within the fluidic channel
+        if (dist_sq < R_eff_sq) {
+            return G_force * std::cos(t); 
+        }
         return 0.0;
     }
 
-    inline double bcw_func(double /*x*/, double /*y*/, double /*z*/, double /*t*/) {
-        return 0.0;
-    }
+    inline double fy_func(double, double, double, double) { return 0.0; }
+    inline double fz_func(double, double, double, double) { return 0.0; }
 
     // ------------------------------------
-    // Source terms & Initial Conditions
+    // Initial Conditions
     // ------------------------------------
-    inline double fx_func(double x, double y, double z, double t) { return 0.0; }
-    inline double fy_func(double x, double y, double z, double t) { return 0.0; }
-    inline double fz_func(double x, double y, double z, double t) { return 0.0; }
+    inline double u_init_func(double, double, double, double) { return 0.0; }
+    inline double v_init_func(double, double, double, double) { return 0.0; }
+    inline double w_init_func(double, double, double, double) { return 0.0; }
+    inline double p_init_func(double, double, double, double) { return 0.0; }
 
-    inline double u_init_func(double x, double y, double z, double t = 0) { return 0.0; }
-    inline double v_init_func(double x, double y, double z, double t = 0) { return 0.0; }
-    inline double w_init_func(double x, double y, double z, double t = 0) { return 0.0; }
-    inline double p_init_func(double x, double y, double z, double t = 0) { return 0.0; }
-
-    // Physics Fields Export
+    // Export permeability field
     inline double k_func(double x, double y, double z, double /*t*/ = 0) {
         return calc_k(x, y, z);
     }
