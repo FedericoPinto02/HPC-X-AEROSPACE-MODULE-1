@@ -16,7 +16,7 @@ void TridiagMat::resize(size_t n) {
     supdiag.resize(n);
 }
 
-std::vector<double> TridiagMat::getDiag(int w) const {
+const std::vector<double> &TridiagMat::getDiag(int w) const {
     if (w == -1)
         return subdiag;
     else if (w == 0)

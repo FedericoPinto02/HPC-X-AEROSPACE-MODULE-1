@@ -53,6 +53,7 @@ protected:
 
         // Create the object under test
         pressureStep = std::make_unique<PressureStep>(*g_mpi, data_);
+        pressureStep->setup();
     }
 
     double getDivU(size_t i, size_t j, size_t k) {
@@ -121,6 +122,7 @@ TEST_F(PressureStepTest, Run_WithZeroDivergence_PressureIsUnchanged) {
 
     // Reconstruct with new data
     pressureStep = std::make_unique<PressureStep>(*g_mpi, data_);
+    pressureStep->setup();
 
     pressureStep->run();
 
@@ -170,6 +172,7 @@ protected:
         data_.bcw = funcU_z;
 
         pressureStep = std::make_unique<PressureStep>(*g_mpi, data_);
+        pressureStep->setup();
     }
 
     void checkFieldFinite(const Field &field, const std::string &fieldName) {

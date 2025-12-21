@@ -1,45 +1,54 @@
 #include "simulation/pressureStep.hpp"
 
 PressureStep::PressureStep(MpiEnv &mpi, SimulationData &simData)
-        : mpi(mpi), haloHandler(mpi), data_(simData) {
+        : mpi(mpi), haloHandler(mpi), data_(simData) {}
+
+
+void PressureStep::setup() {
+    // --- Setup pressure-like fields ----------------------------------------------------------------------------------
     psi.setup(data_.grid);
     phi.setup(data_.grid);
     pcr.setup(data_.grid);
     divU.setup(data_.grid);
+
+    // --- Assemble linear system matrices and initialize solvers for each direction -----------------------------------
+    TridiagMat matrix(data_.grid->Nx);
+    assembleLocalMatrix(data_.grid, Axis::X, matrix);
+    solver_x = std::make_unique<SchurSolver>(mpi, Axis::X, matrix);
+    solver_x->preprocess();
+
+    matrix.resize(data_.grid->Ny);
+    assembleLocalMatrix(data_.grid, Axis::Y, matrix);
+    solver_y = std::make_unique<SchurSolver>(mpi, Axis::Y, matrix);
+    solver_y->preprocess();
+
+    matrix.resize(data_.grid->Nz);
+    assembleLocalMatrix(data_.grid, Axis::Z, matrix);
+    solver_z = std::make_unique<SchurSolver>(mpi, Axis::Z, matrix);
+    solver_z->preprocess();
 }
 
 
 void PressureStep::run() {
-    // Linear system variables definition: progressive resizing instead of per-sweep reallocation
-    TridiagMat matrix;
-    std::vector<double> rhs, solution;
-
-
-    Axis normalAxis;        // solve on the face orthogonal to normalAxis
     // Every pressure-like variable is solved exploting Neumann homogeneous boundary conditions
 
+    Axis normalAxis;        // solve on the face orthogonal to normalAxis
 
-    // ------------------------------------------
-    // Solve Psi --------------------------------
-    // ------------------------------------------
+    //==================================================================================================================
+    // --- 1. Solve Psi (Direction X) ----------------------------------------------------------------------------------
+    // --- when solving Psi we fill linsys with dxx derivatives
+    //==================================================================================================================
     {
-        double inv_dt = 1.0 / data_.dt;
-
-        normalAxis = Axis::X;   // x = psi, rhs = divU/dt
-        size_t sysDimension = data_.grid->Nx;
-
         haloHandler.exchange(data_.u);
         deriv.computeDivergence(data_.u, divU, data_.bcu, data_.bcv, data_.bcw, data_.currTime);
 
-        // --- Linear system and solver definition
-        matrix.resize(sysDimension);
+        double inv_dt = 1.0 / data_.dt;
+        normalAxis = Axis::X;
+
+        // --- Scratch linear system vectors resizing
+        size_t sysDimension = data_.grid->Nx;
         rhs.resize(sysDimension);
         solution.resize(sysDimension);
-
-        // when solving Psi we fill linsys with dxx derivatives
-        assembleLocalMatrix(data_.grid, normalAxis, matrix);
-        SchurSolver solver(mpi, normalAxis, matrix);
-        solver.preprocess();
 
         for (size_t k = 0; k < data_.grid->Nz; k++)
         {
@@ -49,16 +58,16 @@ void PressureStep::run() {
                 {
                     rhs[i] = -divU(i, j, k) * inv_dt;
                 }
-                if (!data_.grid->hasMinBoundary(Axis::X))
+                if (!data_.grid->hasMinBoundary(normalAxis))
                 {
                     rhs.front() *= 0.5;
                 }
-                if (!data_.grid->hasMaxBoundary(Axis::X))
+                if (!data_.grid->hasMaxBoundary(normalAxis))
                 {
                     rhs.back() *= 0.5;
                 }
 
-                solver.solve(rhs, solution);
+                solver_x->solve(rhs, solution);
 
                 for (size_t i = 0; i < sysDimension; i++)
                 {
@@ -69,22 +78,17 @@ void PressureStep::run() {
     }
 
 
-    // ------------------------------------------
-    // Solve Phi --------------------------------
-    // ------------------------------------------
+    //==================================================================================================================
+    // --- 2. Solve Phi (Direction Y) ----------------------------------------------------------------------------------
+    // --- when solving Phi we fill linsys with dyy derivatives
+    //==================================================================================================================
     {
-        normalAxis = Axis::Y;   // x = phi, rhs = psi
-        size_t sysDimension = data_.grid->Ny;
+        normalAxis = Axis::Y;
 
-        // --- Linear system and solver definition
-        matrix.resize(sysDimension);
+        // --- Scratch linear system vectors resizing
+        size_t sysDimension = data_.grid->Ny;
         rhs.resize(sysDimension);
         solution.resize(sysDimension);
-
-        // when solving Phi we fill linsys with dyy derivatives
-        assembleLocalMatrix(data_.grid, normalAxis, matrix);
-        SchurSolver solver(mpi, normalAxis, matrix);
-        solver.preprocess();
 
         for (size_t k = 0; k < data_.grid->Nz; k++)
         {
@@ -94,16 +98,16 @@ void PressureStep::run() {
                 {
                     rhs[j] = psi(i, j, k);
                 }
-                if (!data_.grid->hasMinBoundary(Axis::Y))
+                if (!data_.grid->hasMinBoundary(normalAxis))
                 {
                     rhs.front() *= 0.5;
                 }
-                if (!data_.grid->hasMaxBoundary(Axis::Y))
+                if (!data_.grid->hasMaxBoundary(normalAxis))
                 {
                     rhs.back() *= 0.5;
                 }
 
-                solver.solve(rhs, solution);
+                solver_y->solve(rhs, solution);
 
                 for (size_t j = 0; j < sysDimension; j++)
                 {
@@ -113,22 +117,18 @@ void PressureStep::run() {
         }
     }
 
-    // ------------------------------------------
-    // Solve Pcr --------------------------------
-    // ------------------------------------------
+
+    //==================================================================================================================
+    // --- 3. Solve PCR (second phi) (Direction Z) ---------------------------------------------------------------------
+    // --- when solving Pcr we fill linsys with dzz derivatives
+    //==================================================================================================================
     {
         normalAxis = Axis::Z;   // x = pcr, rhs = phi
-        size_t sysDimension = data_.grid->Nz; // dimension of linear system to solve
 
-        // --- Linear system and solver definition
-        matrix.resize(sysDimension);
+        // --- Scratch linear system vectors resizing
+        size_t sysDimension = data_.grid->Nz; // dimension of linear system to solve
         rhs.resize(sysDimension);
         solution.resize(sysDimension);
-
-        // when solving Pcr we fill linsys with dzz derivatives
-        assembleLocalMatrix(data_.grid, normalAxis, matrix);
-        SchurSolver solver(mpi, normalAxis, matrix);
-        solver.preprocess();
 
         for (size_t j = 0; j < data_.grid->Ny; j++)
         {
@@ -138,16 +138,16 @@ void PressureStep::run() {
                 {
                     rhs[k] = phi(i, j, k);
                 }
-                if (!data_.grid->hasMinBoundary(Axis::Z))
+                if (!data_.grid->hasMinBoundary(normalAxis))
                 {
                     rhs.front() *= 0.5;
                 }
-                if (!data_.grid->hasMaxBoundary(Axis::Z))
+                if (!data_.grid->hasMaxBoundary(normalAxis))
                 {
                     rhs.back() *= 0.5;
                 }
 
-                solver.solve(rhs, solution);
+                solver_z->solve(rhs, solution);
 
                 for (size_t k = 0; k < sysDimension; k++)
                 {
@@ -157,8 +157,10 @@ void PressureStep::run() {
         }
     }
 
-    // Add pressure corrector contribution and rotational correction
-    // Write pressure predictor
+
+    //==================================================================================================================
+    // --- 4. Update pressure with rotational correction, derive pressure predictor ------------------------------------
+    //==================================================================================================================
     double chi = 0.0;
     double Re = 1;
     double nu = data_.nu;
@@ -200,7 +202,7 @@ void PressureStep::assembleLocalMatrix(
     std::fill(supdiag.begin(), supdiag.end(), -inv_delta2);
     std::fill(diag.begin(), diag.end(), 1.0 + 2.0 * inv_delta2);
 
-    // Boundary conditions
+    // Boundary conditions (Neumann homogeneous)
     /*
      * (a0) b0 c0
      *      a1 b1 c1

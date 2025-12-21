@@ -36,5 +36,5 @@ public:
     [[nodiscard]] std::vector<double> &getDiag(int w);
 
     /// @overload
-    [[nodiscard]] std::vector<double> getDiag(int w) const;
+    [[nodiscard]] const std::vector<double> &getDiag(int w) const;
 };
