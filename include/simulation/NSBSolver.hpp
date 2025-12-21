@@ -31,7 +31,6 @@ private:
     SimulationData simData;
     OutputSettings outputSettings;
     LoggingSettings loggingSettings;
-    ParallelizationSettings parallelizationSettings;
 
     std::unique_ptr<ViscousStep> viscousStep;
     std::unique_ptr<PressureStep> pressureStep;

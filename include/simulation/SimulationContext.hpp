@@ -30,12 +30,6 @@ struct LoggingSettings {
     size_t loggingFrequency;
 };
 
-/**
- * @brief Structure holding parameters related to parallel execution and domain decomposition.
- */
-struct ParallelizationSettings {
-    int schurDomains;
-};
 
 /**
  * @brief Central structure containing all transient data, fields, and physical properties of the running simulation.

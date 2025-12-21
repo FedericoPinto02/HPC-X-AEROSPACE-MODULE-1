@@ -42,7 +42,6 @@ struct InputData
     TimeData time;
     OutputSettings output;
     LoggingSettings logging;
-    ParallelizationSettings parallelization;
 };
 
 namespace InputReader

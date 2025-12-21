@@ -100,18 +100,6 @@ InputData InputReader::read(const std::string &filename)
     }
 
     // ----------------------------
-    // Parallelization
-    // ----------------------------
-    try
-    {
-        data.parallelization.schurDomains = jsonData["parallelization"]["schur_domains"];
-    }
-    catch (const json::exception &e)
-    {
-        throw std::runtime_error("Error parsing 'parallelization' section: " + std::string(e.what()));
-    }
-
-    // ----------------------------
     // Manufactured Solution Overrides
     // ----------------------------
     if (data.mesh.input_for_manufactured_solution)
