@@ -64,11 +64,11 @@ PRESSURE_FIELD_NAME = "pressure"
 def get_step_from_filename(filepath: str) -> int:
     filename = os.path.basename(filepath)
 
-    # 1. Try matching new format: ..._STEP_RANK.vtk
-    # We capture two groups of digits. Group 1 is STEP, Group 2 is RANK.
+    # 1. Try matching new format: ..._RANK_STEP.vtk
+    # We capture two groups of digits. Group 1 is RANK, Group 2 is STEP.
     match_rank = re.search(r'_(\d+)_(\d+)\.vtk$', filename)
     if match_rank:
-        return int(match_rank.group(1)) # Return the STEP
+        return int(match_rank.group(2)) # Return the STEP
 
     # 2. Fallback to legacy format: ..._STEP.vtk
     match_legacy = re.search(r'_(\d+)\.vtk$', filename)

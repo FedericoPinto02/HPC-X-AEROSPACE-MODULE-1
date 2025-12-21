@@ -43,7 +43,7 @@ def run_simulation(n_procs, label):
     config['output']['base_filename'] = base_name
     config['output']['output_frequency'] = 1
     config['time']['dt'] = 0.01
-    config['time']['t_end'] = 0.01
+    config['time']['t_end'] = 0.1
 
     with open(CONFIG_PATH, 'w') as f: json.dump(config, f, indent=4)
 
@@ -52,7 +52,7 @@ def run_simulation(n_procs, label):
     cmd = ["mpirun", "-np", str(n_procs), EXECUTABLE]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL)
 
-    file_pattern = f"{base_name}_0001_*.vtk"
+    file_pattern = f"{base_name}_*_0001.vtk"
     files = sorted(glob.glob(os.path.join(OUTPUT_DIR, file_pattern)))
 
     if not files: raise FileNotFoundError(f"No output files for {label}!")

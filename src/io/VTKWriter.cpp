@@ -34,7 +34,7 @@ bool VTKWriter::write_timestep_if_needed(size_t currStep,
     // Prepare data and filename
     int step = static_cast<int>(currStep);
     char buf[256];
-    std::snprintf(buf, sizeof(buf), "%s_%04d_%04d.vtk", basePrefix_.c_str(), step, mpi_.rank());
+    std::snprintf(buf, sizeof(buf), "%s_%04d_%04d.vtk", basePrefix_.c_str(), mpi_.rank(), step);
     std::string filename = std::string(buf);
 
     // Create copies for writing (as done by external logic previously)
