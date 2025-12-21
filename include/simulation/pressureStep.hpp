@@ -33,9 +33,11 @@ public:
     void run();
 
 private:
-    MpiEnv &mpi;
-    SimulationData &data_;
+    const MpiEnv &mpi;
+    HaloHandler haloHandler;
+    Derivatives deriv;
 
+    SimulationData &data_;
     Field psi, phi, pcr, divU;
     // pcr stands for pressure corrector, it's the second phi
 

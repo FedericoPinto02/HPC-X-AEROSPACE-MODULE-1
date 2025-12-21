@@ -32,7 +32,7 @@ public:
     void run();
 
 private:
-    MpiEnv &mpi;
+    const MpiEnv &mpi;
     SimulationData& data_;
 
     VectorField g, gradP, dxxEta, dyyZeta, dzzU, xi;

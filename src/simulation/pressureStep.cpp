@@ -1,7 +1,7 @@
 #include "simulation/pressureStep.hpp"
 
 PressureStep::PressureStep(MpiEnv &mpi, SimulationData &simData)
-        : mpi(mpi), data_(simData) {
+        : mpi(mpi), haloHandler(mpi), data_(simData) {
     psi.setup(data_.grid);
     phi.setup(data_.grid);
     pcr.setup(data_.grid);
@@ -10,8 +10,12 @@ PressureStep::PressureStep(MpiEnv &mpi, SimulationData &simData)
 
 
 void PressureStep::run() {
-    // solve on the face orthogonal to normalAxis
-    Axis normalAxis;
+    // Linear system variables definition: progressive resizing instead of per-sweep reallocation
+    TridiagMat matrix;
+    std::vector<double> rhs, solution;
+
+
+    Axis normalAxis;        // solve on the face orthogonal to normalAxis
     // Every pressure-like variable is solved exploting Neumann homogeneous boundary conditions
 
 
@@ -22,40 +26,42 @@ void PressureStep::run() {
         double inv_dt = 1.0 / data_.dt;
 
         normalAxis = Axis::X;   // x = psi, rhs = divU/dt
-        size_t sysDimension = data_.grid->Nx; // dimension of linear system to solve
-        // when solving Psi we fill linsys with dxx derivatives
+        size_t sysDimension = data_.grid->Nx;
 
-        HaloHandler haloHandler(mpi);
         haloHandler.exchange(data_.u);
-
-        Derivatives deriv;
         deriv.computeDivergence(data_.u, divU, data_.bcu, data_.bcv, data_.bcw, data_.currTime);
 
         // --- Linear system and solver definition
-        TridiagMat matrix(sysDimension);
-        assembleLocalMatrix(data_.grid, normalAxis, matrix);
-        std::vector<double> rhs(sysDimension);
-        std::vector<double> solution(sysDimension);
+        matrix.resize(sysDimension);
+        rhs.resize(sysDimension);
+        solution.resize(sysDimension);
 
+        // when solving Psi we fill linsys with dxx derivatives
+        assembleLocalMatrix(data_.grid, normalAxis, matrix);
         SchurSolver solver(mpi, normalAxis, matrix);
         solver.preprocess();
 
-        for (size_t j = 0; j < data_.grid->Ny; j++) {
-            for (size_t k = 0; k < data_.grid->Nz; k++) {
-
-                for (size_t i = 0; i < sysDimension; i++) {
+        for (size_t k = 0; k < data_.grid->Nz; k++)
+        {
+            for (size_t j = 0; j < data_.grid->Ny; j++)
+            {
+                for (size_t i = 0; i < sysDimension; i++)
+                {
                     rhs[i] = -divU(i, j, k) * inv_dt;
                 }
-                if (!data_.grid->hasMinBoundary(Axis::X)) {
+                if (!data_.grid->hasMinBoundary(Axis::X))
+                {
                     rhs.front() *= 0.5;
                 }
-                if (!data_.grid->hasMaxBoundary(Axis::X)) {
+                if (!data_.grid->hasMaxBoundary(Axis::X))
+                {
                     rhs.back() *= 0.5;
                 }
 
                 solver.solve(rhs, solution);
 
-                for (size_t i = 0; i < sysDimension; i++) {
+                for (size_t i = 0; i < sysDimension; i++)
+                {
                     psi(i, j, k) = solution[i];
                 }
             }
@@ -68,34 +74,39 @@ void PressureStep::run() {
     // ------------------------------------------
     {
         normalAxis = Axis::Y;   // x = phi, rhs = psi
-        size_t sysDimension = data_.grid->Ny; // dimension of linear system to solve
-        // when solving Phi we fill linsys with dyy derivatives
+        size_t sysDimension = data_.grid->Ny;
 
         // --- Linear system and solver definition
-        TridiagMat matrix(sysDimension);
-        assembleLocalMatrix(data_.grid, normalAxis, matrix);
-        std::vector<double> rhs(sysDimension);
-        std::vector<double> solution(sysDimension);
+        matrix.resize(sysDimension);
+        rhs.resize(sysDimension);
+        solution.resize(sysDimension);
 
+        // when solving Phi we fill linsys with dyy derivatives
+        assembleLocalMatrix(data_.grid, normalAxis, matrix);
         SchurSolver solver(mpi, normalAxis, matrix);
         solver.preprocess();
 
-        for (size_t i = 0; i < data_.grid->Nx; i++) {
-            for (size_t k = 0; k < data_.grid->Nz; k++) {
-
-                for (size_t j = 0; j < sysDimension; j++) {
+        for (size_t k = 0; k < data_.grid->Nz; k++)
+        {
+            for (size_t i = 0; i < data_.grid->Nx; i++)
+            {
+                for (size_t j = 0; j < sysDimension; j++)
+                {
                     rhs[j] = psi(i, j, k);
                 }
-                if (!data_.grid->hasMinBoundary(Axis::Y)) {
+                if (!data_.grid->hasMinBoundary(Axis::Y))
+                {
                     rhs.front() *= 0.5;
                 }
-                if (!data_.grid->hasMaxBoundary(Axis::Y)) {
+                if (!data_.grid->hasMaxBoundary(Axis::Y))
+                {
                     rhs.back() *= 0.5;
                 }
 
                 solver.solve(rhs, solution);
 
-                for (size_t j = 0; j < sysDimension; j++) {
+                for (size_t j = 0; j < sysDimension; j++)
+                {
                     phi(i, j, k) = solution[j];
                 }
             }
@@ -108,33 +119,38 @@ void PressureStep::run() {
     {
         normalAxis = Axis::Z;   // x = pcr, rhs = phi
         size_t sysDimension = data_.grid->Nz; // dimension of linear system to solve
-        // when solving Pcr we fill linsys with dzz derivatives
 
         // --- Linear system and solver definition
-        TridiagMat matrix(sysDimension);
-        assembleLocalMatrix(data_.grid, normalAxis, matrix);
-        std::vector<double> rhs(sysDimension);
-        std::vector<double> solution(sysDimension);
+        matrix.resize(sysDimension);
+        rhs.resize(sysDimension);
+        solution.resize(sysDimension);
 
+        // when solving Pcr we fill linsys with dzz derivatives
+        assembleLocalMatrix(data_.grid, normalAxis, matrix);
         SchurSolver solver(mpi, normalAxis, matrix);
         solver.preprocess();
 
-        for (size_t j = 0; j < data_.grid->Ny; j++) {
-            for (size_t i = 0; i < data_.grid->Nx; i++) {
-
-                for (size_t k = 0; k < sysDimension; k++) {
+        for (size_t j = 0; j < data_.grid->Ny; j++)
+        {
+            for (size_t i = 0; i < data_.grid->Nx; i++)
+            {
+                for (size_t k = 0; k < sysDimension; k++)
+                {
                     rhs[k] = phi(i, j, k);
                 }
-                if (!data_.grid->hasMinBoundary(Axis::Z)) {
+                if (!data_.grid->hasMinBoundary(Axis::Z))
+                {
                     rhs.front() *= 0.5;
                 }
-                if (!data_.grid->hasMaxBoundary(Axis::Z)) {
+                if (!data_.grid->hasMaxBoundary(Axis::Z))
+                {
                     rhs.back() *= 0.5;
                 }
 
                 solver.solve(rhs, solution);
 
-                for (size_t k = 0; k < sysDimension; k++) {
+                for (size_t k = 0; k < sysDimension; k++)
+                {
                     pcr(i, j, k) = solution[k];
                 }
             }
@@ -148,10 +164,12 @@ void PressureStep::run() {
     double nu = data_.nu;
     double factor = chi * nu;
 
-    for (size_t k = 0; k < data_.grid->Nz; k++) {
-        for (size_t j = 0; j < data_.grid->Ny; j++) {
-            for (size_t i = 0; i < data_.grid->Nx; i++) {
-
+    for (size_t k = 0; k < data_.grid->Nz; k++)
+    {
+        for (size_t j = 0; j < data_.grid->Ny; j++)
+        {
+            for (size_t i = 0; i < data_.grid->Nx; i++)
+            {
                 data_.p(i, j, k) += pcr(i, j, k) - factor * divU(i, j, k);
                 data_.predictor(i, j, k) = data_.p(i, j, k) + pcr(i, j, k);
             }
