@@ -382,25 +382,6 @@ TEST_F(DerivativesTest, Laplacian_Consistency_Check) {
     }
 }
 
-// ============================================================================
-// === LOCAL METHODS (Single Point Evaluation)
-// ============================================================================
-
-TEST_F(DerivativesTest, Local_Dxx_Dyy_Dzz) {
-    // f = x^3 + y^3 + z^3
-    Field field = createField([](double x, double y, double z, double) {
-        return x * x * x + y * y * y + z * z * z;
-    });
-
-    // Pick an internal point
-    size_t i = 5, j = 5, k = 5;
-    double x = i * dx, y = j * dy, z = k * dz;
-
-    // Exact second derivatives: 6x, 6y, 6z
-    EXPECT_NEAR(deriv.Dxx_local(field, i, j, k), 6.0 * x, 1e-8);
-    EXPECT_NEAR(deriv.Dyy_local(field, i, j, k), 6.0 * y, 1e-8);
-    EXPECT_NEAR(deriv.Dzz_local(field, i, j, k), 6.0 * z, 1e-8);
-}
 
 // ============================================================================
 // === EXCEPTION HANDLING

@@ -29,9 +29,3 @@ void MpiEnv::setupTopology(std::array<int, AXIS_COUNT> dims, std::array<int, AXI
         MPI_Comm_rank(lineComms_[axis], &lineRanks_[axis]);
     }
 }
-
-int MpiEnv::getNeighborRank(Axis direction, int disp) const {
-    int source, dest;
-    MPI_Cart_shift(cartComm_, static_cast<int>(direction), disp, &source, &dest);
-    return dest;
-}

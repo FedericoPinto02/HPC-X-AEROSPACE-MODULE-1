@@ -31,26 +31,3 @@ std::vector<double> &TridiagMat::getDiag(int w) {
         throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
     }
 }
-
-
-double TridiagMat::getFirstElementFromDiag(int w) const {
-    if (w == -1)
-        return subdiag.at(0);
-    else if (w == 0)
-        return diag.at(0);
-    else if (w == 1)
-        return supdiag.at(0);
-    else
-        throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
-}
-
-double TridiagMat::getLastElementFromDiag(int w) const {
-    if (w == -1)
-        return subdiag.at(diag.size() - 2);
-    else if (w == 0)
-        return diag.at(diag.size() - 1);
-    else if (w == 1)
-        return supdiag.at(diag.size() - 2);
-    else
-        throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
-}

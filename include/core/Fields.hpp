@@ -17,7 +17,9 @@ const Func ZERO_FUNC = [](double /*x*/, double /*y*/, double /*z*/, double /*t*/
 };
 
 /// Enum describing the type of boundary condition (Neumann or Dirichlet).
-enum class BoundaryType {Normal, Tangent};
+enum class BoundaryType {
+    Normal, Tangent
+};
 
 
 /**
@@ -42,14 +44,7 @@ private:
     Func populateFunction_;
 
 public:
-    /// @deprecated - Use [idx] instead.
-    std::vector<Field::Scalar> &getData() { return data_; }
-
-    /// @deprecated - Use [idx] instead.
-    const std::vector<Field::Scalar> &getData() const { return data_; }
-
     friend class VectorField;
-
 
     //==================================================================================================================
     //--- Setup --------------------------------------------------------------------------------------------------------
@@ -114,6 +109,12 @@ public:
     //==================================================================================================================
     //--- Data accessors -----------------------------------------------------------------------------------------------
     //==================================================================================================================
+    /// Getter for the underlying data vector.
+    std::vector<Field::Scalar> &getData() { return data_; }
+
+    /// @overload
+    const std::vector<Field::Scalar> &getData() const { return data_; }
+
     /**
      * @brief Computes the linear index for 3D access in row-major order.
      * @param i the x-index

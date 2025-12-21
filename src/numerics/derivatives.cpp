@@ -299,35 +299,3 @@ void Derivatives::computeDzz(const Field &field, Field &dzz) const {
         }
     }
 }
-
-double Derivatives::Dxx_local(const Field &f, size_t i, size_t j, size_t k) const {
-    const auto &grid = f.getGrid();
-    const double mul = 1.0 / (grid.dx * grid.dx);
-
-    if (i == 0 || i == grid.Nx - 1) return 0.0; // o BC
-
-    return (f((long) i + 1, (long) j, (long) k)
-            + f((long) i - 1, (long) j, (long) k)
-            - 2.0 * f((long) i, (long) j, (long) k)) * mul;
-}
-
-double Derivatives::Dyy_local(const Field &f, size_t i, size_t j, size_t k) const {
-    const auto &grid = f.getGrid();
-    const double mul = 1.0 / (grid.dy * grid.dy);
-
-    if (j == 0 || j == grid.Ny - 1) return 0.0; // o BC
-
-    return (f((long) i, (long) j + 1, (long) k)
-            + f((long) i, (long) j - 1, (long) k)
-            - 2.0 * f((long) i, (long) j, (long) k)) * mul;
-}
-
-double Derivatives::Dzz_local(const Field &f, size_t i, size_t j, size_t k) const {
-    const auto &grid = f.getGrid();
-    const double mul = 1.0 / (grid.dz * grid.dz);
-
-    if (k == 0 || k == grid.Nz - 1) return 0.0; // o BC
-    return (f((long) i, (long) j, (long) k + 1)
-            + f((long) i, (long) j, (long) k - 1)
-            - 2.0 * f((long) i, (long) j, (long) k)) * mul;
-}

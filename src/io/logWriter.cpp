@@ -1,6 +1,6 @@
 #include "io/logWriter.hpp"
+
 #include <iomanip>
-#include <chrono>
 
 LogWriter::LogWriter(const LoggingSettings &logSettings)
   : logToFile_(logSettings.logToFile),

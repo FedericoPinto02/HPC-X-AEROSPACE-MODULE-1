@@ -92,18 +92,6 @@ public:
     /// Getter for the coordinates of the current process in the Cartesian topology.
     [[nodiscard]] inline const std::array<int, AXIS_COUNT> &coords() const { return coords_; }
 
-    /**
-     * @brief Get the rank of the neighboring process in a given direction and displacement,
-     *  in the Cartesian communicator.
-     * @param direction the direction (Axis::X, Axis::Y, or Axis::Z)
-     * @param disp the displacement (+1 or -1)
-     * @return the rank of the neighboring process, or MPI_PROC_NULL if no neighbor exists
-     */
-    [[nodiscard]] int getNeighborRank(Axis direction, int disp) const;
-
-    /// Checks if the current process is the master (rank 0).
-    [[nodiscard]] inline bool isMaster() const { return rank_ == 0; }
-
 
     //==================================================================================================================
     //--- Line Communicators -------------------------------------------------------------------------------------------
@@ -126,14 +114,6 @@ public:
         int lineSize;
         MPI_Comm_size(lineComms_[static_cast<int>(axis)], &lineSize);
         return lineSize;
-    }
-
-    /**
-     * @brief Checks if the current process is the master along a specific axis (coordinate is 0).
-     * @param axis the axis (Axis::X, Axis::Y, or Axis::Z)
-     */
-    [[nodiscard]] inline bool isLineMaster(Axis axis) const {
-        return lineRanks_[static_cast<int>(axis)] == 0;
     }
 };
 
