@@ -185,23 +185,20 @@ void ViscousStep::computeXi() {
 
 
 void ViscousStep::closeViscousStep() {
-    size_t iStart, jStart, kStart;
-    // solve on the face orthogonal to normalAxis
-    Axis normalAxis;
+    Axis normalAxis;    // solve on the face orthogonal to normalAxis
 
 
     // ------------------------------------------
     // Solve Eta --------------------------------
     // ------------------------------------------
     {
-        normalAxis = Axis::X;
-        size_t nSystem = data_.grid->Ny * data_.grid->Nz; // number of linear systems to solve
-        size_t sysDimension = data_.grid->Nx; // dimension of linear system to solve
-        size_t j, k;
         // when solving Eta we fill linsys with dxx derivatives
         // Eta.u is then solved exploiting normal Dirichlet boundary conditions
         // Eta.v and Eta.w are solved exploiting tangent Dirichlet boundary conditions
         // Differences between normal and tangent are given by staggered grid.
+
+        normalAxis = Axis::X;
+        size_t sysDimension = data_.grid->Nx; // dimension of linear system to solve
 
         TridiagMat matrix_u(sysDimension);
         TridiagMat matrix_v(sysDimension);
@@ -213,44 +210,34 @@ void ViscousStep::closeViscousStep() {
         std::vector<double> unknown_v(sysDimension);
         std::vector<double> unknown_w(sysDimension);
 
-        rhs_u.front() = 0;
-        rhs_u.back() = 0;
-        rhs_v.front() = 0;
-        rhs_v.back() = 0;
-        rhs_w.front() = 0;
-        rhs_w.back() = 0;
-
-        iStart = 0;
-
-        for (j = 0; j < data_.grid->Ny; j++) {
-            for (k = 0; k < data_.grid->Nz; k++) {
-                jStart = j;
-                kStart = k;
-
-                assembleLocalSystem(data_, data_.eta, xi, Axis::X, Axis::X, iStart, jStart, kStart,
+        for (size_t k = 0; k < data_.grid->Nz; ++k)
+        {
+            for (size_t j = 0; j < data_.grid->Ny; ++j)
+            {
+                assembleLocalSystem(data_, data_.eta, xi, Axis::X, Axis::X, 0, j, k,
                                     matrix_u, rhs_u);
                 SchurSolver solver_u(mpi, normalAxis, matrix_u);
                 solver_u.preprocess();
                 solver_u.solve(rhs_u, unknown_u);
 
-                assembleLocalSystem(data_, data_.eta, xi, Axis::Y, Axis::X, iStart, jStart, kStart,
+                assembleLocalSystem(data_, data_.eta, xi, Axis::Y, Axis::X, 0, j, k,
                                     matrix_v, rhs_v);
                 SchurSolver solver_v(mpi, normalAxis, matrix_v);
                 solver_v.preprocess();
                 solver_v.solve(rhs_v, unknown_v);
 
-                assembleLocalSystem(data_, data_.eta, xi, Axis::Z, Axis::X, iStart, jStart, kStart,
+                assembleLocalSystem(data_, data_.eta, xi, Axis::Z, Axis::X, 0, j, k,
                                     matrix_w, rhs_w);
                 SchurSolver solver_w(mpi, normalAxis, matrix_w);
                 solver_w.preprocess();
                 solver_w.solve(rhs_w, unknown_w);
 
-                for (size_t i = 0; i < sysDimension; i++) {
+                for (size_t i = 0; i < sysDimension; ++i)
+                {
                     data_.eta(Axis::X, i, j, k) = unknown_u[i];
                     data_.eta(Axis::Y, i, j, k) = unknown_v[i];
                     data_.eta(Axis::Z, i, j, k) = unknown_w[i];
                 }
-
             }
         }
     }
@@ -261,13 +248,12 @@ void ViscousStep::closeViscousStep() {
     // Solve Zeta --------------------------------
     // ------------------------------------------
     {
-        normalAxis = Axis::Y;
-        size_t nSystem = data_.grid->Nx * data_.grid->Nz; // number of linear systems to solve
-        size_t sysDimension = data_.grid->Ny; // dimension of linear system to solve
-        size_t i, k;
         // when solving Zeta we fill linsys with dyy derivatives
         // Zeta.v is then solved exploiting normal Dirichlet boundary conditions
         // Zeta.u and Zeta.w are solved exploiting tangent Dirichlet boundary conditions
+
+        normalAxis = Axis::Y;
+        size_t sysDimension = data_.grid->Ny; // dimension of linear system to solve
 
         TridiagMat matrix_u(sysDimension);
         TridiagMat matrix_v(sysDimension);
@@ -279,47 +265,37 @@ void ViscousStep::closeViscousStep() {
         std::vector<double> unknown_v(sysDimension);
         std::vector<double> unknown_w(sysDimension);
 
-        rhs_u.front() = 0;
-        rhs_u.back() = 0;
-        rhs_v.front() = 0;
-        rhs_v.back() = 0;
-        rhs_w.front() = 0;
-        rhs_w.back() = 0;
-
-        jStart = 0;
-        for (i = 0; i < data_.grid->Nx; i++) {
-            for (k = 0; k < data_.grid->Nz; k++) {
-                iStart = i;
-                kStart = k;
-
-                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::X, Axis::Y, iStart, jStart, kStart,
+        for (size_t k = 0; k < data_.grid->Nz; ++k)
+        {
+            for (size_t i = 0; i < data_.grid->Nx; ++i)
+            {
+                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::X, Axis::Y, i, 0, k,
                                     matrix_u, rhs_u);
                 SchurSolver solver_u(mpi, normalAxis, matrix_u);
                 solver_u.preprocess();
                 solver_u.solve(rhs_u, unknown_u);
 
-                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Y, Axis::Y, iStart, jStart, kStart,
+                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Y, Axis::Y, i, 0, k,
                                     matrix_v, rhs_v);
                 SchurSolver solver_v(mpi, normalAxis, matrix_v);
                 solver_v.preprocess();
                 solver_v.solve(rhs_v, unknown_v);
 
-                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Z, Axis::Y, iStart, jStart, kStart,
+                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Z, Axis::Y, i, 0, k,
                                     matrix_w, rhs_w);
                 SchurSolver solver_w(mpi, normalAxis, matrix_w);
                 solver_w.preprocess();
                 solver_w.solve(rhs_w, unknown_w);
 
-                for (size_t j = 0; j < sysDimension; j++) {
+                for (size_t j = 0; j < sysDimension; ++j)
+                {
                     data_.zeta(Axis::X, i, j, k) = unknown_u[j];
                     data_.zeta(Axis::Y, i, j, k) = unknown_v[j];
                     data_.zeta(Axis::Z, i, j, k) = unknown_w[j];
                 }
-
             }
         }
     }
-
 
 
 
@@ -327,13 +303,12 @@ void ViscousStep::closeViscousStep() {
     // Solve U --------------------------------
     // ------------------------------------------
     {
-        normalAxis = Axis::Z;
-        size_t nSystem = data_.grid->Nx * data_.grid->Ny; // number of linear systems to solve
-        size_t sysDimension = data_.grid->Nz; // dimension of linear system to solve
-        size_t i, j;
         // when solving U we fill linsys with dzz derivatives
         // U.w is then solved exploiting normal Dirichlet boundary conditions
         // U.v and U.u are solved exploiting tangent Dirichlet boundary conditions
+
+        normalAxis = Axis::Z;
+        size_t sysDimension = data_.grid->Nz; // dimension of linear system to solve
 
         TridiagMat matrix_u(sysDimension);
         TridiagMat matrix_v(sysDimension);
@@ -345,44 +320,34 @@ void ViscousStep::closeViscousStep() {
         std::vector<double> unknown_v(sysDimension);
         std::vector<double> unknown_w(sysDimension);
 
-        rhs_u.front() = 0;
-        rhs_u.back() = 0;
-        rhs_v.front() = 0;
-        rhs_v.back() = 0;
-        rhs_w.front() = 0;
-        rhs_w.back() = 0;
-
-        kStart = 0;
-        for (i = 0; i < data_.grid->Nx; i++) {
-            for (j = 0; j < data_.grid->Ny; j++) {
-                iStart = i;
-                jStart = j;
-
-                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::X, Axis::Z, iStart, jStart, kStart,
+        for (size_t j = 0; j < data_.grid->Ny; ++j)
+        {
+            for (size_t i = 0; i < data_.grid->Nx; ++i)
+            {
+                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::X, Axis::Z, i, j, 0,
                                     matrix_u, rhs_u);
                 SchurSolver solver_u(mpi, normalAxis, matrix_u);
                 solver_u.preprocess();
                 solver_u.solve(rhs_u, unknown_u);
 
-                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Y, Axis::Z, iStart, jStart, kStart,
+                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Y, Axis::Z, i, j, 0,
                                     matrix_v, rhs_v);
                 SchurSolver solver_v(mpi, normalAxis, matrix_v);
                 solver_v.preprocess();
                 solver_v.solve(rhs_v, unknown_v);
 
-                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Z, Axis::Z, iStart, jStart, kStart,
+                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Z, Axis::Z, i, j, 0,
                                     matrix_w, rhs_w);
                 SchurSolver solver_w(mpi, normalAxis, matrix_w);
                 solver_w.preprocess();
                 solver_w.solve(rhs_w, unknown_w);
 
-
-                for (size_t k = 0; k < sysDimension; k++) {
+                for (size_t k = 0; k < sysDimension; ++k)
+                {
                     data_.u(Axis::X, i, j, k) = unknown_u[k];
                     data_.u(Axis::Y, i, j, k) = unknown_v[k];
                     data_.u(Axis::Z, i, j, k) = unknown_w[k];
                 }
-
             }
         }
     }
