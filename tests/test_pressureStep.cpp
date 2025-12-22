@@ -56,11 +56,11 @@ protected:
         pressureStep->setup();
     }
 
-    double getDivU(size_t i, size_t j, size_t k) {
+    double getDivU(long i, long j, long k) {
         return pressureStep->divU(i, j, k);
     }
 
-    double getPressure(size_t i, size_t j, size_t k) {
+    double getPressure(long i, long j, long k) {
         return data_.p(i, j, k);
     }
 };
@@ -176,9 +176,9 @@ protected:
     }
 
     void checkFieldFinite(const Field &field, const std::string &fieldName) {
-        for (size_t k = 0; k < grid->Nz; ++k) {
-            for (size_t j = 0; j < grid->Ny; ++j) {
-                for (size_t i = 0; i < grid->Nx; ++i) {
+        for (long k = 0; k < grid->Nz; ++k) {
+            for (long j = 0; j < grid->Ny; ++j) {
+                for (long i = 0; i < grid->Nx; ++i) {
                     ASSERT_TRUE(std::isfinite(field(i, j, k)))
                                                 << "Found NaN or Inf in " << fieldName
                                                 << " at index (" << i << "," << j << "," << k << ")";

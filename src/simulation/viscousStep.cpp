@@ -6,7 +6,6 @@ ViscousStep::ViscousStep(MpiEnv &mpi, SimulationData &simData)
 
 void ViscousStep::setup() {
     // --- Setup velocity-like and intermediate fields -----------------------------------------------------------------
-    g.setup(data_.grid);
     gradP.setup(data_.grid);
     dxxEta.setup(data_.grid);
     dyyZeta.setup(data_.grid);
@@ -28,75 +27,56 @@ void ViscousStep::setup() {
 
 
 void ViscousStep::run() {
-    haloHandler.exchange(data_.predictor);
-    haloHandler.exchange(data_.eta);
-    haloHandler.exchange(data_.zeta);
-    haloHandler.exchange(data_.u);
-    computeG();
     computeXi();
     closeViscousStep();
 }
 
 
-void ViscousStep::computeG() {
-    // Ingredients list
-    auto &eta = data_.eta;
-    auto &zeta = data_.zeta;
-    auto &u = data_.u;
-    auto &predictor = data_.predictor;
-    double nu_val = data_.nu;
+void ViscousStep::computeXi() {
+    // Prepare ingredients
+    haloHandler.exchange(data_.predictor);
+    haloHandler.exchange(data_.eta);
+    haloHandler.exchange(data_.zeta);
+    haloHandler.exchange(data_.u);
+    derive.computeGradient(data_.predictor, gradP);
+    derive.computeDxx(data_.eta, dxxEta);
+    derive.computeDyy(data_.zeta, dyyZeta);
+    derive.computeDzz(data_.u, dzzU);
 
-    derive.computeGradient(predictor, gradP);
-    derive.computeDxx(eta, dxxEta);
-    derive.computeDyy(zeta, dyyZeta);
-    derive.computeDzz(u, dzzU);
+    // Constant ingredients
+    const double nu_val = data_.nu;
+    const double dt_val = data_.dt;
+    const double dt_nu_over_2_val = dt_val * nu_val * 0.5;
+
 
     // Recipie
     // g = f  - grad(p)  - nu/k * u  + nu * (dxx eta + dyy zeta + dzz u)
+    // beta = 1 + dt*nu /2/k
+    // xi = u + dt/beta * g
 
     // Let me cook
-    for (Axis axis: {Axis::X, Axis::Y, Axis::Z}) {
+    for (Axis axis: {Axis::X, Axis::Y, Axis::Z})
+    {
         auto &f_data = data_.f(axis).getData();
         auto &u_data = data_.u(axis).getData();
         auto &gradP_data = gradP(axis).getData();
         auto &dxx_data = dxxEta(axis).getData();
         auto &dyy_data = dyyZeta(axis).getData();
         auto &dzz_data = dzzU(axis).getData();
-        auto &g_data = g(axis).getData();
         auto &inv_k_data = data_.inv_k(axis).getData();
-
-        for (size_t i = 0; i < u_data.size(); i++) {
-            g_data[i] = f_data[i]
-                        - gradP_data[i]
-                        - nu_val * u_data[i] * inv_k_data[i]
-                        + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]);
-        }
-    }
-}
-
-void ViscousStep::computeXi() {
-    // Ingredients list
-    const double nu_val = data_.nu;
-    const double dt_val = data_.dt;
-    const double dt_nu_over_2_val = dt_val * nu_val * 0.5;
-
-    // Recipie
-    // beta = 1+ dt*nu /2/k
-    // xi = u + dt/beta * g
-
-    // Let me cook
-    for (Axis axis: {Axis::X, Axis::Y, Axis::Z})
-    {
-        auto &u_data = data_.u(axis).getData();
-        auto &inv_k_data = data_.inv_k(axis).getData();
-        auto &g_data = g(axis).getData();
         auto &xi_data = xi(axis).getData();
 
         for (size_t i = 0; i < u_data.size(); i++)
         {
+            // Compute g
+            double g_val = f_data[i]
+                           - gradP_data[i]
+                           - nu_val * u_data[i] * inv_k_data[i]
+                           + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]);
+            // Compute xi
             double beta_val = 1 + dt_nu_over_2_val * inv_k_data[i];
-            xi_data[i] = u_data[i]
-                         + dt_val * g_data[i] / beta_val;
+            double inv_beta_val = 1.0 / beta_val;
+            xi_data[i] = u_data[i] + dt_val * inv_beta_val * g_val;
         }
     }
 
@@ -105,9 +85,6 @@ void ViscousStep::computeXi() {
     auto &nx = grid->Nx;
     auto &ny = grid->Ny;
     auto &nz = grid->Nz;
-    auto &dx = grid->dx;
-    auto &dy = grid->dy;
-    auto &dz = grid->dz;
     auto &time = data_.currTime;
 
     if (grid->hasMinBoundary(Axis::X)) {
