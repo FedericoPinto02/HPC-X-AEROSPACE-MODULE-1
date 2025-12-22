@@ -26,6 +26,7 @@ private:
     // --- Local chunk dimensions ---
     size_t N;        // Total local size (including interfaces at 0 and N-1)
     size_t n_inner;  // Size of the inner system (N-2)
+    size_t M;        // Size of shared interfaces (lineNProcs_ + 1) i.e., size of the global Schur system
 
     // --- Local matrix coefficients (same size N) ---
     std::vector<double> a_, b_, c_;
@@ -37,7 +38,8 @@ private:
     std::vector<double> f_in_, y_;              // scratchpads for condenseRHS() and solveInterior() rhss / solutions
 
     // --- Helper solvers ---
-    ThomasSolver thomas_;
+    ThomasSolver thomas_in_;
+    ThomasSolver thomas_s_glob_;
 
 public:
     /**
@@ -74,7 +76,7 @@ private:
     void inline solveInnerSystem(const std::vector<double> &rhs, std::vector<double> &x) {
         // Copy RHS into x (ThomasSolver solves in-place)
         x = rhs;
-        thomas_.solve(a_in_, b_in_, c_in_, x);
+        thomas_in_.solve(a_in_, b_in_, c_in_, x);
     }
 
 

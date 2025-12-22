@@ -3,12 +3,10 @@
 SchurSolver::SchurSolver(const MpiEnv &env,
                          const Axis axis,
                          const TridiagMat &matrix)
-        : N(matrix.getSize()), n_inner(N - 2),
+        : lineComm_(env.lineComm(axis)), lineNProcs_(env.lineSize(axis)), lineRank_(env.lineRank(axis)),
+          N(matrix.getSize()), n_inner(N - 2), M(lineNProcs_ + 1),
           a_(matrix.getDiag(-1)), b_(matrix.getDiag(0)), c_(matrix.getDiag(1)),
-          thomas_(matrix.getSize()) {
-    lineComm_ = env.lineComm(axis);
-    lineNProcs_ = env.lineSize(axis);
-    lineRank_ = env.lineRank(axis);
+          thomas_in_(matrix.getSize()), thomas_s_glob_(M) {
 
     a_in_ = std::vector<double>(a_.begin() + 1, a_.end() - 1);
     b_in_ = std::vector<double>(b_.begin() + 1, b_.end() - 1);
@@ -19,7 +17,6 @@ SchurSolver::SchurSolver(const MpiEnv &env,
     if (N < 3) { throw std::runtime_error("Local grid too small for Schur!"); }
 
     if (lineRank_ == 0) {
-        size_t M = lineNProcs_ + 1;         // Total size of global reduced (interface) system
         Sa_glob_.resize(M, 0.0);
         Sb_glob_.resize(M, 0.0);
         Sc_glob_.resize(M, 0.0);
@@ -167,7 +164,7 @@ void SchurSolver::solveInterface(const std::vector<double> &f, std::vector<doubl
                0, lineComm_);
 
     // 5. Solve global Schur system to find all shared interface values for the given line
-    std::vector<double> u_s_glob(lineNProcs_ + 1);
+    std::vector<double> u_s_glob(M);
     if (lineRank_ == 0) {
         solveGlobalInterfaceSystem(recv_f, u_s_glob);
     }
@@ -197,7 +194,6 @@ void SchurSolver::solveInterface(const std::vector<double> &f, std::vector<doubl
 void SchurSolver::solveGlobalInterfaceSystem(const std::vector<double> &f_all,
                                              std::vector<double> &u_s_all) {
     size_t P = lineNProcs_;
-    size_t M = lineNProcs_ + 1;         // Total size of global reduced system
     std::vector<double> rhs(M, 0.0);
 
     // Assembly Loop
@@ -208,9 +204,8 @@ void SchurSolver::solveGlobalInterfaceSystem(const std::vector<double> &f_all,
     }
 
     // Solve global system
-    ThomasSolver globalThomas(M);
     u_s_all = rhs; // solve in-place
-    globalThomas.solve(Sa_glob_, Sb_glob_, Sc_glob_, u_s_all);
+    thomas_s_glob_.solve(Sa_glob_, Sb_glob_, Sc_glob_, u_s_all);
 }
 
 
