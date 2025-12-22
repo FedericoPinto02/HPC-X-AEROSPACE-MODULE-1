@@ -11,14 +11,14 @@ void Field::populate(double time) {
     const long Nz = (long) gridPtr_->Nz;
 
     for (long k = 0; k < Nz; ++k) {
-        const long kOffset = (long) (k + cached_nHalo_) * (long) cached_axisStrides_[2];
+        const long kOffset = (long) (k + nHalo_) * (long) axisStrides_[2];
         for (long j = 0; j < Ny; ++j) {
-            const long jOffset = (long) (j + cached_nHalo_) * (long) cached_axisStrides_[1];
+            const long jOffset = (long) (j + nHalo_) * (long) axisStrides_[1];
             for (long i = 0; i < Nx; ++i) {
                 auto x = gridPtr_->to_x(i, offset_, offsetAxis_);
                 auto y = gridPtr_->to_y(j, offset_, offsetAxis_);
                 auto z = gridPtr_->to_z(k, offset_, offsetAxis_);
-                data_[kOffset + jOffset + (cached_nHalo_ + i)] = populateFunction_(x, y, z, time);
+                data_[kOffset + jOffset + (nHalo_ + i)] = populateFunction_(x, y, z, time);
             }
         }
     }

@@ -54,13 +54,14 @@ void PressureStep::run() {
         rhs.resize(sysDimension);
         solution.resize(sysDimension);
 
-        for (size_t k = 0; k < data_.grid->Nz; k++)
+        for (long k = 0; k < data_.grid->Nz; ++k)
         {
-            for (size_t j = 0; j < data_.grid->Ny; j++)
+            for (long j = 0; j < data_.grid->Ny; ++j)
             {
+                const double *divU_xLine_offset = &divU(0, j, k);
                 for (size_t i = 0; i < sysDimension; i++)
                 {
-                    rhs[i] = -divU(i, j, k) * inv_dt;
+                    rhs[i] = -divU_xLine_offset[i] * inv_dt;
                 }
                 if (!data_.grid->hasMinBoundary(normalAxis))
                 {
@@ -73,9 +74,10 @@ void PressureStep::run() {
 
                 solver_x->solve(rhs, solution);
 
+                double *psi_xLine_offset = &psi(0, j, k);
                 for (size_t i = 0; i < sysDimension; i++)
                 {
-                    psi(i, j, k) = solution[i];
+                    psi_xLine_offset[i] = solution[i];
                 }
             }
         }
@@ -88,19 +90,21 @@ void PressureStep::run() {
     //==================================================================================================================
     {
         normalAxis = Axis::Y;
+        size_t stride = psi.getStride(normalAxis);
 
         // --- Scratch linear system vectors resizing
         size_t sysDimension = data_.grid->Ny;
         rhs.resize(sysDimension);
         solution.resize(sysDimension);
 
-        for (size_t k = 0; k < data_.grid->Nz; k++)
+        for (long k = 0; k < data_.grid->Nz; k++)
         {
-            for (size_t i = 0; i < data_.grid->Nx; i++)
+            for (long i = 0; i < data_.grid->Nx; i++)
             {
+                const double *psi_yLine_offset = &psi(i, 0, k);
                 for (size_t j = 0; j < sysDimension; j++)
                 {
-                    rhs[j] = psi(i, j, k);
+                    rhs[j] = psi_yLine_offset[j * stride];
                 }
                 if (!data_.grid->hasMinBoundary(normalAxis))
                 {
@@ -113,9 +117,10 @@ void PressureStep::run() {
 
                 solver_y->solve(rhs, solution);
 
+                double *phi_yLine_offset = &phi(i, 0, k);
                 for (size_t j = 0; j < sysDimension; j++)
                 {
-                    phi(i, j, k) = solution[j];
+                    phi_yLine_offset[j * stride] = solution[j];
                 }
             }
         }
@@ -128,19 +133,21 @@ void PressureStep::run() {
     //==================================================================================================================
     {
         normalAxis = Axis::Z;   // x = pcr, rhs = phi
+        size_t stride = phi.getStride(normalAxis);
 
         // --- Scratch linear system vectors resizing
         size_t sysDimension = data_.grid->Nz; // dimension of linear system to solve
         rhs.resize(sysDimension);
         solution.resize(sysDimension);
 
-        for (size_t j = 0; j < data_.grid->Ny; j++)
+        for (long j = 0; j < data_.grid->Ny; j++)
         {
-            for (size_t i = 0; i < data_.grid->Nx; i++)
+            for (long i = 0; i < data_.grid->Nx; i++)
             {
+                const double *phi_zLine_offset = &phi(i, j, 0);
                 for (size_t k = 0; k < sysDimension; k++)
                 {
-                    rhs[k] = phi(i, j, k);
+                    rhs[k] = phi_zLine_offset[k * stride];
                 }
                 if (!data_.grid->hasMinBoundary(normalAxis))
                 {
@@ -153,9 +160,10 @@ void PressureStep::run() {
 
                 solver_z->solve(rhs, solution);
 
+                double *pcr_zLine_offset = &pcr(i, j, 0);
                 for (size_t k = 0; k < sysDimension; k++)
                 {
-                    pcr(i, j, k) = solution[k];
+                    pcr_zLine_offset[k * stride] = solution[k];
                 }
             }
         }
@@ -170,16 +178,10 @@ void PressureStep::run() {
     double nu = data_.nu;
     double factor = chi * nu;
 
-    for (size_t k = 0; k < data_.grid->Nz; k++)
+    for (size_t i = 0; i < data_.grid->sizeWithHalo(); i++)
     {
-        for (size_t j = 0; j < data_.grid->Ny; j++)
-        {
-            for (size_t i = 0; i < data_.grid->Nx; i++)
-            {
-                data_.p(i, j, k) += pcr(i, j, k) - factor * divU(i, j, k);
-                data_.predictor(i, j, k) = data_.p(i, j, k) + pcr(i, j, k);
-            }
-        }
+        data_.p[i] += pcr[i] - factor * divU[i];
+        data_.predictor[i] = data_.p[i] + pcr[i];
     }
 }
 

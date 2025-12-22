@@ -342,6 +342,10 @@ void ViscousStep::assembleLocalSystem(
 
     if (rhsC.size() != matA.getSize()) { throw std::runtime_error("Dimension mismatch: rhsC must be size n."); }
 
+    const auto &inv_k_field = data_.inv_k(fieldComponent);
+    const auto &eta_field = eta(fieldComponent);
+    const auto &xi_field = xi(fieldComponent);
+
     const Grid &grid = eta.getGrid();
     double dx = grid.dx;
     double dy = grid.dy;
@@ -361,8 +365,8 @@ void ViscousStep::assembleLocalSystem(
     //==================================================================================================================
     for (long i = 0; i < matA.getSize(); i++)
     {
-        double inv_k = data_.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
-                                                                   derivativeDirection, i);
+        double inv_k = inv_k_field.valueWithOffset(iStart, jStart, kStart,
+                                                   derivativeDirection, i);
         double beta = 1 + (dt_nu_over_2 * inv_k);
         double gamma = dt_nu_over_2 / beta;
 
@@ -372,15 +376,15 @@ void ViscousStep::assembleLocalSystem(
         diag[i] = 1 + 2 * gamma * dCoef;
 
         // --- RHS COEFFICIENTS ----------------------------------------------------------------------------------------
-        double eta_prec_val_m1 = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart,
-                                                                     derivativeDirection, i - 1);
-        double eta_prec_val = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart,
-                                                                  derivativeDirection, i);
-        double eta_prec_val_p1 = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart,
-                                                                     derivativeDirection, i + 1);
+        double eta_prec_val_m1 = eta_field.valueWithOffset(iStart, jStart, kStart,
+                                                           derivativeDirection, i - 1);
+        double eta_prec_val = eta_field.valueWithOffset(iStart, jStart, kStart,
+                                                        derivativeDirection, i);
+        double eta_prec_val_p1 = eta_field.valueWithOffset(iStart, jStart, kStart,
+                                                           derivativeDirection, i + 1);
         double d2_eta_prec = (eta_prec_val_p1 + eta_prec_val_m1 - 2.0 * eta_prec_val) * dCoef;
-        double xi_val = xi(fieldComponent).valueWithOffset(iStart, jStart, kStart,
-                                                           derivativeDirection, i);
+        double xi_val = xi_field.valueWithOffset(iStart, jStart, kStart,
+                                                 derivativeDirection, i);
         rhsC[i] = xi_val - gamma * d2_eta_prec;
     }
 
@@ -394,9 +398,9 @@ void ViscousStep::assembleLocalSystem(
     // --- LEFT INTERFACE ----------------------------------------------------------------------------------------------
     if (grid.hasMinBoundary(derivativeDirection))
     {
-        double physical_x = grid.to_x(iStart, eta(fieldComponent).getOffset(), eta(fieldComponent).getOffsetAxis());
-        double physical_y = grid.to_y(jStart, eta(fieldComponent).getOffset(), eta(fieldComponent).getOffsetAxis());
-        double physical_z = grid.to_z(kStart, eta(fieldComponent).getOffset(), eta(fieldComponent).getOffsetAxis());
+        double physical_x = grid.to_x(iStart, eta_field.getOffset(), eta_field.getOffsetAxis());
+        double physical_y = grid.to_y(jStart, eta_field.getOffset(), eta_field.getOffsetAxis());
+        double physical_z = grid.to_z(kStart, eta_field.getOffset(), eta_field.getOffsetAxis());
 
         std::function<double(double, double, double, double)> bc;
         switch (fieldComponent)
@@ -415,17 +419,17 @@ void ViscousStep::assembleLocalSystem(
                 if (derivativeDirection == Axis::Y) physical_y = 0.0;
                 if (derivativeDirection == Axis::Z) physical_z = 0.0;
 
-                double inv_k = data_.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
-                                                                           derivativeDirection, 0);
+                double inv_k = inv_k_field.valueWithOffset(iStart, jStart, kStart,
+                                                           derivativeDirection, 0);
                 double beta = 1.0 + (dt_nu_over_2 * inv_k);
                 double gamma = dt_nu_over_2 / beta;
 
                 diag.front() = 1.0 + 4.0 * gamma * dCoef;
                 supdiag.front() = -4.0 / 3.0 * gamma * dCoef;
 
-                double val_0 = xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, 0);
-                double eta_0 = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, 0);
-                double eta_1 = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, 1);
+                double val_0 = xi_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, 0);
+                double eta_0 = eta_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, 0);
+                double eta_1 = eta_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, 1);
 
                 rhsC.front() = val_0
                                + 4.0 / 3.0 * gamma * dCoef * eta_1
@@ -460,14 +464,11 @@ void ViscousStep::assembleLocalSystem(
     {
         long endI = matA.getSize() - 1;
         double physical_x = grid.to_x(iStart + (derivativeDirection == Axis::X ? endI : 0),
-                                      eta(fieldComponent).getOffset(),
-                                      eta(fieldComponent).getOffsetAxis());
+                                      eta_field.getOffset(), eta_field.getOffsetAxis());
         double physical_y = grid.to_y(jStart + (derivativeDirection == Axis::Y ? endI : 0),
-                                      eta(fieldComponent).getOffset(),
-                                      eta(fieldComponent).getOffsetAxis());
+                                      eta_field.getOffset(), eta_field.getOffsetAxis());
         double physical_z = grid.to_z(kStart + (derivativeDirection == Axis::Z ? endI : 0),
-                                      eta(fieldComponent).getOffset(),
-                                      eta(fieldComponent).getOffsetAxis());
+                                      eta_field.getOffset(), eta_field.getOffsetAxis());
 
         std::function<double(double, double, double, double)> bc;
         switch (fieldComponent)
@@ -495,17 +496,17 @@ void ViscousStep::assembleLocalSystem(
                 if (derivativeDirection == Axis::Y) physical_y += 0.5 * dy;
                 if (derivativeDirection == Axis::Z) physical_z += 0.5 * dz;
 
-                double inv_k = data_.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
-                                                                           derivativeDirection, endI);
+                double inv_k = inv_k_field.valueWithOffset(iStart, jStart, kStart,
+                                                           derivativeDirection, endI);
                 double beta = 1.0 + (dt_nu_over_2 * inv_k);
                 double gamma = dt_nu_over_2 / beta;
 
                 diag.back() = 1.0 + 4.0 * gamma * dCoef;
                 subdiag.back() = -4.0 / 3.0 * gamma * dCoef;
 
-                double val_N = xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI);
-                double eta_N = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI);
-                double eta_Nm1 = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI - 1);
+                double val_N = xi_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI);
+                double eta_N = eta_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI);
+                double eta_Nm1 = eta_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI - 1);
 
                 rhsC.back() = val_N
                               + 4.0 / 3.0 * gamma * dCoef * eta_Nm1

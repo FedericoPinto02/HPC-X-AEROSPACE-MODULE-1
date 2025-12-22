@@ -37,9 +37,9 @@ private:
     Axis offsetAxis_;
 
     /// Cached sizes for idx() performance optimization.
-    size_t cached_nHalo_;
+    size_t nHalo_;
     /// Strides for each axis in the flattened data array.
-    std::array<size_t, AXIS_COUNT> cached_axisStrides_;
+    std::array<size_t, AXIS_COUNT> axisStrides_;
 
 
     /// Vector storing the field values in a flattened, row-major indexed 1D array.
@@ -68,12 +68,12 @@ public:
             Axis offsetAxis = Axis::X
     ) {
         gridPtr_ = grid;
-        cached_nHalo_ = gridPtr_->n_halo;
+        nHalo_ = gridPtr_->n_halo;
 
-        size_t Nx_tot = gridPtr_->Nx + 2 * cached_nHalo_;
-        size_t Ny_tot = gridPtr_->Ny + 2 * cached_nHalo_;
-        size_t Nz_tot = gridPtr_->Nz + 2 * cached_nHalo_;
-        cached_axisStrides_ = {
+        size_t Nx_tot = gridPtr_->Nx + 2 * nHalo_;
+        size_t Ny_tot = gridPtr_->Ny + 2 * nHalo_;
+        size_t Nz_tot = gridPtr_->Nz + 2 * nHalo_;
+        axisStrides_ = {
                 1,              // X stride
                 Nx_tot,         // Y stride
                 Ny_tot * Nx_tot // Z stride
@@ -122,6 +122,16 @@ public:
     /// Overload
     [[nodiscard]] inline const Axis &getOffsetAxis() const { return offsetAxis_; }
 
+    /**
+     * @brief Getter for the stride along a given axis.
+     * @param axis the axis for which to get the stride
+     * @return the stride along the given axis
+     */
+    [[nodiscard]] inline size_t getStride(Axis axis) { return axisStrides_[static_cast<size_t>(axis)]; }
+
+    /// @overload
+    [[nodiscard]] inline size_t getStride(Axis axis) const { return axisStrides_[static_cast<size_t>(axis)]; }
+
     //==================================================================================================================
     //--- Data accessors -----------------------------------------------------------------------------------------------
     //==================================================================================================================
@@ -139,9 +149,9 @@ public:
      * @return the corresponding 1D index
      */
     [[nodiscard]] inline size_t idx(long i, long j, long k) const {
-        return (k + cached_nHalo_) * cached_axisStrides_[2]
-               + (j + cached_nHalo_) * cached_axisStrides_[1]
-               + (i + cached_nHalo_);
+        return (k + nHalo_) * axisStrides_[2]
+               + (j + nHalo_) * axisStrides_[1]
+               + (i + nHalo_);
     }
 
     /**
@@ -198,12 +208,12 @@ public:
      * @return the value in the field at position (i,j,k)
      */
     [[nodiscard]] inline Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) {
-        return data_[idx(i, j, k) + offset * cached_axisStrides_[static_cast<size_t>(offsetDirection)]];
+        return data_[idx(i, j, k) + offset * axisStrides_[static_cast<size_t>(offsetDirection)]];
     }
 
     /// @overload
     [[nodiscard]] inline const Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) const {
-        return data_[idx(i, j, k) + offset * cached_axisStrides_[static_cast<size_t>(offsetDirection)]];
+        return data_[idx(i, j, k) + offset * axisStrides_[static_cast<size_t>(offsetDirection)]];
     }
 
 

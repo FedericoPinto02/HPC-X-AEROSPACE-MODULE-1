@@ -90,6 +90,14 @@ struct Grid {
     [[nodiscard]] inline constexpr size_t size() const { return Nx * Ny * Nz; }
 
     /**
+     * @brief Getter for the total number of local grid points, including halo points in each direction.
+     * @return the total number of local grid points, including halo points
+     */
+    [[nodiscard]] inline constexpr size_t sizeWithHalo() const {
+        return (Nx + 2 * n_halo) * (Ny + 2 * n_halo) * (Nz + 2 * n_halo);
+    }
+
+    /**
      * @brief Converts a grid index to a physical coordinate along the X-axis, considering staggering.
      * @param i the x-index
      * @param offset the staggering offset
