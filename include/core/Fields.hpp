@@ -37,7 +37,9 @@ private:
     Axis offsetAxis_;
 
     /// Cached sizes for idx() performance optimization.
-    size_t cached_nHalo_, cached_Nx_with_halo_, cached_Ny_with_halo_, cached_Nz_with_halo_;
+    size_t cached_nHalo_;
+    /// Strides for each axis in the flattened data array.
+    std::array<size_t, AXIS_COUNT> cached_axisStrides_;
 
 
     /// Vector storing the field values in a flattened, row-major indexed 1D array.
@@ -67,14 +69,20 @@ public:
     ) {
         gridPtr_ = grid;
         cached_nHalo_ = gridPtr_->n_halo;
-        cached_Nx_with_halo_ = gridPtr_->Nx + 2 * cached_nHalo_;
-        cached_Ny_with_halo_ = gridPtr_->Ny + 2 * cached_nHalo_;
-        cached_Nz_with_halo_ = gridPtr_->Nz + 2 * cached_nHalo_;
+
+        size_t Nx_tot = gridPtr_->Nx + 2 * cached_nHalo_;
+        size_t Ny_tot = gridPtr_->Ny + 2 * cached_nHalo_;
+        size_t Nz_tot = gridPtr_->Nz + 2 * cached_nHalo_;
+        cached_axisStrides_ = {
+                1,              // X stride
+                Nx_tot,         // Y stride
+                Ny_tot * Nx_tot // Z stride
+        };
 
         populateFunction_ = populateFunction;
         offset_ = offset;
         offsetAxis_ = offsetAxis;
-        data_.resize(cached_Nx_with_halo_ * cached_Ny_with_halo_ * cached_Nz_with_halo_, Scalar(0));
+        data_.resize(Nx_tot * Ny_tot * Nz_tot, Scalar(0));
     }
 
     /**
@@ -131,8 +139,9 @@ public:
      * @return the corresponding 1D index
      */
     [[nodiscard]] inline size_t idx(long i, long j, long k) const {
-        return ((k + cached_nHalo_) * cached_Ny_with_halo_ + (j + cached_nHalo_)
-               ) * cached_Nx_with_halo_ + (i + cached_nHalo_);
+        return (k + cached_nHalo_) * cached_axisStrides_[2]
+               + (j + cached_nHalo_) * cached_axisStrides_[1]
+               + (i + cached_nHalo_);
     }
 
     /**
@@ -188,10 +197,14 @@ public:
      * @param offset the offset value (can be positive or negative)
      * @return the value in the field at position (i,j,k)
      */
-    [[nodiscard]] Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset);
+    [[nodiscard]] inline Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) {
+        return data_[idx(i, j, k) + offset * cached_axisStrides_[static_cast<size_t>(offsetDirection)]];
+    }
 
     /// @overload
-    [[nodiscard]] const Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) const;
+    [[nodiscard]] inline const Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) const {
+        return data_[idx(i, j, k) + offset * cached_axisStrides_[static_cast<size_t>(offsetDirection)]];
+    }
 
 
     //==================================================================================================================
@@ -320,23 +333,27 @@ public:
      * @param k the z-index
      * @return the component value of the vector field in the specified direction at position (i,j,k)
      */
-    [[nodiscard]] Scalar &operator()(Axis componentDirection, long i, long j, long k);
+    [[nodiscard]] inline Scalar &operator()(Axis componentDirection, long i, long j, long k) {
+        return component(componentDirection).value(i, j, k);
+    }
 
     /// @overload
-    [[nodiscard]] const Scalar &operator()(Axis componentDirection, long i, long j, long k) const;
+    [[nodiscard]] inline const Scalar &operator()(Axis componentDirection, long i, long j, long k) const {
+        return component(componentDirection).value(i, j, k);
+    }
 
     /**
      * @copydoc VectorField::operator()(Axis, long, long, long)
      *
      * This method is a named alias for the access operator.
      */
-    [[nodiscard]] Scalar &value(Axis componentDirection, long i, long j, long k) {
-        return this->operator()(componentDirection, i, j, k);
+    [[nodiscard]] inline Scalar &value(Axis componentDirection, long i, long j, long k) {
+        return component(componentDirection).value(i, j, k);
     }
 
     /// @overload
-    [[nodiscard]] const Scalar &value(Axis componentDirection, long i, long j, long k) const {
-        return this->operator()(componentDirection, i, j, k);
+    [[nodiscard]] inline const Scalar &value(Axis componentDirection, long i, long j, long k) const {
+        return component(componentDirection).value(i, j, k);
     }
 
 
