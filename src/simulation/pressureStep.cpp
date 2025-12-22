@@ -26,6 +26,10 @@ void PressureStep::setup() {
     assembleLocalMatrix(data_.grid, Axis::Z, matrix);
     solver_z = std::make_unique<SchurSolver>(mpi, Axis::Z, matrix);
     solver_z->preprocess();
+
+    size_t maxSysDim = std::max({data_.grid->Nx, data_.grid->Ny, data_.grid->Nz});
+    rhs.reserve(maxSysDim);
+    solution.reserve(maxSysDim);
 }
 
 

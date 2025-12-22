@@ -45,11 +45,16 @@ public:
     /**
      * @brief Constructs the SchurSolver for a local tridiagonal system (including left and right interfaces).
      * @param env the MPI environment containing topology and local process information
-     * @param a the sub-diagonal coefficients of the local tridiagonal matrix, including left and right interfaces:
-     * @param b the diagonal coefficients of the local tridiagonal matrix (including left and right interfaces)
-     * @param c the super-diagonal coefficients of the local tridiagonal matrix (including left and right interfaces)
+     * @param axis the line direction along which the tridiagonal system is defined
+     * @param matrix the local tridiagonal matrix (including left and right interfaces)
      */
     SchurSolver(const MpiEnv &env, const Axis axis, const TridiagMat &matrix);
+
+    /**
+     * @brief Updates the local tridiagonal matrix coefficients.
+     * @param matrix the new local tridiagonal matrix (including left and right interfaces)
+     */
+    void updateMatrix(const TridiagMat &matrix);
 
     /**
      * @brief Preprocesses the local chunk matrix (including coefficients for left and right interfaces)

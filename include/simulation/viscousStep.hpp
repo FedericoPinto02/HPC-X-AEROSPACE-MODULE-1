@@ -45,9 +45,10 @@ private:
     VectorField gradP, dxxEta, dyyZeta, dzzU, xi;
 
     // --- Linear system: O(N) memory overhead, O(1) time setup complexity ---------------------------------------------
-    TridiagMat matrix_u, matrix_v, matrix_w;                // scratch tridiagonal matrices for linear system solving
-    std::vector<double> rhs_u, rhs_v, rhs_w;                // scratch RHS vectors for linear system solving
-    std::vector<double> unknown_u, unknown_v, unknown_w;    // scratch solution vectors for linear system solving
+    std::unique_ptr<SchurSolver> solver_x, solver_y, solver_z; // solvers for each direction
+    TridiagMat matrix;                                         // scratch tridiagonal matrix for linear system solving
+    std::vector<double> rhs;                                   // scratch RHS vectors for linear system solving
+    std::vector<double> unknown_u, unknown_v, unknown_w;       // scratch solution vectors for linear system solving
 
 
     /// Compute the xi term (necessary for the x-sweep), based on explicit inline g term computation.
