@@ -72,7 +72,7 @@ private:
      * @param rhs the right-hand side vector to assemble boundary conditions into
      */
     void assembleLocalSystem(
-            const SimulationData &simData, const VectorField &eta, const VectorField &xi,
+            const VectorField &eta, const VectorField &xi,
             const Axis fieldComponent, const Axis derivativeDirection,
             const size_t iStart, const size_t jStart, const size_t kStart,
             TridiagMat &matrix, std::vector<double> &rhs

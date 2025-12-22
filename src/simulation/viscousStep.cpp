@@ -202,19 +202,19 @@ void ViscousStep::closeViscousStep() {
         {
             for (size_t j = 0; j < data_.grid->Ny; ++j)
             {
-                assembleLocalSystem(data_, data_.eta, xi, Axis::X, normalAxis, 0, j, k,
+                assembleLocalSystem(data_.eta, xi, Axis::X, normalAxis, 0, j, k,
                                     matrix, rhs);
                 solver_x->updateMatrix(matrix);
                 solver_x->preprocess();
                 solver_x->solve(rhs, unknown_u);
 
-                assembleLocalSystem(data_, data_.eta, xi, Axis::Y, normalAxis, 0, j, k,
+                assembleLocalSystem(data_.eta, xi, Axis::Y, normalAxis, 0, j, k,
                                     matrix, rhs);
                 solver_x->updateMatrix(matrix);
                 solver_x->preprocess();
                 solver_x->solve(rhs, unknown_v);
 
-                assembleLocalSystem(data_, data_.eta, xi, Axis::Z, normalAxis, 0, j, k,
+                assembleLocalSystem(data_.eta, xi, Axis::Z, normalAxis, 0, j, k,
                                     matrix, rhs);
                 solver_x->updateMatrix(matrix);
                 solver_x->preprocess();
@@ -251,19 +251,19 @@ void ViscousStep::closeViscousStep() {
         {
             for (size_t i = 0; i < data_.grid->Nx; ++i)
             {
-                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::X, normalAxis, i, 0, k,
+                assembleLocalSystem(data_.zeta, data_.eta, Axis::X, normalAxis, i, 0, k,
                                     matrix, rhs);
                 solver_y->updateMatrix(matrix);
                 solver_y->preprocess();
                 solver_y->solve(rhs, unknown_u);
 
-                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Y, normalAxis, i, 0, k,
+                assembleLocalSystem(data_.zeta, data_.eta, Axis::Y, normalAxis, i, 0, k,
                                     matrix, rhs);
                 solver_y->updateMatrix(matrix);
                 solver_y->preprocess();
                 solver_y->solve(rhs, unknown_v);
 
-                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Z, normalAxis, i, 0, k,
+                assembleLocalSystem(data_.zeta, data_.eta, Axis::Z, normalAxis, i, 0, k,
                                     matrix, rhs);
                 solver_y->updateMatrix(matrix);
                 solver_y->preprocess();
@@ -300,19 +300,19 @@ void ViscousStep::closeViscousStep() {
         {
             for (size_t i = 0; i < data_.grid->Nx; ++i)
             {
-                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::X, normalAxis, i, j, 0,
+                assembleLocalSystem(data_.u, data_.zeta, Axis::X, normalAxis, i, j, 0,
                                     matrix, rhs);
                 solver_z->updateMatrix(matrix);
                 solver_z->preprocess();
                 solver_z->solve(rhs, unknown_u);
 
-                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Y, normalAxis, i, j, 0,
+                assembleLocalSystem(data_.u, data_.zeta, Axis::Y, normalAxis, i, j, 0,
                                     matrix, rhs);
                 solver_z->updateMatrix(matrix);
                 solver_z->preprocess();
                 solver_z->solve(rhs, unknown_v);
 
-                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Z, normalAxis, i, j, 0,
+                assembleLocalSystem(data_.u, data_.zeta, Axis::Z, normalAxis, i, j, 0,
                                     matrix, rhs);
                 solver_z->updateMatrix(matrix);
                 solver_z->preprocess();
@@ -331,7 +331,7 @@ void ViscousStep::closeViscousStep() {
 
 
 void ViscousStep::assembleLocalSystem(
-        const SimulationData &simData, const VectorField &eta, const VectorField &xi,
+        const VectorField &eta, const VectorField &xi,
         const Axis fieldComponent, const Axis derivativeDirection,
         const size_t iStart, const size_t jStart, const size_t kStart,
         TridiagMat &matA, std::vector<double> &rhsC
@@ -340,11 +340,7 @@ void ViscousStep::assembleLocalSystem(
     std::vector<double> &subdiag = matA.getDiag(-1);
     std::vector<double> &supdiag = matA.getDiag(1);
 
-    if (rhsC.size() != matA.getSize())
-    {
-        throw std::runtime_error(
-                "Dimension mismatch: rhsC must be size n.");
-    }
+    if (rhsC.size() != matA.getSize()) { throw std::runtime_error("Dimension mismatch: rhsC must be size n."); }
 
     const Grid &grid = eta.getGrid();
     double dx = grid.dx;
@@ -358,15 +354,15 @@ void ViscousStep::assembleLocalSystem(
         case Axis::Y: dCoef = 1.0 / (dy * dy); break;
         case Axis::Z: dCoef = 1.0 / (dz * dz); break;
     }
-    double dt_nu_over_2 = simData.dt * simData.nu * 0.5;
+    double dt_nu_over_2 = data_.dt * data_.nu * 0.5;
 
     //==================================================================================================================
     // --- DEFAULT SYSTEM COEFFICIENTS (same stencil; boundaries will be then overwritten) -----------------------------
     //==================================================================================================================
     for (long i = 0; i < matA.getSize(); i++)
     {
-        double inv_k = simData.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
-                                                                     derivativeDirection, i);
+        double inv_k = data_.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+                                                                   derivativeDirection, i);
         double beta = 1 + (dt_nu_over_2 * inv_k);
         double gamma = dt_nu_over_2 / beta;
 
@@ -405,9 +401,9 @@ void ViscousStep::assembleLocalSystem(
         std::function<double(double, double, double, double)> bc;
         switch (fieldComponent)
         {
-            case Axis::X: bc = simData.bcu; break;
-            case Axis::Y: bc = simData.bcv; break;
-            case Axis::Z: bc = simData.bcw; break;
+            case Axis::X: bc = data_.bcu; break;
+            case Axis::Y: bc = data_.bcv; break;
+            case Axis::Z: bc = data_.bcw; break;
         }
 
         switch (boundaryType)
@@ -419,8 +415,8 @@ void ViscousStep::assembleLocalSystem(
                 if (derivativeDirection == Axis::Y) physical_y = 0.0;
                 if (derivativeDirection == Axis::Z) physical_z = 0.0;
 
-                double inv_k = simData.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
-                                                                             derivativeDirection, 0);
+                double inv_k = data_.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+                                                                           derivativeDirection, 0);
                 double beta = 1.0 + (dt_nu_over_2 * inv_k);
                 double gamma = dt_nu_over_2 / beta;
 
@@ -435,8 +431,8 @@ void ViscousStep::assembleLocalSystem(
                                + 4.0 / 3.0 * gamma * dCoef * eta_1
                                - 4.0 * gamma * dCoef * eta_0
                                + 8.0 / 3.0 * gamma * dCoef * (
-                        bc(physical_x, physical_y, physical_z, simData.currTime - simData.dt) +
-                        bc(physical_x, physical_y, physical_z, simData.currTime)
+                        bc(physical_x, physical_y, physical_z, data_.currTime - data_.dt) +
+                        bc(physical_x, physical_y, physical_z, data_.currTime)
                 );
 
                 break;
@@ -446,7 +442,7 @@ void ViscousStep::assembleLocalSystem(
                 diag.front() = 1.0;
                 supdiag.front() = 0.0;
 
-                rhsC.front() = bc(physical_x, physical_y, physical_z, simData.currTime);
+                rhsC.front() = bc(physical_x, physical_y, physical_z, data_.currTime);
 
                 break;
             }
@@ -476,9 +472,9 @@ void ViscousStep::assembleLocalSystem(
         std::function<double(double, double, double, double)> bc;
         switch (fieldComponent)
         {
-            case Axis::X: bc = simData.bcu; break;
-            case Axis::Y: bc = simData.bcv; break;
-            case Axis::Z: bc = simData.bcw; break;
+            case Axis::X: bc = data_.bcu; break;
+            case Axis::Y: bc = data_.bcv; break;
+            case Axis::Z: bc = data_.bcw; break;
         }
 
         switch (boundaryType)
@@ -488,7 +484,7 @@ void ViscousStep::assembleLocalSystem(
                 diag.back() = 1.0;
                 subdiag.back() = 0.0;
 
-                rhsC.back() = bc(physical_x, physical_y, physical_z, simData.currTime);
+                rhsC.back() = bc(physical_x, physical_y, physical_z, data_.currTime);
 
                 break;
             }
@@ -499,8 +495,8 @@ void ViscousStep::assembleLocalSystem(
                 if (derivativeDirection == Axis::Y) physical_y += 0.5 * dy;
                 if (derivativeDirection == Axis::Z) physical_z += 0.5 * dz;
 
-                double inv_k = simData.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
-                                                                             derivativeDirection, endI);
+                double inv_k = data_.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+                                                                           derivativeDirection, endI);
                 double beta = 1.0 + (dt_nu_over_2 * inv_k);
                 double gamma = dt_nu_over_2 / beta;
 
@@ -515,8 +511,8 @@ void ViscousStep::assembleLocalSystem(
                               + 4.0 / 3.0 * gamma * dCoef * eta_Nm1
                               - 4.0 * gamma * dCoef * eta_N
                               + 8.0 / 3.0 * gamma * dCoef * (
-                                  bc(physical_x, physical_y, physical_z, simData.currTime - simData.dt) +
-                                  bc(physical_x, physical_y, physical_z, simData.currTime)
+                                  bc(physical_x, physical_y, physical_z, data_.currTime - data_.dt) +
+                                  bc(physical_x, physical_y, physical_z, data_.currTime)
                               );
             }
         }
