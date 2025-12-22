@@ -57,16 +57,17 @@ void ViscousStep::computeXi() {
     // Let me cook
     for (Axis axis: {Axis::X, Axis::Y, Axis::Z})
     {
-        auto &f_data = data_.f(axis).getData();
-        auto &u_data = data_.u(axis).getData();
-        auto &gradP_data = gradP(axis).getData();
-        auto &dxx_data = dxxEta(axis).getData();
-        auto &dyy_data = dyyZeta(axis).getData();
-        auto &dzz_data = dzzU(axis).getData();
-        auto &inv_k_data = data_.inv_k(axis).getData();
-        auto &xi_data = xi(axis).getData();
+        size_t size = xi(axis).getData().size();
+        auto f_data = data_.f(axis).getData().data();
+        auto u_data = data_.u(axis).getData().data();
+        auto gradP_data = gradP(axis).getData().data();
+        auto dxx_data = dxxEta(axis).getData().data();
+        auto dyy_data = dyyZeta(axis).getData().data();
+        auto dzz_data = dzzU(axis).getData().data();
+        auto inv_k_data = data_.inv_k(axis).getData().data();
+        auto xi_data = xi(axis).getData().data();
 
-        for (size_t i = 0; i < u_data.size(); i++)
+        for (size_t i = 0; i < size; i++)
         {
             // Compute g
             double g_val = f_data[i]
@@ -91,14 +92,14 @@ void ViscousStep::computeXi() {
         auto &xi_Y = xi(Axis::Y);
         auto &xi_Z = xi(Axis::Z);
         i = 0;
-        for (j = 0; j < ny; j++) {
-            double physical_Yy = grid->to_y(j, xi_Y.getOffset(), xi_Y.getOffsetAxis());                 // + 0.5
-            double physical_Zy = grid->to_y(j, xi_Z.getOffset(), xi_Z.getOffsetAxis());
-            for (k = 0; k < nz; k++) {
-                double physical_Yz = xi_Y.getGrid().to_z(k, xi_Y.getOffset(), xi_Y.getOffsetAxis());
+        for (k = 0; k < nz; k++) {
+            double physical_Yz = xi_Y.getGrid().to_z(k, xi_Y.getOffset(), xi_Y.getOffsetAxis());
+            double physical_Zz = xi_Z.getGrid().to_z(k, xi_Z.getOffset(), xi_Z.getOffsetAxis());    // +0.5
+            for (j = 0; j < ny; j++) {
+                double physical_Yy = grid->to_y(j, xi_Y.getOffset(), xi_Y.getOffsetAxis());                 // + 0.5
                 xi_Y(i, j, k) = data_.bcv(0.0, physical_Yy, physical_Yz, time);
 
-                double physical_Zz = xi_Z.getGrid().to_z(k, xi_Z.getOffset(), xi_Z.getOffsetAxis());    // +0.5
+                double physical_Zy = grid->to_y(j, xi_Z.getOffset(), xi_Z.getOffsetAxis());
                 xi_Z(i, j, k) = data_.bcw(0.0, physical_Zy, physical_Zz, time);
             }
         }

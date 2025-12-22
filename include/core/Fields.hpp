@@ -109,10 +109,10 @@ public:
     //--- Data accessors -----------------------------------------------------------------------------------------------
     //==================================================================================================================
     /// Getter for the underlying data vector.
-    std::vector<Field::Scalar> &getData() { return data_; }
+    [[nodiscard]] std::vector<Field::Scalar> &getData() { return data_; }
 
     /// @overload
-    const std::vector<Field::Scalar> &getData() const { return data_; }
+    [[nodiscard]] const std::vector<Field::Scalar> &getData() const { return data_; }
 
     /**
      * @brief Computes the linear index for 3D access in row-major order.

@@ -16,10 +16,14 @@ TEST(TridiagMatTest, Constructor_invalidArgument) {
 TEST(TridiagMatTest, Constructor_correctCreation) {
     TridiagMat matrix(5);
 
+    size_t subdiag_size = matrix.getDiag(-1).size();
+    size_t diag_size    = matrix.getDiag(0).size();
+    size_t supdiag_size = matrix.getDiag(1).size();
+
     // Implementation should resize all vectors to size N
-    EXPECT_EQ(matrix.getDiag(0).size(), 5);
-    EXPECT_EQ(matrix.getDiag(-1).size(), 5);
-    EXPECT_EQ(matrix.getDiag(1).size(), 5);
+    EXPECT_EQ(diag_size, 5);
+    EXPECT_EQ(subdiag_size, 5);
+    EXPECT_EQ(supdiag_size, 5);
 }
 
 // =============================================================================
@@ -28,7 +32,8 @@ TEST(TridiagMatTest, Constructor_correctCreation) {
 
 TEST(TridiagMatTest, GetSize) {
     TridiagMat matrix(6);
-    EXPECT_EQ(matrix.getSize(), 6);
+    size_t size = matrix.getSize();
+    EXPECT_EQ(size, 6);
 }
 
 // =============================================================================
