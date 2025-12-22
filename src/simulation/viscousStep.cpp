@@ -190,17 +190,17 @@ void ViscousStep::closeViscousStep() {
     //==================================================================================================================
     {
         normalAxis = Axis::X;
-        size_t sysDimension = data_.grid->Nx;
 
+        size_t sysDimension = data_.grid->Nx;
         matrix.resize(sysDimension);
         rhs.resize(sysDimension);
         unknown_u.resize(sysDimension);
         unknown_v.resize(sysDimension);
         unknown_w.resize(sysDimension);
 
-        for (size_t k = 0; k < data_.grid->Nz; ++k)
+        for (long k = 0; k < data_.grid->Nz; ++k)
         {
-            for (size_t j = 0; j < data_.grid->Ny; ++j)
+            for (long j = 0; j < data_.grid->Ny; ++j)
             {
                 assembleLocalSystem(data_.eta, xi, Axis::X, normalAxis, 0, j, k,
                                     matrix, rhs);
@@ -220,11 +220,14 @@ void ViscousStep::closeViscousStep() {
                 solver_x->preprocess();
                 solver_x->solve(rhs, unknown_w);
 
+                double *eta_u_xLine_offset = &data_.eta(Axis::X, 0, j, k);
+                double *eta_v_xLine_offset = &data_.eta(Axis::Y, 0, j, k);
+                double *eta_w_xLine_offset = &data_.eta(Axis::Z, 0, j, k);
                 for (size_t i = 0; i < sysDimension; ++i)
                 {
-                    data_.eta(Axis::X, i, j, k) = unknown_u[i];
-                    data_.eta(Axis::Y, i, j, k) = unknown_v[i];
-                    data_.eta(Axis::Z, i, j, k) = unknown_w[i];
+                    eta_u_xLine_offset[i] = unknown_u[i];
+                    eta_v_xLine_offset[i] = unknown_v[i];
+                    eta_w_xLine_offset[i] = unknown_w[i];
                 }
             }
         }
@@ -239,17 +242,18 @@ void ViscousStep::closeViscousStep() {
     //==================================================================================================================
     {
         normalAxis = Axis::Y;
-        size_t sysDimension = data_.grid->Ny;
+        size_t stride = data_.zeta(Axis::X).getStride(normalAxis);
 
+        size_t sysDimension = data_.grid->Ny;
         matrix.resize(sysDimension);
         rhs.resize(sysDimension);
         unknown_u.resize(sysDimension);
         unknown_v.resize(sysDimension);
         unknown_w.resize(sysDimension);
 
-        for (size_t k = 0; k < data_.grid->Nz; ++k)
+        for (long k = 0; k < data_.grid->Nz; ++k)
         {
-            for (size_t i = 0; i < data_.grid->Nx; ++i)
+            for (long i = 0; i < data_.grid->Nx; ++i)
             {
                 assembleLocalSystem(data_.zeta, data_.eta, Axis::X, normalAxis, i, 0, k,
                                     matrix, rhs);
@@ -269,11 +273,14 @@ void ViscousStep::closeViscousStep() {
                 solver_y->preprocess();
                 solver_y->solve(rhs, unknown_w);
 
+                double *zeta_u_xLine_offset = &data_.zeta(Axis::X, i, 0, k);
+                double *zeta_v_xLine_offset = &data_.zeta(Axis::Y, i, 0, k);
+                double *zeta_w_xLine_offset = &data_.zeta(Axis::Z, i, 0, k);
                 for (size_t j = 0; j < sysDimension; ++j)
                 {
-                    data_.zeta(Axis::X, i, j, k) = unknown_u[j];
-                    data_.zeta(Axis::Y, i, j, k) = unknown_v[j];
-                    data_.zeta(Axis::Z, i, j, k) = unknown_w[j];
+                    zeta_u_xLine_offset[j * stride] = unknown_u[j];
+                    zeta_v_xLine_offset[j * stride] = unknown_v[j];
+                    zeta_w_xLine_offset[j * stride] = unknown_w[j];
                 }
             }
         }
@@ -288,17 +295,18 @@ void ViscousStep::closeViscousStep() {
     //==================================================================================================================
     {
         normalAxis = Axis::Z;
-        size_t sysDimension = data_.grid->Nz;
+        size_t stride = data_.u(Axis::X).getStride(normalAxis);
 
+        size_t sysDimension = data_.grid->Nz;
         matrix.resize(sysDimension);
         rhs.resize(sysDimension);
         unknown_u.resize(sysDimension);
         unknown_v.resize(sysDimension);
         unknown_w.resize(sysDimension);
 
-        for (size_t j = 0; j < data_.grid->Ny; ++j)
+        for (long j = 0; j < data_.grid->Ny; ++j)
         {
-            for (size_t i = 0; i < data_.grid->Nx; ++i)
+            for (long i = 0; i < data_.grid->Nx; ++i)
             {
                 assembleLocalSystem(data_.u, data_.zeta, Axis::X, normalAxis, i, j, 0,
                                     matrix, rhs);
@@ -318,11 +326,14 @@ void ViscousStep::closeViscousStep() {
                 solver_z->preprocess();
                 solver_z->solve(rhs, unknown_w);
 
+                double *u_u_xLine_offset = &data_.u(Axis::X, i, j, 0);
+                double *u_v_xLine_offset = &data_.u(Axis::Y, i, j, 0);
+                double *u_w_xLine_offset = &data_.u(Axis::Z, i, j, 0);
                 for (size_t k = 0; k < sysDimension; ++k)
                 {
-                    data_.u(Axis::X, i, j, k) = unknown_u[k];
-                    data_.u(Axis::Y, i, j, k) = unknown_v[k];
-                    data_.u(Axis::Z, i, j, k) = unknown_w[k];
+                    u_u_xLine_offset[k * stride] = unknown_u[k];
+                    u_v_xLine_offset[k * stride] = unknown_v[k];
+                    u_w_xLine_offset[k * stride] = unknown_w[k];
                 }
             }
         }
@@ -336,16 +347,23 @@ void ViscousStep::assembleLocalSystem(
         const size_t iStart, const size_t jStart, const size_t kStart,
         TridiagMat &matA, std::vector<double> &rhsC
 ) {
+    if (rhsC.size() != matA.getSize()) { throw std::runtime_error("Dimension mismatch: rhsC must be size n."); }
+
+    // --- Base line-offset of inv_k, eta and xi fields (for fast access) ----------------------------------------------
+    const auto &inv_k_field = data_.inv_k(fieldComponent);
+    const auto &eta_field = eta(fieldComponent);
+    const auto &xi_field = xi(fieldComponent);
+    const double *inv_k_line_offset = &inv_k_field(iStart, jStart, kStart);
+    const double *eta_line_offset = &eta_field(iStart, jStart, kStart);
+    const double *xi_line_offset = &xi_field(iStart, jStart, kStart);
+    const size_t stride = eta_field.getStride(derivativeDirection);
+
+    // --- Matrix diagonals --------------------------------------------------------------------------------------------
     std::vector<double> &diag = matA.getDiag(0);
     std::vector<double> &subdiag = matA.getDiag(-1);
     std::vector<double> &supdiag = matA.getDiag(1);
 
-    if (rhsC.size() != matA.getSize()) { throw std::runtime_error("Dimension mismatch: rhsC must be size n."); }
-
-    const auto &inv_k_field = data_.inv_k(fieldComponent);
-    const auto &eta_field = eta(fieldComponent);
-    const auto &xi_field = xi(fieldComponent);
-
+    // --- Grid spacings and coefficients ------------------------------------------------------------------------------
     const Grid &grid = eta.getGrid();
     double dx = grid.dx;
     double dy = grid.dy;
@@ -360,13 +378,13 @@ void ViscousStep::assembleLocalSystem(
     }
     double dt_nu_over_2 = data_.dt * data_.nu * 0.5;
 
+
     //==================================================================================================================
     // --- DEFAULT SYSTEM COEFFICIENTS (same stencil; boundaries will be then overwritten) -----------------------------
     //==================================================================================================================
     for (long i = 0; i < matA.getSize(); i++)
     {
-        double inv_k = inv_k_field.valueWithOffset(iStart, jStart, kStart,
-                                                   derivativeDirection, i);
+        double inv_k = inv_k_line_offset[i * stride];
         double beta = 1 + (dt_nu_over_2 * inv_k);
         double gamma = dt_nu_over_2 / beta;
 
@@ -376,17 +394,14 @@ void ViscousStep::assembleLocalSystem(
         diag[i] = 1 + 2 * gamma * dCoef;
 
         // --- RHS COEFFICIENTS ----------------------------------------------------------------------------------------
-        double eta_prec_val_m1 = eta_field.valueWithOffset(iStart, jStart, kStart,
-                                                           derivativeDirection, i - 1);
-        double eta_prec_val = eta_field.valueWithOffset(iStart, jStart, kStart,
-                                                        derivativeDirection, i);
-        double eta_prec_val_p1 = eta_field.valueWithOffset(iStart, jStart, kStart,
-                                                           derivativeDirection, i + 1);
+        double eta_prec_val_m1 = eta_line_offset[(i - 1) * stride];
+        double eta_prec_val = eta_line_offset[i * stride];
+        double eta_prec_val_p1 = eta_line_offset[(i + 1) * stride];
         double d2_eta_prec = (eta_prec_val_p1 + eta_prec_val_m1 - 2.0 * eta_prec_val) * dCoef;
-        double xi_val = xi_field.valueWithOffset(iStart, jStart, kStart,
-                                                 derivativeDirection, i);
+        double xi_val = xi_line_offset[i * stride];
         rhsC[i] = xi_val - gamma * d2_eta_prec;
     }
+
 
     //==================================================================================================================
     // --- BOUNDARY CONDITIONS ENFORCEMENT (overwritten over default ones) ---------------------------------------------
@@ -419,18 +434,18 @@ void ViscousStep::assembleLocalSystem(
                 if (derivativeDirection == Axis::Y) physical_y = 0.0;
                 if (derivativeDirection == Axis::Z) physical_z = 0.0;
 
-                double inv_k = inv_k_field.valueWithOffset(iStart, jStart, kStart,
-                                                           derivativeDirection, 0);
+                double inv_k = inv_k_line_offset[0];
                 double beta = 1.0 + (dt_nu_over_2 * inv_k);
                 double gamma = dt_nu_over_2 / beta;
 
+                // --- MATRIX BC ---------------------------------------------------------------------------------------
                 diag.front() = 1.0 + 4.0 * gamma * dCoef;
                 supdiag.front() = -4.0 / 3.0 * gamma * dCoef;
 
-                double val_0 = xi_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, 0);
-                double eta_0 = eta_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, 0);
-                double eta_1 = eta_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, 1);
-
+                // --- RHS BC ------------------------------------------------------------------------------------------
+                double val_0 = xi_line_offset[0];
+                double eta_0 = eta_line_offset[0];
+                double eta_1 = eta_line_offset[1 * stride];
                 rhsC.front() = val_0
                                + 4.0 / 3.0 * gamma * dCoef * eta_1
                                - 4.0 * gamma * dCoef * eta_0
@@ -496,18 +511,18 @@ void ViscousStep::assembleLocalSystem(
                 if (derivativeDirection == Axis::Y) physical_y += 0.5 * dy;
                 if (derivativeDirection == Axis::Z) physical_z += 0.5 * dz;
 
-                double inv_k = inv_k_field.valueWithOffset(iStart, jStart, kStart,
-                                                           derivativeDirection, endI);
+                double inv_k = inv_k_line_offset[endI * stride];
                 double beta = 1.0 + (dt_nu_over_2 * inv_k);
                 double gamma = dt_nu_over_2 / beta;
 
+                // --- MATRIX BC ---------------------------------------------------------------------------------------
                 diag.back() = 1.0 + 4.0 * gamma * dCoef;
                 subdiag.back() = -4.0 / 3.0 * gamma * dCoef;
 
-                double val_N = xi_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI);
-                double eta_N = eta_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI);
-                double eta_Nm1 = eta_field.valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI - 1);
-
+                // --- RHS BC ------------------------------------------------------------------------------------------
+                double val_N = xi_line_offset[endI * stride];
+                double eta_N = eta_line_offset[endI * stride];
+                double eta_Nm1 = eta_line_offset[(endI - 1) * stride];
                 rhsC.back() = val_N
                               + 4.0 / 3.0 * gamma * dCoef * eta_Nm1
                               - 4.0 * gamma * dCoef * eta_N
