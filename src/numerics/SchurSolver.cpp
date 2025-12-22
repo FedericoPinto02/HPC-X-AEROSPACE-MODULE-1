@@ -32,10 +32,9 @@ void SchurSolver::updateMatrix(const TridiagMat &matrix) {
     b_ = matrix.getDiag(0);
     c_ = matrix.getDiag(1);
 
-    a_in_ = std::vector<double>(a_.begin() + 1, a_.end() - 1);
-    b_in_ = std::vector<double>(b_.begin() + 1, b_.end() - 1);
-    c_in_ = std::vector<double>(c_.begin() + 1, c_.end() - 1);
-
+    std::copy(a_.begin() + 1, a_.end() - 1, a_in_.begin());
+    std::copy(b_.begin() + 1, b_.end() - 1, b_in_.begin());
+    std::copy(c_.begin() + 1, c_.end() - 1, c_in_.begin());
 }
 
 
