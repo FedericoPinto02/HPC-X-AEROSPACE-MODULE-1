@@ -62,11 +62,20 @@ PRESSURE_FIELD_NAME = "pressure"
 # --- 3. HELPER FUNCTIONS ---
 
 def get_step_from_filename(filepath: str) -> int:
-    match = re.search(r'_(\d+)\.vtk$', os.path.basename(filepath))
-    if match:
-        return int(match.group(1))
-    else:
-        raise ValueError(f"Could not parse step number from filename: {filepath}.")
+    filename = os.path.basename(filepath)
+
+    # 1. Try matching new format: ..._RANK_STEP.vtk
+    # We capture two groups of digits. Group 1 is RANK, Group 2 is STEP.
+    match_rank = re.search(r'_(\d+)_(\d+)\.vtk$', filename)
+    if match_rank:
+        return int(match_rank.group(2)) # Return the STEP
+
+    # 2. Fallback to legacy format: ..._STEP.vtk
+    match_legacy = re.search(r'_(\d+)\.vtk$', filename)
+    if match_legacy:
+        return int(match_legacy.group(1))
+
+    raise ValueError(f"Could not parse step number from filename: {filepath}.")
 
 def compute_convergence_orders(x_values: list, errors: list) -> tuple:
     x = np.array(x_values)

@@ -1,11 +1,12 @@
 #include "io/VTKWriter.hpp"
+
 #include <fstream>
 #include <iomanip>
 #include <stdexcept>
 #include <cstdio>
 
-VTKWriter::VTKWriter(const OutputSettings &outputSettings, const SimulationData &simData)
-    : Nx_(simData.grid->Nx), Ny_(simData.grid->Ny), Nz_(simData.grid->Nz),
+VTKWriter::VTKWriter(const MpiEnv &mpi, const OutputSettings &outputSettings, const SimulationData &simData)
+    : mpi_(mpi), Nx_(simData.grid->Nx), Ny_(simData.grid->Ny), Nz_(simData.grid->Nz),
       dx_(simData.grid->dx), dy_(simData.grid->dy), dz_(simData.grid->dz),
       enabled_(outputSettings.enabled),
       outputFrequency_(outputSettings.outputFrequency),
@@ -16,6 +17,7 @@ VTKWriter::VTKWriter(const OutputSettings &outputSettings, const SimulationData 
 }
 
 bool VTKWriter::write_timestep_if_needed(size_t currStep,
+                                         const VectorField &inv_porosity,
                                          const Field &pressure,
                                          const VectorField &velocity)
 {
@@ -34,27 +36,33 @@ bool VTKWriter::write_timestep_if_needed(size_t currStep,
     // Prepare data and filename
     int step = static_cast<int>(currStep);
     char buf[256];
-    std::snprintf(buf, sizeof(buf), "%s_%04d.vtk", basePrefix_.c_str(), step);
+    std::snprintf(buf, sizeof(buf), "%s_%04d_%04d.vtk", basePrefix_.c_str(), mpi_.rank(), step);
     std::string filename = std::string(buf);
 
     // Create copies for writing (as done by external logic previously)
     // This is crucial to prevent data races if a thread were used for writing
+    auto inv_porosity_ptr = std::make_shared<VectorField>(inv_porosity);
     auto pressure_ptr = std::make_shared<Field>(pressure);
     auto velocity_ptr = std::make_shared<VectorField>(velocity);
 
     // Perform writing
-    write_legacy(filename, pressure_ptr, velocity_ptr);
+    write_legacy(filename, inv_porosity_ptr, pressure_ptr, velocity_ptr);
 
     return true; // File written successfully
 }
 
 // write_legacy method (remains unchanged)
 void VTKWriter::write_legacy(const std::string &filename,
+                             const std::shared_ptr<VectorField> &inv_porosity,
                              const std::shared_ptr<Field> &pressure,
                              const std::shared_ptr<VectorField> &velocity) const
 {
 
     const size_t N = static_cast<size_t>(Nx_) * Ny_ * Nz_;
+    const auto &grid = pressure->getGrid();
+    double originX = grid.i_start * grid.dx;
+    double originY = grid.j_start * grid.dy;
+    double originZ = grid.k_start * grid.dz;
 
     std::ofstream out(filename);
     if (!out.is_open())
@@ -65,11 +73,30 @@ void VTKWriter::write_legacy(const std::string &filename,
     out << "ASCII\n";
     out << "DATASET STRUCTURED_POINTS\n";
     out << "DIMENSIONS " << Nx_ << " " << Ny_ << " " << Nz_ << "\n";
-    out << "ORIGIN 0 0 0\n";
+    out << "ORIGIN " << originX << " " << originY << " " << originZ << "\n";
     out << "SPACING " << dx_ << " " << dy_ << " " << dz_ << "\n";
     out << "POINT_DATA " << N << "\n";
 
-    // SCALAR pressure
+
+    // --- VECTORS porosity --------------------------------------------------------------------------------------------
+    out << "VECTORS porosity double\n";
+    const auto &inv_kx = inv_porosity->component(Axis::X);
+    const auto &inv_ky = inv_porosity->component(Axis::Y);
+    const auto &inv_kz = inv_porosity->component(Axis::Z);
+
+    for (int k = 0; k < Nz_; ++k)
+    {
+        for (int j = 0; j < Ny_; ++j)
+        {
+            for (int i = 0; i < Nx_; ++i)
+            {
+                out << 1 / inv_kx(i, j, k) << " " << 1 / inv_ky(i, j, k) << " " << 1 / inv_kz(i, j, k) << "\n";
+            }
+        }
+    }
+
+
+    // --- SCALAR pressure ---------------------------------------------------------------------------------------------
     out << "SCALARS pressure double 1\n";
     out << "LOOKUP_TABLE default\n";
     out << std::setprecision(12);
@@ -85,7 +112,8 @@ void VTKWriter::write_legacy(const std::string &filename,
         }
     }
 
-    // VECTORS velocity
+
+    // --- VECTORS velocity --------------------------------------------------------------------------------------------
     out << "VECTORS velocity double\n";
     const auto &vx = velocity->component(Axis::X);
     const auto &vy = velocity->component(Axis::Y);

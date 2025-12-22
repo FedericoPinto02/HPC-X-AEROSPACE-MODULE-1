@@ -1,5 +1,4 @@
-#ifndef NSBSOLVER_SIMULATIONCONTEXT_HPP
-#define NSBSOLVER_SIMULATIONCONTEXT_HPP
+#pragma once
 
 #include <cstddef>
 #include <string>
@@ -30,12 +29,6 @@ struct LoggingSettings {
     size_t loggingFrequency;
 };
 
-/**
- * @brief Structure holding parameters related to parallel execution and domain decomposition.
- */
-struct ParallelizationSettings {
-    int schurDomains;
-};
 
 /**
  * @brief Central structure containing all transient data, fields, and physical properties of the running simulation.
@@ -79,5 +72,3 @@ struct SimulationData {
     Func fy;
     Func fz;
 };
-
-#endif //NSBSOLVER_SIMULATIONCONTEXT_HPP

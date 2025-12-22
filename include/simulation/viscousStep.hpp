@@ -1,68 +1,79 @@
-# pragma once
+#pragma once
 
-#include <vector>
 #include <memory>
-#include <simulation/initializer.hpp>
-#include <numerics/LinearSys.hpp>
-#include <numerics/derivatives.hpp>
-#include <simulation/SimulationContext.hpp>
+#include <vector>
 
+#include "core/HaloHandler.hpp"
+#include "core/TridiagMat.hpp"
+#include "numerics/derivatives.hpp"
+#include "simulation/initializer.hpp"
+#include "numerics/SchurSolver.hpp"
+#include "simulation/SimulationContext.hpp"
 
 /**
  * @brief Handles all viscous step maniplation.
  * This class does not own data but regulates the workflow.
  */
-class ViscousStep
-{
+class ViscousStep {
     friend class ViscousStepTest;
-    friend class ViscousStepSolverTest;
+
     friend class ViscousStepRobustnessTest;
+
 public:
 
     /**
-     * @brief Constructor
-     * @param contex Contains all simulation data
+     * @brief Constructor that initializes the <code>ViscousStep</code> with MPI environment and simulation data.
+     * @param mpi the MPI environment
+     * @param simData the whole simulation data
      */
-    ViscousStep(SimulationData& simData, ParallelizationSettings& parallel);
-    
-    
+    ViscousStep(MpiEnv &mpi, SimulationData &simData);
 
-    /**
-     * @brief Run viscous step.
-     */
+    /// Setup fields and linear system scratch variables.
+    void setup();
+
+    /// Run viscous step.
     void run();
 
 private:
+    // --- Environment and helpers -------------------------------------------------------------------------------------
+    const MpiEnv &mpi;
+    HaloHandler haloHandler;
+    Derivatives derive;
 
-     VectorField g, gradP, dxxEta, dyyZeta, dzzU, xi;    
-    /**
-     * @brief Construct temporary fields to proceed in computations
-     */
-    void initializeWorkspaceFields();
+    // --- Phyisics data -----------------------------------------------------------------------------------------------
+    SimulationData &data_;
+    VectorField gradP, dxxEta, dyyZeta, dzzU, xi;
 
-    /**
-     * @brief Compute G term
-     */ 
-    void computeG();
+    // --- Linear system: O(N) memory overhead, O(1) time setup complexity ---------------------------------------------
+    TridiagMat matrix_u, matrix_v, matrix_w;                // scratch tridiagonal matrices for linear system solving
+    std::vector<double> rhs_u, rhs_v, rhs_w;                // scratch RHS vectors for linear system solving
+    std::vector<double> unknown_u, unknown_v, unknown_w;    // scratch solution vectors for linear system solving
 
-     /**
-     * @brief Compute xi term
-     */
+
+    /// Compute the xi term (necessary for the x-sweep), based on explicit inline g term computation.
     void computeXi();
 
-    /**
-     * @brief Closes viscous step filling and solving three linear systems.
-     */
+    /// Solves the viscous step by ADI method (x-, y- and z-sweeps) and updates the velocity field.
     void closeViscousStep();
 
-    SimulationData& data_;
-    ParallelizationSettings parallel_;
-
     /**
-     * @brief Wrapper that chooses whether to use Thomas (P=1) or Schur (P>1).
+     * @brief Assemble the local linear system for velocity-like variables, for a given field component
+     * and derivative direction.
+     * @param simData the whole simulation data
+     * @param eta the unknown vector field at the previous time step
+     * @param xi the known vector field from a previous sweep at the current time step
+     * @param fieldComponent the component of the vector field to solve for
+     * @param derivativeDirection the sweep direction i.e., the direction of the second derivative
+     * @param iStart the starting index in the i-direction
+     * @param jStart the starting index in the j-direction
+     * @param kStart the starting index in the k-direction
+     * @param matrix the tridiagonal matrix to be assembled
+     * @param rhs the right-hand side vector to assemble boundary conditions into
      */
-    std::vector<double> solveSystem(LinearSys& sys);
-
-
-
+    void assembleLocalSystem(
+            const SimulationData &simData, const VectorField &eta, const VectorField &xi,
+            const Axis fieldComponent, const Axis derivativeDirection,
+            const size_t iStart, const size_t jStart, const size_t kStart,
+            TridiagMat &matrix, std::vector<double> &rhs
+    );
 };

@@ -1,13 +1,21 @@
 #include "io/logWriter.hpp"
-#include <iomanip>
-#include <chrono>
 
-LogWriter::LogWriter(const LoggingSettings &logSettings)
-  : logToFile_(logSettings.logToFile),
+#include <iomanip>
+
+LogWriter::LogWriter(bool isMaster, const LoggingSettings &logSettings)
+  : isMaster_(isMaster),
+    logToFile_(logSettings.logToFile),
     logToConsole_(logSettings.logToConsole),
     logDir_(logSettings.dir),
     filename_(logSettings.filename)
 {
+  if (!isMaster_)
+  {
+    logToFile_ = false;
+    logToConsole_ = false;
+    return;
+  }
+
   if (logToFile_)
   {
     std::string fullPath = logDir_ + "/" + filename_;
@@ -29,8 +37,11 @@ void LogWriter::write(const std::string &msg)
     file_ << msg << std::flush;
 }
 
-void LogWriter::printSimulationHeader(const InputData &input, const SimulationData &simData, bool vtkWritten)
+void LogWriter::printSimulationHeader(const MpiEnv &mpi, const InputData &input, const SimulationData &simData, bool vtkWritten)
 {
+  if (!isMaster_)
+    return;
+
   std::ostringstream s;
   s << "\n";
   s << separator(60, '#');
@@ -45,12 +56,20 @@ void LogWriter::printSimulationHeader(const InputData &input, const SimulationDa
       << "  Note            : Grid overridden to isotropic, L = nu (Re = 1)\n\n";
   }
 
+  // DOMAIN DECOMPOSITION
+  s << "[DOMAIN DECOMPOSITION]\n"
+    << "  MPI Ranks       : " << mpi.size() << "\n"
+    << "  Topology        : " << mpi.dims()[0] << " x " << mpi.dims()[1] << " x " << mpi.dims()[2] << "\n\n";
+
   // GRID INFO
   s << "[GRID CONFIGURATION]\n"
-    << "  Dimensions      : " << simData.grid->Nx << " x " << simData.grid->Ny << " x " << simData.grid->Nz << "\n"
     << "  Domain Size     : " << simData.grid->Lx_glob << " x " << simData.grid->Ly_glob << " x " << simData.grid->Lz_glob << "\n"
+    << "  Dimensions      : " << simData.grid->Nx_glob << " x " << simData.grid->Ny_glob << " x " << simData.grid->Nz_glob << "\n"
     << "  Spacing         : " << "dx=" << simData.grid->dx << ", dy=" << simData.grid->dy << ", dz=" << simData.grid->dz << "\n"
-    << "  Total Cells     : " << (simData.grid->Nx * simData.grid->Ny * simData.grid->Nz) << "\n\n";
+    << "  Total Cells     : " << (simData.grid->Nx_glob * simData.grid->Ny_glob * simData.grid->Nz_glob) << "\n"
+    << "  Loc. Dimensions : " << "~" << simData.grid->Nx << " x ~" << simData.grid->Ny << " x ~" << simData.grid->Nz << "\n"
+    << "  Loc. Halo Size  : " << simData.grid->n_halo << "\n"
+    << "  Loc. Total Cells: " << "~" << (simData.grid->Nx * simData.grid->Ny * simData.grid->Nz) << "\n\n";
 
   // TIME
   s << "[TIME SETTINGS]\n"
@@ -60,7 +79,6 @@ void LogWriter::printSimulationHeader(const InputData &input, const SimulationDa
 
   // SETUP
   s << "[SETUP]\n"
-    << "  Schur Domains   : " << input.parallelization.schurDomains << "\n"
     << "  Log File        : " << input.logging.filename << "\n\n";
 
   // VTK OUTPUT
@@ -79,6 +97,9 @@ void LogWriter::printSimulationHeader(const InputData &input, const SimulationDa
 
 void LogWriter::printStepHeader()
 {
+  if (!isMaster_)
+    return;
+
   std::ostringstream s;
   s << std::left
     << std::setw(8) << "STEP"
@@ -91,6 +112,8 @@ void LogWriter::printStepHeader()
 
 void LogWriter::printStepProgress(int step, double time, double dt, double elapsedSec, bool isOutputStep)
 {
+  if (!isMaster_)
+    return;
   std::ostringstream s;
 
   // Use fixed and setprecision to align numbers
@@ -114,6 +137,9 @@ void LogWriter::printFinalSummary(
   unsigned int totalSteps,
   const unsigned int totalCells)
 {
+  if (!isMaster_)
+    return;
+
   std::ostringstream s;
 
   s << "\n"

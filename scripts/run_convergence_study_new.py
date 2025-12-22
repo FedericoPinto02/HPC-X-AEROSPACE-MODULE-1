@@ -155,8 +155,9 @@ def main():
                 json.dump(current_config, f, indent=4)
 
             # D. Launch C++ Solver
-            ret = subprocess.run([EXECUTABLE_PATH], capture_output=True, text=True)
-            
+            # ret = subprocess.run([EXECUTABLE_PATH], capture_output=True, text=True)
+            ret = subprocess.run(["mpirun", "-np", "1", EXECUTABLE_PATH], capture_output=True, text=True)
+
             if ret.returncode != 0:
                 print(f"  [ERROR] C++ execution failed for {label_val}:")
                 print(f"  {'-'*20} STDERR {'-'*20}")
@@ -167,7 +168,7 @@ def main():
                 print("  > Simulation completed successfully.")
 
             # E. Verify output existence
-            expected_filename = f"{base_name}_{num_steps:04d}.vtk"
+            expected_filename = f"{base_name}_0000_{num_steps:04d}.vtk"
             full_path = os.path.join(OUTPUT_DIR, expected_filename)
 
             if os.path.exists(full_path):

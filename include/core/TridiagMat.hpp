@@ -4,43 +4,30 @@
 #include <stdexcept>
 #include <vector>
 
-/**
- * @brief Class representing a tridiagonal matrix and providing access to its elements.
- */
+///Class representing a tridiagonal matrix and providing access to its elements.
 class TridiagMat {
-
-  friend class SchurSequentialSolver;
-
-  private:
+private:
     std::vector<double> diag;
     std::vector<double> subdiag;
     std::vector<double> supdiag;
 
-  public:
+public:
     /**
-     * @brief Constructor.
-     * @param n Size of the matrix (n x n)
+     * @brief Constructor that initializes the tridiagonal matrix of size n x n.
+     * @param n the size of the matrix
      */
-    explicit TridiagMat(size_t n);
+    explicit TridiagMat(size_t n = 2);
 
     /**
-     * @brief Fill the matrix.
-     * @param diag matrix diagonal.
-     * @param subdiag matrix subdiagonal.
-     * @param supdiag matrix upper diagonal.
-     */
-    void fillMat(std::vector<double> diag, std::vector<double> subdiag,
-                 std::vector<double> supdiag);
-
-    /**
-     * @brief Get the matrix size
+     * @brief Get the matrix size.
      */
     [[nodiscard]] inline size_t getSize() const { return diag.size(); }
 
     /**
-     * @brief Get the (i,j) element of the matrix
+     * @brief Resize the matrix to new size n x n.
+     * @param n the new size of the matrix
      */
-    [[nodiscard]] double getElement(size_t i, size_t j) const;
+    void resize(size_t n);
 
     /**
      * @brief Get the whole diagonal, subdiagonal or supdiagonal
@@ -48,20 +35,6 @@ class TridiagMat {
      */
     [[nodiscard]] std::vector<double> &getDiag(int w);
 
-    /**
-     * @overload
-     */
-    [[nodiscard]] std::vector<double> getDiag(int w) const;
-
-    /**
-     * @brief Get the first element from the diagonal w
-     * @param w number indicating sub (-1), main (0) or sup (1) diagonal
-     */
-    [[nodiscard]] double getFirstElementFromDiag(int w) const;
-
-    /**
-     * @brief Get the last element from the diagonal w
-     * @param w number indicating sub (-1), main (0) or sup (1) diagonal
-     */
-    [[nodiscard]] double getLastElementFromDiag(int w) const;
+    /// @overload
+    [[nodiscard]] const std::vector<double> &getDiag(int w) const;
 };

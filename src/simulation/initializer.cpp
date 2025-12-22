@@ -1,13 +1,9 @@
 #include "simulation/initializer.hpp"
 
-#include <iostream>
-#include <cmath>
-#include <algorithm>
 
 // =========================================================
-// 1. Scalar Fields Initialization
+// --- Scalar Fields Initialization ------------------------
 // =========================================================
-
 Field Initializer::initializeFieldFromFunc(
         const double time,
         const GridPtr &grid,
@@ -20,15 +16,15 @@ Field Initializer::initializeFieldFromFunc(
 }
 
 // =========================================================
-// 2. Vector Fields Initialization
+// --- Vector Fields Initialization ------------------------
 // =========================================================
-
 VectorField Initializer::initializeVectorFieldFromFunc(
         const double time,
         const GridPtr &grid,
         const Func &func_u,
         const Func &func_v,
-        const Func &func_w) {
+        const Func &func_w
+) {
     VectorField vec;
     vec.setup(grid, func_u, func_v, func_w);
     vec.populate(time);
@@ -37,7 +33,7 @@ VectorField Initializer::initializeVectorFieldFromFunc(
 
 
 // =========================================================
-// setup
+// --- Setup -----------------------------------------------
 // =========================================================
 SimulationData Initializer::setup(const InputData &inputData, const MpiEnv &mpi) {
     SimulationData sim;
@@ -51,6 +47,7 @@ SimulationData Initializer::setup(const InputData &inputData, const MpiEnv &mpi)
             mpi);
     sim.grid = grid;
 
+
     // --- Time ---
     double t0 = 0.0;
     sim.dt = inputData.time.dt;
@@ -59,8 +56,10 @@ SimulationData Initializer::setup(const InputData &inputData, const MpiEnv &mpi)
     sim.currStep = 0;
     sim.totalSteps = static_cast<size_t>(std::ceil(sim.totalSimTime / sim.dt));
 
+
     // --- Physics ---
     sim.nu = inputData.physics.nu;
+
 
     // --- Initial fields ---
     Func ui_func = ConfigFuncs::u_init_func;
@@ -75,6 +74,7 @@ SimulationData Initializer::setup(const InputData &inputData, const MpiEnv &mpi)
     sim.p = initializeFieldFromFunc(t0, grid, pi_func);
     sim.predictor = initializeFieldFromFunc(t0, grid, pi_func);
 
+
     // --- Permeability ---
     Func inv_k_func = [](double x, double y, double z, double t) {
         const double INV_K_MAX_PENALIZATION = 1e10; // i.e., applied to k < 1e-10
@@ -82,6 +82,7 @@ SimulationData Initializer::setup(const InputData &inputData, const MpiEnv &mpi)
         return inv_k_val >= INV_K_MAX_PENALIZATION ? INV_K_MAX_PENALIZATION : inv_k_val;
     };
     sim.inv_k = initializeVectorFieldFromFunc(t0, grid, inv_k_func, inv_k_func, inv_k_func);
+
 
     // --- BC functions ---
     sim.bcu = ConfigFuncs::bcu_func;

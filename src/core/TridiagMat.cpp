@@ -1,87 +1,41 @@
 #include "core/TridiagMat.hpp"
-#include <cmath>
-#include <stdexcept>
-#include <vector>
 
 TridiagMat::TridiagMat(size_t n) {
-  if (n < 2)
-    throw std::invalid_argument("Matrix size must be at least 2");
-  diag.resize(n, 0.0);
-  subdiag.resize(n - 1, 0.0);
-  supdiag.resize(n - 1, 0.0);
+    if (n < 2)
+        throw std::invalid_argument("Matrix size must be at least 2");
+    diag.resize(n, 0.0);
+    subdiag.resize(n, 0.0);
+    supdiag.resize(n, 0.0);
 }
 
-void TridiagMat::fillMat(std::vector<double> diag_,
-                         std::vector<double> subdiag_,
-                         std::vector<double> supdiag_) {
-  // size checks
-  if (diag_.size() != diag.size() || subdiag_.size() != (diag.size() - 1) ||
-      supdiag_.size() != (diag.size() - 1))
-    throw std::invalid_argument("Invalid vector sizes for tridiagonal matrix");
-
-  // move vectors (no copy is done here :D)
-  diag = std::move(diag_);
-  subdiag = std::move(subdiag_);
-  supdiag = std::move(supdiag_);
+void TridiagMat::resize(size_t n) {
+    if (n < 2)
+        throw std::invalid_argument("Matrix size must be at least 2");
+    diag.resize(n);
+    subdiag.resize(n);
+    supdiag.resize(n);
 }
 
-
-double TridiagMat::getElement(size_t i, size_t j) const {
-  if (i >= diag.size() || j >= diag.size())
-    throw std::out_of_range("Index out of range");
-
-  if (i == j)
-    return diag[i];
-  if (i == j + 1)
-    return subdiag[j];
-  if (i + 1 == j)
-    return supdiag[i];
-  return 0.0; // elements outside the tridiagonals are zero
-}
-std::vector<double> TridiagMat::getDiag(int w) const {
-  if (w == -1)
-    return subdiag;
-  else if (w == 0)
-    return diag;
-  else if (w == 1)
-    return supdiag;
-  else {
-    throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
-  }
+const std::vector<double> &TridiagMat::getDiag(int w) const {
+    if (w == -1)
+        return subdiag;
+    else if (w == 0)
+        return diag;
+    else if (w == 1)
+        return supdiag;
+    else {
+        throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
+    }
 }
 
-std::vector<double>& TridiagMat::getDiag(int w)  {
-  if (w == -1)
-    return subdiag;
-  else if (w == 0)
-    return diag;
-  else if (w == 1)
-    return supdiag;
-  else {
-    throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
-  }
-}
-
-
-
-double TridiagMat::getFirstElementFromDiag(int w) const {
-  if (w == -1)
-    return subdiag.at(0);
-  else if (w == 0)
-    return diag.at(0);
-  else if (w == 1)
-    return supdiag.at(0);
-  else
-    throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
-}
-
-double TridiagMat::getLastElementFromDiag(int w) const {
-  if (w == -1)
-    return subdiag.at(diag.size() - 2);
-  else if (w == 0)
-    return diag.at(diag.size() - 1);
-  else if (w == 1)
-    return supdiag.at(diag.size() - 2);
-  else
-    throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
+std::vector<double> &TridiagMat::getDiag(int w) {
+    if (w == -1)
+        return subdiag;
+    else if (w == 0)
+        return diag;
+    else if (w == 1)
+        return supdiag;
+    else {
+        throw std::invalid_argument("Parameter needs to be -1, 0 or 1");
+    }
 }

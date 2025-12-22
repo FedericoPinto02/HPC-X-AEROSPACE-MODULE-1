@@ -1,20 +1,10 @@
-#include <chrono>
-#include <cmath>
+#include <ctime>
 #include <iostream>
 #include <memory>
-#include <ctime>
 
 // --- Include headers ---
 #include "simulation/NSBSolver.hpp"
 
-#include "core/Fields.hpp"
-#include "io/inputReader.hpp"
-#include "io/VTKWriter.hpp"
-#include "io/logWriter.hpp"
-#include "numerics/derivatives.hpp"
-#include "simulation/pressureStep.hpp"
-#include "simulation/SimulationContext.hpp"
-#include "simulation/viscousStep.hpp"
 #include "simulation/initializer.hpp"
 
 NSBSolver::NSBSolver(const std::string &configFile, MpiEnv &mpi)
@@ -35,23 +25,23 @@ void NSBSolver::setup()
     // Init store settings
     outputSettings = input.output;
     loggingSettings = input.logging;
-    parallelizationSettings = input.parallelization;
 
     // Init Steps
-    viscousStep = std::make_unique<ViscousStep>(simData, parallelizationSettings);
-    pressureStep = std::make_unique<PressureStep>(simData, parallelizationSettings);
+    viscousStep = std::make_unique<ViscousStep>(mpi, simData);
+    pressureStep = std::make_unique<PressureStep>(mpi, simData);
 
     // Init Logger and Writer
-    logger = std::make_unique<LogWriter>(loggingSettings);
-    vtkWriter = std::make_unique<VTKWriter>(outputSettings, simData);
+    logger = std::make_unique<LogWriter>(mpi.rank() == 0, loggingSettings);
+    vtkWriter = std::make_unique<VTKWriter>(mpi, outputSettings, simData);
 
     bool vtkWritten = vtkWriter->write_timestep_if_needed(
             simData.currStep,
+            simData.inv_k,
             simData.p,
             simData.u);
 
     // Logging
-    logger->printSimulationHeader(input, simData, vtkWritten);
+    logger->printSimulationHeader(mpi, input, simData, vtkWritten);
 }
 
 void NSBSolver::solve()
@@ -60,6 +50,9 @@ void NSBSolver::solve()
     logger->printStepHeader();
 
     std::clock_t start_cpu_time = std::clock();
+
+    pressureStep->setup();
+    viscousStep->setup();
 
     // Time integration
     for (unsigned int i = 1; i < simData.totalSteps + 1; i++)
@@ -82,6 +75,7 @@ void NSBSolver::solve()
         // 3. Output
         bool vtkWritten = vtkWriter->write_timestep_if_needed(
             simData.currStep,
+            simData.inv_k,
             simData.p,
             simData.u);
 

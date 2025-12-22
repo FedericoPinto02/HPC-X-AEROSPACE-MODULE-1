@@ -1,5 +1,4 @@
-#ifndef NSBSOLVER_FIELDS_HPP
-#define NSBSOLVER_FIELDS_HPP
+#pragma once
 
 #include <algorithm>
 #include <cstddef>
@@ -10,10 +9,17 @@
 
 #include "core/Grid.hpp"
 
+/// Type alias for a function of four double variables (x,y,z,t) returning a double.
 using Func = std::function<double(double x, double y, double z, double t)>;
 const Func ZERO_FUNC = [](double /*x*/, double /*y*/, double /*z*/, double /*t*/ = 0) {
     return 0.0;
 };
+
+/// Enum describing the type of boundary condition (Neumann or Dirichlet).
+enum class BoundaryType {
+    Normal, Tangent
+};
+
 
 /**
  * @brief Class representing a scalar field defined on a 3D grid.
@@ -37,14 +43,7 @@ private:
     Func populateFunction_;
 
 public:
-    /// @deprecated - Use [idx] instead.
-    std::vector<Field::Scalar> &getData() { return data_; }
-
-    /// @deprecated - Use [idx] instead.
-    const std::vector<Field::Scalar> &getData() const { return data_; }
-
     friend class VectorField;
-
 
     //==================================================================================================================
     //--- Setup --------------------------------------------------------------------------------------------------------
@@ -66,7 +65,7 @@ public:
         populateFunction_ = populateFunction;
         offset_ = offset;
         offsetAxis_ = offsetAxis;
-        data_.resize(gridPtr_->size(), Scalar(0));
+        data_.resize(gridPtr_->sizeWithHalo(), Scalar(0));
     }
 
     /**
@@ -88,10 +87,33 @@ public:
     /// @overload
     [[nodiscard]] inline const Grid &getGrid() const { return *gridPtr_; }
 
+    /**
+     * @brief Getter for the field offset in the staggered grid.
+     * @return the field offset in the staggered grid
+     */
+    [[nodiscard]] inline const GridStaggering &getOffset() { return offset_; }
+
+    /// Overload
+    [[nodiscard]] inline const GridStaggering &getOffset() const { return offset_; }
+
+    /**
+     * @brief Getter for the axis where the offset is applied in the staggered grid.
+     * @return the axis where the offset is applied in the staggered grid
+     */
+    [[nodiscard]] inline const Axis &getOffsetAxis() { return offsetAxis_; }
+
+    /// Overload
+    [[nodiscard]] inline const Axis &getOffsetAxis() const { return offsetAxis_; }
 
     //==================================================================================================================
     //--- Data accessors -----------------------------------------------------------------------------------------------
     //==================================================================================================================
+    /// Getter for the underlying data vector.
+    std::vector<Field::Scalar> &getData() { return data_; }
+
+    /// @overload
+    const std::vector<Field::Scalar> &getData() const { return data_; }
+
     /**
      * @brief Computes the linear index for 3D access in row-major order.
      * @param i the x-index
@@ -99,8 +121,11 @@ public:
      * @param k the z-index
      * @return the corresponding 1D index
      */
-    [[nodiscard]] inline size_t idx(size_t i, size_t j, size_t k) const {
-        return (k * gridPtr_->Ny + j) * gridPtr_->Nx + i;
+    [[nodiscard]] inline size_t idx(long i, long j, long k) const {
+        const size_t H = gridPtr_->n_halo;
+        const size_t Nx_tot = gridPtr_->Nx + 2 * H;
+        const size_t Ny_tot = gridPtr_->Ny + 2 * H;
+        return ((k + H) * Ny_tot + (j + H)) * Nx_tot + (i + H);
     }
 
     /**
@@ -124,26 +149,26 @@ public:
      * @param k the z-index
      * @return the value in the field at position (i,j,k)
      */
-    [[nodiscard]] inline Scalar &operator()(size_t i, size_t j, size_t k) {
+    [[nodiscard]] inline Scalar &operator()(long i, long j, long k) {
         return data_[idx(i, j, k)];
     }
 
     /// @overload
-    [[nodiscard]] inline const Scalar &operator()(size_t i, size_t j, size_t k) const {
+    [[nodiscard]] inline const Scalar &operator()(long i, long j, long k) const {
         return data_[idx(i, j, k)];
     }
 
     /**
-     * @copydoc Field::operator()(size_t, size_t, size_t)
+     * @copydoc Field::operator()(long, long, long)
      *
      * This method is a named alias for the access operator.
      */
-    [[nodiscard]] inline Scalar &value(size_t i, size_t j, size_t k) {
+    [[nodiscard]] inline Scalar &value(long i, long j, long k) {
         return data_[idx(i, j, k)];
     }
 
     /// @overload
-    [[nodiscard]] inline const Scalar &value(size_t i, size_t j, size_t k) const {
+    [[nodiscard]] inline const Scalar &value(long i, long j, long k) const {
         return data_[idx(i, j, k)];
     }
 
@@ -156,10 +181,10 @@ public:
      * @param offset the offset value (can be positive or negative)
      * @return the value in the field at position (i,j,k)
      */
-    [[nodiscard]] Scalar &valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int offset);
+    [[nodiscard]] Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset);
 
     /// @overload
-    [[nodiscard]] const Scalar &valueWithOffset(size_t i, size_t j, size_t k, Axis offsetDirection, int offset) const;
+    [[nodiscard]] const Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) const;
 
 
     //==================================================================================================================
@@ -288,22 +313,22 @@ public:
      * @param k the z-index
      * @return the component value of the vector field in the specified direction at position (i,j,k)
      */
-    [[nodiscard]] Scalar &operator()(Axis componentDirection, size_t i, size_t j, size_t k);
+    [[nodiscard]] Scalar &operator()(Axis componentDirection, long i, long j, long k);
 
     /// @overload
-    [[nodiscard]] const Scalar &operator()(Axis componentDirection, size_t i, size_t j, size_t k) const;
+    [[nodiscard]] const Scalar &operator()(Axis componentDirection, long i, long j, long k) const;
 
     /**
-     * @copydoc VectorField::operator()(Axis, size_t, size_t, size_t)
+     * @copydoc VectorField::operator()(Axis, long, long, long)
      *
      * This method is a named alias for the access operator.
      */
-    [[nodiscard]] Scalar &value(Axis componentDirection, size_t i, size_t j, size_t k) {
+    [[nodiscard]] Scalar &value(Axis componentDirection, long i, long j, long k) {
         return this->operator()(componentDirection, i, j, k);
     }
 
     /// @overload
-    [[nodiscard]] const Scalar &value(Axis componentDirection, size_t i, size_t j, size_t k) const {
+    [[nodiscard]] const Scalar &value(Axis componentDirection, long i, long j, long k) const {
         return this->operator()(componentDirection, i, j, k);
     }
 
@@ -329,5 +354,3 @@ public:
      */
     void multiply(Scalar value);
 };
-
-#endif // NSBSOLVER_FIELDS_HPP

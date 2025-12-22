@@ -1,8 +1,10 @@
 #include "io/inputReader.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
-#include <nlohmann/json.hpp>
+
+#include "nlohmann/json.hpp"
 
 using json = nlohmann::json;
 
@@ -97,18 +99,6 @@ InputData InputReader::read(const std::string &filename)
     catch (const json::exception &e)
     {
         throw std::runtime_error("Error parsing 'logging' section: " + std::string(e.what()));
-    }
-
-    // ----------------------------
-    // Parallelization
-    // ----------------------------
-    try
-    {
-        data.parallelization.schurDomains = jsonData["parallelization"]["schur_domains"];
-    }
-    catch (const json::exception &e)
-    {
-        throw std::runtime_error("Error parsing 'parallelization' section: " + std::string(e.what()));
     }
 
     // ----------------------------

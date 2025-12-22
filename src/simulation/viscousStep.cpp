@@ -1,74 +1,61 @@
-#include <algorithm>
-#include <cmath>
-#include <core/Fields.hpp>
-#include <vector>
-#include <numerics/derivatives.hpp>
-#include <numerics/LinearSys.hpp>
-#include "numerics/SchurSequentialSolver.hpp"
-#include <simulation/viscousStep.hpp>
+#include "simulation/viscousStep.hpp"
+
+ViscousStep::ViscousStep(MpiEnv &mpi, SimulationData &simData)
+        : mpi(mpi), haloHandler(mpi), data_(simData) {}
 
 
-std::vector<double> ViscousStep::solveSystem(LinearSys& sys) {
-
-    // 1. If we want to use the classic solver (debug or actual P=1)
-    if (parallel_.schurDomains <= 1) {
-        sys.ThomaSolver();
-        return sys.getSolution();
-    }
-    else
-    {
-        // 2. Sequential Schur Logic
-        SchurSequentialSolver schur(sys.getMatrix().getSize(), parallel_.schurDomains);
-        schur.PreProcess(sys.getMatrix());
-        return schur.solve(sys.getRhs());
-    }
-}
-
-
-ViscousStep::ViscousStep(SimulationData& simData, ParallelizationSettings& parallel) : data_(simData), parallel_(parallel)
-{
-    initializeWorkspaceFields();
-}
-
-
-
-void ViscousStep::run()
-{
-    computeG();
-    computeXi();
-    closeViscousStep();
-}
-
-void ViscousStep::initializeWorkspaceFields()
-{
-    g.setup(data_.grid);
+void ViscousStep::setup() {
+    // --- Setup velocity-like and intermediate fields -----------------------------------------------------------------
     gradP.setup(data_.grid);
     dxxEta.setup(data_.grid);
     dyyZeta.setup(data_.grid);
     dzzU.setup(data_.grid);
     xi.setup(data_.grid);
+
+    // --- Assemble linear system scratch variables --------------------------------------------------------------------
+    auto maxDim = std::max({data_.grid->Nx, data_.grid->Ny, data_.grid->Nz});
+    matrix_u.resize(maxDim);
+    matrix_v.resize(maxDim);
+    matrix_w.resize(maxDim);
+    rhs_u.resize(maxDim);
+    rhs_v.resize(maxDim);
+    rhs_w.resize(maxDim);
+    unknown_u.resize(maxDim);
+    unknown_v.resize(maxDim);
+    unknown_w.resize(maxDim);
 }
 
-void ViscousStep::computeG()
-{
-    // Ingredients list
-    auto& eta = data_.eta;
-    auto& zeta = data_.zeta;
-    auto& u = data_.u;
-    auto &predictor = data_.predictor;
-    double nu_val = data_.nu;
 
-    Derivatives derive;
-    derive.computeGradient(predictor, gradP);
-    derive.computeDxx(eta, dxxEta);
-    derive.computeDyy(zeta, dyyZeta);
-    derive.computeDzz(u, dzzU);
+void ViscousStep::run() {
+    computeXi();
+    closeViscousStep();
+}
 
-    // Recepie
+
+void ViscousStep::computeXi() {
+    // Prepare ingredients
+    haloHandler.exchange(data_.predictor);
+    haloHandler.exchange(data_.eta);
+    haloHandler.exchange(data_.zeta);
+    haloHandler.exchange(data_.u);
+    derive.computeGradient(data_.predictor, gradP);
+    derive.computeDxx(data_.eta, dxxEta);
+    derive.computeDyy(data_.zeta, dyyZeta);
+    derive.computeDzz(data_.u, dzzU);
+
+    // Constant ingredients
+    const double nu_val = data_.nu;
+    const double dt_val = data_.dt;
+    const double dt_nu_over_2_val = dt_val * nu_val * 0.5;
+
+
+    // Recipie
     // g = f  - grad(p)  - nu/k * u  + nu * (dxx eta + dyy zeta + dzz u)
+    // beta = 1 + dt*nu /2/k
+    // xi = u + dt/beta * g
 
     // Let me cook
-    for (Axis axis : {Axis::X, Axis::Y, Axis::Z})
+    for (Axis axis: {Axis::X, Axis::Y, Axis::Z})
     {
         auto &f_data = data_.f(axis).getData();
         auto &u_data = data_.u(axis).getData();
@@ -76,424 +63,488 @@ void ViscousStep::computeG()
         auto &dxx_data = dxxEta(axis).getData();
         auto &dyy_data = dyyZeta(axis).getData();
         auto &dzz_data = dzzU(axis).getData();
-        auto &g_data = g(axis).getData();
         auto &inv_k_data = data_.inv_k(axis).getData();
+        auto &xi_data = xi(axis).getData();
 
         for (size_t i = 0; i < u_data.size(); i++)
         {
-            g_data[i] = f_data[i]
-                    - gradP_data[i]
-                    - nu_val * u_data[i] * inv_k_data[i]
-                    + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]);
-        }
-    }
-}
-
-void ViscousStep::computeXi()
-{
-    // Ingredients list
-    const double nu_val = data_.nu;
-    const double dt_val = data_.dt;
-    const double dt_nu_over_2_val = dt_val * nu_val * 0.5;
-
-    // Recepie
-    // beta = 1+ dt*nu /2/k
-    // xi = u + dt/beta * g
-
-    // Let me cook
-    for (Axis axis : {Axis::X, Axis::Y, Axis::Z}) {
-
-        auto& u_data = data_.u(axis).getData();
-        auto& inv_k_data = data_.inv_k(axis).getData();
-        auto& g_data = g(axis).getData();
-        auto& xi_data = xi(axis).getData();
-
-        for (size_t i = 0; i < u_data.size(); i++)
-        {
+            // Compute g
+            double g_val = f_data[i]
+                           - gradP_data[i]
+                           - nu_val * u_data[i] * inv_k_data[i]
+                           + nu_val * (dxx_data[i] + dyy_data[i] + dzz_data[i]);
+            // Compute xi
             double beta_val = 1 + dt_nu_over_2_val * inv_k_data[i];
-            xi_data[i] = u_data[i]
-                        + dt_val * g_data[i]
-                        / beta_val;
+            double inv_beta_val = 1.0 / beta_val;
+            xi_data[i] = u_data[i] + dt_val * inv_beta_val * g_val;
         }
     }
+
     size_t i, j, k;
-    auto &nx = data_.grid->Nx;
-    auto &ny = data_.grid->Ny;
-    auto &nz = data_.grid->Nz;
-    auto &dx = data_.grid->dx;
-    auto &dy = data_.grid->dy;
-    auto &dz = data_.grid->dz;
+    auto grid = data_.grid;
+    auto &nx = grid->Nx;
+    auto &ny = grid->Ny;
+    auto &nz = grid->Nz;
     auto &time = data_.currTime;
 
-    i = 0;
-    for (j = 0; j < ny; j++)
-    {
-        for (k = 0; k < nz; k++)
-        {
-            xi(Axis::Y)(i,j,k) = data_.bcv(0.0, (j+0.5)*dy, k*dz, time);
-            xi(Axis::Z)(i,j,k) = data_.bcw(0.0, j*dy, (k+0.5)*dz, time);
+    if (grid->hasMinBoundary(Axis::X)) {
+        auto &xi_Y = xi(Axis::Y);
+        auto &xi_Z = xi(Axis::Z);
+        i = 0;
+        for (j = 0; j < ny; j++) {
+            double physical_Yy = grid->to_y(j, xi_Y.getOffset(), xi_Y.getOffsetAxis());                 // + 0.5
+            double physical_Zy = grid->to_y(j, xi_Z.getOffset(), xi_Z.getOffsetAxis());
+            for (k = 0; k < nz; k++) {
+                double physical_Yz = xi_Y.getGrid().to_z(k, xi_Y.getOffset(), xi_Y.getOffsetAxis());
+                xi_Y(i, j, k) = data_.bcv(0.0, physical_Yy, physical_Yz, time);
+
+                double physical_Zz = xi_Z.getGrid().to_z(k, xi_Z.getOffset(), xi_Z.getOffsetAxis());    // +0.5
+                xi_Z(i, j, k) = data_.bcw(0.0, physical_Zy, physical_Zz, time);
+            }
         }
     }
-    j = 0;
-    for (i = 0; i < nx; i++)
-    {
-        for (k = 0; k < nz; k++)
-        {
-            xi(Axis::X)(i,j,k) = data_.bcu((i+0.5)*dx, 0.0, k*dz, time);
-            xi(Axis::Z)(i,j,k) = data_.bcw(i*dx, 0.0, (k+0.5)*dz, time);
+    if (grid->hasMinBoundary(Axis::Y)) {
+        auto &xi_X = xi(Axis::X);
+        auto &xi_Z = xi(Axis::Z);
+        j = 0;
+        for (k = 0; k < nz; k++) {
+            double physical_Xz = grid->to_z(k, xi_X.getOffset(), xi_X.getOffsetAxis());
+            double physical_Zz = grid->to_z(k, xi_Z.getOffset(), xi_Z.getOffsetAxis());                 // +0.5
+            for (i = 0; i < nx; i++) {
+                double physical_Xx = xi_X.getGrid().to_x(i, xi_X.getOffset(), xi_X.getOffsetAxis());    // +0.5
+                xi_X(i, j, k) = data_.bcu(physical_Xx, 0.0, physical_Xz, time);
+
+                double physical_Zx = xi_Z.getGrid().to_x(i, xi_Z.getOffset(), xi_Z.getOffsetAxis());
+                xi_Z(i, j, k) = data_.bcw(physical_Zx, 0.0, physical_Zz, time);
+            }
         }
     }
-    k = 0;
-    for (j = 0; j < ny; j++)
-    {
-        for (i = 0; i < nx; i++)
-        {
-            xi(Axis::Y)(i,j,k) = data_.bcv(i*dx, (j+0.5)*dy, 0.0, time);
-            xi(Axis::X)(i,j,k) = data_.bcu((i+0.5)*dx, j*dy, 0.0, time);
+    if (grid->hasMinBoundary(Axis::Z)) {
+        auto &xi_X = xi(Axis::X);
+        auto &xi_Y = xi(Axis::Y);
+        k = 0;
+        for (j = 0; j < ny; j++) {
+            double physical_Xy = grid->to_y(j, xi_X.getOffset(), xi_X.getOffsetAxis());
+            double physical_Yy = grid->to_y(j, xi_Y.getOffset(), xi_Y.getOffsetAxis());                 // +0.5
+            for (i = 0; i < nx; i++) {
+                double physical_Xx = xi_X.getGrid().to_x(i, xi_X.getOffset(), xi_X.getOffsetAxis());    // +0.5
+                xi_X(i, j, k) = data_.bcu(physical_Xx, physical_Xy, 0.0, time);
+
+                double physical_Yx = xi_Y.getGrid().to_x(i, xi_Y.getOffset(), xi_Y.getOffsetAxis());
+                xi_Y(i, j, k) = data_.bcv(physical_Yx, physical_Yy, 0.0, time);
+            }
         }
     }
 
-    i = nx - 1;
-    for (j = 0; j < ny; j++)
-    {
-        for (k = 0; k < nz; k++)
-        {
-            xi(Axis::X)(i,j,k) = data_.bcu((i+0.5)*dx, j*dy, k*dz, time);
+    if (grid->hasMaxBoundary(Axis::X)) {
+        auto &xi_X = xi(Axis::X);
+        i = nx - 1;
+        double physical_Xx = grid->to_x(i, xi_X.getOffset(), xi_X.getOffsetAxis());    // +0.5
+        for (k = 0; k < nz; k++) {
+            double physical_Xz = grid->to_z(k, xi_X.getOffset(), xi_X.getOffsetAxis());
+            for (j = 0; j < ny; j++) {
+                double physical_Xy = grid->to_y(j, xi_X.getOffset(), xi_X.getOffsetAxis());
+                xi_X(i, j, k) = data_.bcu(physical_Xx, physical_Xy, physical_Xz, time);
+            }
         }
     }
-    j = ny - 1;
-    for (i = 0; i < nx; i++)
-    {
-        for (k = 0; k < nz; k++)
-        {
-            xi(Axis::Y)(i,j,k) = data_.bcv(i*dx, (j+0.5)*dy, k*dz, time);
+    if (grid->hasMaxBoundary(Axis::Y)) {
+        auto &xi_Y = xi(Axis::Y);
+        j = ny - 1;
+        double physical_Yy = grid->to_y(j, xi_Y.getOffset(), xi_Y.getOffsetAxis());    // +0.5
+        for (k = 0; k < nz; k++) {
+            double physical_Yz = grid->to_z(k, xi_Y.getOffset(), xi_Y.getOffsetAxis());
+            for (i = 0; i < nx; i++) {
+                double physical_Yx = grid->to_x(i, xi_Y.getOffset(), xi_Y.getOffsetAxis());
+                xi_Y(i, j, k) = data_.bcv(physical_Yx, physical_Yy, physical_Yz, time);
+            }
         }
     }
-    k = nz - 1;
-    for (j = 0; j < ny; j++)
-    {
-        for (i = 0; i < nx; i++)
-        {
-            xi(Axis::Z)(i,j,k) = data_.bcw(i*dx, j*dy, (k+0.5)*dz, time);
+    if (grid->hasMaxBoundary(Axis::Z)) {
+        auto &xi_Z = xi(Axis::Z);
+        k = nz - 1;
+        double physical_Zz = grid->to_z(k, xi_Z.getOffset(), xi_Z.getOffsetAxis());    // +0.5
+        for (j = 0; j < ny; j++) {
+            double physical_Zy = grid->to_y(j, xi_Z.getOffset(), xi_Z.getOffsetAxis());
+            for (i = 0; i < nx; i++) {
+                double physical_Zx = grid->to_x(i, xi_Z.getOffset(), xi_Z.getOffsetAxis());
+                xi_Z(i, j, k) = data_.bcw(physical_Zx, physical_Zy, physical_Zz, time);
+            }
         }
     }
 }
 
 
-void ViscousStep::closeViscousStep()
-{   
-    const double dx = data_.grid->dx;
-    const double dy = data_.grid->dy;
-    const double dz = data_.grid->dz;
-    const double t = data_.currTime;
-    double inv_porosity, beta, gamma, mul, deriv_u, deriv_v, deriv_w;
-    size_t iStart, jStart, kStart;
-    // solve on the face orthogonal to normalAxis
-    Axis normalAxis;
-    
+void ViscousStep::closeViscousStep() {
+    Axis normalAxis;    // solve on the face orthogonal to normalAxis
 
-    // ------------------------------------------
-    // Solve Eta --------------------------------
-    // ------------------------------------------
+    //==================================================================================================================
+    // --- 1. Solve Eta (Direction X) ----------------------------------------------------------------------------------
+    // --- when solving Eta we fill linsys with dxx derivatives
+    // --- Eta.u is then solved exploiting normal Dirichlet boundary conditions
+    // --- Eta.v and Eta.w are solved exploiting tangent Dirichlet boundary conditions
+    // --- Differences between normal and tangent are given by staggered grid.
+    //==================================================================================================================
     {
-    normalAxis = Axis::X;
-    size_t nSystem = data_.grid->Ny * data_.grid->Nz; // number of linear systems to solve
-    size_t sysDimension = data_.grid->Nx; // dimension of linear system to solve
-    size_t j, k;
-    // when solving Eta we fill linsys with dxx derivatives
-    // Eta.u is then solved exploiting normal Dirichlet boundary conditions
-    // Eta.v and Eta.w are solved exploiting tangent Dirichlet boundary conditions
-    // Differences between normal and tangent are given by staggered grid.
+        normalAxis = Axis::X;
+        size_t sysDimension = data_.grid->Nx;
 
-    LinearSys mySystem_u(sysDimension);
-    LinearSys mySystem_v(sysDimension);
-    LinearSys mySystem_w(sysDimension);
-    std::vector<double> rhs_u(sysDimension);
-    std::vector<double> rhs_v(sysDimension);
-    std::vector<double> rhs_w(sysDimension);
+        matrix_u.resize(sysDimension);
+        matrix_v.resize(sysDimension);
+        matrix_w.resize(sysDimension);
+        rhs_u.resize(sysDimension);
+        rhs_v.resize(sysDimension);
+        rhs_w.resize(sysDimension);
+        unknown_u.resize(sysDimension);
+        unknown_v.resize(sysDimension);
+        unknown_w.resize(sysDimension);
 
-    std::vector<double> unknown_u;
-    unknown_u.reserve(sysDimension);
-    std::vector<double> unknown_v;
-    unknown_v.reserve(sysDimension);
-    std::vector<double> unknown_w;
-    unknown_w.reserve(sysDimension);
-
-    rhs_u.front() = 0;
-    rhs_u.back() = 0;
-    rhs_v.front() = 0;
-    rhs_v.back() = 0;
-    rhs_w.front() = 0;
-    rhs_w.back() = 0;
-
-    iStart = 0;
-    mul = 1.0 / (data_.grid->dx * data_.grid->dx);
-
-    for (j = 0; j < data_.grid->Ny; j++)
-    {
-        for (k = 0; k < data_.grid->Nz; k++)
+        for (size_t k = 0; k < data_.grid->Nz; ++k)
         {
-            jStart = j;
-            kStart = k;
-
-            for (size_t i = 1; i < sysDimension-1; i++)
+            for (size_t j = 0; j < data_.grid->Ny; ++j)
             {
-                deriv_u = (data_.eta(Axis::X, i + 1, j, k) + data_.eta(Axis::X, i - 1, j, k) - 2.0 * data_.eta(Axis::X, i, j, k))*mul;
-                deriv_v = (data_.eta(Axis::Y, i + 1, j, k) + data_.eta(Axis::Y, i - 1, j, k) - 2.0 * data_.eta(Axis::Y, i, j, k))*mul;
-                deriv_w = (data_.eta(Axis::Z, i + 1, j, k) + data_.eta(Axis::Z, i - 1, j, k) - 2.0 * data_.eta(Axis::Z, i, j, k))*mul;
+                {
+                    assembleLocalSystem(data_, data_.eta, xi, Axis::X, normalAxis, 0, j, k,
+                                    matrix_u, rhs_u);
+                    SchurSolver solver_u(mpi, normalAxis, matrix_u);
+                    solver_u.preprocess();
+                    solver_u.solve(rhs_u, unknown_u);
+                }
+                {
+                    assembleLocalSystem(data_, data_.eta, xi, Axis::Y, normalAxis, 0, j, k,
+                                        matrix_v, rhs_v);
+                    SchurSolver solver_v(mpi, normalAxis, matrix_v);
+                    solver_v.preprocess();
+                    solver_v.solve(rhs_v, unknown_v);
+                }
+                {
+                    assembleLocalSystem(data_, data_.eta, xi, Axis::Z, normalAxis, 0, j, k,
+                                        matrix_w, rhs_w);
+                    SchurSolver solver_w(mpi, normalAxis, matrix_w);
+                    solver_w.preprocess();
+                    solver_w.solve(rhs_w, unknown_w);
+                }
 
-
-                inv_porosity = data_.inv_k(Axis::X)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
-                gamma = data_.dt * data_.nu * 0.5 / beta;
-                rhs_u[i] = xi(Axis::X, i,j,k) - gamma * deriv_u;
-
-                inv_porosity = data_.inv_k(Axis::Y)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
-                gamma = data_.dt * data_.nu * 0.5 / beta;
-                rhs_v[i] = xi(Axis::Y, i,j,k) - gamma * deriv_v;
-
-                inv_porosity = data_.inv_k(Axis::Z)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
-                gamma = data_.dt * data_.nu * 0.5 / beta;
-                rhs_w[i] = xi(Axis::Z, i,j,k) - gamma * deriv_w;
+                for (size_t i = 0; i < sysDimension; ++i)
+                {
+                    data_.eta(Axis::X, i, j, k) = unknown_u[i];
+                    data_.eta(Axis::Y, i, j, k) = unknown_v[i];
+                    data_.eta(Axis::Z, i, j, k) = unknown_w[i];
+                }
             }
-
-            mySystem_u.setRhs(rhs_u);
-            
-            mySystem_u.fillSystemVelocity(data_, data_.eta, xi, Axis::X, Axis::X, iStart, jStart, kStart);
-            // mySystem_u.ThomaSolver();
-            // std::vector<double> unknown_u = mySystem_u.getSolution();
-            unknown_u = solveSystem(mySystem_u);
-
-
-            mySystem_v.setRhs(rhs_v);
-
-            mySystem_v.fillSystemVelocity(data_, data_.eta, xi, Axis::Y, Axis::X, iStart, jStart, kStart);
-            // mySystem_v.ThomaSolver();
-            // std::vector<double> unknown_v = mySystem_v.getSolution();
-            unknown_v = solveSystem(mySystem_v);
-
-
-            mySystem_w.setRhs(rhs_w);
-
-            mySystem_w.fillSystemVelocity(data_, data_.eta, xi, Axis::Z, Axis::X, iStart, jStart, kStart);
-            // mySystem_w.ThomaSolver();
-            // std::vector<double> unknown_w = mySystem_w.getSolution();
-            unknown_w = solveSystem(mySystem_w);
-            
-            for (size_t i = 0; i < sysDimension; i++)
-            {
-                data_.eta(Axis::X, i, j, k) = unknown_u[i];
-                data_.eta(Axis::Y, i, j, k) = unknown_v[i];
-                data_.eta(Axis::Z, i, j, k) = unknown_w[i];
-            }
-
         }
     }
-    }
-   
 
 
-
-    // ------------------------------------------
-    // Solve Zeta --------------------------------
-    // ------------------------------------------
+    //==================================================================================================================
+    // --- 2. Solve Zeta (Direction Y) ---------------------------------------------------------------------------------
+    // --- when solving Zeta we fill linsys with dyy derivatives
+    // --- Zeta.v is then solved exploiting normal Dirichlet boundary conditions
+    // --- Zeta.u and Zeta.w are solved exploiting tangent Dirichlet boundary conditions
+    //==================================================================================================================
     {
-    normalAxis = Axis::Y;
-    size_t nSystem = data_.grid->Nx * data_.grid->Nz; // number of linear systems to solve
-    size_t sysDimension = data_.grid->Ny; // dimension of linear system to solve
-    size_t i, k;
-    // when solving Zeta we fill linsys with dyy derivatives
-    // Zeta.v is then solved exploiting normal Dirichlet boundary conditions
-    // Zeta.u and Zeta.w are solved exploiting tangent Dirichlet boundary conditions
+        normalAxis = Axis::Y;
+        size_t sysDimension = data_.grid->Ny;
 
-    LinearSys mySystem_u(sysDimension);
-    LinearSys mySystem_v(sysDimension);
-    LinearSys mySystem_w(sysDimension);
-    std::vector<double> rhs_u(sysDimension);
-    std::vector<double> rhs_v(sysDimension);
-    std::vector<double> rhs_w(sysDimension);
+        matrix_u.resize(sysDimension);
+        matrix_v.resize(sysDimension);
+        matrix_w.resize(sysDimension);
+        rhs_u.resize(sysDimension);
+        rhs_v.resize(sysDimension);
+        rhs_w.resize(sysDimension);
+        unknown_u.resize(sysDimension);
+        unknown_v.resize(sysDimension);
+        unknown_w.resize(sysDimension);
 
-    std::vector<double> unknown_u;
-    unknown_u.reserve(sysDimension);
-    std::vector<double> unknown_v;
-    unknown_v.reserve(sysDimension);
-    std::vector<double> unknown_w;
-    unknown_w.reserve(sysDimension);
-
-    rhs_u.front() = 0;
-    rhs_u.back() = 0;
-    rhs_v.front() = 0;
-    rhs_v.back() = 0;
-    rhs_w.front() = 0;
-    rhs_w.back() = 0;
-
-    mul = 1.0 / (data_.grid->dy * data_.grid->dy);
-
-    jStart = 0;
-    for (i = 0; i < data_.grid->Nx; i++)
-    {
-        for (k = 0; k < data_.grid->Nz; k++)
+        for (size_t k = 0; k < data_.grid->Nz; ++k)
         {
-            iStart = i;
-            kStart = k;
-
-            for (size_t j = 1; j < sysDimension-1; j++)
+            for (size_t i = 0; i < data_.grid->Nx; ++i)
             {
-                deriv_u = (data_.zeta(Axis::X, i, j + 1, k) + data_.zeta(Axis::X, i, j - 1, k) - 2.0 * data_.zeta(Axis::X, i, j, k))*mul;
-                deriv_v = (data_.zeta(Axis::Y, i, j + 1, k) + data_.zeta(Axis::Y, i, j - 1, k) - 2.0 * data_.zeta(Axis::Y, i, j, k))*mul;
-                deriv_w = (data_.zeta(Axis::Z, i, j + 1, k) + data_.zeta(Axis::Z, i, j - 1, k) - 2.0 * data_.zeta(Axis::Z, i, j, k))*mul;
+                {
+                    assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::X, normalAxis, i, 0, k,
+                                        matrix_u, rhs_u);
+                    SchurSolver solver_u(mpi, normalAxis, matrix_u);
+                    solver_u.preprocess();
+                    solver_u.solve(rhs_u, unknown_u);
+                }
+                {
+                    assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Y, normalAxis, i, 0, k,
+                                        matrix_v, rhs_v);
+                    SchurSolver solver_v(mpi, normalAxis, matrix_v);
+                    solver_v.preprocess();
+                    solver_v.solve(rhs_v, unknown_v);
+                }
+                {
+                    assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Z, normalAxis, i, 0, k,
+                                        matrix_w, rhs_w);
+                    SchurSolver solver_w(mpi, normalAxis, matrix_w);
+                    solver_w.preprocess();
+                    solver_w.solve(rhs_w, unknown_w);
+                }
 
-                inv_porosity = data_.inv_k(Axis::X)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
-                gamma = data_.dt * data_.nu * 0.5 / beta;
-                rhs_u[j] = data_.eta(Axis::X, i,j,k) - gamma * deriv_u;
-
-                inv_porosity = data_.inv_k(Axis::Y)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
-                gamma = data_.dt * data_.nu * 0.5 / beta;
-                rhs_v[j] = data_.eta(Axis::Y, i,j,k) - gamma * deriv_v;
-
-                inv_porosity = data_.inv_k(Axis::Z)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
-                gamma = data_.dt * data_.nu * 0.5 / beta;
-                rhs_w[j] = data_.eta(Axis::Z, i,j,k) - gamma * deriv_w;
+                for (size_t j = 0; j < sysDimension; ++j)
+                {
+                    data_.zeta(Axis::X, i, j, k) = unknown_u[j];
+                    data_.zeta(Axis::Y, i, j, k) = unknown_v[j];
+                    data_.zeta(Axis::Z, i, j, k) = unknown_w[j];
+                }
             }
-
-            mySystem_u.setRhs(rhs_u);
-
-            mySystem_u.fillSystemVelocity(data_, data_.zeta, data_.eta, Axis::X, Axis::Y, iStart, jStart, kStart);
-            // mySystem_u.ThomaSolver();
-            // std::vector<double> unknown_u = mySystem_u.getSolution();
-            unknown_u = solveSystem(mySystem_u);
-
-
-            mySystem_v.setRhs(rhs_v);
-
-            mySystem_v.fillSystemVelocity(data_, data_.zeta, data_.eta, Axis::Y, Axis::Y, iStart, jStart, kStart);
-            // mySystem_v.ThomaSolver();
-            // std::vector<double> unknown_v = mySystem_v.getSolution();
-            unknown_v = solveSystem(mySystem_v);
-
-
-            mySystem_w.setRhs(rhs_w);
-
-            mySystem_w.fillSystemVelocity(data_, data_.zeta, data_.eta, Axis::Z, Axis::Y, iStart, jStart, kStart);
-            // mySystem_w.ThomaSolver();
-            //std::vector<double> unknown_w = mySystem_w.getSolution();
-            unknown_w = solveSystem(mySystem_w);
-            
-            for (size_t j = 0; j < sysDimension; j++)
-            {
-                data_.zeta(Axis::X, i, j, k) = unknown_u[j];
-                data_.zeta(Axis::Y, i, j, k) = unknown_v[j];
-                data_.zeta(Axis::Z, i, j, k) = unknown_w[j];
-            }
-
         }
     }
-    }
 
 
-
-
-
-    // ------------------------------------------
-    // Solve U --------------------------------
-    // ------------------------------------------
+    //==================================================================================================================
+    // --- 3. Solve U (Direction Z) ------------------------------------------------------------------------------------
+    // --- when solving U we fill linsys with dzz derivatives
+    // --- U.w is then solved exploiting normal Dirichlet boundary conditions
+    // --- U.v and U.u are solved exploiting tangent Dirichlet boundary conditions
+    //==================================================================================================================
     {
-    normalAxis = Axis::Z;
-    size_t nSystem = data_.grid->Nx * data_.grid->Ny; // number of linear systems to solve
-    size_t sysDimension = data_.grid->Nz; // dimension of linear system to solve
-    size_t i, j;
-    // when solving U we fill linsys with dzz derivatives
-    // U.w is then solved exploiting normal Dirichlet boundary conditions
-    // U.v and U.u are solved exploiting tangent Dirichlet boundary conditions
+        normalAxis = Axis::Z;
+        size_t sysDimension = data_.grid->Nz;
 
-    LinearSys mySystem_u(sysDimension);
-    LinearSys mySystem_v(sysDimension);
-    LinearSys mySystem_w(sysDimension);
-    std::vector<double> rhs_u(sysDimension);
-    std::vector<double> rhs_v(sysDimension);
-    std::vector<double> rhs_w(sysDimension);
+        matrix_u.resize(sysDimension);
+        matrix_v.resize(sysDimension);
+        matrix_w.resize(sysDimension);
+        rhs_u.resize(sysDimension);
+        rhs_v.resize(sysDimension);
+        rhs_w.resize(sysDimension);
+        unknown_u.resize(sysDimension);
+        unknown_v.resize(sysDimension);
+        unknown_w.resize(sysDimension);
 
-    std::vector<double> unknown_u;
-    unknown_u.reserve(sysDimension);
-    std::vector<double> unknown_v;
-    unknown_v.reserve(sysDimension);
-    std::vector<double> unknown_w;
-    unknown_w.reserve(sysDimension);
-
-    rhs_u.front() = 0;
-    rhs_u.back() = 0;
-    rhs_v.front() = 0;
-    rhs_v.back() = 0;
-    rhs_w.front() = 0;
-    rhs_w.back() = 0;
-
-    mul = 1.0 / (data_.grid->dz * data_.grid->dz);
-    kStart = 0;
-    for (i = 0; i < data_.grid->Nx; i++)
-    {
-        for (j = 0; j < data_.grid->Ny; j++)
+        for (size_t j = 0; j < data_.grid->Ny; ++j)
         {
-            iStart = i;
-            jStart = j;
-
-            for (size_t k = 1; k < sysDimension-1; k++)
+            for (size_t i = 0; i < data_.grid->Nx; ++i)
             {
-                deriv_u = (data_.u(Axis::X, i, j, k + 1) + data_.u(Axis::X, i, j, k - 1) - 2.0 * data_.u(Axis::X, i, j, k))*mul;
-                deriv_v = (data_.u(Axis::Y, i, j, k + 1) + data_.u(Axis::Y, i, j, k - 1) - 2.0 * data_.u(Axis::Y, i, j, k))*mul;
-                deriv_w = (data_.u(Axis::Z, i, j, k + 1) + data_.u(Axis::Z, i, j, k - 1) - 2.0 * data_.u(Axis::Z, i, j, k))*mul;
+                {
+                    assembleLocalSystem(data_, data_.u, data_.zeta, Axis::X, normalAxis, i, j, 0,
+                                        matrix_u, rhs_u);
+                    SchurSolver solver_u(mpi, normalAxis, matrix_u);
+                    solver_u.preprocess();
+                    solver_u.solve(rhs_u, unknown_u);
+                }
+                {
+                    assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Y, normalAxis, i, j, 0,
+                                        matrix_v, rhs_v);
+                    SchurSolver solver_v(mpi, normalAxis, matrix_v);
+                    solver_v.preprocess();
+                    solver_v.solve(rhs_v, unknown_v);
+                }
+                {
+                    assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Z, normalAxis, i, j, 0,
+                                        matrix_w, rhs_w);
+                    SchurSolver solver_w(mpi, normalAxis, matrix_w);
+                    solver_w.preprocess();
+                    solver_w.solve(rhs_w, unknown_w);
+                }
 
-                inv_porosity = data_.inv_k(Axis::X)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
-                gamma = data_.dt * data_.nu * 0.5 / beta;
-                rhs_u[k] = data_.zeta(Axis::X, i,j,k) - gamma * deriv_u;
-
-                inv_porosity = data_.inv_k(Axis::Y)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
-                gamma = data_.dt * data_.nu * 0.5 / beta;
-                rhs_v[k] = data_.zeta(Axis::Y, i,j,k) - gamma * deriv_v;
-
-                inv_porosity = data_.inv_k(Axis::Z)(i,j,k);
-                beta = 1 + (data_.dt * data_.nu * 0.5 * inv_porosity);
-                gamma = data_.dt * data_.nu * 0.5 / beta;
-                rhs_w[k] = data_.zeta(Axis::Z, i,j,k) - gamma * deriv_w;
+                for (size_t k = 0; k < sysDimension; ++k)
+                {
+                    data_.u(Axis::X, i, j, k) = unknown_u[k];
+                    data_.u(Axis::Y, i, j, k) = unknown_v[k];
+                    data_.u(Axis::Z, i, j, k) = unknown_w[k];
+                }
             }
-
-            mySystem_u.setRhs(rhs_u);
-
-            mySystem_u.fillSystemVelocity(data_, data_.u, data_.zeta, Axis::X, Axis::Z, iStart, jStart, kStart);
-            //mySystem_u.ThomaSolver();
-            //std::vector<double> unknown_u = mySystem_u.getSolution();
-            unknown_u = solveSystem(mySystem_u);
-
-
-            mySystem_v.setRhs(rhs_v);
-
-            mySystem_v.fillSystemVelocity(data_, data_.u, data_.zeta, Axis::Y, Axis::Z, iStart, jStart, kStart);
-            //mySystem_v.ThomaSolver();
-            //std::vector<double> unknown_v = mySystem_v.getSolution();
-            unknown_v = solveSystem(mySystem_v);
-
-
-            mySystem_w.setRhs(rhs_w);
-
-            mySystem_w.fillSystemVelocity(data_, data_.u, data_.zeta, Axis::Z, Axis::Z, iStart, jStart, kStart);
-            //mySystem_w.ThomaSolver();
-            //std::vector<double> unknown_w = mySystem_w.getSolution();
-            unknown_w = solveSystem(mySystem_w);
-            
-            for (size_t k = 0; k < sysDimension; k++)
-            {
-                data_.u(Axis::X, i, j, k) = unknown_u[k];
-                data_.u(Axis::Y, i, j, k) = unknown_v[k];
-                data_.u(Axis::Z, i, j, k) = unknown_w[k];
-            }
-
         }
     }
+}
+
+
+void ViscousStep::assembleLocalSystem(
+        const SimulationData &simData, const VectorField &eta, const VectorField &xi,
+        const Axis fieldComponent, const Axis derivativeDirection,
+        const size_t iStart, const size_t jStart, const size_t kStart,
+        TridiagMat &matA, std::vector<double> &rhsC
+) {
+    std::vector<double> &diag = matA.getDiag(0);
+    std::vector<double> &subdiag = matA.getDiag(-1);
+    std::vector<double> &supdiag = matA.getDiag(1);
+
+    if (rhsC.size() != matA.getSize())
+    {
+        throw std::runtime_error(
+                "Dimension mismatch: rhsC must be size n.");
+    }
+
+    const Grid &grid = eta.getGrid();
+    double dx = grid.dx;
+    double dy = grid.dy;
+    double dz = grid.dz;
+
+    double dCoef = 0;
+    switch (derivativeDirection)
+    {
+        case Axis::X: dCoef = 1.0 / (dx * dx); break;
+        case Axis::Y: dCoef = 1.0 / (dy * dy); break;
+        case Axis::Z: dCoef = 1.0 / (dz * dz); break;
+    }
+    double dt_nu_over_2 = simData.dt * simData.nu * 0.5;
+
+    //==================================================================================================================
+    // --- DEFAULT SYSTEM COEFFICIENTS (same stencil; boundaries will be then overwritten) -----------------------------
+    //==================================================================================================================
+    for (long i = 0; i < matA.getSize(); i++)
+    {
+        double inv_k = simData.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+                                                                     derivativeDirection, i);
+        double beta = 1 + (dt_nu_over_2 * inv_k);
+        double gamma = dt_nu_over_2 / beta;
+
+        // --- MATRIX COEFFICIENTS -------------------------------------------------------------------------------------
+        subdiag[i] = -gamma * dCoef;
+        supdiag[i] = -gamma * dCoef;
+        diag[i] = 1 + 2 * gamma * dCoef;
+
+        // --- RHS COEFFICIENTS ----------------------------------------------------------------------------------------
+        double eta_prec_val_m1 = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+                                                                     derivativeDirection, i - 1);
+        double eta_prec_val = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+                                                                  derivativeDirection, i);
+        double eta_prec_val_p1 = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+                                                                     derivativeDirection, i + 1);
+        double d2_eta_prec = (eta_prec_val_p1 + eta_prec_val_m1 - 2.0 * eta_prec_val) * dCoef;
+        double xi_val = xi(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+                                                           derivativeDirection, i);
+        rhsC[i] = xi_val - gamma * d2_eta_prec;
+    }
+
+    //==================================================================================================================
+    // --- BOUNDARY CONDITIONS ENFORCEMENT (overwritten over default ones) ---------------------------------------------
+    //==================================================================================================================
+    BoundaryType boundaryType = (fieldComponent == derivativeDirection)
+                                ? BoundaryType::Normal
+                                : BoundaryType::Tangent;
+
+    // --- LEFT INTERFACE ----------------------------------------------------------------------------------------------
+    if (grid.hasMinBoundary(derivativeDirection))
+    {
+        double physical_x = grid.to_x(iStart, eta(fieldComponent).getOffset(), eta(fieldComponent).getOffsetAxis());
+        double physical_y = grid.to_y(jStart, eta(fieldComponent).getOffset(), eta(fieldComponent).getOffsetAxis());
+        double physical_z = grid.to_z(kStart, eta(fieldComponent).getOffset(), eta(fieldComponent).getOffsetAxis());
+
+        std::function<double(double, double, double, double)> bc;
+        switch (fieldComponent)
+        {
+            case Axis::X: bc = simData.bcu; break;
+            case Axis::Y: bc = simData.bcv; break;
+            case Axis::Z: bc = simData.bcw; break;
+        }
+
+        switch (boundaryType)
+        {
+            case BoundaryType::Normal:
+            {
+                // Force Wall Coordinate for Normal BC (LinearSys logic)
+                if (derivativeDirection == Axis::X) physical_x = 0.0;
+                if (derivativeDirection == Axis::Y) physical_y = 0.0;
+                if (derivativeDirection == Axis::Z) physical_z = 0.0;
+
+                double inv_k = simData.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+                                                                             derivativeDirection, 0);
+                double beta = 1.0 + (dt_nu_over_2 * inv_k);
+                double gamma = dt_nu_over_2 / beta;
+
+                diag.front() = 1.0 + 4.0 * gamma * dCoef;
+                supdiag.front() = -4.0 / 3.0 * gamma * dCoef;
+
+                double val_0 = xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, 0);
+                double eta_0 = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, 0);
+                double eta_1 = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, 1);
+
+                rhsC.front() = val_0
+                               + 4.0 / 3.0 * gamma * dCoef * eta_1
+                               - 4.0 * gamma * dCoef * eta_0
+                               + 8.0 / 3.0 * gamma * dCoef * (
+                        bc(physical_x, physical_y, physical_z, simData.currTime - simData.dt) +
+                        bc(physical_x, physical_y, physical_z, simData.currTime)
+                );
+
+                break;
+            }
+            case BoundaryType::Tangent:
+            {
+                diag.front() = 1.0;
+                supdiag.front() = 0.0;
+
+                rhsC.front() = bc(physical_x, physical_y, physical_z, simData.currTime);
+
+                break;
+            }
+        }
+    }
+    else
+    {
+        // internal (half contribution)
+        diag.front() *= 0.5;
+        rhsC.front() *= 0.5;
+    }
+
+    // --- RIGHT INTERFACE ---------------------------------------------------------------------------------------------
+    if (grid.hasMaxBoundary(derivativeDirection))
+    {
+        long endI = matA.getSize() - 1;
+        double physical_x = grid.to_x(iStart + (derivativeDirection == Axis::X ? endI : 0),
+                                      eta(fieldComponent).getOffset(),
+                                      eta(fieldComponent).getOffsetAxis());
+        double physical_y = grid.to_y(jStart + (derivativeDirection == Axis::Y ? endI : 0),
+                                      eta(fieldComponent).getOffset(),
+                                      eta(fieldComponent).getOffsetAxis());
+        double physical_z = grid.to_z(kStart + (derivativeDirection == Axis::Z ? endI : 0),
+                                      eta(fieldComponent).getOffset(),
+                                      eta(fieldComponent).getOffsetAxis());
+
+        std::function<double(double, double, double, double)> bc;
+        switch (fieldComponent)
+        {
+            case Axis::X: bc = simData.bcu; break;
+            case Axis::Y: bc = simData.bcv; break;
+            case Axis::Z: bc = simData.bcw; break;
+        }
+
+        switch (boundaryType)
+        {
+            case BoundaryType::Normal:
+            {
+                diag.back() = 1.0;
+                subdiag.back() = 0.0;
+
+                rhsC.back() = bc(physical_x, physical_y, physical_z, simData.currTime);
+
+                break;
+            }
+            case BoundaryType::Tangent:
+            {
+                // Enforce physical position on the actual wall
+                if (derivativeDirection == Axis::X) physical_x += 0.5 * dx;
+                if (derivativeDirection == Axis::Y) physical_y += 0.5 * dy;
+                if (derivativeDirection == Axis::Z) physical_z += 0.5 * dz;
+
+                double inv_k = simData.inv_k(fieldComponent).valueWithOffset(iStart, jStart, kStart,
+                                                                             derivativeDirection, endI);
+                double beta = 1.0 + (dt_nu_over_2 * inv_k);
+                double gamma = dt_nu_over_2 / beta;
+
+                diag.back() = 1.0 + 4.0 * gamma * dCoef;
+                subdiag.back() = -4.0 / 3.0 * gamma * dCoef;
+
+                double val_N = xi(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI);
+                double eta_N = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI);
+                double eta_Nm1 = eta(fieldComponent).valueWithOffset(iStart, jStart, kStart, derivativeDirection, endI - 1);
+
+                rhsC.back() = val_N
+                              + 4.0 / 3.0 * gamma * dCoef * eta_Nm1
+                              - 4.0 * gamma * dCoef * eta_N
+                              + 8.0 / 3.0 * gamma * dCoef * (
+                                  bc(physical_x, physical_y, physical_z, simData.currTime - simData.dt) +
+                                  bc(physical_x, physical_y, physical_z, simData.currTime)
+                              );
+            }
+        }
+    }
+    else
+    {
+        diag.back() *= 0.5;
+        rhsC.back() *= 0.5;
     }
 }
