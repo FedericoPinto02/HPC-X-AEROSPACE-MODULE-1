@@ -1,5 +1,5 @@
 build/
-# output/
+output/
 results/
 
 # Ignore editor configuration files
