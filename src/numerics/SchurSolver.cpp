@@ -24,6 +24,21 @@ SchurSolver::SchurSolver(const MpiEnv &env,
 }
 
 
+void SchurSolver::updateMatrix(const TridiagMat &matrix) {
+    if (matrix.getSize() != N) {
+        throw std::runtime_error("Matrix size mismatch in SchurSolver::updateMatrix()");
+    }
+    a_ = matrix.getDiag(-1);
+    b_ = matrix.getDiag(0);
+    c_ = matrix.getDiag(1);
+
+    a_in_ = std::vector<double>(a_.begin() + 1, a_.end() - 1);
+    b_in_ = std::vector<double>(b_.begin() + 1, b_.end() - 1);
+    c_in_ = std::vector<double>(c_.begin() + 1, c_.end() - 1);
+
+}
+
+
 void SchurSolver::preprocess() {
     //==================================================================================================================
     // --- Local Schur Complement matrix (2x2) -------------------------------------------------------------------------

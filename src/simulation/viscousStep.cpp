@@ -13,16 +13,18 @@ void ViscousStep::setup() {
     xi.setup(data_.grid);
 
     // --- Assemble linear system scratch variables --------------------------------------------------------------------
-    auto maxDim = std::max({data_.grid->Nx, data_.grid->Ny, data_.grid->Nz});
-    matrix_u.resize(maxDim);
-    matrix_v.resize(maxDim);
-    matrix_w.resize(maxDim);
-    rhs_u.resize(maxDim);
-    rhs_v.resize(maxDim);
-    rhs_w.resize(maxDim);
-    unknown_u.resize(maxDim);
-    unknown_v.resize(maxDim);
-    unknown_w.resize(maxDim);
+    matrix = TridiagMat(data_.grid->Nx);
+    solver_x = std::make_unique<SchurSolver>(mpi, Axis::X, matrix);
+    matrix.resize(data_.grid->Ny);
+    solver_y = std::make_unique<SchurSolver>(mpi, Axis::Y, matrix);
+    matrix.resize(data_.grid->Nz);
+    solver_z = std::make_unique<SchurSolver>(mpi, Axis::Z, matrix);
+
+    size_t maxSysDim = std::max({data_.grid->Nx, data_.grid->Ny, data_.grid->Nz});
+    rhs.reserve(maxSysDim);
+    unknown_u.reserve(maxSysDim);
+    unknown_v.reserve(maxSysDim);
+    unknown_w.reserve(maxSysDim);
 }
 
 
@@ -190,12 +192,8 @@ void ViscousStep::closeViscousStep() {
         normalAxis = Axis::X;
         size_t sysDimension = data_.grid->Nx;
 
-        matrix_u.resize(sysDimension);
-        matrix_v.resize(sysDimension);
-        matrix_w.resize(sysDimension);
-        rhs_u.resize(sysDimension);
-        rhs_v.resize(sysDimension);
-        rhs_w.resize(sysDimension);
+        matrix.resize(sysDimension);
+        rhs.resize(sysDimension);
         unknown_u.resize(sysDimension);
         unknown_v.resize(sysDimension);
         unknown_w.resize(sysDimension);
@@ -204,27 +202,23 @@ void ViscousStep::closeViscousStep() {
         {
             for (size_t j = 0; j < data_.grid->Ny; ++j)
             {
-                {
-                    assembleLocalSystem(data_, data_.eta, xi, Axis::X, normalAxis, 0, j, k,
-                                    matrix_u, rhs_u);
-                    SchurSolver solver_u(mpi, normalAxis, matrix_u);
-                    solver_u.preprocess();
-                    solver_u.solve(rhs_u, unknown_u);
-                }
-                {
-                    assembleLocalSystem(data_, data_.eta, xi, Axis::Y, normalAxis, 0, j, k,
-                                        matrix_v, rhs_v);
-                    SchurSolver solver_v(mpi, normalAxis, matrix_v);
-                    solver_v.preprocess();
-                    solver_v.solve(rhs_v, unknown_v);
-                }
-                {
-                    assembleLocalSystem(data_, data_.eta, xi, Axis::Z, normalAxis, 0, j, k,
-                                        matrix_w, rhs_w);
-                    SchurSolver solver_w(mpi, normalAxis, matrix_w);
-                    solver_w.preprocess();
-                    solver_w.solve(rhs_w, unknown_w);
-                }
+                assembleLocalSystem(data_, data_.eta, xi, Axis::X, normalAxis, 0, j, k,
+                                    matrix, rhs);
+                solver_x->updateMatrix(matrix);
+                solver_x->preprocess();
+                solver_x->solve(rhs, unknown_u);
+
+                assembleLocalSystem(data_, data_.eta, xi, Axis::Y, normalAxis, 0, j, k,
+                                    matrix, rhs);
+                solver_x->updateMatrix(matrix);
+                solver_x->preprocess();
+                solver_x->solve(rhs, unknown_v);
+
+                assembleLocalSystem(data_, data_.eta, xi, Axis::Z, normalAxis, 0, j, k,
+                                    matrix, rhs);
+                solver_x->updateMatrix(matrix);
+                solver_x->preprocess();
+                solver_x->solve(rhs, unknown_w);
 
                 for (size_t i = 0; i < sysDimension; ++i)
                 {
@@ -247,12 +241,8 @@ void ViscousStep::closeViscousStep() {
         normalAxis = Axis::Y;
         size_t sysDimension = data_.grid->Ny;
 
-        matrix_u.resize(sysDimension);
-        matrix_v.resize(sysDimension);
-        matrix_w.resize(sysDimension);
-        rhs_u.resize(sysDimension);
-        rhs_v.resize(sysDimension);
-        rhs_w.resize(sysDimension);
+        matrix.resize(sysDimension);
+        rhs.resize(sysDimension);
         unknown_u.resize(sysDimension);
         unknown_v.resize(sysDimension);
         unknown_w.resize(sysDimension);
@@ -261,27 +251,23 @@ void ViscousStep::closeViscousStep() {
         {
             for (size_t i = 0; i < data_.grid->Nx; ++i)
             {
-                {
-                    assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::X, normalAxis, i, 0, k,
-                                        matrix_u, rhs_u);
-                    SchurSolver solver_u(mpi, normalAxis, matrix_u);
-                    solver_u.preprocess();
-                    solver_u.solve(rhs_u, unknown_u);
-                }
-                {
-                    assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Y, normalAxis, i, 0, k,
-                                        matrix_v, rhs_v);
-                    SchurSolver solver_v(mpi, normalAxis, matrix_v);
-                    solver_v.preprocess();
-                    solver_v.solve(rhs_v, unknown_v);
-                }
-                {
-                    assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Z, normalAxis, i, 0, k,
-                                        matrix_w, rhs_w);
-                    SchurSolver solver_w(mpi, normalAxis, matrix_w);
-                    solver_w.preprocess();
-                    solver_w.solve(rhs_w, unknown_w);
-                }
+                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::X, normalAxis, i, 0, k,
+                                    matrix, rhs);
+                solver_y->updateMatrix(matrix);
+                solver_y->preprocess();
+                solver_y->solve(rhs, unknown_u);
+
+                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Y, normalAxis, i, 0, k,
+                                    matrix, rhs);
+                solver_y->updateMatrix(matrix);
+                solver_y->preprocess();
+                solver_y->solve(rhs, unknown_v);
+
+                assembleLocalSystem(data_, data_.zeta, data_.eta, Axis::Z, normalAxis, i, 0, k,
+                                    matrix, rhs);
+                solver_y->updateMatrix(matrix);
+                solver_y->preprocess();
+                solver_y->solve(rhs, unknown_w);
 
                 for (size_t j = 0; j < sysDimension; ++j)
                 {
@@ -304,12 +290,8 @@ void ViscousStep::closeViscousStep() {
         normalAxis = Axis::Z;
         size_t sysDimension = data_.grid->Nz;
 
-        matrix_u.resize(sysDimension);
-        matrix_v.resize(sysDimension);
-        matrix_w.resize(sysDimension);
-        rhs_u.resize(sysDimension);
-        rhs_v.resize(sysDimension);
-        rhs_w.resize(sysDimension);
+        matrix.resize(sysDimension);
+        rhs.resize(sysDimension);
         unknown_u.resize(sysDimension);
         unknown_v.resize(sysDimension);
         unknown_w.resize(sysDimension);
@@ -318,27 +300,23 @@ void ViscousStep::closeViscousStep() {
         {
             for (size_t i = 0; i < data_.grid->Nx; ++i)
             {
-                {
-                    assembleLocalSystem(data_, data_.u, data_.zeta, Axis::X, normalAxis, i, j, 0,
-                                        matrix_u, rhs_u);
-                    SchurSolver solver_u(mpi, normalAxis, matrix_u);
-                    solver_u.preprocess();
-                    solver_u.solve(rhs_u, unknown_u);
-                }
-                {
-                    assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Y, normalAxis, i, j, 0,
-                                        matrix_v, rhs_v);
-                    SchurSolver solver_v(mpi, normalAxis, matrix_v);
-                    solver_v.preprocess();
-                    solver_v.solve(rhs_v, unknown_v);
-                }
-                {
-                    assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Z, normalAxis, i, j, 0,
-                                        matrix_w, rhs_w);
-                    SchurSolver solver_w(mpi, normalAxis, matrix_w);
-                    solver_w.preprocess();
-                    solver_w.solve(rhs_w, unknown_w);
-                }
+                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::X, normalAxis, i, j, 0,
+                                    matrix, rhs);
+                solver_z->updateMatrix(matrix);
+                solver_z->preprocess();
+                solver_z->solve(rhs, unknown_u);
+
+                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Y, normalAxis, i, j, 0,
+                                    matrix, rhs);
+                solver_z->updateMatrix(matrix);
+                solver_z->preprocess();
+                solver_z->solve(rhs, unknown_v);
+
+                assembleLocalSystem(data_, data_.u, data_.zeta, Axis::Z, normalAxis, i, j, 0,
+                                    matrix, rhs);
+                solver_z->updateMatrix(matrix);
+                solver_z->preprocess();
+                solver_z->solve(rhs, unknown_w);
 
                 for (size_t k = 0; k < sysDimension; ++k)
                 {
