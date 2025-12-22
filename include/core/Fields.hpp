@@ -36,6 +36,10 @@ private:
     /// The axis where to apply the offset in the staggered grid.
     Axis offsetAxis_;
 
+    /// Cached sizes for idx() performance optimization.
+    size_t cached_nHalo_, cached_Nx_with_halo_, cached_Ny_with_halo_, cached_Nz_with_halo_;
+
+
     /// Vector storing the field values in a flattened, row-major indexed 1D array.
     std::vector<Scalar> data_;
 
@@ -62,10 +66,15 @@ public:
             Axis offsetAxis = Axis::X
     ) {
         gridPtr_ = grid;
+        cached_nHalo_ = gridPtr_->n_halo;
+        cached_Nx_with_halo_ = gridPtr_->Nx + 2 * cached_nHalo_;
+        cached_Ny_with_halo_ = gridPtr_->Ny + 2 * cached_nHalo_;
+        cached_Nz_with_halo_ = gridPtr_->Nz + 2 * cached_nHalo_;
+
         populateFunction_ = populateFunction;
         offset_ = offset;
         offsetAxis_ = offsetAxis;
-        data_.resize(gridPtr_->sizeWithHalo(), Scalar(0));
+        data_.resize(cached_Nx_with_halo_ * cached_Ny_with_halo_ * cached_Nz_with_halo_, Scalar(0));
     }
 
     /**
@@ -122,10 +131,8 @@ public:
      * @return the corresponding 1D index
      */
     [[nodiscard]] inline size_t idx(long i, long j, long k) const {
-        const size_t H = gridPtr_->n_halo;
-        const size_t Nx_tot = gridPtr_->Nx + 2 * H;
-        const size_t Ny_tot = gridPtr_->Ny + 2 * H;
-        return ((k + H) * Ny_tot + (j + H)) * Nx_tot + (i + H);
+        return ((k + cached_nHalo_) * cached_Ny_with_halo_ + (j + cached_nHalo_)
+               ) * cached_Nx_with_halo_ + (i + cached_nHalo_);
     }
 
     /**
