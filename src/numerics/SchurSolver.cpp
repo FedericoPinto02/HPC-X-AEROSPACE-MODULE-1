@@ -3,14 +3,18 @@
 SchurSolver::SchurSolver(const MpiEnv &env,
                          const Axis axis,
                          const TridiagMat &matrix)
-        : a_(matrix.getDiag(-1)), b_(matrix.getDiag(0)), c_(matrix.getDiag(1)),
+        : N(matrix.getSize()), n_inner(N - 2),
+          a_(matrix.getDiag(-1)), b_(matrix.getDiag(0)), c_(matrix.getDiag(1)),
           thomas_(matrix.getSize()) {
     lineComm_ = env.lineComm(axis);
     lineNProcs_ = env.lineSize(axis);
     lineRank_ = env.lineRank(axis);
 
-    N = matrix.getSize();
-    n_inner = N - 2;
+    a_in_ = std::vector<double>(a_.begin() + 1, a_.end() - 1);
+    b_in_ = std::vector<double>(b_.begin() + 1, b_.end() - 1);
+    c_in_ = std::vector<double>(c_.begin() + 1, c_.end() - 1);
+    f_in_.resize(n_inner);
+    y_.resize(n_inner);
 
     if (N < 3) { throw std::runtime_error("Local grid too small for Schur!"); }
 
@@ -111,27 +115,6 @@ void SchurSolver::solve(const std::vector<double> &f, std::vector<double> &u) {
 }
 
 
-void SchurSolver::solveInnerSystem(const std::vector<double> &rhs, std::vector<double> &x) {
-    // We need temporary slices of a, b, c corresponding to indices 1..N-2
-    std::vector<double> a_in(n_inner);
-    std::vector<double> b_in(n_inner);
-    std::vector<double> c_in(n_inner);
-
-    // Copy coefficients (Offset by 1 because Inner starts at index 1)
-    for (size_t i = 0; i < n_inner; ++i) {
-        a_in[i] = a_[i + 1];
-        b_in[i] = b_[i + 1];
-        c_in[i] = c_[i + 1];
-    }
-
-    // Copy RHS into x (ThomasSolver solves in-place)
-    x = rhs;
-
-    // Run Thomas algorithm
-    thomas_.solve(a_in, b_in, c_in, x);
-}
-
-
 std::pair<double, double> SchurSolver::condenseRHS(const std::vector<double> &f) {
     /*
      * f_s_condensed = f_s - A_si inv(A_ii) b_i
@@ -141,19 +124,17 @@ std::pair<double, double> SchurSolver::condenseRHS(const std::vector<double> &f)
      */
 
     // Extract inner part of f
-    std::vector<double> f_inner(n_inner);
     for (size_t i = 0; i < n_inner; ++i) {
-        f_inner[i] = f[i + 1];
+        f_in_[i] = f[i + 1];
     }
 
     // Solve A_ii y = f_i
-    std::vector<double> y(n_inner);
-    solveInnerSystem(f_inner, y);
+    solveInnerSystem(f_in_, y_);
 
     // Calculate condensed f_s:
     //  f_s_condensed = f_s - A_si y
-    double f_0_cond = f[0] - (c_[0] * y[0]);
-    double f_N_cond = f[N - 1] - (a_[N - 1] * y[n_inner - 1]);
+    double f_0_cond = f[0] - (c_[0] * y_[0]);
+    double f_N_cond = f[N - 1] - (a_[N - 1] * y_[n_inner - 1]);
 
     return {f_0_cond, f_N_cond};
 }
@@ -239,23 +220,21 @@ void SchurSolver::solveInterior(const std::vector<double> &f, std::vector<double
      */
 
     // 1. Extract inner RHS
-    std::vector<double> f_inner(n_inner);
     for (size_t i = 0; i < n_inner; ++i) {
-        f_inner[i] = f[i + 1];
+        f_in_[i] = f[i + 1];
     }
 
     // 2. Modify RHS with known interface values
     // - First inner node (index 0) influenced by u[0]
-    f_inner[0] -= a_[1] * u[0];
+    f_in_[0] -= a_[1] * u[0];
     // - Last inner node (index n_inner-1) influenced by u[N-1]
-    f_inner[n_inner - 1] -= c_[N - 2] * u[N - 1];
+    f_in_[n_inner - 1] -= c_[N - 2] * u[N - 1];
 
     // 3. Solve inner system for final values
-    std::vector<double> u_inner(n_inner);
-    solveInnerSystem(f_inner, u_inner);
+    solveInnerSystem(f_in_, y_);        // y is just the scratchpad to avoid reallocation !
 
     // 4. Copy back to main vector
     for (size_t i = 0; i < n_inner; ++i) {
-        u[i + 1] = u_inner[i];
+        u[i + 1] = y_[i];
     }
 }

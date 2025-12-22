@@ -23,15 +23,18 @@ private:
     int lineRank_, lineNProcs_;
     MPI_Comm lineComm_;
 
-    // --- Local matrix coefficients (same size N) ---
-    std::vector<double> a_, b_, c_;
-
     // --- Local chunk dimensions ---
     size_t N;        // Total local size (including interfaces at 0 and N-1)
     size_t n_inner;  // Size of the inner system (N-2)
 
-    // --- Global (rank 0 only) Schur matrix [(nProc+1)x(nProc+1)] ---
+    // --- Local matrix coefficients (same size N) ---
+    std::vector<double> a_, b_, c_;
+    // --- Global (rank 0 only) Schur matrix coefficients [(nProc+1)x(nProc+1)] ---
     std::vector<double> Sa_glob_, Sb_glob_, Sc_glob_;
+
+    // --- Scratchpads to avoid reallocations ---
+    std::vector<double> a_in_, b_in_, c_in_;    // scratchpad for A_ii
+    std::vector<double> f_in_, y_;              // scratchpads for condenseRHS() and solveInterior() rhss / solutions
 
     // --- Helper solvers ---
     ThomasSolver thomas_;
@@ -68,7 +71,11 @@ private:
      * @param rhs the RHS vector for the inner system (size n_inner)
      * @param x the solution vector to be filled (size n_inner)
      */
-    void solveInnerSystem(const std::vector<double> &rhs, std::vector<double> &x);
+    void inline solveInnerSystem(const std::vector<double> &rhs, std::vector<double> &x) {
+        // Copy RHS into x (ThomasSolver solves in-place)
+        x = rhs;
+        thomas_.solve(a_in_, b_in_, c_in_, x);
+    }
 
 
     /**
