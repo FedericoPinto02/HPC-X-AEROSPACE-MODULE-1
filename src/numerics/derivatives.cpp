@@ -223,8 +223,8 @@ void Derivatives::computeDxx(const Field &field, Field &dxx, const Func &bc, con
                 double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long j = 0; j < grid.Ny; j++) {
                     double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
-                    dxx(0, j, k) = 4.0 / 3.0 * mul * field(1, j, k) - 4.0 * mul * field(0, j, k) 
-                                 + (8.0 / 3.0) * mul * bc(0.0, physical_y, physical_z, time);
+                    dxx(0, j, k) =( 4.0 / 3.0 *  field(1, j, k) - 4.0 * field(0, j, k) 
+                                 + (8.0 / 3.0) *  bc(0.0, physical_y, physical_z, time)) * mul;
                 }
             }
         }
@@ -234,10 +234,7 @@ void Derivatives::computeDxx(const Field &field, Field &dxx, const Func &bc, con
                 double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long j = 0; j < grid.Ny; j++) {
                     double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
-                    dxx(grid.Nx - 1, j, k) = mul * (2.0 * bc((grid.Nx - 0.5) * grid.dx, physical_y, physical_z, time)
-                                                  - 5.0 * field(grid.Nx - 1, j, k)
-                                                  + 4.0 * field(grid.Nx - 2, j, k)
-                                                  - 1.0 * field(grid.Nx - 3, j, k));
+                    dxx(grid.Nx - 1, j, k) = 0.0;
                 }
             }
         }
@@ -247,10 +244,7 @@ void Derivatives::computeDxx(const Field &field, Field &dxx, const Func &bc, con
                 double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long j = 0; j < grid.Ny; j++) {
                     double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
-                    dxx(0, j, k) = mul * (2.0 * bc(0.0, physical_y, physical_z, time)
-                                        - 5.0 * field(0, j, k)
-                                        + 4.0 * field(1, j, k)
-                                        - 1.0 * field(2, j, k));
+                    dxx(0, j, k) = 0.0;
                 }
             }
         }
@@ -260,9 +254,9 @@ void Derivatives::computeDxx(const Field &field, Field &dxx, const Func &bc, con
                 double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long j = 0; j < grid.Ny; j++) {
                     double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
-                    dxx(grid.Nx - 1, j, k) = 4.0 / 3.0 * mul * field(grid.Nx - 2, j, k) 
-                                           - 4.0 * mul * field(grid.Nx - 1, j, k) 
-                                           + (8.0 / 3.0) * mul * bc((grid.Nx - 0.5) * grid.dx, physical_y, physical_z, time);
+                    dxx(grid.Nx - 1, j, k) = (4.0 / 3.0 * field(grid.Nx - 2, j, k) 
+                                           - 4.0 *  field(grid.Nx - 1, j, k) 
+                                           + (8.0 / 3.0) *  bc((grid.Nx - 0.5) * grid.dx, physical_y, physical_z, time)) * mul;
                 }
             }
         }
@@ -287,8 +281,8 @@ void Derivatives::computeDyy(const Field &field, Field &dyy, const Func &bc, con
                 double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
                     double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
-                    dyy(i, 0, k) = 4.0 / 3.0 * mul * field(i, 1, k) - 4.0 * mul * field(i, 0, k) 
-                                 + (8.0 / 3.0) * mul * bc(physical_x, 0.0, physical_z, time);
+                    dyy(i, 0, k) = (4.0 / 3.0 *  field(i, 1, k) - 4.0 *  field(i, 0, k) 
+                                 + (8.0 / 3.0) *  bc(physical_x, 0.0, physical_z, time)) * mul;
                 }
             }
         }
@@ -298,10 +292,7 @@ void Derivatives::computeDyy(const Field &field, Field &dyy, const Func &bc, con
                 double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
                     double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
-                    dyy(i, grid.Ny - 1, k) = mul * (2.0 * bc(physical_x, (grid.Ny - 0.5) * grid.dy, physical_z, time)
-                                                  - 5.0 * field(i, grid.Ny - 1, k)
-                                                  + 4.0 * field(i, grid.Ny - 2, k)
-                                                  - 1.0 * field(i, grid.Ny - 3, k));
+                    dyy(i, grid.Ny - 1, k) = 0.0;
                 }
             }
         }
@@ -311,10 +302,7 @@ void Derivatives::computeDyy(const Field &field, Field &dyy, const Func &bc, con
                 double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
                     double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
-                    dyy(i, 0, k) = mul * (2.0 * bc(physical_x, 0.0, physical_z, time)
-                                        - 5.0 * field(i, 0, k)
-                                        + 4.0 * field(i, 1, k)
-                                        - 1.0 * field(i, 2, k));
+                    dyy(i, 0, k) = 0.0;
                 }
             }
         }
@@ -324,9 +312,9 @@ void Derivatives::computeDyy(const Field &field, Field &dyy, const Func &bc, con
                 double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
                     double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
-                    dyy(i, grid.Ny - 1, k) = 4.0 / 3.0 * mul * field(i, grid.Ny - 2, k) 
-                                           - 4.0 * mul * field(i, grid.Ny - 1, k) 
-                                           + (8.0 / 3.0) * mul * bc(physical_x, (grid.Ny - 0.5) * grid.dy, physical_z, time);
+                    dyy(i, grid.Ny - 1, k) = (4.0 / 3.0 *  field(i, grid.Ny - 2, k) 
+                                           - 4.0 *  field(i, grid.Ny - 1, k) 
+                                           + (8.0 / 3.0) *  bc(physical_x, (grid.Ny - 0.5) * grid.dy, physical_z, time)) * mul;
                 }
             }
         }
@@ -352,8 +340,8 @@ void Derivatives::computeDzz(const Field &field, Field &dzz, const Func &bc, con
                 double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
                     double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
-                    dzz(i, j, 0) = 4.0 / 3.0 * mul * field(i, j, 1) - 4.0 * mul * field(i, j, 0) 
-                                 + (8.0 / 3.0) * mul * bc(physical_x, physical_y, 0.0, time);
+                    dzz(i, j, 0) = (4.0 / 3.0 * field(i, j, 1) - 4.0 * field(i, j, 0) 
+                                 + (8.0 / 3.0) *  bc(physical_x, physical_y, 0.0, time)) * mul;
                 }
             }
         }
@@ -363,10 +351,7 @@ void Derivatives::computeDzz(const Field &field, Field &dzz, const Func &bc, con
                 double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
                     double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
-                    dzz(i, j, grid.Nz - 1) = mul * (2.0 * bc(physical_x, physical_y, (grid.Nz + 0.5) * grid.dz, time)
-                                                  - 5.0 * field(i, j, grid.Nz - 1)
-                                                  + 4.0 * field(i, j, grid.Nz - 2)
-                                                  - 1.0 * field(i, j, grid.Nz - 3));
+                    dzz(i, j, grid.Nz - 1) = 0.0;
                 }
             }
         }
@@ -376,10 +361,7 @@ void Derivatives::computeDzz(const Field &field, Field &dzz, const Func &bc, con
                 double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
                     double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
-                    dzz(i, j, 0) = mul * (2.0 * bc(physical_x, physical_y, 0.0, time)
-                                        - 5.0 * field(i, j, 0)
-                                        + 4.0 * field(i, j, 1)
-                                        - 1.0 * field(i, j, 2));
+                    dzz(i, j, 0) = 0.0;
                 }
             }
         }
@@ -389,9 +371,9 @@ void Derivatives::computeDzz(const Field &field, Field &dzz, const Func &bc, con
                 double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
                     double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
-                    dzz(i, j, grid.Nz - 1) = 4.0 / 3.0 * mul * field(i, j, grid.Nz - 2) 
-                                           - 4.0 * mul * field(i, j, grid.Nz - 1) 
-                                           + (8.0 / 3.0) * mul * bc(physical_x, physical_y, (grid.Nz + 0.5) * grid.dz, time);
+                    dzz(i, j, grid.Nz - 1) = (4.0 / 3.0 *  field(i, j, grid.Nz - 2) 
+                                           - 4.0 *  field(i, j, grid.Nz - 1) 
+                                           + (8.0 / 3.0) *  bc(physical_x, physical_y, (grid.Nz - 0.5) * grid.dz, time)) * mul;
                 }
             }
         }
