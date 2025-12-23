@@ -52,7 +52,7 @@ SIMULATIONS = [
     {"nx": 20, "file": "../output/n20simulation_output_0030.vtk"},
 ]
 
-DOMAIN_LENGTH_X = 6.0 
+DOMAIN_LENGTH_X = 1.0 
 DT = 0.001            
 
 # Field names in VTK
@@ -98,28 +98,60 @@ def compute_convergence_orders(x_values: list, errors: list) -> tuple:
 # --- 4. ANALYTICAL SOLUTION FUNCTIONS ---
 
 def compute_analytical_u_at_x_faces(points: np.ndarray, t: float, h: float) -> np.ndarray:
-    x = points[:, 0] + h / 2.0 
+    """
+    Computes the analytical solution for u-velocity based on configFunctions.hpp.
+    Profile: Pulsatile Poiseuille flow inside a cylinder.
+    """
+    
+    # --- Physical Parameters (matching C++ constexpr) ---
+    nu = 1.0
+    L_x = 6.0
+    yc = L_x / 2.0        # 3.0
+    zc = L_x / 2.0        # 3.0
+    R_vessel = L_x / 4.0  # 1.5
+    G_force = 10.0
+    
+    # --- Coordinates ---
+    # x = points[:, 0] + h / 2.0  # Not needed for developed flow (z-invariant)
     y = points[:, 1]
     z = points[:, 2]
-    return np.sin(x) * np.cos(t + y) * np.sin(z)
+
+    # --- Calculation ---
+    
+    # Squared distance from cylinder center
+    dist_sq = (y - yc)**2 + (z - zc)**2
+    R2 = R_vessel**2
+    
+    # Poiseuille amplitude: G / (4 * nu) * (R^2 - r^2)
+    # Time modulation: cos(t)
+    amplitude = (G_force / (4.0 * nu)) * (R2 - dist_sq)
+    time_signal = np.cos(t)
+    
+    u_values = amplitude * time_signal
+    
+    # Apply Boundary Condition: 0.0 outside the vessel radius
+    # Using np.where to handle the condition vectorially
+    u_values = np.where(dist_sq < R2, u_values, 0.0)
+
+    return u_values
 
 def compute_analytical_v_at_y_faces(points: np.ndarray, t: float, h: float) -> np.ndarray:
     x = points[:, 0]
     y = points[:, 1] + h / 2.0  
     z = points[:, 2]
-    return np.cos(x) * np.sin(t + y) * np.sin(z)
+    return 0
 
 def compute_analytical_w_at_z_faces(points: np.ndarray, t: float, h: float) -> np.ndarray:
     x = points[:, 0]
     y = points[:, 1]
     z = points[:, 2] + h / 2.0  
-    return 2.0 * np.cos(x) * np.cos(t + y) * np.cos(z)
+    return 0
 
 def compute_analytical_p_at_centers(points: np.ndarray, t: float) -> np.ndarray:
     x = points[:, 0]
     y = points[:, 1]
     z = points[:, 2]
-    return (3.0 / RE) * np.cos(x) * np.cos(t + y) * np.cos(z)
+    return 10
 
 # --- 5. ERROR CALCULATION ---
 

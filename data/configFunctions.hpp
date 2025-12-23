@@ -9,15 +9,15 @@ namespace ConfigFuncs {
     constexpr double nu = 1.0;          // Kinematic viscosity
     
     // --- Geometry Definitions (Straight tube in a 0.32^3 domain) ---
-    constexpr double L_x = 0.32;
-    constexpr double yc = 0.16;         // Cylinder center Y
-    constexpr double zc = 0.16;         // Cylinder center Z
-    constexpr double R_vessel = 0.05;   // Vessel radius
+    constexpr double L_x = 1.0;
+    constexpr double yc = L_x / 2;         // Cylinder center Y
+    constexpr double zc = L_x / 2;         // Cylinder center Z
+    constexpr double R_vessel = L_x / 4;   // Vessel radius
     
     // --- Brinkman Penalization Parameters ---
-    constexpr double K_fluid = 1e10;    // High permeability (Fluid region)
-    constexpr double K_solid = 1e-8;    // Low permeability (Solid region)
-    constexpr double epsilon = 0.0001;   // Interface smoothing width
+    constexpr double K_fluid = 1e20;    // High permeability (Fluid region)
+    constexpr double K_solid = 1e-20;    // Low permeability (Solid region)
+    constexpr double epsilon = 1e-10;   // Interface smoothing width
     constexpr double G_force = 10.0;    // Imposed pressure gradient (Body force)
 
     // Helper: Squared distance from the cylinder axis
@@ -80,10 +80,19 @@ namespace ConfigFuncs {
     // ------------------------------------
     // Initial Conditions
     // ------------------------------------
-    inline double u_init_func(double, double, double, double) { return 0.0; }
-    inline double v_init_func(double, double, double, double) { return 0.0; }
-    inline double w_init_func(double, double, double, double) { return 0.0; }
-    inline double p_init_func(double, double, double, double) { return 0.0; }
+    inline double u_init_func(double x, double y, double z, double t = 0) {
+        return bcu_func(x, y, z, t);
+    }
+
+    inline double v_init_func(double x, double y, double z, double t = 0) {
+        return bcv_func(x, y, z, t);
+    }
+
+    inline double w_init_func(double x, double y, double z, double t = 0) {
+        return bcw_func(x, y, z, t);
+    }
+
+    inline double p_init_func(double, double, double, double) { return 10.0; }
 
     // Export permeability field
     inline double k_func(double x, double y, double z, double /*t*/ = 0) {
