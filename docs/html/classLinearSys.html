@@ -87,23 +87,25 @@ Collaboration diagram for LinearSys:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6bded7c3b5e0e72c65ad49ddef18c0f1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSys.html#a6bded7c3b5e0e72c65ad49ddef18c0f1">LinearSys</a> (int n, <a class="el" href="LinearSys_8hpp.html#af75d5dd7322fa39ed0af4e7839e600f8">BoundaryType</a> <a class="el" href="classLinearSys.html#a08edd648862dccf619a7fc358600e521">boundaryType</a>)</td></tr>
-<tr class="memdesc:a6bded7c3b5e0e72c65ad49ddef18c0f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classLinearSys.html#a6bded7c3b5e0e72c65ad49ddef18c0f1">More...</a><br /></td></tr>
-<tr class="separator:a6bded7c3b5e0e72c65ad49ddef18c0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8bce8f5d5d7fa443f15d5ec1596e3ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSys.html#aa8bce8f5d5d7fa443f15d5ec1596e3ca">LinearSys</a> (size_t n)</td></tr>
+<tr class="memdesc:aa8bce8f5d5d7fa443f15d5ec1596e3ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classLinearSys.html#aa8bce8f5d5d7fa443f15d5ec1596e3ca">More...</a><br /></td></tr>
+<tr class="separator:aa8bce8f5d5d7fa443f15d5ec1596e3ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a257096829bb54fc3e45084b5c94beaa8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSys.html#a257096829bb54fc3e45084b5c94beaa8">setRhs</a> (const std::vector&lt; double &gt; &amp;newRhs)</td></tr>
 <tr class="memdesc:a257096829bb54fc3e45084b5c94beaa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the right-hand side (rhsC) vector for the solver.  <a href="classLinearSys.html#a257096829bb54fc3e45084b5c94beaa8">More...</a><br /></td></tr>
 <tr class="separator:a257096829bb54fc3e45084b5c94beaa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5e1dc2bef1794dec1b232f2fbc5b077"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSys.html#ab5e1dc2bef1794dec1b232f2fbc5b077">getSolution</a> () const</td></tr>
 <tr class="memdesc:ab5e1dc2bef1794dec1b232f2fbc5b077"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the solution vector (unknownX) computed by the solver.  <a href="classLinearSys.html#ab5e1dc2bef1794dec1b232f2fbc5b077">More...</a><br /></td></tr>
 <tr class="separator:ab5e1dc2bef1794dec1b232f2fbc5b077"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a1b948b08605b422212a8b79dd8737d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSys.html#a4a1b948b08605b422212a8b79dd8737d">fillSystemPressure</a> (const <a class="el" href="classField.html">Field</a> &amp;phi, const <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> direction)</td></tr>
-<tr class="memdesc:a4a1b948b08605b422212a8b79dd8737d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the linear system for Pressure variables.  <a href="classLinearSys.html#a4a1b948b08605b422212a8b79dd8737d">More...</a><br /></td></tr>
-<tr class="separator:a4a1b948b08605b422212a8b79dd8737d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc38bb02a25f7a917500b6a5ee0917c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSys.html#adc38bb02a25f7a917500b6a5ee0917c5">fillSystemVelocity</a> (const <a class="el" href="structSimulationData.html">SimulationData</a> &amp;simData, const <a class="el" href="classVectorField.html">VectorField</a> &amp;xi, const <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> fieldComponent, const <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> derivativeDirection, const size_t iStart, const size_t jStart, const size_t kStart)</td></tr>
-<tr class="memdesc:adc38bb02a25f7a917500b6a5ee0917c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the linear system for Velocity variables.  <a href="classLinearSys.html#adc38bb02a25f7a917500b6a5ee0917c5">More...</a><br /></td></tr>
-<tr class="separator:adc38bb02a25f7a917500b6a5ee0917c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ffd1b18f1754d6634573f053d742df0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSys.html#a6ffd1b18f1754d6634573f053d742df0">fillSystemPressure</a> (const <a class="el" href="Grid_8hpp.html#a90e0015df12e0e71b9457e226d49c125">GridPtr</a> &amp;grid, const <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> direction)</td></tr>
+<tr class="memdesc:a6ffd1b18f1754d6634573f053d742df0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the linear system for Pressure variables.  <a href="classLinearSys.html#a6ffd1b18f1754d6634573f053d742df0">More...</a><br /></td></tr>
+<tr class="separator:a6ffd1b18f1754d6634573f053d742df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a309ed06b0e91e7c604d8d2bb06225c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSys.html#a4a309ed06b0e91e7c604d8d2bb06225c">fillSystemVelocity</a> (const <a class="el" href="structSimulationData.html">SimulationData</a> &amp;simData, const <a class="el" href="classVectorField.html">VectorField</a> &amp;eta, const <a class="el" href="classVectorField.html">VectorField</a> &amp;xi, const <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> fieldComponent, const <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> derivativeDirection, const size_t iStart, const size_t jStart, const size_t kStart)</td></tr>
+<tr class="memdesc:a4a309ed06b0e91e7c604d8d2bb06225c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the linear system for Velocity variables.  <a href="classLinearSys.html#a4a309ed06b0e91e7c604d8d2bb06225c">More...</a><br /></td></tr>
+<tr class="separator:a4a309ed06b0e91e7c604d8d2bb06225c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a347428c173bf3507fb43006f663b45f9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTridiagMat.html">TridiagMat</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSys.html#a347428c173bf3507fb43006f663b45f9">getMatrix</a> ()</td></tr>
+<tr class="memdesc:a347428c173bf3507fb43006f663b45f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter to access the internal matrix.  <a href="classLinearSys.html#a347428c173bf3507fb43006f663b45f9">More...</a><br /></td></tr>
+<tr class="separator:a347428c173bf3507fb43006f663b45f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3658eaf4a88aa14bbe2f5add8b842ac"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classTridiagMat.html">TridiagMat</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSys.html#af3658eaf4a88aa14bbe2f5add8b842ac">getMatrix</a> () const</td></tr>
-<tr class="memdesc:af3658eaf4a88aa14bbe2f5add8b842ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter to access the internal matrix (needed for Schur).  <a href="classLinearSys.html#af3658eaf4a88aa14bbe2f5add8b842ac">More...</a><br /></td></tr>
 <tr class="separator:af3658eaf4a88aa14bbe2f5add8b842ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0256caf9d237026696a6ca545503d7a"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; double &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSys.html#af0256caf9d237026696a6ca545503d7a">getRhs</a> () const</td></tr>
 <tr class="memdesc:af0256caf9d237026696a6ca545503d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter to access the internal RHS (modified by fillSystem).  <a href="classLinearSys.html#af0256caf9d237026696a6ca545503d7a">More...</a><br /></td></tr>
@@ -135,8 +137,8 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manages and solves a tridiagonal linear system (Ax = b) used for pressure and velocity steps. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6bded7c3b5e0e72c65ad49ddef18c0f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6bded7c3b5e0e72c65ad49ddef18c0f1">&#9670;&nbsp;</a></span>LinearSys()</h2>
+<a id="aa8bce8f5d5d7fa443f15d5ec1596e3ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8bce8f5d5d7fa443f15d5ec1596e3ca">&#9670;&nbsp;</a></span>LinearSys()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,19 +146,9 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">LinearSys::LinearSys </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="LinearSys_8hpp.html#af75d5dd7322fa39ed0af4e7839e600f8">BoundaryType</a>&#160;</td>
-          <td class="paramname"><em>boundaryType</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -165,7 +157,6 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>Size of the linear system (n x n) </td></tr>
-    <tr><td class="paramname">boundaryType</td><td>Boundary condition type, Normal or Tangent (set Normal for pressure) </td></tr>
   </table>
   </dd>
 </dl>
@@ -173,8 +164,8 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4a1b948b08605b422212a8b79dd8737d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a1b948b08605b422212a8b79dd8737d">&#9670;&nbsp;</a></span>fillSystemPressure()</h2>
+<a id="a6ffd1b18f1754d6634573f053d742df0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ffd1b18f1754d6634573f053d742df0">&#9670;&nbsp;</a></span>fillSystemPressure()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -182,13 +173,13 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">void LinearSys::fillSystemPressure </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classField.html">Field</a> &amp;&#160;</td>
-          <td class="paramname"><em>phi</em>, </td>
+          <td class="paramtype">const <a class="el" href="Grid_8hpp.html#a90e0015df12e0e71b9457e226d49c125">GridPtr</a> &amp;&#160;</td>
+          <td class="paramname"><em>grid</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
           <td class="paramname"><em>direction</em>&#160;</td>
         </tr>
         <tr>
@@ -203,28 +194,27 @@ Friends</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classLinearSys_a4a1b948b08605b422212a8b79dd8737d_cgraph.png" border="0" usemap="#aclassLinearSys_a4a1b948b08605b422212a8b79dd8737d_cgraph" alt=""/></div>
-<map name="aclassLinearSys_a4a1b948b08605b422212a8b79dd8737d_cgraph" id="aclassLinearSys_a4a1b948b08605b422212a8b79dd8737d_cgraph">
-<area shape="rect" title="Fill the linear system for Pressure variables." alt="" coords="5,56,220,83"/>
+<div class="center"><img src="classLinearSys_a6ffd1b18f1754d6634573f053d742df0_cgraph.png" border="0" usemap="#aclassLinearSys_a6ffd1b18f1754d6634573f053d742df0_cgraph" alt=""/></div>
+<map name="aclassLinearSys_a6ffd1b18f1754d6634573f053d742df0_cgraph" id="aclassLinearSys_a6ffd1b18f1754d6634573f053d742df0_cgraph">
+<area shape="rect" title="Fill the linear system for Pressure variables." alt="" coords="5,31,220,57"/>
 <area shape="rect" href="classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="268,5,417,32"/>
-<area shape="rect" href="classField.html#afe97c0b04f25f6322696a22ea9df8628" title="Getter for the grid information." alt="" coords="288,56,397,83"/>
-<area shape="rect" href="classTridiagMat.html#a46d96fb5ae69f72ff1f56c12b390d0a9" title="Get the matrix size." alt="" coords="269,107,416,133"/>
+<area shape="rect" href="classTridiagMat.html#a926ab35a1c697a419508318505f701a3" title="Get the matrix size." alt="" coords="269,56,416,83"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classLinearSys_a4a1b948b08605b422212a8b79dd8737d_icgraph.png" border="0" usemap="#aclassLinearSys_a4a1b948b08605b422212a8b79dd8737d_icgraph" alt=""/></div>
-<map name="aclassLinearSys_a4a1b948b08605b422212a8b79dd8737d_icgraph" id="aclassLinearSys_a4a1b948b08605b422212a8b79dd8737d_icgraph">
+<div class="center"><img src="classLinearSys_a6ffd1b18f1754d6634573f053d742df0_icgraph.png" border="0" usemap="#aclassLinearSys_a6ffd1b18f1754d6634573f053d742df0_icgraph" alt=""/></div>
+<map name="aclassLinearSys_a6ffd1b18f1754d6634573f053d742df0_icgraph" id="aclassLinearSys_a6ffd1b18f1754d6634573f053d742df0_icgraph">
 <area shape="rect" title="Fill the linear system for Pressure variables." alt="" coords="189,5,404,32"/>
-<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="5,5,141,32"/>
+<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="5,5,141,32"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="adc38bb02a25f7a917500b6a5ee0917c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc38bb02a25f7a917500b6a5ee0917c5">&#9670;&nbsp;</a></span>fillSystemVelocity()</h2>
+<a id="a4a309ed06b0e91e7c604d8d2bb06225c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a309ed06b0e91e7c604d8d2bb06225c">&#9670;&nbsp;</a></span>fillSystemVelocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -239,18 +229,24 @@ Here is the caller graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classVectorField.html">VectorField</a> &amp;&#160;</td>
+          <td class="paramname"><em>eta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classVectorField.html">VectorField</a> &amp;&#160;</td>
           <td class="paramname"><em>xi</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
           <td class="paramname"><em>fieldComponent</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
           <td class="paramname"><em>derivativeDirection</em>, </td>
         </tr>
         <tr>
@@ -283,21 +279,19 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_cgraph.png" border="0" usemap="#aclassLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_cgraph" alt=""/></div>
-<map name="aclassLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_cgraph" id="aclassLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_cgraph">
-<area shape="rect" title="Fill the linear system for Velocity variables." alt="" coords="5,81,216,108"/>
-<area shape="rect" href="classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="273,5,422,32"/>
-<area shape="rect" href="classVectorField.html#a44e6ba866c7ab75a4608062f16f702b9" title="Getter for the grid information." alt="" coords="272,56,423,83"/>
-<area shape="rect" href="classTridiagMat.html#a46d96fb5ae69f72ff1f56c12b390d0a9" title="Get the matrix size." alt="" coords="274,107,421,133"/>
-<area shape="rect" href="classField.html#ae8b4623a9fe837b3eff02e02ffe1c365" title="Access the value in the field at given position considering direction offset." alt="" coords="264,157,431,184"/>
-<area shape="rect" href="classField.html#ab4240a7cb1cae0917ff698837485f399" title="Computes the linear index for 3D access in row&#45;major order." alt="" coords="479,157,560,184"/>
+<div class="center"><img src="classLinearSys_a4a309ed06b0e91e7c604d8d2bb06225c_cgraph.png" border="0" usemap="#aclassLinearSys_a4a309ed06b0e91e7c604d8d2bb06225c_cgraph" alt=""/></div>
+<map name="aclassLinearSys_a4a309ed06b0e91e7c604d8d2bb06225c_cgraph" id="aclassLinearSys_a4a309ed06b0e91e7c604d8d2bb06225c_cgraph">
+<area shape="rect" title="Fill the linear system for Velocity variables." alt="" coords="5,56,216,83"/>
+<area shape="rect" href="classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="265,5,414,32"/>
+<area shape="rect" href="classVectorField.html#a44e6ba866c7ab75a4608062f16f702b9" title="Getter for the grid information." alt="" coords="264,56,415,83"/>
+<area shape="rect" href="classTridiagMat.html#a926ab35a1c697a419508318505f701a3" title="Get the matrix size." alt="" coords="266,107,413,133"/>
 </map>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_icgraph.png" border="0" usemap="#aclassLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_icgraph" alt=""/></div>
-<map name="aclassLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_icgraph" id="aclassLinearSys_adc38bb02a25f7a917500b6a5ee0917c5_icgraph">
+<div class="center"><img src="classLinearSys_a4a309ed06b0e91e7c604d8d2bb06225c_icgraph.png" border="0" usemap="#aclassLinearSys_a4a309ed06b0e91e7c604d8d2bb06225c_icgraph" alt=""/></div>
+<map name="aclassLinearSys_a4a309ed06b0e91e7c604d8d2bb06225c_icgraph" id="aclassLinearSys_a4a309ed06b0e91e7c604d8d2bb06225c_icgraph">
 <area shape="rect" title="Fill the linear system for Velocity variables." alt="" coords="455,5,665,32"/>
 <area shape="rect" href="classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,5,407,32"/>
 <area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,5,136,32"/>
@@ -306,8 +300,48 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a347428c173bf3507fb43006f663b45f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a347428c173bf3507fb43006f663b45f9">&#9670;&nbsp;</a></span>getMatrix() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTridiagMat.html">TridiagMat</a>&amp; LinearSys::getMatrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter to access the internal matrix. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classLinearSys_a347428c173bf3507fb43006f663b45f9_icgraph.png" border="0" usemap="#aclassLinearSys_a347428c173bf3507fb43006f663b45f9_icgraph" alt=""/></div>
+<map name="aclassLinearSys_a347428c173bf3507fb43006f663b45f9_icgraph" id="aclassLinearSys_a347428c173bf3507fb43006f663b45f9_icgraph">
+<area shape="rect" title="Getter to access the internal matrix." alt="" coords="701,31,857,57"/>
+<area shape="rect" href="classPressureStep.html#a9ebc8796e971246693693124240782b3" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,5,653,32"/>
+<area shape="rect" href="classViscousStep.html#a368a04b10b537c84532da3a983920370" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,56,651,83"/>
+<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="227,5,363,32"/>
+<area shape="rect" href="classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,56,407,83"/>
+<area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,56,136,83"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="af3658eaf4a88aa14bbe2f5add8b842ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3658eaf4a88aa14bbe2f5add8b842ac">&#9670;&nbsp;</a></span>getMatrix()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af3658eaf4a88aa14bbe2f5add8b842ac">&#9670;&nbsp;</a></span>getMatrix() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -328,21 +362,7 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Getter to access the internal matrix (needed for Schur). </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac_icgraph.png" border="0" usemap="#aclassLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac_icgraph" alt=""/></div>
-<map name="aclassLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac_icgraph" id="aclassLinearSys_af3658eaf4a88aa14bbe2f5add8b842ac_icgraph">
-<area shape="rect" title="Getter to access the internal matrix (needed for Schur)." alt="" coords="701,31,857,57"/>
-<area shape="rect" href="classPressureStep.html#a5420590f473164b5d861a62dc270ac08" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,5,653,32"/>
-<area shape="rect" href="classViscousStep.html#a98b2a51b32509c2323cb32a7bfb2e93c" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,56,651,83"/>
-<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="227,5,363,32"/>
-<area shape="rect" href="classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,56,407,83"/>
-<area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,56,136,83"/>
-</map>
-</div>
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
 
 </div>
 </div>
@@ -376,9 +396,9 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classLinearSys_af0256caf9d237026696a6ca545503d7a_icgraph.png" border="0" usemap="#aclassLinearSys_af0256caf9d237026696a6ca545503d7a_icgraph" alt=""/></div>
 <map name="aclassLinearSys_af0256caf9d237026696a6ca545503d7a_icgraph" id="aclassLinearSys_af0256caf9d237026696a6ca545503d7a_icgraph">
 <area shape="rect" title="Getter to access the internal RHS (modified by fillSystem)." alt="" coords="701,31,840,57"/>
-<area shape="rect" href="classPressureStep.html#a5420590f473164b5d861a62dc270ac08" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,5,653,32"/>
-<area shape="rect" href="classViscousStep.html#a98b2a51b32509c2323cb32a7bfb2e93c" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,56,651,83"/>
-<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="227,5,363,32"/>
+<area shape="rect" href="classPressureStep.html#a9ebc8796e971246693693124240782b3" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,5,653,32"/>
+<area shape="rect" href="classViscousStep.html#a368a04b10b537c84532da3a983920370" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,56,651,83"/>
+<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="227,5,363,32"/>
 <area shape="rect" href="classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,56,407,83"/>
 <area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,56,136,83"/>
 </map>
@@ -410,9 +430,9 @@ Here is the caller graph for this function:</div>
 <map name="aclassLinearSys_ab5e1dc2bef1794dec1b232f2fbc5b077_icgraph" id="aclassLinearSys_ab5e1dc2bef1794dec1b232f2fbc5b077_icgraph">
 <area shape="rect" title="Gets the solution vector (unknownX) computed by the solver." alt="" coords="917,32,1084,59"/>
 <area shape="rect" href="classSchurSequentialSolver.html#a8b7aec052a578c5fd6ca38d279728212" title="Phase 0: Pre&#45;processing. Builds the submatrices A_ii, extracts interface coefficients,..." alt="" coords="701,25,869,66"/>
-<area shape="rect" href="classPressureStep.html#a5420590f473164b5d861a62dc270ac08" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,5,653,32"/>
-<area shape="rect" href="classViscousStep.html#a98b2a51b32509c2323cb32a7bfb2e93c" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,60,651,87"/>
-<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="227,5,363,32"/>
+<area shape="rect" href="classPressureStep.html#a9ebc8796e971246693693124240782b3" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,5,653,32"/>
+<area shape="rect" href="classViscousStep.html#a368a04b10b537c84532da3a983920370" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,60,651,87"/>
+<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="227,5,363,32"/>
 <area shape="rect" href="classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,60,407,87"/>
 <area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,60,136,87"/>
 </map>
@@ -455,7 +475,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classLinearSys_a257096829bb54fc3e45084b5c94beaa8_cgraph.png" border="0" usemap="#aclassLinearSys_a257096829bb54fc3e45084b5c94beaa8_cgraph" alt=""/></div>
 <map name="aclassLinearSys_a257096829bb54fc3e45084b5c94beaa8_cgraph" id="aclassLinearSys_a257096829bb54fc3e45084b5c94beaa8_cgraph">
 <area shape="rect" title="Sets the right&#45;hand side (rhsC) vector for the solver." alt="" coords="5,5,143,32"/>
-<area shape="rect" href="classTridiagMat.html#a46d96fb5ae69f72ff1f56c12b390d0a9" title="Get the matrix size." alt="" coords="191,5,337,32"/>
+<area shape="rect" href="classTridiagMat.html#a926ab35a1c697a419508318505f701a3" title="Get the matrix size." alt="" coords="191,5,337,32"/>
 </map>
 </div>
 <div class="dynheader">
@@ -466,10 +486,10 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title="Sets the right&#45;hand side (rhsC) vector for the solver." alt="" coords="917,50,1055,77"/>
 <area shape="rect" href="classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,13,407,39"/>
 <area shape="rect" href="classSchurSequentialSolver.html#a8b7aec052a578c5fd6ca38d279728212" title="Phase 0: Pre&#45;processing. Builds the submatrices A_ii, extracts interface coefficients,..." alt="" coords="701,43,869,84"/>
-<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="227,89,363,115"/>
+<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="227,89,363,115"/>
 <area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,13,136,39"/>
-<area shape="rect" href="classPressureStep.html#a5420590f473164b5d861a62dc270ac08" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,75,653,102"/>
-<area shape="rect" href="classViscousStep.html#a98b2a51b32509c2323cb32a7bfb2e93c" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,25,651,51"/>
+<area shape="rect" href="classPressureStep.html#a9ebc8796e971246693693124240782b3" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,75,653,102"/>
+<area shape="rect" href="classViscousStep.html#a368a04b10b537c84532da3a983920370" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,25,651,51"/>
 </map>
 </div>
 
@@ -498,7 +518,7 @@ Here is the call graph for this function:</div>
 <map name="aclassLinearSys_a60600d4d91ff996ab642bbc424f16525_cgraph" id="aclassLinearSys_a60600d4d91ff996ab642bbc424f16525_cgraph">
 <area shape="rect" title="Solve the linear system." alt="" coords="5,31,184,57"/>
 <area shape="rect" href="classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="232,5,381,32"/>
-<area shape="rect" href="classTridiagMat.html#a46d96fb5ae69f72ff1f56c12b390d0a9" title="Get the matrix size." alt="" coords="233,56,380,83"/>
+<area shape="rect" href="classTridiagMat.html#a926ab35a1c697a419508318505f701a3" title="Get the matrix size." alt="" coords="233,56,380,83"/>
 </map>
 </div>
 <div class="dynheader">
@@ -508,9 +528,9 @@ Here is the caller graph for this function:</div>
 <map name="aclassLinearSys_a60600d4d91ff996ab642bbc424f16525_icgraph" id="aclassLinearSys_a60600d4d91ff996ab642bbc424f16525_icgraph">
 <area shape="rect" title="Solve the linear system." alt="" coords="917,32,1096,59"/>
 <area shape="rect" href="classSchurSequentialSolver.html#a8b7aec052a578c5fd6ca38d279728212" title="Phase 0: Pre&#45;processing. Builds the submatrices A_ii, extracts interface coefficients,..." alt="" coords="701,25,869,66"/>
-<area shape="rect" href="classPressureStep.html#a5420590f473164b5d861a62dc270ac08" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,5,653,32"/>
-<area shape="rect" href="classViscousStep.html#a98b2a51b32509c2323cb32a7bfb2e93c" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,60,651,87"/>
-<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="227,5,363,32"/>
+<area shape="rect" href="classPressureStep.html#a9ebc8796e971246693693124240782b3" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="455,5,653,32"/>
+<area shape="rect" href="classViscousStep.html#a368a04b10b537c84532da3a983920370" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="457,60,651,87"/>
+<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="227,5,363,32"/>
 <area shape="rect" href="classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,60,407,87"/>
 <area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,60,136,87"/>
 </map>

@@ -1,13 +1,12 @@
 <map id="Field::setup" name="Field::setup">
-<area shape="rect" id="node1" title="Setup the field with a function to populate it (e.g., initial condition)." alt="" coords="1037,78,1135,105"/>
-<area shape="rect" id="node2" href="$namespaceInitializer.html#a84757b22926f400a6aec78c2b1e2aa69" title=" " alt="" coords="811,5,989,47"/>
-<area shape="rect" id="node6" href="$classPressureStep.html#a775ec248bc2a5c2b9f7d1457b1c97013" title="Construct temporary fields to proceed in computations." alt="" coords="815,71,985,112"/>
-<area shape="rect" id="node8" href="$classVectorField.html#a678cbed69b397d108ea467ac65a9507c" title="Setup the vector field with functions to populate each component (e.g., initial conditions)." alt="" coords="831,137,969,163"/>
-<area shape="rect" id="node3" href="$namespaceInitializer.html#ab08ce6fc3e43c623779edfdfb7ea3855" title="Setup and initialize the SimulationData from input data." alt="" coords="321,75,448,102"/>
-<area shape="rect" id="node4" href="$classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6" title=" " alt="" coords="108,75,243,102"/>
-<area shape="rect" id="node5" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,75,60,102"/>
-<area shape="rect" id="node7" href="$classPressureStep.html#a52d71f53887abc1f443855ff462c68ac" title="Constructor." alt="" coords="545,74,745,101"/>
-<area shape="rect" id="node9" href="$namespaceInitializer.html#ad0df7e265dd3a6f2b2aaefcb2244203d" title=" " alt="" coords="551,125,739,167"/>
-<area shape="rect" id="node10" href="$classViscousStep.html#a9ad97cebe4b5966259b6d205f62a392e" title="Construct temporary fields to proceed in computations." alt="" coords="527,191,763,232"/>
-<area shape="rect" id="node11" href="$classViscousStep.html#a3c394708ab3435546917bbc8787e6d83" title="Constructor." alt="" coords="291,198,479,225"/>
+<area shape="rect" id="node1" title="Setup the field with a function to populate it (e.g., initial condition)." alt="" coords="1059,63,1156,90"/>
+<area shape="rect" id="node2" href="$namespaceInitializer.html#a84757b22926f400a6aec78c2b1e2aa69" title=" " alt="" coords="555,5,734,47"/>
+<area shape="rect" id="node6" href="$classPressureStep.html#a52d71f53887abc1f443855ff462c68ac" title="Constructor." alt="" coords="811,63,1011,90"/>
+<area shape="rect" id="node7" href="$classVectorField.html#a678cbed69b397d108ea467ac65a9507c" title="Setup the vector field with functions to populate each component (e.g., initial conditions)." alt="" coords="841,114,980,141"/>
+<area shape="rect" id="node3" href="$namespaceInitializer.html#a0741ee296f266920808094cbb8475064" title="Setup and initialize the SimulationData from input data." alt="" coords="321,46,448,73"/>
+<area shape="rect" id="node4" href="$classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6" title=" " alt="" coords="108,46,243,73"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,46,60,73"/>
+<area shape="rect" id="node8" href="$namespaceInitializer.html#ad0df7e265dd3a6f2b2aaefcb2244203d" title=" " alt="" coords="551,71,739,112"/>
+<area shape="rect" id="node9" href="$classViscousStep.html#a9ad97cebe4b5966259b6d205f62a392e" title="Construct temporary fields to proceed in computations." alt="" coords="527,136,763,177"/>
+<area shape="rect" id="node10" href="$classViscousStep.html#a3c394708ab3435546917bbc8787e6d83" title="Constructor." alt="" coords="291,143,479,170"/>
 </map>

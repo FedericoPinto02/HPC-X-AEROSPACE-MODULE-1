@@ -36,6 +36,12 @@ private:
     /// The axis where to apply the offset in the staggered grid.
     Axis offsetAxis_;
 
+    /// Cached sizes for idx() performance optimization.
+    size_t nHalo_;
+    /// Strides for each axis in the flattened data array.
+    std::array<size_t, AXIS_COUNT> axisStrides_;
+
+
     /// Vector storing the field values in a flattened, row-major indexed 1D array.
     std::vector<Scalar> data_;
 
@@ -62,10 +68,21 @@ public:
             Axis offsetAxis = Axis::X
     ) {
         gridPtr_ = grid;
+        nHalo_ = gridPtr_->n_halo;
+
+        size_t Nx_tot = gridPtr_->Nx + 2 * nHalo_;
+        size_t Ny_tot = gridPtr_->Ny + 2 * nHalo_;
+        size_t Nz_tot = gridPtr_->Nz + 2 * nHalo_;
+        axisStrides_ = {
+                1,              // X stride
+                Nx_tot,         // Y stride
+                Ny_tot * Nx_tot // Z stride
+        };
+
         populateFunction_ = populateFunction;
         offset_ = offset;
         offsetAxis_ = offsetAxis;
-        data_.resize(gridPtr_->sizeWithHalo(), Scalar(0));
+        data_.resize(Nx_tot * Ny_tot * Nz_tot, Scalar(0));
     }
 
     /**
@@ -105,14 +122,24 @@ public:
     /// Overload
     [[nodiscard]] inline const Axis &getOffsetAxis() const { return offsetAxis_; }
 
+    /**
+     * @brief Getter for the stride along a given axis.
+     * @param axis the axis for which to get the stride
+     * @return the stride along the given axis
+     */
+    [[nodiscard]] inline size_t getStride(Axis axis) { return axisStrides_[static_cast<size_t>(axis)]; }
+
+    /// @overload
+    [[nodiscard]] inline size_t getStride(Axis axis) const { return axisStrides_[static_cast<size_t>(axis)]; }
+
     //==================================================================================================================
     //--- Data accessors -----------------------------------------------------------------------------------------------
     //==================================================================================================================
     /// Getter for the underlying data vector.
-    std::vector<Field::Scalar> &getData() { return data_; }
+    [[nodiscard]] std::vector<Field::Scalar> &getData() { return data_; }
 
     /// @overload
-    const std::vector<Field::Scalar> &getData() const { return data_; }
+    [[nodiscard]] const std::vector<Field::Scalar> &getData() const { return data_; }
 
     /**
      * @brief Computes the linear index for 3D access in row-major order.
@@ -122,10 +149,9 @@ public:
      * @return the corresponding 1D index
      */
     [[nodiscard]] inline size_t idx(long i, long j, long k) const {
-        const size_t H = gridPtr_->n_halo;
-        const size_t Nx_tot = gridPtr_->Nx + 2 * H;
-        const size_t Ny_tot = gridPtr_->Ny + 2 * H;
-        return ((k + H) * Ny_tot + (j + H)) * Nx_tot + (i + H);
+        return (k + nHalo_) * axisStrides_[2]
+               + (j + nHalo_) * axisStrides_[1]
+               + (i + nHalo_);
     }
 
     /**
@@ -181,10 +207,14 @@ public:
      * @param offset the offset value (can be positive or negative)
      * @return the value in the field at position (i,j,k)
      */
-    [[nodiscard]] Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset);
+    [[nodiscard]] inline Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) {
+        return data_[idx(i, j, k) + offset * axisStrides_[static_cast<size_t>(offsetDirection)]];
+    }
 
     /// @overload
-    [[nodiscard]] const Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) const;
+    [[nodiscard]] inline const Scalar &valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) const {
+        return data_[idx(i, j, k) + offset * axisStrides_[static_cast<size_t>(offsetDirection)]];
+    }
 
 
     //==================================================================================================================
@@ -313,23 +343,27 @@ public:
      * @param k the z-index
      * @return the component value of the vector field in the specified direction at position (i,j,k)
      */
-    [[nodiscard]] Scalar &operator()(Axis componentDirection, long i, long j, long k);
+    [[nodiscard]] inline Scalar &operator()(Axis componentDirection, long i, long j, long k) {
+        return component(componentDirection).value(i, j, k);
+    }
 
     /// @overload
-    [[nodiscard]] const Scalar &operator()(Axis componentDirection, long i, long j, long k) const;
+    [[nodiscard]] inline const Scalar &operator()(Axis componentDirection, long i, long j, long k) const {
+        return component(componentDirection).value(i, j, k);
+    }
 
     /**
      * @copydoc VectorField::operator()(Axis, long, long, long)
      *
      * This method is a named alias for the access operator.
      */
-    [[nodiscard]] Scalar &value(Axis componentDirection, long i, long j, long k) {
-        return this->operator()(componentDirection, i, j, k);
+    [[nodiscard]] inline Scalar &value(Axis componentDirection, long i, long j, long k) {
+        return component(componentDirection).value(i, j, k);
     }
 
     /// @overload
-    [[nodiscard]] const Scalar &value(Axis componentDirection, long i, long j, long k) const {
-        return this->operator()(componentDirection, i, j, k);
+    [[nodiscard]] inline const Scalar &value(Axis componentDirection, long i, long j, long k) const {
+        return component(componentDirection).value(i, j, k);
     }
 
 

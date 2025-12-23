@@ -1,10 +1,9 @@
 <map id="ViscousStep::computeG" name="ViscousStep::computeG">
-<area shape="rect" id="node1" title="Compute G term." alt="" coords="5,107,181,133"/>
+<area shape="rect" id="node1" title="Compute G term." alt="" coords="5,81,181,108"/>
 <area shape="rect" id="node2" href="$classDerivatives.html#a50f5b9c159f7071eca24da47339f094c" title="Compute the second derivative of a vector field in the x&#45;direction." alt="" coords="245,5,433,32"/>
 <area shape="rect" id="node3" href="$classDerivatives.html#a8f62d63f77d17bf5d4469b1038ee0c1a" title="Compute the second derivative of a vector field in the y&#45;direction." alt="" coords="245,56,433,83"/>
 <area shape="rect" id="node4" href="$classDerivatives.html#a99280512fa8db2e9703d721141fb7c17" title="Compute the second derivative of a vector field in the z&#45;direction." alt="" coords="245,107,432,133"/>
 <area shape="rect" id="node5" href="$classDerivatives.html#a9d509cd4c682cc79ebebce1df69474a9" title="Compute the gradient of a scalar field (forward difference)." alt="" coords="229,157,448,184"/>
-<area shape="rect" id="node10" href="$classField.html#a86c44d11fbaee4e973679fceac4bf0be" title=" " alt="" coords="282,208,395,235"/>
 <area shape="rect" id="node6" href="$classDerivatives.html#a0ef8b5e2a9e76abb839e9907bd127b76" title="Compute the derivative of a scalar field in the x&#45;direction (forward difference)." alt="" coords="496,107,707,133"/>
 <area shape="rect" id="node8" href="$classDerivatives.html#aee26f33635f34433d93ca5790849bd95" title="Compute the derivative of a scalar field in the y&#45;direction (forward difference)." alt="" coords="496,157,707,184"/>
 <area shape="rect" id="node9" href="$classDerivatives.html#a41f8f51d76f35343b09b8711af339480" title="Compute the derivative of a scalar field in the z&#45;direction (forward difference)." alt="" coords="497,208,706,235"/>

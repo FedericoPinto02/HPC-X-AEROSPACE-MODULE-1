@@ -1,0 +1,289 @@
+\hypertarget{classMpiEnv}{}\doxysection{Mpi\+Env Class Reference}
+\label{classMpiEnv}\index{MpiEnv@{MpiEnv}}
+
+
+Class that encapsulates MPI environment and Cartesian topology management.  
+
+
+
+
+{\ttfamily \#include $<$Mpi\+Env.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMpiEnv_afac8bd3cf04fb2ac89b4c1a54e86d353}{Mpi\+Env}} (int \&argc, char $\ast$$\ast$\&argv)
+\begin{DoxyCompactList}\small\item\em Constructor that initializes the MPI environment. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMpiEnv_ac722c041644cf8f1eb0eb6c0489375f0}{$\sim$\+Mpi\+Env}} ()
+\begin{DoxyCompactList}\small\item\em Destructor that finalizes the MPI environment. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMpiEnv_a3243ce57370116832563adcb8f8753a2}{Mpi\+Env}} (const \mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} \&)=delete
+\item 
+\mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} \& \mbox{\hyperlink{classMpiEnv_a9965a01c6bc232c8b1eb2d5a5304f5f4}{operator=}} (const \mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} \&)=delete
+\item 
+int \mbox{\hyperlink{classMpiEnv_a0020466368972a239635e6099a2ccf73}{rank}} () const
+\begin{DoxyCompactList}\small\item\em Getter for the current process rank. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classMpiEnv_aa9f50fca50277d9a41b1d140817559fc}{size}} () const
+\begin{DoxyCompactList}\small\item\em Getter for the total number of processes. \end{DoxyCompactList}\item 
+MPI\+\_\+\+Comm \mbox{\hyperlink{classMpiEnv_afd6d152fa34f9c0c603fd0ba675d4ead}{cart\+Comm}} () const
+\begin{DoxyCompactList}\small\item\em Getter for the Cartesian communicator. \end{DoxyCompactList}\item 
+const std\+::array$<$ int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}} $>$ \& \mbox{\hyperlink{classMpiEnv_ac7e914837a093621d908ef6a61853fbd}{dims}} () const
+\begin{DoxyCompactList}\small\item\em Getter for the dimensions of the Cartesian grid. \end{DoxyCompactList}\item 
+const std\+::array$<$ int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}} $>$ \& \mbox{\hyperlink{classMpiEnv_af652bfae69249d7ae897d0827bae418d}{coords}} () const
+\begin{DoxyCompactList}\small\item\em Getter for the coordinates of the current process in the Cartesian topology. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classMpiEnv_ae44e9ab944ee405291333739f3defe71}{is\+Master}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the current process is the master (rank 0). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMpiEnv_a8ab121f1e035ef8cfc4dcbc87e136a2a}{setup\+Topology}} (std\+::array$<$ int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}} $>$ \mbox{\hyperlink{classMpiEnv_ac7e914837a093621d908ef6a61853fbd}{dims}}=\{0, 0, 0\}, std\+::array$<$ int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}} $>$ periods=\{0, 0, 0\}, int reorder=1)
+\begin{DoxyCompactList}\small\item\em Setup the MPI Cartesian topology with given dimensions and periodicity. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classMpiEnv_aebbd0432d02a3639675f778460b93d14}{get\+Neighbor\+Rank}} (\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} direction, int disp) const
+\begin{DoxyCompactList}\small\item\em Get the rank of the neighboring process in a given direction and displacement. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classMpiEnv_ad6a1fbf5e4fc809b5a24e6823140465c}{rank\+\_\+}}
+\begin{DoxyCompactList}\small\item\em The rank of the current process. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classMpiEnv_a829e148d7f7caa6fb3d69ec0addfe5bc}{size\+\_\+}}
+\begin{DoxyCompactList}\small\item\em The total number of processes. \end{DoxyCompactList}\item 
+MPI\+\_\+\+Comm \mbox{\hyperlink{classMpiEnv_af319612d59faed11d6befabb0771bded}{cart\+Comm\+\_\+}} = MPI\+\_\+\+COMM\+\_\+\+NULL
+\begin{DoxyCompactList}\small\item\em The communicator with Cartesian topology. \end{DoxyCompactList}\item 
+std\+::array$<$ int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}} $>$ \mbox{\hyperlink{classMpiEnv_aef16e0c69020132ccd2afa2fe24dd11e}{dims\+\_\+}} = \{0, 0, 0\}
+\begin{DoxyCompactList}\small\item\em The dimensions of the Cartesian grid. \end{DoxyCompactList}\item 
+std\+::array$<$ int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}} $>$ \mbox{\hyperlink{classMpiEnv_a6d4749d80d3ebce4f5078071144a62f3}{coords\+\_\+}} = \{0, 0, 0\}
+\begin{DoxyCompactList}\small\item\em The coordinates of the current process in the Cartesian topology. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class that encapsulates MPI environment and Cartesian topology management. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMpiEnv_afac8bd3cf04fb2ac89b4c1a54e86d353}\label{classMpiEnv_afac8bd3cf04fb2ac89b4c1a54e86d353}} 
+\index{MpiEnv@{MpiEnv}!MpiEnv@{MpiEnv}}
+\index{MpiEnv@{MpiEnv}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{MpiEnv()}{MpiEnv()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Mpi\+Env\+::\+Mpi\+Env (\begin{DoxyParamCaption}\item[{int \&}]{argc,  }\item[{char $\ast$$\ast$\&}]{argv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor that initializes the MPI environment. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & the argument count from main \\
+\hline
+{\em argv} & the argument vector from main \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMpiEnv_ac722c041644cf8f1eb0eb6c0489375f0}\label{classMpiEnv_ac722c041644cf8f1eb0eb6c0489375f0}} 
+\index{MpiEnv@{MpiEnv}!````~MpiEnv@{$\sim$MpiEnv}}
+\index{````~MpiEnv@{$\sim$MpiEnv}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{$\sim$MpiEnv()}{~MpiEnv()}}
+{\footnotesize\ttfamily Mpi\+Env\+::$\sim$\+Mpi\+Env (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor that finalizes the MPI environment. 
+
+\mbox{\Hypertarget{classMpiEnv_a3243ce57370116832563adcb8f8753a2}\label{classMpiEnv_a3243ce57370116832563adcb8f8753a2}} 
+\index{MpiEnv@{MpiEnv}!MpiEnv@{MpiEnv}}
+\index{MpiEnv@{MpiEnv}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{MpiEnv()}{MpiEnv()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Mpi\+Env\+::\+Mpi\+Env (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classMpiEnv_afd6d152fa34f9c0c603fd0ba675d4ead}\label{classMpiEnv_afd6d152fa34f9c0c603fd0ba675d4ead}} 
+\index{MpiEnv@{MpiEnv}!cartComm@{cartComm}}
+\index{cartComm@{cartComm}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{cartComm()}{cartComm()}}
+{\footnotesize\ttfamily MPI\+\_\+\+Comm Mpi\+Env\+::cart\+Comm (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for the Cartesian communicator. 
+
+\mbox{\Hypertarget{classMpiEnv_af652bfae69249d7ae897d0827bae418d}\label{classMpiEnv_af652bfae69249d7ae897d0827bae418d}} 
+\index{MpiEnv@{MpiEnv}!coords@{coords}}
+\index{coords@{coords}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{coords()}{coords()}}
+{\footnotesize\ttfamily const std\+::array$<$int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}}$>$\& Mpi\+Env\+::coords (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for the coordinates of the current process in the Cartesian topology. 
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{classMpiEnv_af652bfae69249d7ae897d0827bae418d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classMpiEnv_ac7e914837a093621d908ef6a61853fbd}\label{classMpiEnv_ac7e914837a093621d908ef6a61853fbd}} 
+\index{MpiEnv@{MpiEnv}!dims@{dims}}
+\index{dims@{dims}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{dims()}{dims()}}
+{\footnotesize\ttfamily const std\+::array$<$int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}}$>$\& Mpi\+Env\+::dims (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for the dimensions of the Cartesian grid. 
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classMpiEnv_ac7e914837a093621d908ef6a61853fbd_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classMpiEnv_aebbd0432d02a3639675f778460b93d14}\label{classMpiEnv_aebbd0432d02a3639675f778460b93d14}} 
+\index{MpiEnv@{MpiEnv}!getNeighborRank@{getNeighborRank}}
+\index{getNeighborRank@{getNeighborRank}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{getNeighborRank()}{getNeighborRank()}}
+{\footnotesize\ttfamily int Mpi\+Env\+::get\+Neighbor\+Rank (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{direction,  }\item[{int}]{disp }\end{DoxyParamCaption}) const}
+
+
+
+Get the rank of the neighboring process in a given direction and displacement. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em direction} & the direction (\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}{Axis\+::X}}, \mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0}{Axis\+::Y}}, or \mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5}{Axis\+::Z}}) \\
+\hline
+{\em disp} & the displacement (+1 or -\/1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the rank of the neighboring process, or MPI\+\_\+\+PROC\+\_\+\+NULL if no neighbor exists 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMpiEnv_ae44e9ab944ee405291333739f3defe71}\label{classMpiEnv_ae44e9ab944ee405291333739f3defe71}} 
+\index{MpiEnv@{MpiEnv}!isMaster@{isMaster}}
+\index{isMaster@{isMaster}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{isMaster()}{isMaster()}}
+{\footnotesize\ttfamily bool Mpi\+Env\+::is\+Master (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if the current process is the master (rank 0). 
+
+\mbox{\Hypertarget{classMpiEnv_a9965a01c6bc232c8b1eb2d5a5304f5f4}\label{classMpiEnv_a9965a01c6bc232c8b1eb2d5a5304f5f4}} 
+\index{MpiEnv@{MpiEnv}!operator=@{operator=}}
+\index{operator=@{operator=}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMpiEnv}{Mpi\+Env}}\& Mpi\+Env\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classMpiEnv_a0020466368972a239635e6099a2ccf73}\label{classMpiEnv_a0020466368972a239635e6099a2ccf73}} 
+\index{MpiEnv@{MpiEnv}!rank@{rank}}
+\index{rank@{rank}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{rank()}{rank()}}
+{\footnotesize\ttfamily int Mpi\+Env\+::rank (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for the current process rank. 
+
+\mbox{\Hypertarget{classMpiEnv_a8ab121f1e035ef8cfc4dcbc87e136a2a}\label{classMpiEnv_a8ab121f1e035ef8cfc4dcbc87e136a2a}} 
+\index{MpiEnv@{MpiEnv}!setupTopology@{setupTopology}}
+\index{setupTopology@{setupTopology}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{setupTopology()}{setupTopology()}}
+{\footnotesize\ttfamily void Mpi\+Env\+::setup\+Topology (\begin{DoxyParamCaption}\item[{std\+::array$<$ int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}} $>$}]{dims = {\ttfamily \{0,~0,~0\}},  }\item[{std\+::array$<$ int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}} $>$}]{periods = {\ttfamily \{0,~0,~0\}},  }\item[{int}]{reorder = {\ttfamily 1} }\end{DoxyParamCaption})}
+
+
+
+Setup the MPI Cartesian topology with given dimensions and periodicity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dims} & the dimensions of the Cartesian grid (if 0, MPI will choose the best decomposition based on the communicator size). \\
+\hline
+{\em periods} & the periodicity of each dimension \\
+\hline
+{\em reorder} & whether to allow MPI to reorder ranks for better locality \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=326pt]{classMpiEnv_a8ab121f1e035ef8cfc4dcbc87e136a2a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classMpiEnv_a8ab121f1e035ef8cfc4dcbc87e136a2a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classMpiEnv_aa9f50fca50277d9a41b1d140817559fc}\label{classMpiEnv_aa9f50fca50277d9a41b1d140817559fc}} 
+\index{MpiEnv@{MpiEnv}!size@{size}}
+\index{size@{size}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int Mpi\+Env\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Getter for the total number of processes. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classMpiEnv_af319612d59faed11d6befabb0771bded}\label{classMpiEnv_af319612d59faed11d6befabb0771bded}} 
+\index{MpiEnv@{MpiEnv}!cartComm\_@{cartComm\_}}
+\index{cartComm\_@{cartComm\_}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{cartComm\_}{cartComm\_}}
+{\footnotesize\ttfamily MPI\+\_\+\+Comm Mpi\+Env\+::cart\+Comm\+\_\+ = MPI\+\_\+\+COMM\+\_\+\+NULL\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The communicator with Cartesian topology. 
+
+\mbox{\Hypertarget{classMpiEnv_a6d4749d80d3ebce4f5078071144a62f3}\label{classMpiEnv_a6d4749d80d3ebce4f5078071144a62f3}} 
+\index{MpiEnv@{MpiEnv}!coords\_@{coords\_}}
+\index{coords\_@{coords\_}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{coords\_}{coords\_}}
+{\footnotesize\ttfamily std\+::array$<$int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}}$>$ Mpi\+Env\+::coords\+\_\+ = \{0, 0, 0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The coordinates of the current process in the Cartesian topology. 
+
+\mbox{\Hypertarget{classMpiEnv_aef16e0c69020132ccd2afa2fe24dd11e}\label{classMpiEnv_aef16e0c69020132ccd2afa2fe24dd11e}} 
+\index{MpiEnv@{MpiEnv}!dims\_@{dims\_}}
+\index{dims\_@{dims\_}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{dims\_}{dims\_}}
+{\footnotesize\ttfamily std\+::array$<$int, \mbox{\hyperlink{MpiEnv_8hpp_ab1d0c20dc99738bcbeb6c51e5d6066a7}{AXIS\+\_\+\+COUNT}}$>$ Mpi\+Env\+::dims\+\_\+ = \{0, 0, 0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The dimensions of the Cartesian grid. 
+
+\mbox{\Hypertarget{classMpiEnv_ad6a1fbf5e4fc809b5a24e6823140465c}\label{classMpiEnv_ad6a1fbf5e4fc809b5a24e6823140465c}} 
+\index{MpiEnv@{MpiEnv}!rank\_@{rank\_}}
+\index{rank\_@{rank\_}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{rank\_}{rank\_}}
+{\footnotesize\ttfamily int Mpi\+Env\+::rank\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The rank of the current process. 
+
+\mbox{\Hypertarget{classMpiEnv_a829e148d7f7caa6fb3d69ec0addfe5bc}\label{classMpiEnv_a829e148d7f7caa6fb3d69ec0addfe5bc}} 
+\index{MpiEnv@{MpiEnv}!size\_@{size\_}}
+\index{size\_@{size\_}!MpiEnv@{MpiEnv}}
+\doxysubsubsection{\texorpdfstring{size\_}{size\_}}
+{\footnotesize\ttfamily int Mpi\+Env\+::size\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The total number of processes. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/core/\mbox{\hyperlink{MpiEnv_8hpp}{Mpi\+Env.\+hpp}}\item 
+src/core/\mbox{\hyperlink{MpiEnv_8cpp}{Mpi\+Env.\+cpp}}\end{DoxyCompactItemize}

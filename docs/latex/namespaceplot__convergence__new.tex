@@ -5,6 +5,8 @@
 \item 
 int \mbox{\hyperlink{namespaceplot__convergence__new_ad3cefda5828164fbae5cea7cd911fe4b}{get\+\_\+step\+\_\+from\+\_\+filename}} (str filepath)
 \item 
+tuple \mbox{\hyperlink{namespaceplot__convergence__new_a2e04aacaa8b4c4d59e1393a94d47f731}{compute\+\_\+convergence\+\_\+orders}} (list x\+\_\+values, list errors)
+\item 
 np.\+ndarray \mbox{\hyperlink{namespaceplot__convergence__new_a4604579fccce1eebf3e02daeb5a46960}{compute\+\_\+analytical\+\_\+u\+\_\+at\+\_\+x\+\_\+faces}} (np.\+ndarray points, float t, float h)
 \item 
 np.\+ndarray \mbox{\hyperlink{namespaceplot__convergence__new_ad1d155df43e8f0dbca56872943a7ce25}{compute\+\_\+analytical\+\_\+v\+\_\+at\+\_\+y\+\_\+faces}} (np.\+ndarray points, float t, float h)
@@ -17,16 +19,20 @@ float \mbox{\hyperlink{namespaceplot__convergence__new_ab842eab38fdd39e4c675987a
 \item 
 float \mbox{\hyperlink{namespaceplot__convergence__new_a9c50096fadd00dca9d78dada9685d58c}{calculate\+\_\+l2\+\_\+rms\+\_\+error}} (np.\+ndarray field\+\_\+numerical, np.\+ndarray field\+\_\+analytical)
 \item 
-def \mbox{\hyperlink{namespaceplot__convergence__new_a1035fcf22408c6a6657ba8d94d1f6292}{plot\+\_\+convergence}} (list x\+\_\+values, dict error\+\_\+data, str title, str save\+\_\+filename, str x\+\_\+label, int expected\+\_\+order)
+float \mbox{\hyperlink{namespaceplot__convergence__new_af1473567c048d42ae6057976bf72874d}{calculate\+\_\+l1\+\_\+mean\+\_\+error}} (np.\+ndarray field\+\_\+numerical, np.\+ndarray field\+\_\+analytical)
+\item 
+def \mbox{\hyperlink{namespaceplot__convergence__new_a050311e523a715ced660e00c8a328d0a}{plot\+\_\+clean\+\_\+convergence}} (list x\+\_\+values, dict error\+\_\+data, str title\+\_\+prefix, str save\+\_\+filename, str x\+\_\+label, int expected\+\_\+order, str mode\+\_\+label)
 \item 
 def \mbox{\hyperlink{namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236}{run\+\_\+analysis}} (custom\+\_\+simulations=None)
 \end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
+float \mbox{\hyperlink{namespaceplot__convergence__new_a3bd280c487e2dfb51f48f9cd9cd82e1b}{RE}} = 1.\+0
+\item 
 list \mbox{\hyperlink{namespaceplot__convergence__new_aa6e753cfeb34aa66e2d85a0812dd3592}{SIMULATIONS}}
 \item 
-int \mbox{\hyperlink{namespaceplot__convergence__new_a0210b96ca0c4c34c6fa78f6a92d53e92}{DOMAIN\+\_\+\+LENGTH\+\_\+X}} = 6
+float \mbox{\hyperlink{namespaceplot__convergence__new_a5d730a31999746e09d6f66e9439c1ad5}{DOMAIN\+\_\+\+LENGTH\+\_\+X}} = 6.\+0
 \item 
 float \mbox{\hyperlink{namespaceplot__convergence__new_ad2bfa3c603d8035435ed1a032e9fa4b0}{DT}} = 0.\+001
 \item 
@@ -37,29 +43,36 @@ string \mbox{\hyperlink{namespaceplot__convergence__new_a1b4245c640464953cd1611d
 
 
 \doxysubsection{Detailed Description}
-\begin{DoxyVerb}This script performs a spatial convergence analysis for a Method of
-Manufactured Solutions (MMS) test.
+\begin{DoxyVerb}Script for Spatial Convergence Analysis (Method of Manufactured Solutions).
 
-It reads multiple VTK files, each from a simulation with a different
-grid resolution. For each file, it computes the L2 RMS error
-of velocity components (u, v, w) and pressure (p) against a
-known analytical solution.
+This script reads VTK files from simulations with varying grid resolutions
+and computes the L2 and L1 error norms against an analytical solution.
 
-This version is adapted for staggered grid solvers where the VTK output
-is co-located (e.g., at cell centers). It compares the numerical
-co-located data against the analytical solution evaluated at the
-appropriate staggered locations (e.g., cell faces).
-
-Script modified from a previous version to:
-1. Use only L2 RMS (absolute) errors.
-2. Add O(h) and O(h^2) reference lines.
-3. Translate all comments and outputs to English.
-4. Remove all divergence calculations.
-5. Save plots to high-definition image files instead of showing them.
+Changes in this version:
+- Fixed SyntaxWarning regarding invalid escape sequences in LaTeX strings.
+- Reverted to standard sans-serif fonts (cleaner look).
+- High-contrast colors and explicit log-log grids.
+- Dynamic LaTeX titles indicating scaling (e.g., dt ~ dx).
+- Calculates and prints Convergence Order table.
+- UPDATED: Thinner lines and new color palette.
 \end{DoxyVerb}
  
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceplot__convergence__new_af1473567c048d42ae6057976bf72874d}\label{namespaceplot__convergence__new_af1473567c048d42ae6057976bf72874d}} 
+\index{plot\_convergence\_new@{plot\_convergence\_new}!calculate\_l1\_mean\_error@{calculate\_l1\_mean\_error}}
+\index{calculate\_l1\_mean\_error@{calculate\_l1\_mean\_error}!plot\_convergence\_new@{plot\_convergence\_new}}
+\doxysubsubsection{\texorpdfstring{calculate\_l1\_mean\_error()}{calculate\_l1\_mean\_error()}}
+{\footnotesize\ttfamily  float plot\+\_\+convergence\+\_\+new.\+calculate\+\_\+l1\+\_\+mean\+\_\+error (\begin{DoxyParamCaption}\item[{np.\+ndarray}]{field\+\_\+numerical,  }\item[{np.\+ndarray}]{field\+\_\+analytical }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceplot__convergence__new_af1473567c048d42ae6057976bf72874d_icgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespaceplot__convergence__new_ab842eab38fdd39e4c675987a551ae935}\label{namespaceplot__convergence__new_ab842eab38fdd39e4c675987a551ae935}} 
 \index{plot\_convergence\_new@{plot\_convergence\_new}!calculate\_l2\_rms@{calculate\_l2\_rms}}
 \index{calculate\_l2\_rms@{calculate\_l2\_rms}!plot\_convergence\_new@{plot\_convergence\_new}}
@@ -145,39 +158,57 @@ Here is the caller graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{namespaceplot__convergence__new_ab7f18d6f9e179035b874c252ce20d625_icgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{namespaceplot__convergence__new_a2e04aacaa8b4c4d59e1393a94d47f731}\label{namespaceplot__convergence__new_a2e04aacaa8b4c4d59e1393a94d47f731}} 
+\index{plot\_convergence\_new@{plot\_convergence\_new}!compute\_convergence\_orders@{compute\_convergence\_orders}}
+\index{compute\_convergence\_orders@{compute\_convergence\_orders}!plot\_convergence\_new@{plot\_convergence\_new}}
+\doxysubsubsection{\texorpdfstring{compute\_convergence\_orders()}{compute\_convergence\_orders()}}
+{\footnotesize\ttfamily  tuple plot\+\_\+convergence\+\_\+new.\+compute\+\_\+convergence\+\_\+orders (\begin{DoxyParamCaption}\item[{list}]{x\+\_\+values,  }\item[{list}]{errors }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceplot__convergence__new_a2e04aacaa8b4c4d59e1393a94d47f731_icgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespaceplot__convergence__new_ad3cefda5828164fbae5cea7cd911fe4b}\label{namespaceplot__convergence__new_ad3cefda5828164fbae5cea7cd911fe4b}} 
 \index{plot\_convergence\_new@{plot\_convergence\_new}!get\_step\_from\_filename@{get\_step\_from\_filename}}
 \index{get\_step\_from\_filename@{get\_step\_from\_filename}!plot\_convergence\_new@{plot\_convergence\_new}}
 \doxysubsubsection{\texorpdfstring{get\_step\_from\_filename()}{get\_step\_from\_filename()}}
 {\footnotesize\ttfamily  int plot\+\_\+convergence\+\_\+new.\+get\+\_\+step\+\_\+from\+\_\+filename (\begin{DoxyParamCaption}\item[{str}]{filepath }\end{DoxyParamCaption})}
 
-\begin{DoxyVerb}[... Funzione get_step_from_filename non modificata ...]
-\end{DoxyVerb}
- Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespaceplot__convergence__new_ad3cefda5828164fbae5cea7cd911fe4b_icgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{namespaceplot__convergence__new_a1035fcf22408c6a6657ba8d94d1f6292}\label{namespaceplot__convergence__new_a1035fcf22408c6a6657ba8d94d1f6292}} 
-\index{plot\_convergence\_new@{plot\_convergence\_new}!plot\_convergence@{plot\_convergence}}
-\index{plot\_convergence@{plot\_convergence}!plot\_convergence\_new@{plot\_convergence\_new}}
-\doxysubsubsection{\texorpdfstring{plot\_convergence()}{plot\_convergence()}}
-{\footnotesize\ttfamily def plot\+\_\+convergence\+\_\+new.\+plot\+\_\+convergence (\begin{DoxyParamCaption}\item[{list}]{x\+\_\+values,  }\item[{dict}]{error\+\_\+data,  }\item[{str}]{title,  }\item[{str}]{save\+\_\+filename,  }\item[{str}]{x\+\_\+label,  }\item[{int}]{expected\+\_\+order }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{namespaceplot__convergence__new_a050311e523a715ced660e00c8a328d0a}\label{namespaceplot__convergence__new_a050311e523a715ced660e00c8a328d0a}} 
+\index{plot\_convergence\_new@{plot\_convergence\_new}!plot\_clean\_convergence@{plot\_clean\_convergence}}
+\index{plot\_clean\_convergence@{plot\_clean\_convergence}!plot\_convergence\_new@{plot\_convergence\_new}}
+\doxysubsubsection{\texorpdfstring{plot\_clean\_convergence()}{plot\_clean\_convergence()}}
+{\footnotesize\ttfamily def plot\+\_\+convergence\+\_\+new.\+plot\+\_\+clean\+\_\+convergence (\begin{DoxyParamCaption}\item[{list}]{x\+\_\+values,  }\item[{dict}]{error\+\_\+data,  }\item[{str}]{title\+\_\+prefix,  }\item[{str}]{save\+\_\+filename,  }\item[{str}]{x\+\_\+label,  }\item[{int}]{expected\+\_\+order,  }\item[{str}]{mode\+\_\+label }\end{DoxyParamCaption})}
 
-\begin{DoxyVerb}Plots the convergence data using generic x-axis values and a dynamic label/order.
+\begin{DoxyVerb}Generates a clean, high-contrast log-log plot.
 \end{DoxyVerb}
- \mbox{\Hypertarget{namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236}\label{namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236}} 
+ Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceplot__convergence__new_a050311e523a715ced660e00c8a328d0a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236}\label{namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236}} 
 \index{plot\_convergence\_new@{plot\_convergence\_new}!run\_analysis@{run\_analysis}}
 \index{run\_analysis@{run\_analysis}!plot\_convergence\_new@{plot\_convergence\_new}}
 \doxysubsubsection{\texorpdfstring{run\_analysis()}{run\_analysis()}}
 {\footnotesize\ttfamily def plot\+\_\+convergence\+\_\+new.\+run\+\_\+analysis (\begin{DoxyParamCaption}\item[{}]{custom\+\_\+simulations = {\ttfamily None} }\end{DoxyParamCaption})}
 
-\begin{DoxyVerb}Main function to loop through simulations, compute errors, and plot.
-Now supports different convergence modes.
-\end{DoxyVerb}
- Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -194,11 +225,11 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{namespaceplot__convergence__new_a0210b96ca0c4c34c6fa78f6a92d53e92}\label{namespaceplot__convergence__new_a0210b96ca0c4c34c6fa78f6a92d53e92}} 
+\mbox{\Hypertarget{namespaceplot__convergence__new_a5d730a31999746e09d6f66e9439c1ad5}\label{namespaceplot__convergence__new_a5d730a31999746e09d6f66e9439c1ad5}} 
 \index{plot\_convergence\_new@{plot\_convergence\_new}!DOMAIN\_LENGTH\_X@{DOMAIN\_LENGTH\_X}}
 \index{DOMAIN\_LENGTH\_X@{DOMAIN\_LENGTH\_X}!plot\_convergence\_new@{plot\_convergence\_new}}
 \doxysubsubsection{\texorpdfstring{DOMAIN\_LENGTH\_X}{DOMAIN\_LENGTH\_X}}
-{\footnotesize\ttfamily int plot\+\_\+convergence\+\_\+new.\+DOMAIN\+\_\+\+LENGTH\+\_\+X = 6}
+{\footnotesize\ttfamily float plot\+\_\+convergence\+\_\+new.\+DOMAIN\+\_\+\+LENGTH\+\_\+X = 6.\+0}
 
 \mbox{\Hypertarget{namespaceplot__convergence__new_ad2bfa3c603d8035435ed1a032e9fa4b0}\label{namespaceplot__convergence__new_ad2bfa3c603d8035435ed1a032e9fa4b0}} 
 \index{plot\_convergence\_new@{plot\_convergence\_new}!DT@{DT}}
@@ -212,6 +243,12 @@ Here is the caller graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{PRESSURE\_FIELD\_NAME}{PRESSURE\_FIELD\_NAME}}
 {\footnotesize\ttfamily string plot\+\_\+convergence\+\_\+new.\+PRESSURE\+\_\+\+FIELD\+\_\+\+NAME = \char`\"{}pressure\char`\"{}}
 
+\mbox{\Hypertarget{namespaceplot__convergence__new_a3bd280c487e2dfb51f48f9cd9cd82e1b}\label{namespaceplot__convergence__new_a3bd280c487e2dfb51f48f9cd9cd82e1b}} 
+\index{plot\_convergence\_new@{plot\_convergence\_new}!RE@{RE}}
+\index{RE@{RE}!plot\_convergence\_new@{plot\_convergence\_new}}
+\doxysubsubsection{\texorpdfstring{RE}{RE}}
+{\footnotesize\ttfamily float plot\+\_\+convergence\+\_\+new.\+RE = 1.\+0}
+
 \mbox{\Hypertarget{namespaceplot__convergence__new_aa6e753cfeb34aa66e2d85a0812dd3592}\label{namespaceplot__convergence__new_aa6e753cfeb34aa66e2d85a0812dd3592}} 
 \index{plot\_convergence\_new@{plot\_convergence\_new}!SIMULATIONS@{SIMULATIONS}}
 \index{SIMULATIONS@{SIMULATIONS}!plot\_convergence\_new@{plot\_convergence\_new}}
@@ -221,10 +258,9 @@ Here is the caller graph for this function\+:\nopagebreak
 {\bfseries Initial value\+:}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{1 =  [}
-\DoxyCodeLine{2 \{\textcolor{stringliteral}{"{}nx"{}}: 30, \textcolor{stringliteral}{"{}file"{}}: \textcolor{stringliteral}{"{}../output/n30simulation\_output\_0030.vtk"{}}\},}
-\DoxyCodeLine{3 \{\textcolor{stringliteral}{"{}nx"{}}: 20, \textcolor{stringliteral}{"{}file"{}}: \textcolor{stringliteral}{"{}../output/n20simulation\_output\_0030.vtk"{}}\},}
-\DoxyCodeLine{4 \textcolor{comment}{\# ... (altre simulazioni rimosse)}}
-\DoxyCodeLine{5 ]}
+\DoxyCodeLine{2     \{\textcolor{stringliteral}{"{}nx"{}}: 30, \textcolor{stringliteral}{"{}file"{}}: \textcolor{stringliteral}{"{}../output/n30simulation\_output\_0030.vtk"{}}\},}
+\DoxyCodeLine{3     \{\textcolor{stringliteral}{"{}nx"{}}: 20, \textcolor{stringliteral}{"{}file"{}}: \textcolor{stringliteral}{"{}../output/n20simulation\_output\_0030.vtk"{}}\},}
+\DoxyCodeLine{4 ]}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{namespaceplot__convergence__new_a0202daa3c2e923a495e0e74edb28b41f}\label{namespaceplot__convergence__new_a0202daa3c2e923a495e0e74edb28b41f}} 

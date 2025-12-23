@@ -89,10 +89,10 @@ void HaloHandler::exchangeX(Field &field) {
 
     // --- 2. EXCHANGE ---
     MPI_Request reqs[4];
-    MPI_Irecv(recvBufLeft_.data(), bufferSize, MPI_DOUBLE, leftProc, 10, comm, &reqs[0]);
-    MPI_Irecv(recvBufRight_.data(), bufferSize, MPI_DOUBLE, rightProc, 20, comm, &reqs[1]);
-    MPI_Isend(sendBufLeft_.data(), bufferSize, MPI_DOUBLE, leftProc, 20, comm, &reqs[2]);
-    MPI_Isend(sendBufRight_.data(), bufferSize, MPI_DOUBLE, rightProc, 10, comm, &reqs[3]);
+    MPI_Irecv(recvBufLeft_.data(), (int) bufferSize, MPI_DOUBLE, leftProc, 10, comm, &reqs[0]);
+    MPI_Irecv(recvBufRight_.data(), (int) bufferSize, MPI_DOUBLE, rightProc, 20, comm, &reqs[1]);
+    MPI_Isend(sendBufLeft_.data(), (int) bufferSize, MPI_DOUBLE, leftProc, 20, comm, &reqs[2]);
+    MPI_Isend(sendBufRight_.data(), (int) bufferSize, MPI_DOUBLE, rightProc, 10, comm, &reqs[3]);
     MPI_Waitall(4, reqs, MPI_STATUSES_IGNORE);
 
     // --- 3. UNPACKING ---
@@ -182,10 +182,10 @@ void HaloHandler::exchangeY(Field &field) {
 
     // --- 2. EXCHANGE ---
     MPI_Request reqs[4];
-    MPI_Irecv(recvBufLeft_.data(), bufferSize, MPI_DOUBLE, botProc, 30, comm, &reqs[0]);
-    MPI_Irecv(recvBufRight_.data(), bufferSize, MPI_DOUBLE, topProc, 40, comm, &reqs[1]);
-    MPI_Isend(sendBufLeft_.data(), bufferSize, MPI_DOUBLE, botProc, 40, comm, &reqs[2]);
-    MPI_Isend(sendBufRight_.data(), bufferSize, MPI_DOUBLE, topProc, 30, comm, &reqs[3]);
+    MPI_Irecv(recvBufLeft_.data(), (int) bufferSize, MPI_DOUBLE, botProc, 30, comm, &reqs[0]);
+    MPI_Irecv(recvBufRight_.data(), (int) bufferSize, MPI_DOUBLE, topProc, 40, comm, &reqs[1]);
+    MPI_Isend(sendBufLeft_.data(), (int) bufferSize, MPI_DOUBLE, botProc, 40, comm, &reqs[2]);
+    MPI_Isend(sendBufRight_.data(), (int) bufferSize, MPI_DOUBLE, topProc, 30, comm, &reqs[3]);
     MPI_Waitall(4, reqs, MPI_STATUSES_IGNORE);
 
     // --- 3. UNPACKING ---
@@ -257,10 +257,10 @@ void HaloHandler::exchangeZ(Field &field) {
 
     // --- 2. EXCHANGE ---
     MPI_Request reqs[4];
-    MPI_Irecv(recvBufLeft_.data(), bufferSize, MPI_DOUBLE, backProc, 50, comm, &reqs[0]);
-    MPI_Irecv(recvBufRight_.data(), bufferSize, MPI_DOUBLE, frontProc, 60, comm, &reqs[1]);
-    MPI_Isend(sendBufLeft_.data(), bufferSize, MPI_DOUBLE, backProc, 60, comm, &reqs[2]);
-    MPI_Isend(sendBufRight_.data(), bufferSize, MPI_DOUBLE, frontProc, 50, comm, &reqs[3]);
+    MPI_Irecv(recvBufLeft_.data(), (int) bufferSize, MPI_DOUBLE, backProc, 50, comm, &reqs[0]);
+    MPI_Irecv(recvBufRight_.data(), (int) bufferSize, MPI_DOUBLE, frontProc, 60, comm, &reqs[1]);
+    MPI_Isend(sendBufLeft_.data(), (int) bufferSize, MPI_DOUBLE, backProc, 60, comm, &reqs[2]);
+    MPI_Isend(sendBufRight_.data(), (int) bufferSize, MPI_DOUBLE, frontProc, 50, comm, &reqs[3]);
     MPI_Waitall(4, reqs, MPI_STATUSES_IGNORE);
 
     // --- 3. UNPACKING ---

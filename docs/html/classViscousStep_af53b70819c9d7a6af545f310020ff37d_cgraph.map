@@ -1,34 +1,31 @@
 <map id="ViscousStep::run" name="ViscousStep::run">
-<area shape="rect" id="node1" title="Run viscous step." alt="" coords="5,645,136,672"/>
-<area shape="rect" id="node2" href="$classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,399,407,425"/>
-<area shape="rect" id="node22" href="$classViscousStep.html#a08b79ebee5c10dce0129239db85d0e8a" title="Compute G term." alt="" coords="207,645,383,672"/>
-<area shape="rect" id="node32" href="$classViscousStep.html#a2c153fd3ee426405516d51b04546a5df" title="Compute xi term." alt="" coords="206,721,385,748"/>
-<area shape="rect" id="node3" href="$classLinearSys.html#adc38bb02a25f7a917500b6a5ee0917c5" title="Fill the linear system for Velocity variables." alt="" coords="980,639,1191,665"/>
-<area shape="rect" id="node9" href="$classLinearSys.html#a257096829bb54fc3e45084b5c94beaa8" title="Sets the right&#45;hand side (rhsC) vector for the solver." alt="" coords="1017,5,1154,32"/>
-<area shape="rect" id="node10" href="$classViscousStep.html#a98b2a51b32509c2323cb32a7bfb2e93c" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="467,275,661,301"/>
-<area shape="rect" id="node4" href="$classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="1247,325,1397,352"/>
-<area shape="rect" id="node5" href="$classVectorField.html#a44e6ba866c7ab75a4608062f16f702b9" title="Getter for the grid information." alt="" coords="1247,613,1397,640"/>
-<area shape="rect" id="node6" href="$classTridiagMat.html#a46d96fb5ae69f72ff1f56c12b390d0a9" title="Get the matrix size." alt="" coords="1249,224,1395,251"/>
-<area shape="rect" id="node7" href="$classField.html#ae8b4623a9fe837b3eff02e02ffe1c365" title="Access the value in the field at given position considering direction offset." alt="" coords="1239,664,1405,691"/>
-<area shape="rect" id="node8" href="$classField.html#ab4240a7cb1cae0917ff698837485f399" title="Computes the linear index for 3D access in row&#45;major order." alt="" coords="1453,664,1535,691"/>
-<area shape="rect" id="node11" href="$classLinearSys.html#af3658eaf4a88aa14bbe2f5add8b842ac" title="Getter to access the internal matrix (needed for Schur)." alt="" coords="749,443,905,469"/>
-<area shape="rect" id="node12" href="$classLinearSys.html#af0256caf9d237026696a6ca545503d7a" title="Getter to access the internal RHS (modified by fillSystem)." alt="" coords="757,125,896,152"/>
-<area shape="rect" id="node13" href="$classLinearSys.html#ab5e1dc2bef1794dec1b232f2fbc5b077" title="Gets the solution vector (unknownX) computed by the solver." alt="" coords="1002,107,1169,133"/>
-<area shape="rect" id="node14" href="$classSchurSequentialSolver.html#a8b7aec052a578c5fd6ca38d279728212" title="Phase 0: Pre&#45;processing. Builds the submatrices A_ii, extracts interface coefficients,..." alt="" coords="743,227,911,269"/>
-<area shape="rect" id="node16" href="$classLinearSys.html#a60600d4d91ff996ab642bbc424f16525" title="Solve the linear system." alt="" coords="996,325,1175,352"/>
-<area shape="rect" id="node17" href="$classSchurSequentialSolver.html#a0c0a6ed80b6df87ae3e1c53167ff444e" title="Phase 1: Solve. Solves the system A*x = f using the Schur algorithm. &#39;PreProcess&#39; must have been call..." alt="" coords="743,377,911,418"/>
-<area shape="rect" id="node15" href="$classSchurSequentialSolver.html#ae84b28ee0ff1e33bae823b780e88c1c2" title=" " alt="" coords="1001,158,1169,199"/>
-<area shape="rect" id="node18" href="$classSchurSequentialSolver.html#a046a2bbdb46a799a963f44c3ef15bf49" title=" " alt="" coords="1001,442,1169,483"/>
-<area shape="rect" id="node19" href="$classSchurSequentialSolver.html#afc572bd947a97f8aebc82714013d6d41" title=" " alt="" coords="1001,507,1169,549"/>
-<area shape="rect" id="node20" href="$classSchurSequentialSolver.html#aeae72f30176c219c7d60a206f54865c4" title=" " alt="" coords="1001,573,1169,614"/>
-<area shape="rect" id="node21" href="$classSchurSequentialSolver.html#aebe81742570d50e62bf86d13a1fd8d93" title=" " alt="" coords="1001,377,1169,418"/>
-<area shape="rect" id="node23" href="$classDerivatives.html#a50f5b9c159f7071eca24da47339f094c" title="Compute the second derivative of a vector field in the x&#45;direction." alt="" coords="470,544,658,571"/>
-<area shape="rect" id="node24" href="$classDerivatives.html#a8f62d63f77d17bf5d4469b1038ee0c1a" title="Compute the second derivative of a vector field in the y&#45;direction." alt="" coords="470,595,658,621"/>
-<area shape="rect" id="node25" href="$classDerivatives.html#a99280512fa8db2e9703d721141fb7c17" title="Compute the second derivative of a vector field in the z&#45;direction." alt="" coords="471,645,657,672"/>
-<area shape="rect" id="node26" href="$classDerivatives.html#a9d509cd4c682cc79ebebce1df69474a9" title="Compute the gradient of a scalar field (forward difference)." alt="" coords="455,696,673,723"/>
-<area shape="rect" id="node31" href="$classField.html#a86c44d11fbaee4e973679fceac4bf0be" title=" " alt="" coords="507,747,621,773"/>
-<area shape="rect" id="node27" href="$classDerivatives.html#a0ef8b5e2a9e76abb839e9907bd127b76" title="Compute the derivative of a scalar field in the x&#45;direction (forward difference)." alt="" coords="721,645,932,672"/>
-<area shape="rect" id="node29" href="$classDerivatives.html#aee26f33635f34433d93ca5790849bd95" title="Compute the derivative of a scalar field in the y&#45;direction (forward difference)." alt="" coords="721,696,932,723"/>
-<area shape="rect" id="node30" href="$classDerivatives.html#a41f8f51d76f35343b09b8711af339480" title="Compute the derivative of a scalar field in the z&#45;direction (forward difference)." alt="" coords="722,747,931,773"/>
-<area shape="rect" id="node28" href="$classField.html#afe97c0b04f25f6322696a22ea9df8628" title="Getter for the grid information." alt="" coords="1031,696,1140,723"/>
+<area shape="rect" id="node1" title="Run viscous step." alt="" coords="5,699,136,726"/>
+<area shape="rect" id="node2" href="$classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,489,407,515"/>
+<area shape="rect" id="node20" href="$classViscousStep.html#a08b79ebee5c10dce0129239db85d0e8a" title="Compute G term." alt="" coords="207,699,383,726"/>
+<area shape="rect" id="node29" href="$classViscousStep.html#a2c153fd3ee426405516d51b04546a5df" title="Compute xi term." alt="" coords="206,750,385,777"/>
+<area shape="rect" id="node3" href="$classLinearSys.html#a4a309ed06b0e91e7c604d8d2bb06225c" title="Fill the linear system for Velocity variables." alt="" coords="980,655,1191,682"/>
+<area shape="rect" id="node7" href="$classLinearSys.html#a257096829bb54fc3e45084b5c94beaa8" title="Sets the right&#45;hand side (rhsC) vector for the solver." alt="" coords="1017,335,1154,362"/>
+<area shape="rect" id="node8" href="$classViscousStep.html#a368a04b10b537c84532da3a983920370" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="467,361,661,387"/>
+<area shape="rect" id="node4" href="$classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="1239,605,1389,631"/>
+<area shape="rect" id="node5" href="$classVectorField.html#a44e6ba866c7ab75a4608062f16f702b9" title="Getter for the grid information." alt="" coords="1239,655,1389,682"/>
+<area shape="rect" id="node6" href="$classTridiagMat.html#a926ab35a1c697a419508318505f701a3" title="Get the matrix size." alt="" coords="1241,437,1387,463"/>
+<area shape="rect" id="node9" href="$classLinearSys.html#a347428c173bf3507fb43006f663b45f9" title="Getter to access the internal matrix." alt="" coords="749,234,905,261"/>
+<area shape="rect" id="node10" href="$classLinearSys.html#af0256caf9d237026696a6ca545503d7a" title="Getter to access the internal RHS (modified by fillSystem)." alt="" coords="757,285,896,311"/>
+<area shape="rect" id="node11" href="$classLinearSys.html#ab5e1dc2bef1794dec1b232f2fbc5b077" title="Gets the solution vector (unknownX) computed by the solver." alt="" coords="1002,386,1169,413"/>
+<area shape="rect" id="node12" href="$classSchurSequentialSolver.html#a8b7aec052a578c5fd6ca38d279728212" title="Phase 0: Pre&#45;processing. Builds the submatrices A_ii, extracts interface coefficients,..." alt="" coords="743,437,911,479"/>
+<area shape="rect" id="node14" href="$classLinearSys.html#a60600d4d91ff996ab642bbc424f16525" title="Solve the linear system." alt="" coords="996,605,1175,631"/>
+<area shape="rect" id="node15" href="$classSchurSequentialSolver.html#a0c0a6ed80b6df87ae3e1c53167ff444e" title="Phase 1: Solve. Solves the system A*x = f using the Schur algorithm. &#39;PreProcess&#39; must have been call..." alt="" coords="743,117,911,159"/>
+<area shape="rect" id="node13" href="$classSchurSequentialSolver.html#ae84b28ee0ff1e33bae823b780e88c1c2" title=" " alt="" coords="1001,488,1169,529"/>
+<area shape="rect" id="node16" href="$classSchurSequentialSolver.html#a046a2bbdb46a799a963f44c3ef15bf49" title=" " alt="" coords="1001,5,1169,47"/>
+<area shape="rect" id="node17" href="$classSchurSequentialSolver.html#afc572bd947a97f8aebc82714013d6d41" title=" " alt="" coords="1001,71,1169,112"/>
+<area shape="rect" id="node18" href="$classSchurSequentialSolver.html#aeae72f30176c219c7d60a206f54865c4" title=" " alt="" coords="1001,136,1169,177"/>
+<area shape="rect" id="node19" href="$classSchurSequentialSolver.html#aebe81742570d50e62bf86d13a1fd8d93" title=" " alt="" coords="1001,201,1169,243"/>
+<area shape="rect" id="node21" href="$classDerivatives.html#a50f5b9c159f7071eca24da47339f094c" title="Compute the second derivative of a vector field in the x&#45;direction." alt="" coords="470,699,658,726"/>
+<area shape="rect" id="node22" href="$classDerivatives.html#a8f62d63f77d17bf5d4469b1038ee0c1a" title="Compute the second derivative of a vector field in the y&#45;direction." alt="" coords="470,750,658,777"/>
+<area shape="rect" id="node23" href="$classDerivatives.html#a99280512fa8db2e9703d721141fb7c17" title="Compute the second derivative of a vector field in the z&#45;direction." alt="" coords="471,801,657,827"/>
+<area shape="rect" id="node24" href="$classDerivatives.html#a9d509cd4c682cc79ebebce1df69474a9" title="Compute the gradient of a scalar field (forward difference)." alt="" coords="455,649,673,675"/>
+<area shape="rect" id="node25" href="$classDerivatives.html#a0ef8b5e2a9e76abb839e9907bd127b76" title="Compute the derivative of a scalar field in the x&#45;direction (forward difference)." alt="" coords="721,646,932,673"/>
+<area shape="rect" id="node27" href="$classDerivatives.html#aee26f33635f34433d93ca5790849bd95" title="Compute the derivative of a scalar field in the y&#45;direction (forward difference)." alt="" coords="721,697,932,723"/>
+<area shape="rect" id="node28" href="$classDerivatives.html#a41f8f51d76f35343b09b8711af339480" title="Compute the derivative of a scalar field in the z&#45;direction (forward difference)." alt="" coords="722,747,931,774"/>
+<area shape="rect" id="node26" href="$classField.html#afe97c0b04f25f6322696a22ea9df8628" title="Getter for the grid information." alt="" coords="1031,706,1140,733"/>
 </map>

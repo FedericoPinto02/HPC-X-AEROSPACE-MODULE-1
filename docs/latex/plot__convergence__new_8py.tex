@@ -10,6 +10,8 @@
 \item 
 int \mbox{\hyperlink{namespaceplot__convergence__new_ad3cefda5828164fbae5cea7cd911fe4b}{plot\+\_\+convergence\+\_\+new.\+get\+\_\+step\+\_\+from\+\_\+filename}} (str filepath)
 \item 
+tuple \mbox{\hyperlink{namespaceplot__convergence__new_a2e04aacaa8b4c4d59e1393a94d47f731}{plot\+\_\+convergence\+\_\+new.\+compute\+\_\+convergence\+\_\+orders}} (list x\+\_\+values, list errors)
+\item 
 np.\+ndarray \mbox{\hyperlink{namespaceplot__convergence__new_a4604579fccce1eebf3e02daeb5a46960}{plot\+\_\+convergence\+\_\+new.\+compute\+\_\+analytical\+\_\+u\+\_\+at\+\_\+x\+\_\+faces}} (np.\+ndarray points, float t, float h)
 \item 
 np.\+ndarray \mbox{\hyperlink{namespaceplot__convergence__new_ad1d155df43e8f0dbca56872943a7ce25}{plot\+\_\+convergence\+\_\+new.\+compute\+\_\+analytical\+\_\+v\+\_\+at\+\_\+y\+\_\+faces}} (np.\+ndarray points, float t, float h)
@@ -22,16 +24,20 @@ float \mbox{\hyperlink{namespaceplot__convergence__new_ab842eab38fdd39e4c675987a
 \item 
 float \mbox{\hyperlink{namespaceplot__convergence__new_a9c50096fadd00dca9d78dada9685d58c}{plot\+\_\+convergence\+\_\+new.\+calculate\+\_\+l2\+\_\+rms\+\_\+error}} (np.\+ndarray field\+\_\+numerical, np.\+ndarray field\+\_\+analytical)
 \item 
-def \mbox{\hyperlink{namespaceplot__convergence__new_a1035fcf22408c6a6657ba8d94d1f6292}{plot\+\_\+convergence\+\_\+new.\+plot\+\_\+convergence}} (list x\+\_\+values, dict error\+\_\+data, str title, str save\+\_\+filename, str x\+\_\+label, int expected\+\_\+order)
+float \mbox{\hyperlink{namespaceplot__convergence__new_af1473567c048d42ae6057976bf72874d}{plot\+\_\+convergence\+\_\+new.\+calculate\+\_\+l1\+\_\+mean\+\_\+error}} (np.\+ndarray field\+\_\+numerical, np.\+ndarray field\+\_\+analytical)
+\item 
+def \mbox{\hyperlink{namespaceplot__convergence__new_a050311e523a715ced660e00c8a328d0a}{plot\+\_\+convergence\+\_\+new.\+plot\+\_\+clean\+\_\+convergence}} (list x\+\_\+values, dict error\+\_\+data, str title\+\_\+prefix, str save\+\_\+filename, str x\+\_\+label, int expected\+\_\+order, str mode\+\_\+label)
 \item 
 def \mbox{\hyperlink{namespaceplot__convergence__new_a58e62c353c73269c9dd3067ffd2bb236}{plot\+\_\+convergence\+\_\+new.\+run\+\_\+analysis}} (custom\+\_\+simulations=None)
 \end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
+float \mbox{\hyperlink{namespaceplot__convergence__new_a3bd280c487e2dfb51f48f9cd9cd82e1b}{plot\+\_\+convergence\+\_\+new.\+RE}} = 1.\+0
+\item 
 list \mbox{\hyperlink{namespaceplot__convergence__new_aa6e753cfeb34aa66e2d85a0812dd3592}{plot\+\_\+convergence\+\_\+new.\+SIMULATIONS}}
 \item 
-int \mbox{\hyperlink{namespaceplot__convergence__new_a0210b96ca0c4c34c6fa78f6a92d53e92}{plot\+\_\+convergence\+\_\+new.\+DOMAIN\+\_\+\+LENGTH\+\_\+X}} = 6
+float \mbox{\hyperlink{namespaceplot__convergence__new_a5d730a31999746e09d6f66e9439c1ad5}{plot\+\_\+convergence\+\_\+new.\+DOMAIN\+\_\+\+LENGTH\+\_\+X}} = 6.\+0
 \item 
 float \mbox{\hyperlink{namespaceplot__convergence__new_ad2bfa3c603d8035435ed1a032e9fa4b0}{plot\+\_\+convergence\+\_\+new.\+DT}} = 0.\+001
 \item 

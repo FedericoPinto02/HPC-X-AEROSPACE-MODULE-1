@@ -11,7 +11,8 @@ Class responsible for solving the Navier-\/\+Stokes-\/\+Brinkman equations.
 
 
 
-Collaboration diagram for NSBSolver\+:\nopagebreak
+Collaboration diagram for NSBSolver\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -21,7 +22,7 @@ Collaboration diagram for NSBSolver\+:\nopagebreak
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classNSBSolver_a8c0514612c95f972817b952c178b2cc4}{NSBSolver}} (const std\+::string \&\mbox{\hyperlink{classNSBSolver_a7ef19e244d81644b6e37d8e86daa6ec8}{config\+File}})
+\mbox{\hyperlink{classNSBSolver_a1b97f96d8ee7013032253e580ccbbee4}{NSBSolver}} (const std\+::string \&\mbox{\hyperlink{classNSBSolver_a7ef19e244d81644b6e37d8e86daa6ec8}{config\+File}}, \mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} \&\mbox{\hyperlink{classNSBSolver_ae57a9e461e766c7adddf0d35bef9ad14}{mpi}})
 \item 
 void \mbox{\hyperlink{classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6}{setup}} ()
 \item 
@@ -29,6 +30,8 @@ void \mbox{\hyperlink{classNSBSolver_ada676d7f89d6183a6666976991e4e868}{solve}} 
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} \& \mbox{\hyperlink{classNSBSolver_ae57a9e461e766c7adddf0d35bef9ad14}{mpi}}
 \item 
 std\+::string \mbox{\hyperlink{classNSBSolver_a7ef19e244d81644b6e37d8e86daa6ec8}{config\+File}}
 \item 
@@ -56,11 +59,11 @@ std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classLogWriter}{Log\+Writer}} $>$ \mb
 Class responsible for solving the Navier-\/\+Stokes-\/\+Brinkman equations. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classNSBSolver_a8c0514612c95f972817b952c178b2cc4}\label{classNSBSolver_a8c0514612c95f972817b952c178b2cc4}} 
+\mbox{\Hypertarget{classNSBSolver_a1b97f96d8ee7013032253e580ccbbee4}\label{classNSBSolver_a1b97f96d8ee7013032253e580ccbbee4}} 
 \index{NSBSolver@{NSBSolver}!NSBSolver@{NSBSolver}}
 \index{NSBSolver@{NSBSolver}!NSBSolver@{NSBSolver}}
 \doxysubsubsection{\texorpdfstring{NSBSolver()}{NSBSolver()}}
-{\footnotesize\ttfamily NSBSolver\+::\+NSBSolver (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{config\+File }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+{\footnotesize\ttfamily NSBSolver\+::\+NSBSolver (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{config\+File,  }\item[{\mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} \&}]{mpi }\end{DoxyParamCaption})}
 
 
 
@@ -71,14 +74,16 @@ Class responsible for solving the Navier-\/\+Stokes-\/\+Brinkman equations.
 \doxysubsubsection{\texorpdfstring{setup()}{setup()}}
 {\footnotesize\ttfamily void NSBSolver\+::setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classNSBSolver_ae4fa597e5550a289bcef3ee8a2b4b4f6_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -98,7 +103,8 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classNSBSolver_ada676d7f89d6183a6666976991e4e868_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -131,6 +137,12 @@ Here is the caller graph for this function\+:\nopagebreak
 \index{loggingSettings@{loggingSettings}!NSBSolver@{NSBSolver}}
 \doxysubsubsection{\texorpdfstring{loggingSettings}{loggingSettings}}
 {\footnotesize\ttfamily \mbox{\hyperlink{structLoggingSettings}{Logging\+Settings}} NSBSolver\+::logging\+Settings\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classNSBSolver_ae57a9e461e766c7adddf0d35bef9ad14}\label{classNSBSolver_ae57a9e461e766c7adddf0d35bef9ad14}} 
+\index{NSBSolver@{NSBSolver}!mpi@{mpi}}
+\index{mpi@{mpi}!NSBSolver@{NSBSolver}}
+\doxysubsubsection{\texorpdfstring{mpi}{mpi}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMpiEnv}{Mpi\+Env}}\& NSBSolver\+::mpi\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{classNSBSolver_ac3d1320907e6a704c227cf90bb712f70}\label{classNSBSolver_ac3d1320907e6a704c227cf90bb712f70}} 
 \index{NSBSolver@{NSBSolver}!outputSettings@{outputSettings}}

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nsbsolver_325',['NSBSolver',['../classNSBSolver.html',1,'']]]
+  ['nsbsolver_367',['NSBSolver',['../classNSBSolver.html',1,'']]]
 ];

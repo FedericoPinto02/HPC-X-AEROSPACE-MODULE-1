@@ -1,5 +1,5 @@
 <map id="LinearSys::ThomaSolver" name="LinearSys::ThomaSolver">
 <area shape="rect" id="node1" title="Solve the linear system." alt="" coords="5,31,184,57"/>
 <area shape="rect" id="node2" href="$classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="232,5,381,32"/>
-<area shape="rect" id="node3" href="$classTridiagMat.html#a46d96fb5ae69f72ff1f56c12b390d0a9" title="Get the matrix size." alt="" coords="233,56,380,83"/>
+<area shape="rect" id="node3" href="$classTridiagMat.html#a926ab35a1c697a419508318505f701a3" title="Get the matrix size." alt="" coords="233,56,380,83"/>
 </map>

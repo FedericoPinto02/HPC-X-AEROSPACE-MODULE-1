@@ -2,7 +2,7 @@
 \label{classPressureStep}\index{PressureStep@{PressureStep}}
 
 
-Handles all pressure step maniplation. This class does not own data but regulates the workflow.  
+Handles all pressure step manipulation. This class does not own data but regulates the workflow.  
 
 
 
@@ -11,7 +11,8 @@ Handles all pressure step maniplation. This class does not own data but regulate
 
 
 
-Collaboration diagram for Pressure\+Step\+:\nopagebreak
+Collaboration diagram for Pressure\+Step\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -24,16 +25,18 @@ Collaboration diagram for Pressure\+Step\+:\nopagebreak
 \mbox{\hyperlink{classPressureStep_a52d71f53887abc1f443855ff462c68ac}{Pressure\+Step}} (\mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \&sim\+Data, \mbox{\hyperlink{structParallelizationSettings}{Parallelization\+Settings}} \&parallel)
 \begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classPressureStep_a837946964627b9513277bd7698c630ce}{run}} ()
-\begin{DoxyCompactList}\small\item\em Run pressure step. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Run the pressure step\+: pressure correction computation by splitting direction and pressure update. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013}{initialize\+Workspace\+Fields}} ()
-\begin{DoxyCompactList}\small\item\em Construct temporary fields to proceed in computations. \end{DoxyCompactList}\item 
-std\+::vector$<$ double $>$ \mbox{\hyperlink{classPressureStep_a5420590f473164b5d861a62dc270ac08}{solve\+System}} (\mbox{\hyperlink{classLinearSys}{Linear\+Sys}} \&sys, \mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}} b\+Type)
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classPressureStep_a9ebc8796e971246693693124240782b3}{solve\+System}} (\mbox{\hyperlink{classLinearSys}{Linear\+Sys}} \&sys)
 \begin{DoxyCompactList}\small\item\em Wrapper that chooses whether to use Thomas (P=1) or Schur (P$>$1). \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \& \mbox{\hyperlink{classPressureStep_a682a5fed8760be4efe8600c66ec63c4d}{data\+\_\+}}
+\item 
+\mbox{\hyperlink{structParallelizationSettings}{Parallelization\+Settings}} \mbox{\hyperlink{classPressureStep_a1f5377ff295c43b1572e4adc7a1fad39}{parallel\+\_\+}}
 \item 
 \mbox{\hyperlink{classField}{Field}} \mbox{\hyperlink{classPressureStep_a65ebed44c9aa4439caf9b01deaa0a524}{psi}}
 \item 
@@ -42,10 +45,6 @@ std\+::vector$<$ double $>$ \mbox{\hyperlink{classPressureStep_a5420590f473164b5
 \mbox{\hyperlink{classField}{Field}} \mbox{\hyperlink{classPressureStep_a83f14af9630db546e40838a295da8e00}{pcr}}
 \item 
 \mbox{\hyperlink{classField}{Field}} \mbox{\hyperlink{classPressureStep_a862d603d2413743347abe84d29a7844d}{divU}}
-\item 
-\mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \& \mbox{\hyperlink{classPressureStep_a682a5fed8760be4efe8600c66ec63c4d}{data\+\_\+}}
-\item 
-\mbox{\hyperlink{structParallelizationSettings}{Parallelization\+Settings}} \mbox{\hyperlink{classPressureStep_a1f5377ff295c43b1572e4adc7a1fad39}{parallel\+\_\+}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Friends}
 \begin{DoxyCompactItemize}
@@ -57,7 +56,7 @@ class \mbox{\hyperlink{classPressureStep_a816076c0dc9405181fb7c64ccd4a71fd}{Pres
 
 
 \doxysubsection{Detailed Description}
-Handles all pressure step maniplation. This class does not own data but regulates the workflow. 
+Handles all pressure step manipulation. This class does not own data but regulates the workflow. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{classPressureStep_a52d71f53887abc1f443855ff462c68ac}\label{classPressureStep_a52d71f53887abc1f443855ff462c68ac}} 
@@ -72,43 +71,22 @@ Constructor.
 
 
 \begin{DoxyParams}{Parameters}
-{\em contex} & Contains all simulation data \\
+{\em sim\+Data} & the simulation data \\
+\hline
+{\em parallel} & the parallelization settings \\
 \hline
 \end{DoxyParams}
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classPressureStep_a52d71f53887abc1f443855ff462c68ac_cgraph}
+\includegraphics[width=339pt]{classPressureStep_a52d71f53887abc1f443855ff462c68ac_cgraph}
 \end{center}
 \end{figure}
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013}\label{classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013}} 
-\index{PressureStep@{PressureStep}!initializeWorkspaceFields@{initializeWorkspaceFields}}
-\index{initializeWorkspaceFields@{initializeWorkspaceFields}!PressureStep@{PressureStep}}
-\doxysubsubsection{\texorpdfstring{initializeWorkspaceFields()}{initializeWorkspaceFields()}}
-{\footnotesize\ttfamily void Pressure\+Step\+::initialize\+Workspace\+Fields (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
-
-
-
-Construct temporary fields to proceed in computations. 
-
-Here is the call graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=317pt]{classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_cgraph}
-\end{center}
-\end{figure}
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{classPressureStep_a775ec248bc2a5c2b9f7d1457b1c97013_icgraph}
-\end{center}
-\end{figure}
 \mbox{\Hypertarget{classPressureStep_a837946964627b9513277bd7698c630ce}\label{classPressureStep_a837946964627b9513277bd7698c630ce}} 
 \index{PressureStep@{PressureStep}!run@{run}}
 \index{run@{run}!PressureStep@{PressureStep}}
@@ -117,37 +95,40 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-Run pressure step. 
+Run the pressure step\+: pressure correction computation by splitting direction and pressure update. 
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{classPressureStep_a837946964627b9513277bd7698c630ce_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classPressureStep_a5420590f473164b5d861a62dc270ac08}\label{classPressureStep_a5420590f473164b5d861a62dc270ac08}} 
+\mbox{\Hypertarget{classPressureStep_a9ebc8796e971246693693124240782b3}\label{classPressureStep_a9ebc8796e971246693693124240782b3}} 
 \index{PressureStep@{PressureStep}!solveSystem@{solveSystem}}
 \index{solveSystem@{solveSystem}!PressureStep@{PressureStep}}
 \doxysubsubsection{\texorpdfstring{solveSystem()}{solveSystem()}}
-{\footnotesize\ttfamily std\+::vector$<$ double $>$ Pressure\+Step\+::solve\+System (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSys}{Linear\+Sys}} \&}]{sys,  }\item[{\mbox{\hyperlink{LinearSys_8hpp_af75d5dd7322fa39ed0af4e7839e600f8}{Boundary\+Type}}}]{b\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ Pressure\+Step\+::solve\+System (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classLinearSys}{Linear\+Sys}} \&}]{sys }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 
 Wrapper that chooses whether to use Thomas (P=1) or Schur (P$>$1). 
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classPressureStep_a5420590f473164b5d861a62dc270ac08_cgraph}
+\includegraphics[width=350pt]{classPressureStep_a9ebc8796e971246693693124240782b3_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classPressureStep_a5420590f473164b5d861a62dc270ac08_icgraph}
+\includegraphics[width=350pt]{classPressureStep_a9ebc8796e971246693693124240782b3_icgraph}
 \end{center}
 \end{figure}
 

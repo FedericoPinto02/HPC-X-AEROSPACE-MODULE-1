@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['unescape_2103',['unescape',['../namespacedetail.html#aa45018148d8569ca6f4d10a983221df1',1,'detail']]],
-  ['update_2104',['update',['../classbasic__json.html#a3819f393e82396782ccc22785575b01d',1,'basic_json::update(const_reference j, bool merge_objects=false)'],['../classbasic__json.html#a4ea2b8cef5e4aba5b92d14e6ebe25936',1,'basic_json::update(const_iterator first, const_iterator last, bool merge_objects=false)']]]
+  ['_7empienv_543',['~MpiEnv',['../classMpiEnv.html#ac722c041644cf8f1eb0eb6c0489375f0',1,'MpiEnv']]]
 ];

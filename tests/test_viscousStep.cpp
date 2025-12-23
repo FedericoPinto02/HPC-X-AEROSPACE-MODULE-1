@@ -2,14 +2,12 @@
 #include <memory>
 #include <vector>
 #include <cmath>
-#include <functional>
 
 #include "MpiEnvFixture.hpp"
 
+#include "core/Fields.hpp"
 #include "simulation/viscousStep.hpp"
 #include "simulation/SimulationContext.hpp"
-#include "core/Fields.hpp"
-#include "numerics/derivatives.hpp"
 
 class ViscousStepTest : public ::testing::Test {
 protected:
@@ -83,28 +81,15 @@ protected:
         data_.bcw = [](double, double, double z, double) { return std::sin(z); };
 
         viscousStep = std::make_unique<ViscousStep>(*g_mpi, data_);
-    }
-
-    void callComputeG() {
-        viscousStep->computeG();
+        viscousStep->setup();
     }
 
     void callComputeXi() {
         viscousStep->computeXi();
     }
 
-    double getG(Axis axis, size_t i, size_t j, size_t k) {
-        return viscousStep->g(axis, i, j, k);
-    }
-
-    double getXi(Axis axis, size_t i, size_t j, size_t k) {
+    double getXi(Axis axis, long i, long j, long k) {
         return viscousStep->xi(axis, i, j, k);
-    }
-
-    void setGConstant(double val) {
-        auto funcVal = [val](double, double, double, double) { return val; };
-        viscousStep->g.setup(grid, funcVal, funcVal, funcVal);
-        viscousStep->g.populate(0.0);
     }
 };
 
@@ -113,59 +98,72 @@ TEST_F(ViscousStepTest, ConstructorAndInit) {
 }
 
 TEST_F(ViscousStepTest, RunDoesNotCrash) {
-// Triggers LinearSys::fillSystemVelocity which calls analytical BCs
+    // Triggers LinearSys::fillSystemVelocity which calls analytical BCs
     ASSERT_NO_THROW(viscousStep->run());
 }
 
-TEST_F(ViscousStepTest, ComputeG_Correctness) {
-    const long i = (long) grid->Nx / 2;
-    const long j = (long) grid->Ny / 2;
-    const long k_ = (long) grid->Nz / 2;
-    const double dx = grid->dx;
-    const double k_permeability = 1.0;
-
-    ASSERT_NO_THROW(callComputeG());
-
-    // The G term for the X-component lives at (i+0.5)
-    double x = grid->to_x(i, GridStaggering::FACE_CENTERED, Axis::X);
-    double x_prev = grid->to_x(i - 1, GridStaggering::FACE_CENTERED, Axis::X);
-    double x_next = grid->to_x(i + 1, GridStaggering::FACE_CENTERED, Axis::X);
-
-    double f_term = 0.0;
-    double gradP_term = 1.0; // d/dx(x + 2y + 3z) = 1
-    double u_term = (nu / k_permeability) * std::sin(x);
-
-// Laplacian approximation
-    double dxx_term = (std::cos(x_next) - 2.0 * std::cos(x) + std::cos(x_prev)) / (dx * dx);
-    double dyy_term = 0.0; // Assume constant in Y for this test
-    double dzz_term = 0.0; // Assume constant in Z for this test
-    double deriv_term = nu * (dxx_term + dyy_term + dzz_term);
-
-// Expected G formula from implementation
-    double expected_g_x = f_term - gradP_term - u_term + deriv_term;
-
-    double g_x_computed = getG(Axis::X, i, j, k_);
-    EXPECT_NEAR(g_x_computed, expected_g_x, 1e-9);
-}
-
 TEST_F(ViscousStepTest, ComputeXi_Correctness) {
-    const long i = (long) grid->Nx / 2;
-    const long j = (long) grid->Ny / 2;
-    const long k_ = (long) grid->Nz / 2;
-    const double x = grid->to_x(i, GridStaggering::FACE_CENTERED, Axis::X);
-    double u_val = std::sin(x);
+    // We set up a scenario where the inlined 'g' calculation and 'xi' calculation are predictable.
+    // Formula: xi = u + (dt / beta) * g
+    // where g = f - gradP - (nu/k)*u + nu * Laplacian
+    // and beta = 1 + (dt * nu / 2) * inv_k
 
-    setGConstant(10.0);
+    // 1. Force F = 10.0
+    auto funcF = [](double, double, double, double) { return 10.0; };
+    data_.f.setup(grid, funcF, funcF, funcF);
+    data_.f.populate(0.0);
 
+    // 2. Predictor P = 0 => gradP = 0
+    auto funcZero = [](double, double, double, double) { return 0.0; };
+    data_.predictor.setup(grid, funcZero);
+    data_.predictor.populate(0.0);
+
+    // 3. Velocity U = 1.0 (constant)
+    auto funcOne = [](double, double, double, double) { return 1.0; };
+    data_.u.setup(grid, funcOne, funcOne, funcOne);
+    data_.u.populate(0.0);
+
+    // 4. Eta, Zeta = 0 (and U is constant) => Laplacian terms are 0
+    data_.eta.setup(grid, funcZero, funcZero, funcZero);
+    data_.eta.populate(0.0);
+    data_.zeta.setup(grid, funcZero, funcZero, funcZero);
+    data_.zeta.populate(0.0);
+
+    // 5. Permeability inv_k = 1.0
+    data_.inv_k.setup(grid, funcOne); // Explicitly ensure it is 1.0
+    data_.inv_k.populate(0.0);
+
+    // 6. [IMPORTANT] Update BCs to match U=1.0 to avoid ghost cell artifacts
+    data_.bcu = funcOne;
+    data_.bcv = funcOne;
+    data_.bcw = funcOne;
+
+    // --- Execute ---
     callComputeXi();
 
-    double k_val = 1.0;
-    double beta = 1.0 + (dt * nu * 0.5 / k_val);
+    // --- Verification ---
+    const long i = (long) grid->Nx / 2;
+    const long j = (long) grid->Ny / 2;
+    const long k_ = (long) grid->Nz / 2;
 
-    double expected_xi_x = u_val + (dt / beta) * 10.0;
+    // Manual Calculation:
+    double u_val = 1.0;
+    double f_val = 10.0;
+    double gradP_val = 0.0;
+    double inv_k = 1.0;
+    double laplacian = 0.0;
+
+    // g = 10.0 - 0.0 - (1.0 * 1.0 * 1.0) + 0.0 = 9.0
+    double g_val = f_val - gradP_val - nu * u_val * inv_k + nu * laplacian;
+
+    // beta = 1.0 + (0.1 * 1.0 * 0.5 * 1.0) = 1.05
+    double beta = 1.0 + (dt * nu * 0.5 * inv_k);
+
+    // xi = 1.0 + (0.1 / 1.05) * 9.0
+    double expected_xi = u_val + (dt / beta) * g_val;
 
     double xi_x_computed = getXi(Axis::X, i, j, k_);
-    EXPECT_NEAR(xi_x_computed, expected_xi_x, 1e-9);
+    EXPECT_NEAR(xi_x_computed, expected_xi, 1e-9);
 }
 
 class ViscousStepRobustnessTest : public ::testing::Test {
@@ -223,12 +221,13 @@ protected:
         data_.bcw = sqZ;
 
         viscousStep = std::make_unique<ViscousStep>(*g_mpi, data_);
+        viscousStep->setup();
     }
 
     void checkFieldFinite(const Field &field, const std::string &fieldName) {
-        for (size_t k = 0; k < grid->Nz; ++k) {
-            for (size_t j = 0; j < grid->Ny; ++j) {
-                for (size_t i = 0; i < grid->Nx; ++i) {
+        for (long k = 0; k < grid->Nz; ++k) {
+            for (long j = 0; j < grid->Ny; ++j) {
+                for (long i = 0; i < grid->Nx; ++i) {
                     ASSERT_TRUE(std::isfinite(field(i, j, k)))
                                                 << "Found NaN or Inf in " << fieldName
                                                 << " at index (" << i << "," << j << "," << k << ")";

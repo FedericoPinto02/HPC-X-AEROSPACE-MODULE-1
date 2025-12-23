@@ -5,63 +5,20 @@
 // ---------------------------------------------------------------------------------------------------------------------
 // Field class methods
 // ---------------------------------------------------------------------------------------------------------------------
-Field::Scalar &
-Field::valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) {
-    switch (offsetDirection) {
-        case Axis::X: {
-            const auto i_new = i + offset;
-            return data_[idx(i_new, j, k)];
-        }
-        case Axis::Y: {
-            const auto j_new = j + offset;
-            return data_[idx(i, j_new, k)];
-        }
-        case Axis::Z: {
-            const auto k_new = k + offset;
-            return data_[idx(i, j, k_new)];
-        }
-        default:
-            throw std::invalid_argument("Invalid direction.");
-    }
-}
-
-const Field::Scalar &
-Field::valueWithOffset(long i, long j, long k, Axis offsetDirection, int offset) const {
-    switch (offsetDirection) {
-        case Axis::X: {
-            const auto i_new = i + offset;
-            return data_[idx(i_new, j, k)];
-        }
-        case Axis::Y: {
-            const auto j_new = j + offset;
-            return data_[idx(i, j_new, k)];
-        }
-        case Axis::Z: {
-            const auto k_new = k + offset;
-            return data_[idx(i, j, k_new)];
-        }
-        default:
-            throw std::invalid_argument("Invalid direction.");
-    }
-}
-
 void Field::populate(double time) {
-    const long H = (long) gridPtr_->n_halo;
     const long Nx = (long) gridPtr_->Nx;
     const long Ny = (long) gridPtr_->Ny;
     const long Nz = (long) gridPtr_->Nz;
-    const long Nx_tot = Nx + 2 * H;
-    const long Ny_tot = Ny + 2 * H;
 
     for (long k = 0; k < Nz; ++k) {
-        const long kOffset = (k + H) * Ny_tot * Nx_tot;
+        const long kOffset = (long) (k + nHalo_) * (long) axisStrides_[2];
         for (long j = 0; j < Ny; ++j) {
-            const long jOffset = (j + H) * Nx_tot;
+            const long jOffset = (long) (j + nHalo_) * (long) axisStrides_[1];
             for (long i = 0; i < Nx; ++i) {
                 auto x = gridPtr_->to_x(i, offset_, offsetAxis_);
                 auto y = gridPtr_->to_y(j, offset_, offsetAxis_);
                 auto z = gridPtr_->to_z(k, offset_, offsetAxis_);
-                data_[kOffset + jOffset + (i + H)] = populateFunction_(x, y, z, time);
+                data_[kOffset + jOffset + (nHalo_ + i)] = populateFunction_(x, y, z, time);
             }
         }
     }
@@ -108,14 +65,6 @@ void Field::multiply(const Field::Scalar value) {
 // ---------------------------------------------------------------------------------------------------------------------
 // VectorField class methods
 // ---------------------------------------------------------------------------------------------------------------------
-Field::Scalar &VectorField::operator()(Axis componentDirection, long i, long j, long k) {
-    return component(componentDirection).value(i, j, k);
-}
-
-const Field::Scalar &VectorField::operator()(Axis componentDirection, long i, long j, long k) const {
-    return component(componentDirection).value(i, j, k);
-}
-
 void VectorField::add(const Field::Scalar value) {
     component(Axis::X).add(value);
     component(Axis::Y).add(value);

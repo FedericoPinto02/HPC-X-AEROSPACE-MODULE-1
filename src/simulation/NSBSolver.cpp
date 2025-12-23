@@ -51,6 +51,9 @@ void NSBSolver::solve()
 
     std::clock_t start_cpu_time = std::clock();
 
+    pressureStep->setup();
+    viscousStep->setup();
+
     // Time integration
     for (unsigned int i = 1; i < simData.totalSteps + 1; i++)
     {

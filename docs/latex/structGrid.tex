@@ -12,62 +12,89 @@ Struct to hold grid dimensions and spacing information along each direction.
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{structGrid_ab12903263a3f2097858c2be593dcab19}{Grid}} (size\+\_\+t Nx\+\_\+, size\+\_\+t Ny\+\_\+, size\+\_\+t Nz\+\_\+, double dx\+\_\+, double dy\+\_\+, double dz\+\_\+)
-\begin{DoxyCompactList}\small\item\em Constructor to initialize the grid with given physical sizes and number of points. \end{DoxyCompactList}\item 
-constexpr size\+\_\+t \mbox{\hyperlink{structGrid_a70a4b43c216152caf67f3628326f1d59}{size}} ()
-\begin{DoxyCompactList}\small\item\em Getter for the total number of grid points. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structGrid_a374223708b014cc2b96c2e6e5ef4abf7}{Grid}} (size\+\_\+t Nx\+\_\+g, size\+\_\+t Ny\+\_\+g, size\+\_\+t Nz\+\_\+g, double dx\+\_\+, double dy\+\_\+, double dz\+\_\+)
+\begin{DoxyCompactList}\small\item\em Constructor to initialize the grid in an explicitly sequential environment. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structGrid_ad23ba8bffd7ee02f2b19ba5c252a96fe}{Grid}} (size\+\_\+t Nx\+\_\+g, size\+\_\+t Ny\+\_\+g, size\+\_\+t Nz\+\_\+g, double dx\+\_\+, double dy\+\_\+, double dz\+\_\+, const \mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} \&env, size\+\_\+t \mbox{\hyperlink{structGrid_a78c04584375f91cfa978ea0c9f76c111}{n\+\_\+halo}}=2)
+\begin{DoxyCompactList}\small\item\em Constructor to initialize the grid in a parallel environment. Automatically decomposes the global domain based on \mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} topology. \end{DoxyCompactList}\item 
+constexpr size\+\_\+t \mbox{\hyperlink{structGrid_a8a5cf0c72f5be8a213d6e895494851e6}{global\+Size}} () const
+\begin{DoxyCompactList}\small\item\em Getter for the total number of global grid points. \end{DoxyCompactList}\item 
 constexpr size\+\_\+t \mbox{\hyperlink{structGrid_add6c8c9ea4bd708abfcbe875e85cd076}{size}} () const
-\item 
-double \mbox{\hyperlink{structGrid_a32cb639714ca32d125b906bae21573cf}{to\+\_\+x}} (double i, \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} offset, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Axis) const
+\begin{DoxyCompactList}\small\item\em Getter for the total number of local grid points. \end{DoxyCompactList}\item 
+constexpr size\+\_\+t \mbox{\hyperlink{structGrid_ae445b63d1d6af03452f1ffeb2f622d3d}{size\+With\+Halo}} () const
+\begin{DoxyCompactList}\small\item\em Getter for the total number of local grid points, including halo points in each direction. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structGrid_aa028931255914c6030565b59d2ec1be6}{to\+\_\+x}} (size\+\_\+t i, \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} offset, \mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Axis) const
 \begin{DoxyCompactList}\small\item\em Converts a grid index to a physical coordinate along the X-\/axis, considering staggering. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{structGrid_a3e6e2b09c73bf2e2f1710f4baca80ec2}{to\+\_\+y}} (double j, \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} offset, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Axis) const
+double \mbox{\hyperlink{structGrid_a591f8df86fb8e8f7986919e108f478ee}{to\+\_\+y}} (size\+\_\+t j, \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} offset, \mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Axis) const
 \begin{DoxyCompactList}\small\item\em Converts a grid index to a physical coordinate along the Y-\/axis, considering staggering. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{structGrid_a07ecb5a874d22f56f673f3b8b2b3526e}{to\+\_\+z}} (double k, \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} offset, \mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Axis) const
-\begin{DoxyCompactList}\small\item\em Converts a grid index to a physical coordinate along the Z-\/axis, considering staggering. \end{DoxyCompactList}\end{DoxyCompactItemize}
+double \mbox{\hyperlink{structGrid_a1e3ed400719b829d8d23344e227e4474}{to\+\_\+z}} (size\+\_\+t k, \mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}} offset, \mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} offset\+Axis) const
+\begin{DoxyCompactList}\small\item\em Converts a grid index to a physical coordinate along the Z-\/axis, considering staggering. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structGrid_aae9c0e8104091f55bd0c172a0d0ae081}{has\+Min\+Boundary}} (\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} axis) const
+\begin{DoxyCompactList}\small\item\em Checks if the local grid chunk has the minimum boundary at the specified axis. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structGrid_afd10d881b59bee4831fffda719ca035a}{has\+Max\+Boundary}} (\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}} axis) const
+\begin{DoxyCompactList}\small\item\em Checks if the local grid chunk has the maximum boundary at the specified axis. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::pair$<$ size\+\_\+t, size\+\_\+t $>$ \mbox{\hyperlink{structGrid_ac9b2a8eafa59fe957bd84b9d3f84df7f}{decompose1D}} (size\+\_\+t N\+\_\+glob, int n\+\_\+procs, int proc\+\_\+coord)
+\begin{DoxyCompactList}\small\item\em Decompose the grid along a target dimension, identifying local information of the chunk owned by a process with a specified coordinate in a Cartesian MPI topology (parallel environment). The domain decomposition is done in a balanced manner, distributing any remainder points to the first few. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{structGrid_ad4c79bac71b59281996b784f6e538068}{Lx}}
-\begin{DoxyCompactList}\small\item\em Physical size of the grid in each direction. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{structGrid_a60a2f837f0e629c85b16f120631d8324}{Ly}}
+double \mbox{\hyperlink{structGrid_a730fde210b6d4dd0f38ad9e84b504851}{Lx\+\_\+glob}}
+\begin{DoxyCompactList}\small\item\em Physical lengths of the global grid in each direction. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structGrid_a781159ea5c1221fa762773382b2379be}{Ly\+\_\+glob}}
 \item 
-double \mbox{\hyperlink{structGrid_ad8f3d3e5b45ccccad6936114dad717d9}{Lz}}
+double \mbox{\hyperlink{structGrid_adfd015b3978a3dd58f1fe4daa0567eb5}{Lz\+\_\+glob}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structGrid_a00c9b075375377e49b337f014dde527d}{Nx\+\_\+glob}}
+\begin{DoxyCompactList}\small\item\em Number of grid points in the global grid in each direction. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{structGrid_a513f0485d5d237374e53449b2c656d1a}{Ny\+\_\+glob}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structGrid_ad1c6b97e05c5dd3a7ae4c96d51b77c63}{Nz\+\_\+glob}}
+\item 
+double \mbox{\hyperlink{structGrid_a1f52441a37442b054bf153cc362cf2d8}{dx}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{structGrid}{Grid}} spacing in each direction (constant throughout the domain). \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{structGrid_ac388777840b30765f83a8a135d7b0cec}{dy}}
+\item 
+double \mbox{\hyperlink{structGrid_a229d6a7322d5d4ff446fd78468fef27b}{dz}}
 \item 
 size\+\_\+t \mbox{\hyperlink{structGrid_a7f51b9f4262231b3e89f1b9169f83e1c}{Nx}}
-\begin{DoxyCompactList}\small\item\em Number of grid points in each direction. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Number of grid points in the local grid chunk in each direction (derived from global info and Cartesian topology). \end{DoxyCompactList}\item 
 size\+\_\+t \mbox{\hyperlink{structGrid_aedbe6591ce1565b3bdece8af225e5015}{Ny}}
 \item 
 size\+\_\+t \mbox{\hyperlink{structGrid_a5165f82a832d9b1c2bd2156c3b6439d6}{Nz}}
 \item 
-double \mbox{\hyperlink{structGrid_a1f52441a37442b054bf153cc362cf2d8}{dx}}
-\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{structGrid}{Grid}} spacing in each direction (derived from physical sizes and number of grid points). \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{structGrid_ac388777840b30765f83a8a135d7b0cec}{dy}}
+size\+\_\+t \mbox{\hyperlink{structGrid_a6f37c8f735275a95c496ce0e9309c44a}{i\+\_\+start}}
+\begin{DoxyCompactList}\small\item\em Index-\/offset in each dimension of this local grid chunk in the global grid. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{structGrid_a1db9deea8539aa4b9f193efd3d440172}{j\+\_\+start}}
 \item 
-double \mbox{\hyperlink{structGrid_a229d6a7322d5d4ff446fd78468fef27b}{dz}}
-\end{DoxyCompactItemize}
+size\+\_\+t \mbox{\hyperlink{structGrid_ab4073ab5f9f45cffcf9ec3059e61c5d3}{k\+\_\+start}}
+\item 
+size\+\_\+t \mbox{\hyperlink{structGrid_a78c04584375f91cfa978ea0c9f76c111}{n\+\_\+halo}}
+\begin{DoxyCompactList}\small\item\em Number of halo points along each direction. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 Struct to hold grid dimensions and spacing information along each direction. 
 
 \doxysubsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{structGrid_ab12903263a3f2097858c2be593dcab19}\label{structGrid_ab12903263a3f2097858c2be593dcab19}} 
+\mbox{\Hypertarget{structGrid_a374223708b014cc2b96c2e6e5ef4abf7}\label{structGrid_a374223708b014cc2b96c2e6e5ef4abf7}} 
 \index{Grid@{Grid}!Grid@{Grid}}
 \index{Grid@{Grid}!Grid@{Grid}}
-\doxysubsubsection{\texorpdfstring{Grid()}{Grid()}}
-{\footnotesize\ttfamily Grid\+::\+Grid (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{Nx\+\_\+,  }\item[{size\+\_\+t}]{Ny\+\_\+,  }\item[{size\+\_\+t}]{Nz\+\_\+,  }\item[{double}]{dx\+\_\+,  }\item[{double}]{dy\+\_\+,  }\item[{double}]{dz\+\_\+ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\doxysubsubsection{\texorpdfstring{Grid()}{Grid()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Grid\+::\+Grid (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{Nx\+\_\+g,  }\item[{size\+\_\+t}]{Ny\+\_\+g,  }\item[{size\+\_\+t}]{Nz\+\_\+g,  }\item[{double}]{dx\+\_\+,  }\item[{double}]{dy\+\_\+,  }\item[{double}]{dz\+\_\+ }\end{DoxyParamCaption})}
 
 
 
-Constructor to initialize the grid with given physical sizes and number of points. 
+Constructor to initialize the grid in an explicitly sequential environment. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em Nx\+\_\+} & the number of grid points in the X direction \\
+{\em Nx\+\_\+g} & the total number of global points in the X direction \\
 \hline
-{\em Ny\+\_\+} & the number of grid points in the Y direction \\
+{\em Ny\+\_\+g} & the total number of global points in the Y direction \\
 \hline
-{\em Nz\+\_\+} & the number of grid points in the Z direction \\
+{\em Nz\+\_\+g} & the total number of global points in the Z direction \\
 \hline
 {\em dx\+\_\+} & the grid spacing in the X direction \\
 \hline
@@ -76,33 +103,156 @@ Constructor to initialize the grid with given physical sizes and number of point
 {\em dz\+\_\+} & the grid spacing in the Z direction \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{structGrid_ad23ba8bffd7ee02f2b19ba5c252a96fe}\label{structGrid_ad23ba8bffd7ee02f2b19ba5c252a96fe}} 
+\index{Grid@{Grid}!Grid@{Grid}}
+\index{Grid@{Grid}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Grid()}{Grid()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Grid\+::\+Grid (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{Nx\+\_\+g,  }\item[{size\+\_\+t}]{Ny\+\_\+g,  }\item[{size\+\_\+t}]{Nz\+\_\+g,  }\item[{double}]{dx\+\_\+,  }\item[{double}]{dy\+\_\+,  }\item[{double}]{dz\+\_\+,  }\item[{const \mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} \&}]{env,  }\item[{size\+\_\+t}]{n\+\_\+halo = {\ttfamily 2} }\end{DoxyParamCaption})}
+
+
+
+Constructor to initialize the grid in a parallel environment. Automatically decomposes the global domain based on \mbox{\hyperlink{classMpiEnv}{Mpi\+Env}} topology. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Nx\+\_\+g} & the total number of global points in the X direction \\
+\hline
+{\em Ny\+\_\+g} & the total number of global points in the Y direction \\
+\hline
+{\em Nz\+\_\+g} & the total number of global points in the Z direction \\
+\hline
+{\em dx\+\_\+} & the grid spacing in the X direction \\
+\hline
+{\em dy\+\_\+} & the grid spacing in the Y direction \\
+\hline
+{\em dz\+\_\+} & the grid spacing in the Z direction \\
+\hline
+{\em env} & the MPI Environment containing topology information \\
+\hline
+{\em n\+\_\+halo} & the number of halo points along each direction (default is 2) \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=292pt]{structGrid_ad23ba8bffd7ee02f2b19ba5c252a96fe_cgraph}
+\end{center}
+\end{figure}
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{structGrid_a70a4b43c216152caf67f3628326f1d59}\label{structGrid_a70a4b43c216152caf67f3628326f1d59}} 
-\index{Grid@{Grid}!size@{size}}
-\index{size@{size}!Grid@{Grid}}
-\doxysubsubsection{\texorpdfstring{size()}{size()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily constexpr size\+\_\+t Grid\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+\mbox{\Hypertarget{structGrid_ac9b2a8eafa59fe957bd84b9d3f84df7f}\label{structGrid_ac9b2a8eafa59fe957bd84b9d3f84df7f}} 
+\index{Grid@{Grid}!decompose1D@{decompose1D}}
+\index{decompose1D@{decompose1D}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{decompose1D()}{decompose1D()}}
+{\footnotesize\ttfamily std\+::pair$<$ size\+\_\+t, size\+\_\+t $>$ Grid\+::decompose1D (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{N\+\_\+glob,  }\item[{int}]{n\+\_\+procs,  }\item[{int}]{proc\+\_\+coord }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 
 
-Getter for the total number of grid points. 
+Decompose the grid along a target dimension, identifying local information of the chunk owned by a process with a specified coordinate in a Cartesian MPI topology (parallel environment). The domain decomposition is done in a balanced manner, distributing any remainder points to the first few. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em N\+\_\+glob} & the total number of global points in the target dimension \\
+\hline
+{\em n\+\_\+procs} & the number of processes along the target dimension \\
+\hline
+{\em coord} & the coordinate of the current process along the target dimension \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pair containing the number of local points for the target dimension and the starting index (offset) for that dimension in the global grid 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=292pt]{structGrid_ac9b2a8eafa59fe957bd84b9d3f84df7f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{structGrid_a8a5cf0c72f5be8a213d6e895494851e6}\label{structGrid_a8a5cf0c72f5be8a213d6e895494851e6}} 
+\index{Grid@{Grid}!globalSize@{globalSize}}
+\index{globalSize@{globalSize}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{globalSize()}{globalSize()}}
+{\footnotesize\ttfamily constexpr size\+\_\+t Grid\+::global\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+
+
+Getter for the total number of global grid points. 
 
 \begin{DoxyReturn}{Returns}
-the total number of grid points 
+the total number of global grid points 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structGrid_afd10d881b59bee4831fffda719ca035a}\label{structGrid_afd10d881b59bee4831fffda719ca035a}} 
+\index{Grid@{Grid}!hasMaxBoundary@{hasMaxBoundary}}
+\index{hasMaxBoundary@{hasMaxBoundary}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{hasMaxBoundary()}{hasMaxBoundary()}}
+{\footnotesize\ttfamily bool Grid\+::has\+Max\+Boundary (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{axis }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if the local grid chunk has the maximum boundary at the specified axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em axis} & the axis to check (\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}{Axis\+::X}}, \mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0}{Axis\+::Y}}, or \mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5}{Axis\+::Z}}) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the local grid chunk has the maximum boundary at the specified axis, false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structGrid_aae9c0e8104091f55bd0c172a0d0ae081}\label{structGrid_aae9c0e8104091f55bd0c172a0d0ae081}} 
+\index{Grid@{Grid}!hasMinBoundary@{hasMinBoundary}}
+\index{hasMinBoundary@{hasMinBoundary}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{hasMinBoundary()}{hasMinBoundary()}}
+{\footnotesize\ttfamily bool Grid\+::has\+Min\+Boundary (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{axis }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if the local grid chunk has the minimum boundary at the specified axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em axis} & the axis to check (\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383}{Axis\+::X}}, \mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0}{Axis\+::Y}}, or \mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5}{Axis\+::Z}}) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the local grid chunk has the minimum boundary at the specified axis, false otherwise 
 \end{DoxyReturn}
 \mbox{\Hypertarget{structGrid_add6c8c9ea4bd708abfcbe875e85cd076}\label{structGrid_add6c8c9ea4bd708abfcbe875e85cd076}} 
 \index{Grid@{Grid}!size@{size}}
 \index{size@{size}!Grid@{Grid}}
-\doxysubsubsection{\texorpdfstring{size()}{size()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
 {\footnotesize\ttfamily constexpr size\+\_\+t Grid\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
 
-This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. \mbox{\Hypertarget{structGrid_a32cb639714ca32d125b906bae21573cf}\label{structGrid_a32cb639714ca32d125b906bae21573cf}} 
+
+
+Getter for the total number of local grid points. 
+
+\begin{DoxyReturn}{Returns}
+the total number of local grid points 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structGrid_ae445b63d1d6af03452f1ffeb2f622d3d}\label{structGrid_ae445b63d1d6af03452f1ffeb2f622d3d}} 
+\index{Grid@{Grid}!sizeWithHalo@{sizeWithHalo}}
+\index{sizeWithHalo@{sizeWithHalo}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{sizeWithHalo()}{sizeWithHalo()}}
+{\footnotesize\ttfamily constexpr size\+\_\+t Grid\+::size\+With\+Halo (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+
+
+Getter for the total number of local grid points, including halo points in each direction. 
+
+\begin{DoxyReturn}{Returns}
+the total number of local grid points, including halo points 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structGrid_aa028931255914c6030565b59d2ec1be6}\label{structGrid_aa028931255914c6030565b59d2ec1be6}} 
 \index{Grid@{Grid}!to\_x@{to\_x}}
 \index{to\_x@{to\_x}!Grid@{Grid}}
 \doxysubsubsection{\texorpdfstring{to\_x()}{to\_x()}}
-{\footnotesize\ttfamily double Grid\+::to\+\_\+x (\begin{DoxyParamCaption}\item[{double}]{i,  }\item[{\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}}}]{offset,  }\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Axis }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily double Grid\+::to\+\_\+x (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}}}]{offset,  }\item[{\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Axis }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -120,11 +270,11 @@ Converts a grid index to a physical coordinate along the X-\/axis, considering s
 \begin{DoxyReturn}{Returns}
 the physical x-\/coordinate 
 \end{DoxyReturn}
-\mbox{\Hypertarget{structGrid_a3e6e2b09c73bf2e2f1710f4baca80ec2}\label{structGrid_a3e6e2b09c73bf2e2f1710f4baca80ec2}} 
+\mbox{\Hypertarget{structGrid_a591f8df86fb8e8f7986919e108f478ee}\label{structGrid_a591f8df86fb8e8f7986919e108f478ee}} 
 \index{Grid@{Grid}!to\_y@{to\_y}}
 \index{to\_y@{to\_y}!Grid@{Grid}}
 \doxysubsubsection{\texorpdfstring{to\_y()}{to\_y()}}
-{\footnotesize\ttfamily double Grid\+::to\+\_\+y (\begin{DoxyParamCaption}\item[{double}]{j,  }\item[{\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}}}]{offset,  }\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Axis }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily double Grid\+::to\+\_\+y (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{j,  }\item[{\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}}}]{offset,  }\item[{\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Axis }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -142,11 +292,11 @@ Converts a grid index to a physical coordinate along the Y-\/axis, considering s
 \begin{DoxyReturn}{Returns}
 the physical y-\/coordinate 
 \end{DoxyReturn}
-\mbox{\Hypertarget{structGrid_a07ecb5a874d22f56f673f3b8b2b3526e}\label{structGrid_a07ecb5a874d22f56f673f3b8b2b3526e}} 
+\mbox{\Hypertarget{structGrid_a1e3ed400719b829d8d23344e227e4474}\label{structGrid_a1e3ed400719b829d8d23344e227e4474}} 
 \index{Grid@{Grid}!to\_z@{to\_z}}
 \index{to\_z@{to\_z}!Grid@{Grid}}
 \doxysubsubsection{\texorpdfstring{to\_z()}{to\_z()}}
-{\footnotesize\ttfamily double Grid\+::to\+\_\+z (\begin{DoxyParamCaption}\item[{double}]{k,  }\item[{\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}}}]{offset,  }\item[{\mbox{\hyperlink{Grid_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Axis }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily double Grid\+::to\+\_\+z (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{k,  }\item[{\mbox{\hyperlink{Grid_8hpp_af6e03aaba31deefd41eb8d7ca6128c01}{Grid\+Staggering}}}]{offset,  }\item[{\mbox{\hyperlink{MpiEnv_8hpp_ae3996976d8ffb3e58d88f58227473f8e}{Axis}}}]{offset\+Axis }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -175,7 +325,7 @@ the physical z-\/coordinate
 
 
 
-\mbox{\hyperlink{structGrid}{Grid}} spacing in each direction (derived from physical sizes and number of grid points). 
+\mbox{\hyperlink{structGrid}{Grid}} spacing in each direction (constant throughout the domain). 
 
 \mbox{\Hypertarget{structGrid_ac388777840b30765f83a8a135d7b0cec}\label{structGrid_ac388777840b30765f83a8a135d7b0cec}} 
 \index{Grid@{Grid}!dy@{dy}}
@@ -189,27 +339,59 @@ the physical z-\/coordinate
 \doxysubsubsection{\texorpdfstring{dz}{dz}}
 {\footnotesize\ttfamily double Grid\+::dz}
 
-\mbox{\Hypertarget{structGrid_ad4c79bac71b59281996b784f6e538068}\label{structGrid_ad4c79bac71b59281996b784f6e538068}} 
-\index{Grid@{Grid}!Lx@{Lx}}
-\index{Lx@{Lx}!Grid@{Grid}}
-\doxysubsubsection{\texorpdfstring{Lx}{Lx}}
-{\footnotesize\ttfamily double Grid\+::\+Lx}
+\mbox{\Hypertarget{structGrid_a6f37c8f735275a95c496ce0e9309c44a}\label{structGrid_a6f37c8f735275a95c496ce0e9309c44a}} 
+\index{Grid@{Grid}!i\_start@{i\_start}}
+\index{i\_start@{i\_start}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{i\_start}{i\_start}}
+{\footnotesize\ttfamily size\+\_\+t Grid\+::i\+\_\+start}
 
 
 
-Physical size of the grid in each direction. 
+Index-\/offset in each dimension of this local grid chunk in the global grid. 
 
-\mbox{\Hypertarget{structGrid_a60a2f837f0e629c85b16f120631d8324}\label{structGrid_a60a2f837f0e629c85b16f120631d8324}} 
-\index{Grid@{Grid}!Ly@{Ly}}
-\index{Ly@{Ly}!Grid@{Grid}}
-\doxysubsubsection{\texorpdfstring{Ly}{Ly}}
-{\footnotesize\ttfamily double Grid\+::\+Ly}
+\mbox{\Hypertarget{structGrid_a1db9deea8539aa4b9f193efd3d440172}\label{structGrid_a1db9deea8539aa4b9f193efd3d440172}} 
+\index{Grid@{Grid}!j\_start@{j\_start}}
+\index{j\_start@{j\_start}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{j\_start}{j\_start}}
+{\footnotesize\ttfamily size\+\_\+t Grid\+::j\+\_\+start}
 
-\mbox{\Hypertarget{structGrid_ad8f3d3e5b45ccccad6936114dad717d9}\label{structGrid_ad8f3d3e5b45ccccad6936114dad717d9}} 
-\index{Grid@{Grid}!Lz@{Lz}}
-\index{Lz@{Lz}!Grid@{Grid}}
-\doxysubsubsection{\texorpdfstring{Lz}{Lz}}
-{\footnotesize\ttfamily double Grid\+::\+Lz}
+\mbox{\Hypertarget{structGrid_ab4073ab5f9f45cffcf9ec3059e61c5d3}\label{structGrid_ab4073ab5f9f45cffcf9ec3059e61c5d3}} 
+\index{Grid@{Grid}!k\_start@{k\_start}}
+\index{k\_start@{k\_start}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{k\_start}{k\_start}}
+{\footnotesize\ttfamily size\+\_\+t Grid\+::k\+\_\+start}
+
+\mbox{\Hypertarget{structGrid_a730fde210b6d4dd0f38ad9e84b504851}\label{structGrid_a730fde210b6d4dd0f38ad9e84b504851}} 
+\index{Grid@{Grid}!Lx\_glob@{Lx\_glob}}
+\index{Lx\_glob@{Lx\_glob}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Lx\_glob}{Lx\_glob}}
+{\footnotesize\ttfamily double Grid\+::\+Lx\+\_\+glob}
+
+
+
+Physical lengths of the global grid in each direction. 
+
+\mbox{\Hypertarget{structGrid_a781159ea5c1221fa762773382b2379be}\label{structGrid_a781159ea5c1221fa762773382b2379be}} 
+\index{Grid@{Grid}!Ly\_glob@{Ly\_glob}}
+\index{Ly\_glob@{Ly\_glob}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Ly\_glob}{Ly\_glob}}
+{\footnotesize\ttfamily double Grid\+::\+Ly\+\_\+glob}
+
+\mbox{\Hypertarget{structGrid_adfd015b3978a3dd58f1fe4daa0567eb5}\label{structGrid_adfd015b3978a3dd58f1fe4daa0567eb5}} 
+\index{Grid@{Grid}!Lz\_glob@{Lz\_glob}}
+\index{Lz\_glob@{Lz\_glob}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Lz\_glob}{Lz\_glob}}
+{\footnotesize\ttfamily double Grid\+::\+Lz\+\_\+glob}
+
+\mbox{\Hypertarget{structGrid_a78c04584375f91cfa978ea0c9f76c111}\label{structGrid_a78c04584375f91cfa978ea0c9f76c111}} 
+\index{Grid@{Grid}!n\_halo@{n\_halo}}
+\index{n\_halo@{n\_halo}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{n\_halo}{n\_halo}}
+{\footnotesize\ttfamily size\+\_\+t Grid\+::n\+\_\+halo}
+
+
+
+Number of halo points along each direction. 
 
 \mbox{\Hypertarget{structGrid_a7f51b9f4262231b3e89f1b9169f83e1c}\label{structGrid_a7f51b9f4262231b3e89f1b9169f83e1c}} 
 \index{Grid@{Grid}!Nx@{Nx}}
@@ -219,7 +401,17 @@ Physical size of the grid in each direction.
 
 
 
-Number of grid points in each direction. 
+Number of grid points in the local grid chunk in each direction (derived from global info and Cartesian topology). 
+
+\mbox{\Hypertarget{structGrid_a00c9b075375377e49b337f014dde527d}\label{structGrid_a00c9b075375377e49b337f014dde527d}} 
+\index{Grid@{Grid}!Nx\_glob@{Nx\_glob}}
+\index{Nx\_glob@{Nx\_glob}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Nx\_glob}{Nx\_glob}}
+{\footnotesize\ttfamily size\+\_\+t Grid\+::\+Nx\+\_\+glob}
+
+
+
+Number of grid points in the global grid in each direction. 
 
 \mbox{\Hypertarget{structGrid_aedbe6591ce1565b3bdece8af225e5015}\label{structGrid_aedbe6591ce1565b3bdece8af225e5015}} 
 \index{Grid@{Grid}!Ny@{Ny}}
@@ -227,14 +419,27 @@ Number of grid points in each direction.
 \doxysubsubsection{\texorpdfstring{Ny}{Ny}}
 {\footnotesize\ttfamily size\+\_\+t Grid\+::\+Ny}
 
+\mbox{\Hypertarget{structGrid_a513f0485d5d237374e53449b2c656d1a}\label{structGrid_a513f0485d5d237374e53449b2c656d1a}} 
+\index{Grid@{Grid}!Ny\_glob@{Ny\_glob}}
+\index{Ny\_glob@{Ny\_glob}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Ny\_glob}{Ny\_glob}}
+{\footnotesize\ttfamily size\+\_\+t Grid\+::\+Ny\+\_\+glob}
+
 \mbox{\Hypertarget{structGrid_a5165f82a832d9b1c2bd2156c3b6439d6}\label{structGrid_a5165f82a832d9b1c2bd2156c3b6439d6}} 
 \index{Grid@{Grid}!Nz@{Nz}}
 \index{Nz@{Nz}!Grid@{Grid}}
 \doxysubsubsection{\texorpdfstring{Nz}{Nz}}
 {\footnotesize\ttfamily size\+\_\+t Grid\+::\+Nz}
 
+\mbox{\Hypertarget{structGrid_ad1c6b97e05c5dd3a7ae4c96d51b77c63}\label{structGrid_ad1c6b97e05c5dd3a7ae4c96d51b77c63}} 
+\index{Grid@{Grid}!Nz\_glob@{Nz\_glob}}
+\index{Nz\_glob@{Nz\_glob}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Nz\_glob}{Nz\_glob}}
+{\footnotesize\ttfamily size\+\_\+t Grid\+::\+Nz\+\_\+glob}
 
 
-The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-include/core/\mbox{\hyperlink{Grid_8hpp}{Grid.\+hpp}}\end{DoxyCompactItemize}
+include/core/\mbox{\hyperlink{Grid_8hpp}{Grid.\+hpp}}\item 
+src/core/\mbox{\hyperlink{Grid_8cpp}{Grid.\+cpp}}\end{DoxyCompactItemize}

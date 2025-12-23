@@ -1,22 +1,20 @@
 <map id="ViscousStep::closeViscousStep" name="ViscousStep::closeViscousStep">
-<area shape="rect" id="node1" title="Closes viscous step filling and solving three linear systems." alt="" coords="5,453,228,480"/>
-<area shape="rect" id="node2" href="$classLinearSys.html#adc38bb02a25f7a917500b6a5ee0917c5" title="Fill the linear system for Velocity variables." alt="" coords="733,31,944,57"/>
-<area shape="rect" id="node8" href="$classLinearSys.html#a257096829bb54fc3e45084b5c94beaa8" title="Sets the right&#45;hand side (rhsC) vector for the solver." alt="" coords="770,613,907,640"/>
-<area shape="rect" id="node9" href="$classViscousStep.html#a98b2a51b32509c2323cb32a7bfb2e93c" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="276,453,469,480"/>
-<area shape="rect" id="node3" href="$classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="1001,344,1150,371"/>
-<area shape="rect" id="node4" href="$classVectorField.html#a44e6ba866c7ab75a4608062f16f702b9" title="Getter for the grid information." alt="" coords="1000,5,1151,32"/>
-<area shape="rect" id="node5" href="$classTridiagMat.html#a46d96fb5ae69f72ff1f56c12b390d0a9" title="Get the matrix size." alt="" coords="1002,512,1149,539"/>
-<area shape="rect" id="node6" href="$classField.html#ae8b4623a9fe837b3eff02e02ffe1c365" title="Access the value in the field at given position considering direction offset." alt="" coords="992,56,1159,83"/>
-<area shape="rect" id="node7" href="$classField.html#ab4240a7cb1cae0917ff698837485f399" title="Computes the linear index for 3D access in row&#45;major order." alt="" coords="1207,56,1288,83"/>
-<area shape="rect" id="node10" href="$classLinearSys.html#af3658eaf4a88aa14bbe2f5add8b842ac" title="Getter to access the internal matrix (needed for Schur)." alt="" coords="523,563,679,589"/>
-<area shape="rect" id="node11" href="$classLinearSys.html#af0256caf9d237026696a6ca545503d7a" title="Getter to access the internal RHS (modified by fillSystem)." alt="" coords="532,195,671,221"/>
-<area shape="rect" id="node12" href="$classLinearSys.html#ab5e1dc2bef1794dec1b232f2fbc5b077" title="Gets the solution vector (unknownX) computed by the solver." alt="" coords="755,563,922,589"/>
-<area shape="rect" id="node13" href="$classSchurSequentialSolver.html#a8b7aec052a578c5fd6ca38d279728212" title="Phase 0: Pre&#45;processing. Builds the submatrices A_ii, extracts interface coefficients,..." alt="" coords="517,446,685,487"/>
-<area shape="rect" id="node15" href="$classLinearSys.html#a60600d4d91ff996ab642bbc424f16525" title="Solve the linear system." alt="" coords="749,395,928,421"/>
-<area shape="rect" id="node16" href="$classSchurSequentialSolver.html#a0c0a6ed80b6df87ae3e1c53167ff444e" title="Phase 1: Solve. Solves the system A*x = f using the Schur algorithm. &#39;PreProcess&#39; must have been call..." alt="" coords="517,246,685,287"/>
-<area shape="rect" id="node14" href="$classSchurSequentialSolver.html#ae84b28ee0ff1e33bae823b780e88c1c2" title=" " alt="" coords="755,446,923,487"/>
-<area shape="rect" id="node17" href="$classSchurSequentialSolver.html#a046a2bbdb46a799a963f44c3ef15bf49" title=" " alt="" coords="755,147,923,189"/>
-<area shape="rect" id="node18" href="$classSchurSequentialSolver.html#afc572bd947a97f8aebc82714013d6d41" title=" " alt="" coords="755,213,923,254"/>
-<area shape="rect" id="node19" href="$classSchurSequentialSolver.html#aeae72f30176c219c7d60a206f54865c4" title=" " alt="" coords="755,278,923,319"/>
-<area shape="rect" id="node20" href="$classSchurSequentialSolver.html#aebe81742570d50e62bf86d13a1fd8d93" title=" " alt="" coords="755,82,923,123"/>
+<area shape="rect" id="node1" title="Closes viscous step filling and solving three linear systems." alt="" coords="5,428,228,455"/>
+<area shape="rect" id="node2" href="$classLinearSys.html#a4a309ed06b0e91e7c604d8d2bb06225c" title="Fill the linear system for Velocity variables." alt="" coords="733,5,944,32"/>
+<area shape="rect" id="node6" href="$classLinearSys.html#a257096829bb54fc3e45084b5c94beaa8" title="Sets the right&#45;hand side (rhsC) vector for the solver." alt="" coords="770,588,907,615"/>
+<area shape="rect" id="node7" href="$classViscousStep.html#a368a04b10b537c84532da3a983920370" title="Wrapper that chooses whether to use Thomas (P=1) or Schur (P&gt;1)." alt="" coords="276,428,469,455"/>
+<area shape="rect" id="node3" href="$classTridiagMat.html#a1b0209ff66f297a15c9bb0a118b4329f" title="Get the whole diagonal, subdiagonal or supdiagonal." alt="" coords="993,319,1142,345"/>
+<area shape="rect" id="node4" href="$classVectorField.html#a44e6ba866c7ab75a4608062f16f702b9" title="Getter for the grid information." alt="" coords="992,5,1143,32"/>
+<area shape="rect" id="node5" href="$classTridiagMat.html#a926ab35a1c697a419508318505f701a3" title="Get the matrix size." alt="" coords="994,487,1141,513"/>
+<area shape="rect" id="node8" href="$classLinearSys.html#a347428c173bf3507fb43006f663b45f9" title="Getter to access the internal matrix." alt="" coords="523,537,679,564"/>
+<area shape="rect" id="node9" href="$classLinearSys.html#af0256caf9d237026696a6ca545503d7a" title="Getter to access the internal RHS (modified by fillSystem)." alt="" coords="532,169,671,196"/>
+<area shape="rect" id="node10" href="$classLinearSys.html#ab5e1dc2bef1794dec1b232f2fbc5b077" title="Gets the solution vector (unknownX) computed by the solver." alt="" coords="755,537,922,564"/>
+<area shape="rect" id="node11" href="$classSchurSequentialSolver.html#a8b7aec052a578c5fd6ca38d279728212" title="Phase 0: Pre&#45;processing. Builds the submatrices A_ii, extracts interface coefficients,..." alt="" coords="517,421,685,462"/>
+<area shape="rect" id="node13" href="$classLinearSys.html#a60600d4d91ff996ab642bbc424f16525" title="Solve the linear system." alt="" coords="749,369,928,396"/>
+<area shape="rect" id="node14" href="$classSchurSequentialSolver.html#a0c0a6ed80b6df87ae3e1c53167ff444e" title="Phase 1: Solve. Solves the system A*x = f using the Schur algorithm. &#39;PreProcess&#39; must have been call..." alt="" coords="517,221,685,262"/>
+<area shape="rect" id="node12" href="$classSchurSequentialSolver.html#ae84b28ee0ff1e33bae823b780e88c1c2" title=" " alt="" coords="755,421,923,462"/>
+<area shape="rect" id="node15" href="$classSchurSequentialSolver.html#a046a2bbdb46a799a963f44c3ef15bf49" title=" " alt="" coords="755,122,923,163"/>
+<area shape="rect" id="node16" href="$classSchurSequentialSolver.html#afc572bd947a97f8aebc82714013d6d41" title=" " alt="" coords="755,187,923,229"/>
+<area shape="rect" id="node17" href="$classSchurSequentialSolver.html#aeae72f30176c219c7d60a206f54865c4" title=" " alt="" coords="755,253,923,294"/>
+<area shape="rect" id="node18" href="$classSchurSequentialSolver.html#aebe81742570d50e62bf86d13a1fd8d93" title=" " alt="" coords="755,57,923,98"/>
 </map>

@@ -83,6 +83,8 @@ Namespaces</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ad3cefda5828164fbae5cea7cd911fe4b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#ad3cefda5828164fbae5cea7cd911fe4b">plot_convergence_new.get_step_from_filename</a> (str filepath)</td></tr>
 <tr class="separator:ad3cefda5828164fbae5cea7cd911fe4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e04aacaa8b4c4d59e1393a94d47f731"><td class="memItemLeft" align="right" valign="top">tuple&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#a2e04aacaa8b4c4d59e1393a94d47f731">plot_convergence_new.compute_convergence_orders</a> (list x_values, list errors)</td></tr>
+<tr class="separator:a2e04aacaa8b4c4d59e1393a94d47f731"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4604579fccce1eebf3e02daeb5a46960"><td class="memItemLeft" align="right" valign="top">np.ndarray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#a4604579fccce1eebf3e02daeb5a46960">plot_convergence_new.compute_analytical_u_at_x_faces</a> (np.ndarray points, float t, float h)</td></tr>
 <tr class="separator:a4604579fccce1eebf3e02daeb5a46960"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1d155df43e8f0dbca56872943a7ce25"><td class="memItemLeft" align="right" valign="top">np.ndarray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#ad1d155df43e8f0dbca56872943a7ce25">plot_convergence_new.compute_analytical_v_at_y_faces</a> (np.ndarray points, float t, float h)</td></tr>
@@ -95,17 +97,21 @@ Functions</h2></td></tr>
 <tr class="separator:ab842eab38fdd39e4c675987a551ae935"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c50096fadd00dca9d78dada9685d58c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#a9c50096fadd00dca9d78dada9685d58c">plot_convergence_new.calculate_l2_rms_error</a> (np.ndarray field_numerical, np.ndarray field_analytical)</td></tr>
 <tr class="separator:a9c50096fadd00dca9d78dada9685d58c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1035fcf22408c6a6657ba8d94d1f6292"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#a1035fcf22408c6a6657ba8d94d1f6292">plot_convergence_new.plot_convergence</a> (list x_values, dict error_data, str title, str save_filename, str x_label, int expected_order)</td></tr>
-<tr class="separator:a1035fcf22408c6a6657ba8d94d1f6292"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1473567c048d42ae6057976bf72874d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#af1473567c048d42ae6057976bf72874d">plot_convergence_new.calculate_l1_mean_error</a> (np.ndarray field_numerical, np.ndarray field_analytical)</td></tr>
+<tr class="separator:af1473567c048d42ae6057976bf72874d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a050311e523a715ced660e00c8a328d0a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#a050311e523a715ced660e00c8a328d0a">plot_convergence_new.plot_clean_convergence</a> (list x_values, dict error_data, str title_prefix, str save_filename, str x_label, int expected_order, str mode_label)</td></tr>
+<tr class="separator:a050311e523a715ced660e00c8a328d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58e62c353c73269c9dd3067ffd2bb236"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#a58e62c353c73269c9dd3067ffd2bb236">plot_convergence_new.run_analysis</a> (custom_simulations=None)</td></tr>
 <tr class="separator:a58e62c353c73269c9dd3067ffd2bb236"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a3bd280c487e2dfb51f48f9cd9cd82e1b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#a3bd280c487e2dfb51f48f9cd9cd82e1b">plot_convergence_new.RE</a> = 1.0</td></tr>
+<tr class="separator:a3bd280c487e2dfb51f48f9cd9cd82e1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6e753cfeb34aa66e2d85a0812dd3592"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#aa6e753cfeb34aa66e2d85a0812dd3592">plot_convergence_new.SIMULATIONS</a></td></tr>
 <tr class="separator:aa6e753cfeb34aa66e2d85a0812dd3592"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0210b96ca0c4c34c6fa78f6a92d53e92"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#a0210b96ca0c4c34c6fa78f6a92d53e92">plot_convergence_new.DOMAIN_LENGTH_X</a> = 6</td></tr>
-<tr class="separator:a0210b96ca0c4c34c6fa78f6a92d53e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d730a31999746e09d6f66e9439c1ad5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#a5d730a31999746e09d6f66e9439c1ad5">plot_convergence_new.DOMAIN_LENGTH_X</a> = 6.0</td></tr>
+<tr class="separator:a5d730a31999746e09d6f66e9439c1ad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2bfa3c603d8035435ed1a032e9fa4b0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#ad2bfa3c603d8035435ed1a032e9fa4b0">plot_convergence_new.DT</a> = 0.001</td></tr>
 <tr class="separator:ad2bfa3c603d8035435ed1a032e9fa4b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0202daa3c2e923a495e0e74edb28b41f"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplot__convergence__new.html#a0202daa3c2e923a495e0e74edb28b41f">plot_convergence_new.VELOCITY_FIELD_NAME</a> = &quot;velocity&quot;</td></tr>

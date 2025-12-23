@@ -88,7 +88,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a86c44d11fbaee4e973679fceac4bf0be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a653ed0c9fb2bd209271a1212e80a790f"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classField.html#a70a75705a22e72ce9be65780d94783b1">Field::Scalar</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#a653ed0c9fb2bd209271a1212e80a790f">getData</a> () const</td></tr>
 <tr class="separator:a653ed0c9fb2bd209271a1212e80a790f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc812182b3d806c93491194ae821d9a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#acc812182b3d806c93491194ae821d9a3">setup</a> (const <a class="el" href="Grid_8hpp.html#a90e0015df12e0e71b9457e226d49c125">GridPtr</a> &amp;grid, const <a class="el" href="Fields_8hpp.html#acc4ecbca9fc50aa084357cb6504baf28">Func</a> &amp;populateFunction=<a class="el" href="Fields_8hpp.html#ae45e4c3f95d489d70a4c578c028e12df">ZERO_FUNC</a>, <a class="el" href="Grid_8hpp.html#af6e03aaba31deefd41eb8d7ca6128c01">GridStaggering</a> offset=<a class="el" href="Grid_8hpp.html#af6e03aaba31deefd41eb8d7ca6128c01aa514377f27da15203c2393890f1b872e">GridStaggering::CELL_CENTERED</a>, <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetAxis=<a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383">Axis::X</a>)</td></tr>
+<tr class="memitem:acc812182b3d806c93491194ae821d9a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#acc812182b3d806c93491194ae821d9a3">setup</a> (const <a class="el" href="Grid_8hpp.html#a90e0015df12e0e71b9457e226d49c125">GridPtr</a> &amp;grid, const <a class="el" href="Fields_8hpp.html#acc4ecbca9fc50aa084357cb6504baf28">Func</a> &amp;populateFunction=<a class="el" href="Fields_8hpp.html#ae45e4c3f95d489d70a4c578c028e12df">ZERO_FUNC</a>, <a class="el" href="Grid_8hpp.html#af6e03aaba31deefd41eb8d7ca6128c01">GridStaggering</a> offset=<a class="el" href="Grid_8hpp.html#af6e03aaba31deefd41eb8d7ca6128c01aa514377f27da15203c2393890f1b872e">GridStaggering::CELL_CENTERED</a>, <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetAxis=<a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383">Axis::X</a>)</td></tr>
 <tr class="memdesc:acc812182b3d806c93491194ae821d9a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the field with a function to populate it (e.g., initial condition).  <a href="classField.html#acc812182b3d806c93491194ae821d9a3">More...</a><br /></td></tr>
 <tr class="separator:acc812182b3d806c93491194ae821d9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17a19acc3a519f5e37a802e76c992f46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#a17a19acc3a519f5e37a802e76c992f46">populate</a> (double time=0)</td></tr>
@@ -121,10 +121,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeddda00ed67ae7af3891d0d64bedef35"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classField.html#a70a75705a22e72ce9be65780d94783b1">Scalar</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#aeddda00ed67ae7af3891d0d64bedef35">value</a> (size_t i, size_t j, size_t k) const</td></tr>
 <tr class="memdesc:aeddda00ed67ae7af3891d0d64bedef35"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.  <a href="classField.html#aeddda00ed67ae7af3891d0d64bedef35">More...</a><br /></td></tr>
 <tr class="separator:aeddda00ed67ae7af3891d0d64bedef35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8b4623a9fe837b3eff02e02ffe1c365"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classField.html#a70a75705a22e72ce9be65780d94783b1">Scalar</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#ae8b4623a9fe837b3eff02e02ffe1c365">valueWithOffset</a> (size_t i, size_t j, size_t k, <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetDirection, int offset)</td></tr>
+<tr class="memitem:ae8b4623a9fe837b3eff02e02ffe1c365"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classField.html#a70a75705a22e72ce9be65780d94783b1">Scalar</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#ae8b4623a9fe837b3eff02e02ffe1c365">valueWithOffset</a> (size_t i, size_t j, size_t k, <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetDirection, int offset)</td></tr>
 <tr class="memdesc:ae8b4623a9fe837b3eff02e02ffe1c365"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access the value in the field at given position considering direction offset.  <a href="classField.html#ae8b4623a9fe837b3eff02e02ffe1c365">More...</a><br /></td></tr>
 <tr class="separator:ae8b4623a9fe837b3eff02e02ffe1c365"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7588c082aa80a322077aaa4357855ed8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classField.html#a70a75705a22e72ce9be65780d94783b1">Scalar</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#a7588c082aa80a322077aaa4357855ed8">valueWithOffset</a> (size_t i, size_t j, size_t k, <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetDirection, int offset) const</td></tr>
+<tr class="memitem:a7588c082aa80a322077aaa4357855ed8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classField.html#a70a75705a22e72ce9be65780d94783b1">Scalar</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#a7588c082aa80a322077aaa4357855ed8">valueWithOffset</a> (size_t i, size_t j, size_t k, <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetDirection, int offset) const</td></tr>
 <tr class="memdesc:a7588c082aa80a322077aaa4357855ed8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.  <a href="classField.html#a7588c082aa80a322077aaa4357855ed8">More...</a><br /></td></tr>
 <tr class="separator:a7588c082aa80a322077aaa4357855ed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bcf4ac8ae2f75b3caee656c6e260249"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#a6bcf4ac8ae2f75b3caee656c6e260249">reset</a> (<a class="el" href="classField.html#a70a75705a22e72ce9be65780d94783b1">Scalar</a> <a class="el" href="classField.html#aea5fcf3a1776d0fc317815e373fcb371">value</a>=<a class="el" href="classField.html#a70a75705a22e72ce9be65780d94783b1">Scalar</a>(0))</td></tr>
@@ -148,7 +148,7 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:abd7bf36c0ce545b49efb908e8acc2e86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Grid_8hpp.html#af6e03aaba31deefd41eb8d7ca6128c01">GridStaggering</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#abd7bf36c0ce545b49efb908e8acc2e86">offset_</a></td></tr>
 <tr class="memdesc:abd7bf36c0ce545b49efb908e8acc2e86"><td class="mdescLeft">&#160;</td><td class="mdescRight">The offset of the field in the staggered grid.  <a href="classField.html#abd7bf36c0ce545b49efb908e8acc2e86">More...</a><br /></td></tr>
 <tr class="separator:abd7bf36c0ce545b49efb908e8acc2e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bb33f143d9cda835c435a9d5318990c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#a0bb33f143d9cda835c435a9d5318990c">offsetAxis_</a></td></tr>
+<tr class="memitem:a0bb33f143d9cda835c435a9d5318990c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#a0bb33f143d9cda835c435a9d5318990c">offsetAxis_</a></td></tr>
 <tr class="memdesc:a0bb33f143d9cda835c435a9d5318990c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The axis where to apply the offset in the staggered grid.  <a href="classField.html#a0bb33f143d9cda835c435a9d5318990c">More...</a><br /></td></tr>
 <tr class="separator:a0bb33f143d9cda835c435a9d5318990c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5788151a7e4b4bdaf521f7425e063fa"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classField.html#a70a75705a22e72ce9be65780d94783b1">Scalar</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classField.html#ab5788151a7e4b4bdaf521f7425e063fa">data_</a></td></tr>
@@ -254,10 +254,10 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classField_af0b46b220f47ffcc3a76b70da049ce3c_icgraph.png" border="0" usemap="#aclassField_af0b46b220f47ffcc3a76b70da049ce3c_icgraph" alt=""/></div>
 <map name="aclassField_af0b46b220f47ffcc3a76b70da049ce3c_icgraph" id="aclassField_af0b46b220f47ffcc3a76b70da049ce3c_icgraph">
-<area shape="rect" title="Add a scalar value to all elements in the field." alt="" coords="473,56,559,83"/>
+<area shape="rect" title="Add a scalar value to all elements in the field." alt="" coords="473,31,559,57"/>
 <area shape="rect" href="classVectorField.html#aa8f5f5a590e1eb791f2e27e802dd8cb7" title="Add a scalar value to all components of the vector field." alt="" coords="244,5,371,32"/>
-<area shape="rect" href="classDerivatives.html#a4c4cdfa3c2c5b4d9c4c52e77130705af" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,56,425,83"/>
-<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="5,81,141,108"/>
+<area shape="rect" href="classDerivatives.html#a9516515b562a7699e9b226e6030ef86c" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,56,425,83"/>
+<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="5,56,141,83"/>
 </map>
 </div>
 
@@ -289,17 +289,6 @@ Here is the caller graph for this function:</div>
 <li>Use [idx] instead. </li>
 </ul>
 </dd></dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classField_a86c44d11fbaee4e973679fceac4bf0be_icgraph.png" border="0" usemap="#aclassField_a86c44d11fbaee4e973679fceac4bf0be_icgraph" alt=""/></div>
-<map name="aclassField_a86c44d11fbaee4e973679fceac4bf0be_icgraph" id="aclassField_a86c44d11fbaee4e973679fceac4bf0be_icgraph">
-<area shape="rect" title=" " alt="" coords="411,31,524,57"/>
-<area shape="rect" href="classViscousStep.html#a08b79ebee5c10dce0129239db85d0e8a" title="Compute G term." alt="" coords="185,5,361,32"/>
-<area shape="rect" href="classViscousStep.html#a2c153fd3ee426405516d51b04546a5df" title="Compute xi term." alt="" coords="184,56,363,83"/>
-<area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,31,136,57"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -362,26 +351,25 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classField_afe97c0b04f25f6322696a22ea9df8628_icgraph.png" border="0" usemap="#aclassField_afe97c0b04f25f6322696a22ea9df8628_icgraph" alt=""/></div>
 <map name="aclassField_afe97c0b04f25f6322696a22ea9df8628_icgraph" id="aclassField_afe97c0b04f25f6322696a22ea9df8628_icgraph">
-<area shape="rect" title="Getter for the grid information." alt="" coords="955,335,1064,361"/>
+<area shape="rect" title="Getter for the grid information." alt="" coords="955,309,1064,336"/>
 <area shape="rect" href="classField.html#ae4c17e820e1e00a569bdcb91cecc8851" title="Add another field to this field element&#45;wise." alt="" coords="757,5,842,32"/>
-<area shape="rect" href="classDerivatives.html#a2365f0c81b6422e3ed1bba2e1fc44545" title="Compute the derivative of a scalar field in the x&#45;direction (backward difference)." alt="" coords="692,208,907,235"/>
-<area shape="rect" href="classDerivatives.html#a0ef8b5e2a9e76abb839e9907bd127b76" title="Compute the derivative of a scalar field in the x&#45;direction (forward difference)." alt="" coords="694,664,905,691"/>
+<area shape="rect" href="classDerivatives.html#a0046bc8ee2db86bf451dc85dd19dd7f9" title="Compute the derivative of a scalar field in the x&#45;direction (backward difference)." alt="" coords="692,107,907,133"/>
+<area shape="rect" href="classDerivatives.html#a0ef8b5e2a9e76abb839e9907bd127b76" title="Compute the derivative of a scalar field in the x&#45;direction (forward difference)." alt="" coords="694,411,905,437"/>
 <area shape="rect" href="classDerivatives.html#a28f03b6e1467e93fddf29b81f8c5ec16" title="Compute the second derivative of a scalar field in the x&#45;direction." alt="" coords="705,157,893,184"/>
-<area shape="rect" href="classDerivatives.html#ae29cfbcadce2127aa49c690547514b66" title="Compute the derivative of a scalar field in the y&#45;direction (backward difference)." alt="" coords="692,259,907,285"/>
-<area shape="rect" href="classDerivatives.html#aee26f33635f34433d93ca5790849bd95" title="Compute the derivative of a scalar field in the y&#45;direction (forward difference)." alt="" coords="694,411,905,437"/>
+<area shape="rect" href="classDerivatives.html#a4a5487a38ca52d1bb20c95efe6966bd0" title="Compute the derivative of a scalar field in the y&#45;direction (backward difference)." alt="" coords="692,208,907,235"/>
+<area shape="rect" href="classDerivatives.html#aee26f33635f34433d93ca5790849bd95" title="Compute the derivative of a scalar field in the y&#45;direction (forward difference)." alt="" coords="694,360,905,387"/>
 <area shape="rect" href="classDerivatives.html#a8dfd9d551bf8de4c26bf318cede4abda" title="Compute the second derivative of a scalar field in the y&#45;direction." alt="" coords="705,309,893,336"/>
-<area shape="rect" href="classDerivatives.html#a08e9ebe4a51fd2b918fa37fef529ed66" title="Compute the derivative of a scalar field in the z&#45;direction (backward difference)." alt="" coords="693,107,906,133"/>
-<area shape="rect" href="classDerivatives.html#a41f8f51d76f35343b09b8711af339480" title="Compute the derivative of a scalar field in the z&#45;direction (forward difference)." alt="" coords="695,360,904,387"/>
+<area shape="rect" href="classDerivatives.html#ae1d79e3c78f83f9d82c53805c426583e" title="Compute the derivative of a scalar field in the z&#45;direction (backward difference)." alt="" coords="693,56,906,83"/>
+<area shape="rect" href="classDerivatives.html#a41f8f51d76f35343b09b8711af339480" title="Compute the derivative of a scalar field in the z&#45;direction (forward difference)." alt="" coords="695,259,904,285"/>
 <area shape="rect" href="classDerivatives.html#a0db4507f057f9ab64081cdd3116cc076" title="Compute the second derivative of a scalar field in the z&#45;direction." alt="" coords="706,461,893,488"/>
 <area shape="rect" href="classDerivatives.html#a192787b8808ab051708d9c7a1987ba26" title="Compute the local second derivative ∂²f/∂x² at a single grid point." alt="" coords="715,512,884,539"/>
 <area shape="rect" href="classDerivatives.html#a355ace855ad6c919b284d2624ba38d86" title="Compute the local second derivative ∂²f/∂y² at a single grid point." alt="" coords="715,563,884,589"/>
 <area shape="rect" href="classDerivatives.html#a390aa9768dd08a39aa377a8670a6ab33" title="Compute the local second derivative ∂²f/∂z² at a single grid point." alt="" coords="716,613,883,640"/>
-<area shape="rect" href="classLinearSys.html#a4a1b948b08605b422212a8b79dd8737d" title="Fill the linear system for Pressure variables." alt="" coords="419,81,633,108"/>
-<area shape="rect" href="classDerivatives.html#a4c4cdfa3c2c5b4d9c4c52e77130705af" title="Compute the divergence of a vector field (backward difference)." alt="" coords="408,157,644,184"/>
-<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="204,132,340,159"/>
-<area shape="rect" href="classDerivatives.html#a9d509cd4c682cc79ebebce1df69474a9" title="Compute the gradient of a scalar field (forward difference)." alt="" coords="417,411,635,437"/>
-<area shape="rect" href="classViscousStep.html#a08b79ebee5c10dce0129239db85d0e8a" title="Compute G term." alt="" coords="184,411,360,437"/>
-<area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,411,136,437"/>
+<area shape="rect" href="classDerivatives.html#a9516515b562a7699e9b226e6030ef86c" title="Compute the divergence of a vector field (backward difference)." alt="" coords="408,107,644,133"/>
+<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="204,107,340,133"/>
+<area shape="rect" href="classDerivatives.html#a9d509cd4c682cc79ebebce1df69474a9" title="Compute the gradient of a scalar field (forward difference)." alt="" coords="417,360,635,387"/>
+<area shape="rect" href="classViscousStep.html#a08b79ebee5c10dce0129239db85d0e8a" title="Compute G term." alt="" coords="184,360,360,387"/>
+<area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,360,136,387"/>
 </map>
 </div>
 
@@ -469,21 +457,18 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classField_ab4240a7cb1cae0917ff698837485f399_icgraph.png" border="0" usemap="#aclassField_ab4240a7cb1cae0917ff698837485f399_icgraph" alt=""/></div>
 <map name="aclassField_ab4240a7cb1cae0917ff698837485f399_icgraph" id="aclassField_ab4240a7cb1cae0917ff698837485f399_icgraph">
-<area shape="rect" title="Computes the linear index for 3D access in row&#45;major order." alt="" coords="947,107,1028,133"/>
-<area shape="rect" href="classField.html#ade27340b1247c816b86ef5e6cede81b8" title="Access the value in the field at given position." alt="" coords="752,56,879,83"/>
-<area shape="rect" href="classField.html#aea5fcf3a1776d0fc317815e373fcb371" title="Access the value in the field at given position." alt="" coords="767,107,864,133"/>
-<area shape="rect" href="classField.html#ae8b4623a9fe837b3eff02e02ffe1c365" title="Access the value in the field at given position considering direction offset." alt="" coords="732,183,899,209"/>
-<area shape="rect" href="classField.html#af0b46b220f47ffcc3a76b70da049ce3c" title="Add a scalar value to all elements in the field." alt="" coords="536,56,621,83"/>
-<area shape="rect" href="classField.html#a6edac7bcf17e1422a9dcbddbeaca2153" title="Multiply all elements in the field by a scalar value." alt="" coords="521,107,636,133"/>
-<area shape="rect" href="classVectorField.html#a8ed16373ed36283478770b599908deda" title="Access the component value of the vector field in the specified direction at the given position." alt="" coords="495,157,662,184"/>
-<area shape="rect" href="classField.html#a6bcf4ac8ae2f75b3caee656c6e260249" title="Reset the field values to a specified value (default is zero)." alt="" coords="531,5,626,32"/>
+<area shape="rect" title="Computes the linear index for 3D access in row&#45;major order." alt="" coords="903,81,984,108"/>
+<area shape="rect" href="classField.html#ade27340b1247c816b86ef5e6cede81b8" title="Access the value in the field at given position." alt="" coords="708,31,835,57"/>
+<area shape="rect" href="classField.html#aea5fcf3a1776d0fc317815e373fcb371" title="Access the value in the field at given position." alt="" coords="723,81,820,108"/>
+<area shape="rect" href="classField.html#ae8b4623a9fe837b3eff02e02ffe1c365" title="Access the value in the field at given position considering direction offset." alt="" coords="688,132,855,159"/>
+<area shape="rect" href="classField.html#af0b46b220f47ffcc3a76b70da049ce3c" title="Add a scalar value to all elements in the field." alt="" coords="514,56,599,83"/>
+<area shape="rect" href="classField.html#a6edac7bcf17e1422a9dcbddbeaca2153" title="Multiply all elements in the field by a scalar value." alt="" coords="499,5,614,32"/>
+<area shape="rect" href="classVectorField.html#a8ed16373ed36283478770b599908deda" title="Access the component value of the vector field in the specified direction at the given position." alt="" coords="473,107,640,133"/>
+<area shape="rect" href="classField.html#a6bcf4ac8ae2f75b3caee656c6e260249" title="Reset the field values to a specified value (default is zero)." alt="" coords="509,157,604,184"/>
 <area shape="rect" href="classVectorField.html#aa8f5f5a590e1eb791f2e27e802dd8cb7" title="Add a scalar value to all components of the vector field." alt="" coords="244,56,371,83"/>
-<area shape="rect" href="classDerivatives.html#a4c4cdfa3c2c5b4d9c4c52e77130705af" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,5,425,32"/>
-<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="5,56,141,83"/>
-<area shape="rect" href="classVectorField.html#a6cde8853c3eb1d5ba60b4a61e467c7c0" title="Multiply all components of the vector field by a scalar value." alt="" coords="229,157,385,184"/>
-<area shape="rect" href="classLinearSys.html#adc38bb02a25f7a917500b6a5ee0917c5" title="Fill the linear system for Velocity variables." alt="" coords="473,208,684,235"/>
-<area shape="rect" href="classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="196,208,419,235"/>
-<area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="8,208,139,235"/>
+<area shape="rect" href="classDerivatives.html#a9516515b562a7699e9b226e6030ef86c" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,132,425,159"/>
+<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="5,132,141,159"/>
+<area shape="rect" href="classVectorField.html#a6cde8853c3eb1d5ba60b4a61e467c7c0" title="Multiply all components of the vector field by a scalar value." alt="" coords="229,5,385,32"/>
 </map>
 </div>
 
@@ -743,9 +728,9 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title="Populates the underlying field based on the stored function in (x,y,z,t)." alt="" coords="935,42,1053,69"/>
 <area shape="rect" href="namespaceInitializer.html#a84757b22926f400a6aec78c2b1e2aa69" title=" " alt="" coords="708,5,887,47"/>
 <area shape="rect" href="classVectorField.html#afbe1f8fbd8bdbd92996700bbe9657f7d" title="Populates each component of the underlying vector field based on the stored functions in (x,..." alt="" coords="718,71,877,98"/>
-<area shape="rect" href="namespaceInitializer.html#ab08ce6fc3e43c623779edfdfb7ea3855" title="Setup and initialize the SimulationData from input data." alt="" coords="294,71,421,98"/>
+<area shape="rect" href="namespaceInitializer.html#a0741ee296f266920808094cbb8475064" title="Setup and initialize the SimulationData from input data." alt="" coords="294,71,421,98"/>
 <area shape="rect" href="classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6" title=" " alt="" coords="108,73,243,99"/>
-<area shape="rect" href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,99,60,126"/>
+<area shape="rect" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,99,60,126"/>
 <area shape="rect" href="namespaceInitializer.html#ad0df7e265dd3a6f2b2aaefcb2244203d" title=" " alt="" coords="472,64,660,105"/>
 <area shape="rect" href="classNSBSolver.html#ada676d7f89d6183a6666976991e4e868" title=" " alt="" coords="291,129,424,155"/>
 </map>
@@ -792,8 +777,8 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classField_a6bcf4ac8ae2f75b3caee656c6e260249_icgraph.png" border="0" usemap="#aclassField_a6bcf4ac8ae2f75b3caee656c6e260249_icgraph" alt=""/></div>
 <map name="aclassField_a6bcf4ac8ae2f75b3caee656c6e260249_icgraph" id="aclassField_a6bcf4ac8ae2f75b3caee656c6e260249_icgraph">
 <area shape="rect" title="Reset the field values to a specified value (default is zero)." alt="" coords="473,5,568,32"/>
-<area shape="rect" href="classDerivatives.html#a4c4cdfa3c2c5b4d9c4c52e77130705af" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,5,425,32"/>
-<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="5,5,141,32"/>
+<area shape="rect" href="classDerivatives.html#a9516515b562a7699e9b226e6030ef86c" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,5,425,32"/>
+<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="5,5,141,32"/>
 </map>
 </div>
 
@@ -829,8 +814,8 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
-          <td class="paramname"><em>offsetAxis</em> = <code><a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383">Axis::X</a></code>&#160;</td>
+          <td class="paramtype"><a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
+          <td class="paramname"><em>offsetAxis</em> = <code><a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383">Axis::X</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -860,17 +845,16 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classField_acc812182b3d806c93491194ae821d9a3_icgraph.png" border="0" usemap="#aclassField_acc812182b3d806c93491194ae821d9a3_icgraph" alt=""/></div>
 <map name="aclassField_acc812182b3d806c93491194ae821d9a3_icgraph" id="aclassField_acc812182b3d806c93491194ae821d9a3_icgraph">
-<area shape="rect" title="Setup the field with a function to populate it (e.g., initial condition)." alt="" coords="1037,78,1135,105"/>
-<area shape="rect" href="namespaceInitializer.html#a84757b22926f400a6aec78c2b1e2aa69" title=" " alt="" coords="811,5,989,47"/>
-<area shape="rect" href="classPressureStep.html#a775ec248bc2a5c2b9f7d1457b1c97013" title="Construct temporary fields to proceed in computations." alt="" coords="815,71,985,112"/>
-<area shape="rect" href="classVectorField.html#a678cbed69b397d108ea467ac65a9507c" title="Setup the vector field with functions to populate each component (e.g., initial conditions)." alt="" coords="831,137,969,163"/>
-<area shape="rect" href="namespaceInitializer.html#ab08ce6fc3e43c623779edfdfb7ea3855" title="Setup and initialize the SimulationData from input data." alt="" coords="321,75,448,102"/>
-<area shape="rect" href="classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6" title=" " alt="" coords="108,75,243,102"/>
-<area shape="rect" href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,75,60,102"/>
-<area shape="rect" href="classPressureStep.html#a52d71f53887abc1f443855ff462c68ac" title="Constructor." alt="" coords="545,74,745,101"/>
-<area shape="rect" href="namespaceInitializer.html#ad0df7e265dd3a6f2b2aaefcb2244203d" title=" " alt="" coords="551,125,739,167"/>
-<area shape="rect" href="classViscousStep.html#a9ad97cebe4b5966259b6d205f62a392e" title="Construct temporary fields to proceed in computations." alt="" coords="527,191,763,232"/>
-<area shape="rect" href="classViscousStep.html#a3c394708ab3435546917bbc8787e6d83" title="Constructor." alt="" coords="291,198,479,225"/>
+<area shape="rect" title="Setup the field with a function to populate it (e.g., initial condition)." alt="" coords="1059,63,1156,90"/>
+<area shape="rect" href="namespaceInitializer.html#a84757b22926f400a6aec78c2b1e2aa69" title=" " alt="" coords="555,5,734,47"/>
+<area shape="rect" href="classPressureStep.html#a52d71f53887abc1f443855ff462c68ac" title="Constructor." alt="" coords="811,63,1011,90"/>
+<area shape="rect" href="classVectorField.html#a678cbed69b397d108ea467ac65a9507c" title="Setup the vector field with functions to populate each component (e.g., initial conditions)." alt="" coords="841,114,980,141"/>
+<area shape="rect" href="namespaceInitializer.html#a0741ee296f266920808094cbb8475064" title="Setup and initialize the SimulationData from input data." alt="" coords="321,46,448,73"/>
+<area shape="rect" href="classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6" title=" " alt="" coords="108,46,243,73"/>
+<area shape="rect" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,46,60,73"/>
+<area shape="rect" href="namespaceInitializer.html#ad0df7e265dd3a6f2b2aaefcb2244203d" title=" " alt="" coords="551,71,739,112"/>
+<area shape="rect" href="classViscousStep.html#a9ad97cebe4b5966259b6d205f62a392e" title="Construct temporary fields to proceed in computations." alt="" coords="527,136,763,177"/>
+<area shape="rect" href="classViscousStep.html#a3c394708ab3435546917bbc8787e6d83" title="Constructor." alt="" coords="291,143,479,170"/>
 </map>
 </div>
 
@@ -941,15 +925,15 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classField_aea5fcf3a1776d0fc317815e373fcb371_icgraph.png" border="0" usemap="#aclassField_aea5fcf3a1776d0fc317815e373fcb371_icgraph" alt=""/></div>
 <map name="aclassField_aea5fcf3a1776d0fc317815e373fcb371_icgraph" id="aclassField_aea5fcf3a1776d0fc317815e373fcb371_icgraph">
-<area shape="rect" title="Access the value in the field at given position." alt="" coords="688,132,785,159"/>
+<area shape="rect" title="Access the value in the field at given position." alt="" coords="688,81,785,108"/>
 <area shape="rect" href="classField.html#af0b46b220f47ffcc3a76b70da049ce3c" title="Add a scalar value to all elements in the field." alt="" coords="514,56,599,83"/>
-<area shape="rect" href="classField.html#a6edac7bcf17e1422a9dcbddbeaca2153" title="Multiply all elements in the field by a scalar value." alt="" coords="499,208,614,235"/>
-<area shape="rect" href="classVectorField.html#a8ed16373ed36283478770b599908deda" title="Access the component value of the vector field in the specified direction at the given position." alt="" coords="473,157,640,184"/>
-<area shape="rect" href="classField.html#a6bcf4ac8ae2f75b3caee656c6e260249" title="Reset the field values to a specified value (default is zero)." alt="" coords="509,107,604,133"/>
-<area shape="rect" href="classVectorField.html#aa8f5f5a590e1eb791f2e27e802dd8cb7" title="Add a scalar value to all components of the vector field." alt="" coords="244,5,371,32"/>
-<area shape="rect" href="classDerivatives.html#a4c4cdfa3c2c5b4d9c4c52e77130705af" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,107,425,133"/>
-<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run pressure step." alt="" coords="5,81,141,108"/>
-<area shape="rect" href="classVectorField.html#a6cde8853c3eb1d5ba60b4a61e467c7c0" title="Multiply all components of the vector field by a scalar value." alt="" coords="229,208,385,235"/>
+<area shape="rect" href="classField.html#a6edac7bcf17e1422a9dcbddbeaca2153" title="Multiply all elements in the field by a scalar value." alt="" coords="499,5,614,32"/>
+<area shape="rect" href="classVectorField.html#a8ed16373ed36283478770b599908deda" title="Access the component value of the vector field in the specified direction at the given position." alt="" coords="473,107,640,133"/>
+<area shape="rect" href="classField.html#a6bcf4ac8ae2f75b3caee656c6e260249" title="Reset the field values to a specified value (default is zero)." alt="" coords="509,157,604,184"/>
+<area shape="rect" href="classVectorField.html#aa8f5f5a590e1eb791f2e27e802dd8cb7" title="Add a scalar value to all components of the vector field." alt="" coords="244,56,371,83"/>
+<area shape="rect" href="classDerivatives.html#a9516515b562a7699e9b226e6030ef86c" title="Compute the divergence of a vector field (backward difference)." alt="" coords="189,132,425,159"/>
+<area shape="rect" href="classPressureStep.html#a837946964627b9513277bd7698c630ce" title="Run the pressure step: pressure correction computation by splitting direction and pressure update." alt="" coords="5,132,141,159"/>
+<area shape="rect" href="classVectorField.html#a6cde8853c3eb1d5ba60b4a61e467c7c0" title="Multiply all components of the vector field by a scalar value." alt="" coords="229,5,385,32"/>
 </map>
 </div>
 
@@ -1035,7 +1019,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
           <td class="paramname"><em>offsetDirection</em>, </td>
         </tr>
         <tr>
@@ -1058,7 +1042,7 @@ Here is the call graph for this function:</div>
     <tr><td class="paramname">i</td><td>the x-index </td></tr>
     <tr><td class="paramname">j</td><td>the y-index </td></tr>
     <tr><td class="paramname">k</td><td>the z-index </td></tr>
-    <tr><td class="paramname">offsetDirection</td><td>the direction for the offset (<a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383">Axis::X</a>, <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0">Axis::Y</a>, or <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5">Axis::Z</a>) </td></tr>
+    <tr><td class="paramname">offsetDirection</td><td>the direction for the offset (<a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383">Axis::X</a>, <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0">Axis::Y</a>, or <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5">Axis::Z</a>) </td></tr>
     <tr><td class="paramname">offset</td><td>the offset value (can be positive or negative) </td></tr>
   </table>
   </dd>
@@ -1071,17 +1055,6 @@ Here is the call graph for this function:</div>
 <map name="aclassField_ae8b4623a9fe837b3eff02e02ffe1c365_cgraph" id="aclassField_ae8b4623a9fe837b3eff02e02ffe1c365_cgraph">
 <area shape="rect" title="Access the value in the field at given position considering direction offset." alt="" coords="5,5,172,32"/>
 <area shape="rect" href="classField.html#ab4240a7cb1cae0917ff698837485f399" title="Computes the linear index for 3D access in row&#45;major order." alt="" coords="220,5,301,32"/>
-</map>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classField_ae8b4623a9fe837b3eff02e02ffe1c365_icgraph.png" border="0" usemap="#aclassField_ae8b4623a9fe837b3eff02e02ffe1c365_icgraph" alt=""/></div>
-<map name="aclassField_ae8b4623a9fe837b3eff02e02ffe1c365_icgraph" id="aclassField_ae8b4623a9fe837b3eff02e02ffe1c365_icgraph">
-<area shape="rect" title="Access the value in the field at given position considering direction offset." alt="" coords="713,5,880,32"/>
-<area shape="rect" href="classLinearSys.html#adc38bb02a25f7a917500b6a5ee0917c5" title="Fill the linear system for Velocity variables." alt="" coords="455,5,665,32"/>
-<area shape="rect" href="classViscousStep.html#a1e0082f2456e9fb9d6e8059d712f97a3" title="Closes viscous step filling and solving three linear systems." alt="" coords="184,5,407,32"/>
-<area shape="rect" href="classViscousStep.html#af53b70819c9d7a6af545f310020ff37d" title="Run viscous step." alt="" coords="5,5,136,32"/>
 </map>
 </div>
 
@@ -1114,7 +1087,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
           <td class="paramname"><em>offsetDirection</em>, </td>
         </tr>
         <tr>
@@ -1250,7 +1223,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> Field::offsetAxis_</td>
+          <td class="memname"><a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> Field::offsetAxis_</td>
         </tr>
       </table>
   </td>

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['k_145',['k',['../structSimulationData.html#a879a0828cbbea0b77a1120ec92469bce',1,'SimulationData']]],
-  ['k_5ffunc_146',['k_func',['../namespaceConfigFuncs.html#adbedde9d6948c3351309fbdcd828eb71',1,'ConfigFuncs']]]
+  ['j_5fstart_165',['j_start',['../structGrid.html#a1db9deea8539aa4b9f193efd3d440172',1,'Grid']]],
+  ['json_166',['json',['../inputReader_8cpp.html#ab701e3ac61a85b337ec5c1abaad6742d',1,'inputReader.cpp']]]
 ];

@@ -82,8 +82,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac4f6000d7a395160be2aa433865e9c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fecac5d4c69afc68e441fce63b9298f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLogWriter.html#a2fecac5d4c69afc68e441fce63b9298f">write</a> (const std::string &amp;msg)</td></tr>
 <tr class="separator:a2fecac5d4c69afc68e441fce63b9298f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfbe02b4d8a36520ab748a8def1a3326"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLogWriter.html#abfbe02b4d8a36520ab748a8def1a3326">printSimulationHeader</a> (const <a class="el" href="structInputData.html">InputData</a> &amp;input, const <a class="el" href="structSimulationData.html">SimulationData</a> &amp;simData)</td></tr>
-<tr class="separator:abfbe02b4d8a36520ab748a8def1a3326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cbac1139f397503c5051cfde5e591c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLogWriter.html#a6cbac1139f397503c5051cfde5e591c5">printSimulationHeader</a> (const <a class="el" href="structInputData.html">InputData</a> &amp;input, const <a class="el" href="structSimulationData.html">SimulationData</a> &amp;simData, bool vtkWritten)</td></tr>
+<tr class="separator:a6cbac1139f397503c5051cfde5e591c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a431302a6b0729e4cd626d1b01a1a8ef2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLogWriter.html#a431302a6b0729e4cd626d1b01a1a8ef2">printStepHeader</a> ()</td></tr>
 <tr class="separator:a431302a6b0729e4cd626d1b01a1a8ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d66aebf8de216f3a0b9fd0b023c5149"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLogWriter.html#a1d66aebf8de216f3a0b9fd0b023c5149">printStepProgress</a> (int step, double time, double dt, double elapsedSec, bool isOutputStep)</td></tr>
@@ -181,8 +181,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="abfbe02b4d8a36520ab748a8def1a3326"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfbe02b4d8a36520ab748a8def1a3326">&#9670;&nbsp;</a></span>printSimulationHeader()</h2>
+<a id="a6cbac1139f397503c5051cfde5e591c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cbac1139f397503c5051cfde5e591c5">&#9670;&nbsp;</a></span>printSimulationHeader()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,7 +197,13 @@ Here is the call graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="structSimulationData.html">SimulationData</a> &amp;&#160;</td>
-          <td class="paramname"><em>simData</em>&#160;</td>
+          <td class="paramname"><em>simData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>vtkWritten</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -209,8 +215,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classLogWriter_abfbe02b4d8a36520ab748a8def1a3326_cgraph.png" border="0" usemap="#aclassLogWriter_abfbe02b4d8a36520ab748a8def1a3326_cgraph" alt=""/></div>
-<map name="aclassLogWriter_abfbe02b4d8a36520ab748a8def1a3326_cgraph" id="aclassLogWriter_abfbe02b4d8a36520ab748a8def1a3326_cgraph">
+<div class="center"><img src="classLogWriter_a6cbac1139f397503c5051cfde5e591c5_cgraph.png" border="0" usemap="#aclassLogWriter_a6cbac1139f397503c5051cfde5e591c5_cgraph" alt=""/></div>
+<map name="aclassLogWriter_a6cbac1139f397503c5051cfde5e591c5_cgraph" id="aclassLogWriter_a6cbac1139f397503c5051cfde5e591c5_cgraph">
 <area shape="rect" title=" " alt="" coords="5,23,199,65"/>
 <area shape="rect" href="classLogWriter.html#a1a9dcc3f29001d9cdd621c2458a6dff3" title=" " alt="" coords="247,5,401,32"/>
 <area shape="rect" href="classLogWriter.html#a2fecac5d4c69afc68e441fce63b9298f" title=" " alt="" coords="261,56,387,83"/>
@@ -341,7 +347,7 @@ Here is the caller graph for this function:</div>
 <map name="aclassLogWriter_a1a9dcc3f29001d9cdd621c2458a6dff3_icgraph" id="aclassLogWriter_a1a9dcc3f29001d9cdd621c2458a6dff3_icgraph">
 <area shape="rect" title=" " alt="" coords="271,64,425,91"/>
 <area shape="rect" href="classLogWriter.html#afa1aee893d0731d546986049b901ca3c" title=" " alt="" coords="5,5,223,32"/>
-<area shape="rect" href="classLogWriter.html#abfbe02b4d8a36520ab748a8def1a3326" title=" " alt="" coords="17,57,211,98"/>
+<area shape="rect" href="classLogWriter.html#a6cbac1139f397503c5051cfde5e591c5" title=" " alt="" coords="17,57,211,98"/>
 <area shape="rect" href="classLogWriter.html#a431302a6b0729e4cd626d1b01a1a8ef2" title=" " alt="" coords="15,123,213,149"/>
 </map>
 </div>
@@ -370,7 +376,7 @@ Here is the caller graph for this function:</div>
 <map name="aclassLogWriter_a2fecac5d4c69afc68e441fce63b9298f_icgraph" id="aclassLogWriter_a2fecac5d4c69afc68e441fce63b9298f_icgraph">
 <area shape="rect" title=" " alt="" coords="271,93,397,120"/>
 <area shape="rect" href="classLogWriter.html#afa1aee893d0731d546986049b901ca3c" title=" " alt="" coords="5,5,223,32"/>
-<area shape="rect" href="classLogWriter.html#abfbe02b4d8a36520ab748a8def1a3326" title=" " alt="" coords="17,57,211,98"/>
+<area shape="rect" href="classLogWriter.html#a6cbac1139f397503c5051cfde5e591c5" title=" " alt="" coords="17,57,211,98"/>
 <area shape="rect" href="classLogWriter.html#a431302a6b0729e4cd626d1b01a1a8ef2" title=" " alt="" coords="15,123,213,149"/>
 <area shape="rect" href="classLogWriter.html#a1d66aebf8de216f3a0b9fd0b023c5149" title=" " alt="" coords="10,173,218,200"/>
 </map>

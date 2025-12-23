@@ -7,9 +7,9 @@
 <area shape="rect" id="node11" href="$classVectorField.html#a678cbed69b397d108ea467ac65a9507c" title="Setup the vector field with functions to populate each component (e.g., initial conditions)." alt="" coords="825,208,963,235"/>
 <area shape="rect" id="node6" href="$namespaceInitializer.html#ad0df7e265dd3a6f2b2aaefcb2244203d" title=" " alt="" coords="551,175,739,217"/>
 <area shape="rect" id="node10" href="$classNSBSolver.html#ada676d7f89d6183a6666976991e4e868" title=" " alt="" coords="109,125,242,152"/>
-<area shape="rect" id="node7" href="$namespaceInitializer.html#ab08ce6fc3e43c623779edfdfb7ea3855" title="Setup and initialize the SimulationData from input data." alt="" coords="321,181,448,208"/>
+<area shape="rect" id="node7" href="$namespaceInitializer.html#a0741ee296f266920808094cbb8475064" title="Setup and initialize the SimulationData from input data." alt="" coords="321,181,448,208"/>
 <area shape="rect" id="node8" href="$classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6" title=" " alt="" coords="108,177,243,204"/>
-<area shape="rect" id="node9" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,152,60,179"/>
+<area shape="rect" id="node9" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,152,60,179"/>
 <area shape="rect" id="node12" href="$classViscousStep.html#a9ad97cebe4b5966259b6d205f62a392e" title="Construct temporary fields to proceed in computations." alt="" coords="527,241,763,282"/>
 <area shape="rect" id="node13" href="$classViscousStep.html#a3c394708ab3435546917bbc8787e6d83" title="Constructor." alt="" coords="291,248,479,275"/>
 </map>

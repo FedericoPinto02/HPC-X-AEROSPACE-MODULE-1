@@ -1,0 +1,22 @@
+<map id="Initializer::setup" name="Initializer::setup">
+<area shape="rect" id="node1" title="Setup and initialize the SimulationData from input data." alt="" coords="5,309,132,336"/>
+<area shape="rect" id="node2" href="$namespaceConfigFuncs.html#a9d7c208968a863df7d17781b9ed10356" title=" " alt="" coords="422,31,589,57"/>
+<area shape="rect" id="node3" href="$namespaceConfigFuncs.html#a03a24d0ef4e46bdafbcffe16161a4b68" title=" " alt="" coords="422,132,589,159"/>
+<area shape="rect" id="node4" href="$namespaceConfigFuncs.html#af4bfa49d2de953a1ec03b6c318940568" title=" " alt="" coords="421,233,590,260"/>
+<area shape="rect" id="node5" href="$namespaceConfigFuncs.html#ad7d92434b13f327295ca39fb4906c9ea" title=" " alt="" coords="196,461,352,488"/>
+<area shape="rect" id="node7" href="$namespaceConfigFuncs.html#ad0fb898ee4fa97ae585cb9b55739894f" title=" " alt="" coords="197,309,351,336"/>
+<area shape="rect" id="node8" href="$namespaceConfigFuncs.html#ac419f0da352a3a2f376d7f1b020a8620" title=" " alt="" coords="197,360,351,387"/>
+<area shape="rect" id="node9" href="$namespaceInitializer.html#a84757b22926f400a6aec78c2b1e2aa69" title=" " alt="" coords="416,505,595,546"/>
+<area shape="rect" id="node12" href="$namespaceInitializer.html#ad0df7e265dd3a6f2b2aaefcb2244203d" title=" " alt="" coords="180,563,368,605"/>
+<area shape="rect" id="node16" href="$namespaceConfigFuncs.html#ad19b0e94f67f64c493cff903c92a2efb" title=" " alt="" coords="199,411,349,437"/>
+<area shape="rect" id="node17" href="$namespaceConfigFuncs.html#afb0ca0998e95d74aa5ade488a7f12582" title=" " alt="" coords="185,629,363,656"/>
+<area shape="rect" id="node18" href="$namespaceConfigFuncs.html#a885e55fe8c3e3302d8e89e3a9042672c" title=" " alt="" coords="185,5,363,32"/>
+<area shape="rect" id="node19" href="$namespaceConfigFuncs.html#a48533f3f063ddfc4bad672565013f720" title=" " alt="" coords="185,107,363,133"/>
+<area shape="rect" id="node20" href="$namespaceConfigFuncs.html#a548b92fc232b26882dcf1149359af111" title=" " alt="" coords="183,208,365,235"/>
+<area shape="rect" id="node6" href="$namespaceConfigFuncs.html#a36d1eab882a6024fffb46cadb9bc198d" title=" " alt="" coords="431,385,580,412"/>
+<area shape="rect" id="node10" href="$classField.html#a17a19acc3a519f5e37a802e76c992f46" title="Populates the underlying field based on the stored function in (x,y,z,t)." alt="" coords="671,565,789,592"/>
+<area shape="rect" id="node11" href="$classField.html#acc812182b3d806c93491194ae821d9a3" title="Setup the field with a function to populate it (e.g., initial condition)." alt="" coords="681,513,779,540"/>
+<area shape="rect" id="node13" href="$classVectorField.html#afbe1f8fbd8bdbd92996700bbe9657f7d" title="Populates each component of the underlying vector field based on the stored functions in (x,..." alt="" coords="426,621,585,648"/>
+<area shape="rect" id="node15" href="$classVectorField.html#a678cbed69b397d108ea467ac65a9507c" title="Setup the vector field with functions to populate each component (e.g., initial conditions)." alt="" coords="436,571,575,597"/>
+<area shape="rect" id="node14" href="$classVectorField.html#ad0d70e28de0a1efeaa1e3ffe8a86b175" title="Access the component of the vector field in the specified direction." alt="" coords="643,617,817,644"/>
+</map>

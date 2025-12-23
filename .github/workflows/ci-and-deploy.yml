@@ -1,0 +1,74 @@
+name: CI with Tests and Pages Deployment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read 
+  pages: write   
+  id-token: write
+
+jobs:
+  # 1. JOB: Test (Continuous Integration)
+  test:
+    name: Run Compiled Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Install C++ and CMake Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ make libopenmpi-dev openmpi-bin
+
+      - name: Configure and Build Tests (with CMake)
+        # creates 'build', configures and compiles project
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
+
+      - name: Execute Tests (using CTest)
+        # if tests fail workflow stops
+        run: cd build && ctest --output-on-failure
+
+  # 2. JOB: Generate Doxygen
+  build:
+    name: Build Doxygen
+    runs-on: ubuntu-latest
+    needs: test 
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      # Install Doxygen
+      - name: Install Doxygen
+        run: sudo apt-get install -y doxygen
+
+      # Generate docs
+      - name: Generate Doxygen Documentation
+        run: doxygen Doxyfile
+
+      # loads artifacts for deployment
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'docs' 
+
+  # 3. JOB: Deployment on GitHub Pages (Continuous Deployment)
+  deploy:
+    name: Deploy to Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: [test, build] 
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

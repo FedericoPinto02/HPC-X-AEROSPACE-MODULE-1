@@ -16,7 +16,7 @@ Handles console and file logging.
 \item 
 void \mbox{\hyperlink{classLogWriter_a2fecac5d4c69afc68e441fce63b9298f}{write}} (const std\+::string \&msg)
 \item 
-void \mbox{\hyperlink{classLogWriter_abfbe02b4d8a36520ab748a8def1a3326}{print\+Simulation\+Header}} (const \mbox{\hyperlink{structInputData}{Input\+Data}} \&input, const \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \&sim\+Data)
+void \mbox{\hyperlink{classLogWriter_a6cbac1139f397503c5051cfde5e591c5}{print\+Simulation\+Header}} (const \mbox{\hyperlink{structInputData}{Input\+Data}} \&input, const \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \&sim\+Data, bool vtk\+Written)
 \item 
 void \mbox{\hyperlink{classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2}{print\+Step\+Header}} ()
 \item 
@@ -70,17 +70,18 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{classLogWriter_afa1aee893d0731d546986049b901ca3c_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{classLogWriter_abfbe02b4d8a36520ab748a8def1a3326}\label{classLogWriter_abfbe02b4d8a36520ab748a8def1a3326}} 
+\mbox{\Hypertarget{classLogWriter_a6cbac1139f397503c5051cfde5e591c5}\label{classLogWriter_a6cbac1139f397503c5051cfde5e591c5}} 
 \index{LogWriter@{LogWriter}!printSimulationHeader@{printSimulationHeader}}
 \index{printSimulationHeader@{printSimulationHeader}!LogWriter@{LogWriter}}
 \doxysubsubsection{\texorpdfstring{printSimulationHeader()}{printSimulationHeader()}}
-{\footnotesize\ttfamily void Log\+Writer\+::print\+Simulation\+Header (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structInputData}{Input\+Data}} \&}]{input,  }\item[{const \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \&}]{sim\+Data }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Log\+Writer\+::print\+Simulation\+Header (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structInputData}{Input\+Data}} \&}]{input,  }\item[{const \mbox{\hyperlink{structSimulationData}{Simulation\+Data}} \&}]{sim\+Data,  }\item[{bool}]{vtk\+Written }\end{DoxyParamCaption})}
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{classLogWriter_abfbe02b4d8a36520ab748a8def1a3326_cgraph}
+\includegraphics[width=350pt]{classLogWriter_a6cbac1139f397503c5051cfde5e591c5_cgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2}\label{classLogWriter_a431302a6b0729e4cd626d1b01a1a8ef2}} 
@@ -115,7 +116,8 @@ Here is the call graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{separator()}{separator()}}
 {\footnotesize\ttfamily std\+::string Log\+Writer\+::separator (\begin{DoxyParamCaption}\item[{int}]{width = {\ttfamily 60},  }\item[{char}]{c = {\ttfamily \textquotesingle{}=\textquotesingle{}} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -128,7 +130,8 @@ Here is the caller graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{write()}{write()}}
 {\footnotesize\ttfamily void Log\+Writer\+::write (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})}
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

@@ -1,5 +1,4 @@
 <map id="PressureStep::PressureStep" name="PressureStep::PressureStep">
-<area shape="rect" id="node1" title="Constructor." alt="" coords="5,13,205,39"/>
-<area shape="rect" id="node2" href="$classPressureStep.html#a775ec248bc2a5c2b9f7d1457b1c97013" title="Construct temporary fields to proceed in computations." alt="" coords="253,5,424,47"/>
-<area shape="rect" id="node3" href="$classField.html#acc812182b3d806c93491194ae821d9a3" title="Setup the field with a function to populate it (e.g., initial condition)." alt="" coords="472,13,569,39"/>
+<area shape="rect" id="node1" title="Constructor." alt="" coords="5,5,205,32"/>
+<area shape="rect" id="node2" href="$classField.html#acc812182b3d806c93491194ae821d9a3" title="Setup the field with a function to populate it (e.g., initial condition)." alt="" coords="253,5,351,32"/>
 </map>

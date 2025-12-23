@@ -2,9 +2,9 @@
 <area shape="rect" id="node1" title="Populates the underlying field based on the stored function in (x,y,z,t)." alt="" coords="935,42,1053,69"/>
 <area shape="rect" id="node2" href="$namespaceInitializer.html#a84757b22926f400a6aec78c2b1e2aa69" title=" " alt="" coords="708,5,887,47"/>
 <area shape="rect" id="node6" href="$classVectorField.html#afbe1f8fbd8bdbd92996700bbe9657f7d" title="Populates each component of the underlying vector field based on the stored functions in (x,..." alt="" coords="718,71,877,98"/>
-<area shape="rect" id="node3" href="$namespaceInitializer.html#ab08ce6fc3e43c623779edfdfb7ea3855" title="Setup and initialize the SimulationData from input data." alt="" coords="294,71,421,98"/>
+<area shape="rect" id="node3" href="$namespaceInitializer.html#a0741ee296f266920808094cbb8475064" title="Setup and initialize the SimulationData from input data." alt="" coords="294,71,421,98"/>
 <area shape="rect" id="node4" href="$classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6" title=" " alt="" coords="108,73,243,99"/>
-<area shape="rect" id="node5" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,99,60,126"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,99,60,126"/>
 <area shape="rect" id="node7" href="$namespaceInitializer.html#ad0df7e265dd3a6f2b2aaefcb2244203d" title=" " alt="" coords="472,64,660,105"/>
 <area shape="rect" id="node8" href="$classNSBSolver.html#ada676d7f89d6183a6666976991e4e868" title=" " alt="" coords="291,129,424,155"/>
 </map>

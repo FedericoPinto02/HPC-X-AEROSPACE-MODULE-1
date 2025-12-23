@@ -29,15 +29,25 @@ public:
      */
     PressureStep(MpiEnv &mpi, SimulationData &simData);
 
+    /// Setup fields, linear systems and solvers.
+    void setup();
+
     /// Run the pressure step: pressure correction computation by splitting direction and pressure update.
     void run();
 
 private:
-    MpiEnv &mpi;
-    SimulationData &data_;
+    // --- Environment and helpers -------------------------------------------------------------------------------------
+    const MpiEnv &mpi;
+    HaloHandler haloHandler;
+    Derivatives deriv;
 
+    // --- Phyisics data (pcr stands for pressure corrector, it's the second phi) --------------------------------------
+    SimulationData &data_;
     Field psi, phi, pcr, divU;
-    // pcr stands for pressure corrector, it's the second phi
+
+    // --- Linear system: O(N) memory overhead, O(1) time setup complexity ---------------------------------------------
+    std::unique_ptr<SchurSolver> solver_x, solver_y, solver_z;  // solvers for each direction
+    std::vector<double> rhs, solution;                          // scratch vectors for linear system solving
 
     /**
      * @brief Assemble the local linear system matrix for pressure-like variables along a given direction.

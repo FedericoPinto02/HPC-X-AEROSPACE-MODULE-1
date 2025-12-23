@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstddef>
-
+#include <memory>
 #include "core/MpiEnv.hpp"
 #include <memory>
 
@@ -58,7 +58,7 @@ struct Grid {
      * @param dy_ the grid spacing in the Y direction
      * @param dz_ the grid spacing in the Z direction
      * @param env the MPI Environment containing topology information
-     * @param n_halo the number of halo points along each direction (default is 2)
+     * @param n_halo the number of halo points along each direction (default is 1)
      */
     Grid(size_t Nx_g, size_t Ny_g, size_t Nz_g,
          double dx_, double dy_, double dz_,

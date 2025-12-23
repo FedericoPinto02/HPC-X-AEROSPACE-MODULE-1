@@ -63,6 +63,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structGrid-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -77,77 +78,110 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab12903263a3f2097858c2be593dcab19"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#ab12903263a3f2097858c2be593dcab19">Grid</a> (size_t Nx_, size_t Ny_, size_t Nz_, double dx_, double dy_, double dz_)</td></tr>
-<tr class="memdesc:ab12903263a3f2097858c2be593dcab19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor to initialize the grid with given physical sizes and number of points.  <a href="structGrid.html#ab12903263a3f2097858c2be593dcab19">More...</a><br /></td></tr>
-<tr class="separator:ab12903263a3f2097858c2be593dcab19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70a4b43c216152caf67f3628326f1d59"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a70a4b43c216152caf67f3628326f1d59">size</a> ()</td></tr>
-<tr class="memdesc:a70a4b43c216152caf67f3628326f1d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the total number of grid points.  <a href="structGrid.html#a70a4b43c216152caf67f3628326f1d59">More...</a><br /></td></tr>
-<tr class="separator:a70a4b43c216152caf67f3628326f1d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a374223708b014cc2b96c2e6e5ef4abf7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a374223708b014cc2b96c2e6e5ef4abf7">Grid</a> (size_t Nx_g, size_t Ny_g, size_t Nz_g, double dx_, double dy_, double dz_)</td></tr>
+<tr class="memdesc:a374223708b014cc2b96c2e6e5ef4abf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor to initialize the grid in an explicitly sequential environment.  <a href="structGrid.html#a374223708b014cc2b96c2e6e5ef4abf7">More...</a><br /></td></tr>
+<tr class="separator:a374223708b014cc2b96c2e6e5ef4abf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad23ba8bffd7ee02f2b19ba5c252a96fe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#ad23ba8bffd7ee02f2b19ba5c252a96fe">Grid</a> (size_t Nx_g, size_t Ny_g, size_t Nz_g, double dx_, double dy_, double dz_, const <a class="el" href="classMpiEnv.html">MpiEnv</a> &amp;env, size_t <a class="el" href="structGrid.html#a78c04584375f91cfa978ea0c9f76c111">n_halo</a>=2)</td></tr>
+<tr class="memdesc:ad23ba8bffd7ee02f2b19ba5c252a96fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor to initialize the grid in a parallel environment. Automatically decomposes the global domain based on <a class="el" href="classMpiEnv.html" title="Class that encapsulates MPI environment and Cartesian topology management.">MpiEnv</a> topology.  <a href="structGrid.html#ad23ba8bffd7ee02f2b19ba5c252a96fe">More...</a><br /></td></tr>
+<tr class="separator:ad23ba8bffd7ee02f2b19ba5c252a96fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a5cf0c72f5be8a213d6e895494851e6"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a8a5cf0c72f5be8a213d6e895494851e6">globalSize</a> () const</td></tr>
+<tr class="memdesc:a8a5cf0c72f5be8a213d6e895494851e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the total number of global grid points.  <a href="structGrid.html#a8a5cf0c72f5be8a213d6e895494851e6">More...</a><br /></td></tr>
+<tr class="separator:a8a5cf0c72f5be8a213d6e895494851e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add6c8c9ea4bd708abfcbe875e85cd076"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#add6c8c9ea4bd708abfcbe875e85cd076">size</a> () const</td></tr>
+<tr class="memdesc:add6c8c9ea4bd708abfcbe875e85cd076"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the total number of local grid points.  <a href="structGrid.html#add6c8c9ea4bd708abfcbe875e85cd076">More...</a><br /></td></tr>
 <tr class="separator:add6c8c9ea4bd708abfcbe875e85cd076"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32cb639714ca32d125b906bae21573cf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a32cb639714ca32d125b906bae21573cf">to_x</a> (double i, <a class="el" href="Grid_8hpp.html#af6e03aaba31deefd41eb8d7ca6128c01">GridStaggering</a> offset, <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetAxis) const</td></tr>
-<tr class="memdesc:a32cb639714ca32d125b906bae21573cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a grid index to a physical coordinate along the X-axis, considering staggering.  <a href="structGrid.html#a32cb639714ca32d125b906bae21573cf">More...</a><br /></td></tr>
-<tr class="separator:a32cb639714ca32d125b906bae21573cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e6e2b09c73bf2e2f1710f4baca80ec2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a3e6e2b09c73bf2e2f1710f4baca80ec2">to_y</a> (double j, <a class="el" href="Grid_8hpp.html#af6e03aaba31deefd41eb8d7ca6128c01">GridStaggering</a> offset, <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetAxis) const</td></tr>
-<tr class="memdesc:a3e6e2b09c73bf2e2f1710f4baca80ec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a grid index to a physical coordinate along the Y-axis, considering staggering.  <a href="structGrid.html#a3e6e2b09c73bf2e2f1710f4baca80ec2">More...</a><br /></td></tr>
-<tr class="separator:a3e6e2b09c73bf2e2f1710f4baca80ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07ecb5a874d22f56f673f3b8b2b3526e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a07ecb5a874d22f56f673f3b8b2b3526e">to_z</a> (double k, <a class="el" href="Grid_8hpp.html#af6e03aaba31deefd41eb8d7ca6128c01">GridStaggering</a> offset, <a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetAxis) const</td></tr>
-<tr class="memdesc:a07ecb5a874d22f56f673f3b8b2b3526e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a grid index to a physical coordinate along the Z-axis, considering staggering.  <a href="structGrid.html#a07ecb5a874d22f56f673f3b8b2b3526e">More...</a><br /></td></tr>
-<tr class="separator:a07ecb5a874d22f56f673f3b8b2b3526e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae445b63d1d6af03452f1ffeb2f622d3d"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#ae445b63d1d6af03452f1ffeb2f622d3d">sizeWithHalo</a> () const</td></tr>
+<tr class="memdesc:ae445b63d1d6af03452f1ffeb2f622d3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the total number of local grid points, including halo points in each direction.  <a href="structGrid.html#ae445b63d1d6af03452f1ffeb2f622d3d">More...</a><br /></td></tr>
+<tr class="separator:ae445b63d1d6af03452f1ffeb2f622d3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa028931255914c6030565b59d2ec1be6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#aa028931255914c6030565b59d2ec1be6">to_x</a> (size_t i, <a class="el" href="Grid_8hpp.html#af6e03aaba31deefd41eb8d7ca6128c01">GridStaggering</a> offset, <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetAxis) const</td></tr>
+<tr class="memdesc:aa028931255914c6030565b59d2ec1be6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a grid index to a physical coordinate along the X-axis, considering staggering.  <a href="structGrid.html#aa028931255914c6030565b59d2ec1be6">More...</a><br /></td></tr>
+<tr class="separator:aa028931255914c6030565b59d2ec1be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a591f8df86fb8e8f7986919e108f478ee"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a591f8df86fb8e8f7986919e108f478ee">to_y</a> (size_t j, <a class="el" href="Grid_8hpp.html#af6e03aaba31deefd41eb8d7ca6128c01">GridStaggering</a> offset, <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetAxis) const</td></tr>
+<tr class="memdesc:a591f8df86fb8e8f7986919e108f478ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a grid index to a physical coordinate along the Y-axis, considering staggering.  <a href="structGrid.html#a591f8df86fb8e8f7986919e108f478ee">More...</a><br /></td></tr>
+<tr class="separator:a591f8df86fb8e8f7986919e108f478ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e3ed400719b829d8d23344e227e4474"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a1e3ed400719b829d8d23344e227e4474">to_z</a> (size_t k, <a class="el" href="Grid_8hpp.html#af6e03aaba31deefd41eb8d7ca6128c01">GridStaggering</a> offset, <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> offsetAxis) const</td></tr>
+<tr class="memdesc:a1e3ed400719b829d8d23344e227e4474"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a grid index to a physical coordinate along the Z-axis, considering staggering.  <a href="structGrid.html#a1e3ed400719b829d8d23344e227e4474">More...</a><br /></td></tr>
+<tr class="separator:a1e3ed400719b829d8d23344e227e4474"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae9c0e8104091f55bd0c172a0d0ae081"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#aae9c0e8104091f55bd0c172a0d0ae081">hasMinBoundary</a> (<a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> axis) const</td></tr>
+<tr class="memdesc:aae9c0e8104091f55bd0c172a0d0ae081"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the local grid chunk has the minimum boundary at the specified axis.  <a href="structGrid.html#aae9c0e8104091f55bd0c172a0d0ae081">More...</a><br /></td></tr>
+<tr class="separator:aae9c0e8104091f55bd0c172a0d0ae081"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd10d881b59bee4831fffda719ca035a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#afd10d881b59bee4831fffda719ca035a">hasMaxBoundary</a> (<a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a> axis) const</td></tr>
+<tr class="memdesc:afd10d881b59bee4831fffda719ca035a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the local grid chunk has the maximum boundary at the specified axis.  <a href="structGrid.html#afd10d881b59bee4831fffda719ca035a">More...</a><br /></td></tr>
+<tr class="separator:afd10d881b59bee4831fffda719ca035a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ac9b2a8eafa59fe957bd84b9d3f84df7f"><td class="memItemLeft" align="right" valign="top">static std::pair&lt; size_t, size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#ac9b2a8eafa59fe957bd84b9d3f84df7f">decompose1D</a> (size_t N_glob, int n_procs, int proc_coord)</td></tr>
+<tr class="memdesc:ac9b2a8eafa59fe957bd84b9d3f84df7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decompose the grid along a target dimension, identifying local information of the chunk owned by a process with a specified coordinate in a Cartesian MPI topology (parallel environment). The domain decomposition is done in a balanced manner, distributing any remainder points to the first few.  <a href="structGrid.html#ac9b2a8eafa59fe957bd84b9d3f84df7f">More...</a><br /></td></tr>
+<tr class="separator:ac9b2a8eafa59fe957bd84b9d3f84df7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ad4c79bac71b59281996b784f6e538068"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#ad4c79bac71b59281996b784f6e538068">Lx</a></td></tr>
-<tr class="memdesc:ad4c79bac71b59281996b784f6e538068"><td class="mdescLeft">&#160;</td><td class="mdescRight">Physical size of the grid in each direction.  <a href="structGrid.html#ad4c79bac71b59281996b784f6e538068">More...</a><br /></td></tr>
-<tr class="separator:ad4c79bac71b59281996b784f6e538068"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60a2f837f0e629c85b16f120631d8324"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a60a2f837f0e629c85b16f120631d8324">Ly</a></td></tr>
-<tr class="separator:a60a2f837f0e629c85b16f120631d8324"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8f3d3e5b45ccccad6936114dad717d9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#ad8f3d3e5b45ccccad6936114dad717d9">Lz</a></td></tr>
-<tr class="separator:ad8f3d3e5b45ccccad6936114dad717d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f51b9f4262231b3e89f1b9169f83e1c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a7f51b9f4262231b3e89f1b9169f83e1c">Nx</a></td></tr>
-<tr class="memdesc:a7f51b9f4262231b3e89f1b9169f83e1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of grid points in each direction.  <a href="structGrid.html#a7f51b9f4262231b3e89f1b9169f83e1c">More...</a><br /></td></tr>
-<tr class="separator:a7f51b9f4262231b3e89f1b9169f83e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedbe6591ce1565b3bdece8af225e5015"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#aedbe6591ce1565b3bdece8af225e5015">Ny</a></td></tr>
-<tr class="separator:aedbe6591ce1565b3bdece8af225e5015"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5165f82a832d9b1c2bd2156c3b6439d6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a5165f82a832d9b1c2bd2156c3b6439d6">Nz</a></td></tr>
-<tr class="separator:a5165f82a832d9b1c2bd2156c3b6439d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a730fde210b6d4dd0f38ad9e84b504851"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a730fde210b6d4dd0f38ad9e84b504851">Lx_glob</a></td></tr>
+<tr class="memdesc:a730fde210b6d4dd0f38ad9e84b504851"><td class="mdescLeft">&#160;</td><td class="mdescRight">Physical lengths of the global grid in each direction.  <a href="structGrid.html#a730fde210b6d4dd0f38ad9e84b504851">More...</a><br /></td></tr>
+<tr class="separator:a730fde210b6d4dd0f38ad9e84b504851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a781159ea5c1221fa762773382b2379be"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a781159ea5c1221fa762773382b2379be">Ly_glob</a></td></tr>
+<tr class="separator:a781159ea5c1221fa762773382b2379be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfd015b3978a3dd58f1fe4daa0567eb5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#adfd015b3978a3dd58f1fe4daa0567eb5">Lz_glob</a></td></tr>
+<tr class="separator:adfd015b3978a3dd58f1fe4daa0567eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00c9b075375377e49b337f014dde527d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a00c9b075375377e49b337f014dde527d">Nx_glob</a></td></tr>
+<tr class="memdesc:a00c9b075375377e49b337f014dde527d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of grid points in the global grid in each direction.  <a href="structGrid.html#a00c9b075375377e49b337f014dde527d">More...</a><br /></td></tr>
+<tr class="separator:a00c9b075375377e49b337f014dde527d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a513f0485d5d237374e53449b2c656d1a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a513f0485d5d237374e53449b2c656d1a">Ny_glob</a></td></tr>
+<tr class="separator:a513f0485d5d237374e53449b2c656d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1c6b97e05c5dd3a7ae4c96d51b77c63"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#ad1c6b97e05c5dd3a7ae4c96d51b77c63">Nz_glob</a></td></tr>
+<tr class="separator:ad1c6b97e05c5dd3a7ae4c96d51b77c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f52441a37442b054bf153cc362cf2d8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a1f52441a37442b054bf153cc362cf2d8">dx</a></td></tr>
-<tr class="memdesc:a1f52441a37442b054bf153cc362cf2d8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structGrid.html" title="Struct to hold grid dimensions and spacing information along each direction.">Grid</a> spacing in each direction (derived from physical sizes and number of grid points).  <a href="structGrid.html#a1f52441a37442b054bf153cc362cf2d8">More...</a><br /></td></tr>
+<tr class="memdesc:a1f52441a37442b054bf153cc362cf2d8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structGrid.html" title="Struct to hold grid dimensions and spacing information along each direction.">Grid</a> spacing in each direction (constant throughout the domain).  <a href="structGrid.html#a1f52441a37442b054bf153cc362cf2d8">More...</a><br /></td></tr>
 <tr class="separator:a1f52441a37442b054bf153cc362cf2d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac388777840b30765f83a8a135d7b0cec"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#ac388777840b30765f83a8a135d7b0cec">dy</a></td></tr>
 <tr class="separator:ac388777840b30765f83a8a135d7b0cec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a229d6a7322d5d4ff446fd78468fef27b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a229d6a7322d5d4ff446fd78468fef27b">dz</a></td></tr>
 <tr class="separator:a229d6a7322d5d4ff446fd78468fef27b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f51b9f4262231b3e89f1b9169f83e1c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a7f51b9f4262231b3e89f1b9169f83e1c">Nx</a></td></tr>
+<tr class="memdesc:a7f51b9f4262231b3e89f1b9169f83e1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of grid points in the local grid chunk in each direction (derived from global info and Cartesian topology).  <a href="structGrid.html#a7f51b9f4262231b3e89f1b9169f83e1c">More...</a><br /></td></tr>
+<tr class="separator:a7f51b9f4262231b3e89f1b9169f83e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedbe6591ce1565b3bdece8af225e5015"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#aedbe6591ce1565b3bdece8af225e5015">Ny</a></td></tr>
+<tr class="separator:aedbe6591ce1565b3bdece8af225e5015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5165f82a832d9b1c2bd2156c3b6439d6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a5165f82a832d9b1c2bd2156c3b6439d6">Nz</a></td></tr>
+<tr class="separator:a5165f82a832d9b1c2bd2156c3b6439d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f37c8f735275a95c496ce0e9309c44a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a6f37c8f735275a95c496ce0e9309c44a">i_start</a></td></tr>
+<tr class="memdesc:a6f37c8f735275a95c496ce0e9309c44a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index-offset in each dimension of this local grid chunk in the global grid.  <a href="structGrid.html#a6f37c8f735275a95c496ce0e9309c44a">More...</a><br /></td></tr>
+<tr class="separator:a6f37c8f735275a95c496ce0e9309c44a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1db9deea8539aa4b9f193efd3d440172"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a1db9deea8539aa4b9f193efd3d440172">j_start</a></td></tr>
+<tr class="separator:a1db9deea8539aa4b9f193efd3d440172"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4073ab5f9f45cffcf9ec3059e61c5d3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#ab4073ab5f9f45cffcf9ec3059e61c5d3">k_start</a></td></tr>
+<tr class="separator:ab4073ab5f9f45cffcf9ec3059e61c5d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78c04584375f91cfa978ea0c9f76c111"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGrid.html#a78c04584375f91cfa978ea0c9f76c111">n_halo</a></td></tr>
+<tr class="memdesc:a78c04584375f91cfa978ea0c9f76c111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of halo points along each direction.  <a href="structGrid.html#a78c04584375f91cfa978ea0c9f76c111">More...</a><br /></td></tr>
+<tr class="separator:a78c04584375f91cfa978ea0c9f76c111"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct to hold grid dimensions and spacing information along each direction. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab12903263a3f2097858c2be593dcab19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab12903263a3f2097858c2be593dcab19">&#9670;&nbsp;</a></span>Grid()</h2>
+<a id="a374223708b014cc2b96c2e6e5ef4abf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a374223708b014cc2b96c2e6e5ef4abf7">&#9670;&nbsp;</a></span>Grid() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Grid::Grid </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>Nx_</em>, </td>
+          <td class="paramname"><em>Nx_g</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>Ny_</em>, </td>
+          <td class="paramname"><em>Ny_g</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>Nz_</em>, </td>
+          <td class="paramname"><em>Nz_g</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -173,19 +207,14 @@ Public Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Constructor to initialize the grid with given physical sizes and number of points. </p>
+<p>Constructor to initialize the grid in an explicitly sequential environment. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Nx_</td><td>the number of grid points in the X direction </td></tr>
-    <tr><td class="paramname">Ny_</td><td>the number of grid points in the Y direction </td></tr>
-    <tr><td class="paramname">Nz_</td><td>the number of grid points in the Z direction </td></tr>
+    <tr><td class="paramname">Nx_g</td><td>the total number of global points in the X direction </td></tr>
+    <tr><td class="paramname">Ny_g</td><td>the total number of global points in the Y direction </td></tr>
+    <tr><td class="paramname">Nz_g</td><td>the total number of global points in the Z direction </td></tr>
     <tr><td class="paramname">dx_</td><td>the grid spacing in the X direction </td></tr>
     <tr><td class="paramname">dy_</td><td>the grid spacing in the Y direction </td></tr>
     <tr><td class="paramname">dz_</td><td>the grid spacing in the Z direction </td></tr>
@@ -195,9 +224,99 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ad23ba8bffd7ee02f2b19ba5c252a96fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad23ba8bffd7ee02f2b19ba5c252a96fe">&#9670;&nbsp;</a></span>Grid() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Grid::Grid </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>Nx_g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>Ny_g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>Nz_g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dx_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dy_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dz_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classMpiEnv.html">MpiEnv</a> &amp;&#160;</td>
+          <td class="paramname"><em>env</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n_halo</em> = <code>2</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor to initialize the grid in a parallel environment. Automatically decomposes the global domain based on <a class="el" href="classMpiEnv.html" title="Class that encapsulates MPI environment and Cartesian topology management.">MpiEnv</a> topology. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Nx_g</td><td>the total number of global points in the X direction </td></tr>
+    <tr><td class="paramname">Ny_g</td><td>the total number of global points in the Y direction </td></tr>
+    <tr><td class="paramname">Nz_g</td><td>the total number of global points in the Z direction </td></tr>
+    <tr><td class="paramname">dx_</td><td>the grid spacing in the X direction </td></tr>
+    <tr><td class="paramname">dy_</td><td>the grid spacing in the Y direction </td></tr>
+    <tr><td class="paramname">dz_</td><td>the grid spacing in the Z direction </td></tr>
+    <tr><td class="paramname">env</td><td>the MPI Environment containing topology information </td></tr>
+    <tr><td class="paramname">n_halo</td><td>the number of halo points along each direction (default is 2) </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="structGrid_ad23ba8bffd7ee02f2b19ba5c252a96fe_cgraph.png" border="0" usemap="#astructGrid_ad23ba8bffd7ee02f2b19ba5c252a96fe_cgraph" alt=""/></div>
+<map name="astructGrid_ad23ba8bffd7ee02f2b19ba5c252a96fe_cgraph" id="astructGrid_ad23ba8bffd7ee02f2b19ba5c252a96fe_cgraph">
+<area shape="rect" title="Constructor to initialize the grid in a parallel environment. Automatically decomposes the global dom..." alt="" coords="5,56,89,83"/>
+<area shape="rect" href="classMpiEnv.html#af652bfae69249d7ae897d0827bae418d" title="Getter for the coordinates of the current process in the Cartesian topology." alt="" coords="153,5,273,32"/>
+<area shape="rect" href="structGrid.html#ac9b2a8eafa59fe957bd84b9d3f84df7f" title="Decompose the grid along a target dimension, identifying local information of the chunk owned by a pr..." alt="" coords="137,56,288,83"/>
+<area shape="rect" href="classMpiEnv.html#ac7e914837a093621d908ef6a61853fbd" title="Getter for the dimensions of the Cartesian grid." alt="" coords="158,107,267,133"/>
+</map>
+</div>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a70a4b43c216152caf67f3628326f1d59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70a4b43c216152caf67f3628326f1d59">&#9670;&nbsp;</a></span>size() <span class="overload">[1/2]</span></h2>
+<a id="ac9b2a8eafa59fe957bd84b9d3f84df7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9b2a8eafa59fe957bd84b9d3f84df7f">&#9670;&nbsp;</a></span>decompose1D()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,10 +325,72 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t Grid::size </td>
+          <td class="memname">std::pair&lt; size_t, size_t &gt; Grid::decompose1D </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>N_glob</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n_procs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>proc_coord</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Decompose the grid along a target dimension, identifying local information of the chunk owned by a process with a specified coordinate in a Cartesian MPI topology (parallel environment). The domain decomposition is done in a balanced manner, distributing any remainder points to the first few. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">N_glob</td><td>the total number of global points in the target dimension </td></tr>
+    <tr><td class="paramname">n_procs</td><td>the number of processes along the target dimension </td></tr>
+    <tr><td class="paramname">coord</td><td>the coordinate of the current process along the target dimension </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a pair containing the number of local points for the target dimension and the starting index (offset) for that dimension in the global grid </dd></dl>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="structGrid_ac9b2a8eafa59fe957bd84b9d3f84df7f_icgraph.png" border="0" usemap="#astructGrid_ac9b2a8eafa59fe957bd84b9d3f84df7f_icgraph" alt=""/></div>
+<map name="astructGrid_ac9b2a8eafa59fe957bd84b9d3f84df7f_icgraph" id="astructGrid_ac9b2a8eafa59fe957bd84b9d3f84df7f_icgraph">
+<area shape="rect" title="Decompose the grid along a target dimension, identifying local information of the chunk owned by a pr..." alt="" coords="137,5,288,32"/>
+<area shape="rect" href="structGrid.html#ad23ba8bffd7ee02f2b19ba5c252a96fe" title="Constructor to initialize the grid in a parallel environment. Automatically decomposes the global dom..." alt="" coords="5,5,89,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a8a5cf0c72f5be8a213d6e895494851e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a5cf0c72f5be8a213d6e895494851e6">&#9670;&nbsp;</a></span>globalSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t Grid::globalSize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -219,13 +400,83 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Getter for the total number of grid points. </p>
-<dl class="section return"><dt>Returns</dt><dd>the total number of grid points </dd></dl>
+<p>Getter for the total number of global grid points. </p>
+<dl class="section return"><dt>Returns</dt><dd>the total number of global grid points </dd></dl>
+
+</div>
+</div>
+<a id="afd10d881b59bee4831fffda719ca035a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd10d881b59bee4831fffda719ca035a">&#9670;&nbsp;</a></span>hasMaxBoundary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Grid::hasMaxBoundary </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
+          <td class="paramname"><em>axis</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if the local grid chunk has the maximum boundary at the specified axis. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">axis</td><td>the axis to check (<a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383">Axis::X</a>, <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0">Axis::Y</a>, or <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5">Axis::Z</a>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the local grid chunk has the maximum boundary at the specified axis, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="aae9c0e8104091f55bd0c172a0d0ae081"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae9c0e8104091f55bd0c172a0d0ae081">&#9670;&nbsp;</a></span>hasMinBoundary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Grid::hasMinBoundary </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
+          <td class="paramname"><em>axis</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if the local grid chunk has the minimum boundary at the specified axis. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">axis</td><td>the axis to check (<a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea02129bb861061d1a052c592e2dc6b383">Axis::X</a>, <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea57cec4137b614c87cb4e24a3d003a3e0">Axis::Y</a>, or <a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8ea21c2e59531c8710156d34a3c30ac81d5">Axis::Z</a>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the local grid chunk has the minimum boundary at the specified axis, false otherwise </dd></dl>
 
 </div>
 </div>
 <a id="add6c8c9ea4bd708abfcbe875e85cd076"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add6c8c9ea4bd708abfcbe875e85cd076">&#9670;&nbsp;</a></span>size() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#add6c8c9ea4bd708abfcbe875e85cd076">&#9670;&nbsp;</a></span>size()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -246,12 +497,42 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+
+<p>Getter for the total number of local grid points. </p>
+<dl class="section return"><dt>Returns</dt><dd>the total number of local grid points </dd></dl>
 
 </div>
 </div>
-<a id="a32cb639714ca32d125b906bae21573cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32cb639714ca32d125b906bae21573cf">&#9670;&nbsp;</a></span>to_x()</h2>
+<a id="ae445b63d1d6af03452f1ffeb2f622d3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae445b63d1d6af03452f1ffeb2f622d3d">&#9670;&nbsp;</a></span>sizeWithHalo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t Grid::sizeWithHalo </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter for the total number of local grid points, including halo points in each direction. </p>
+<dl class="section return"><dt>Returns</dt><dd>the total number of local grid points, including halo points </dd></dl>
+
+</div>
+</div>
+<a id="aa028931255914c6030565b59d2ec1be6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa028931255914c6030565b59d2ec1be6">&#9670;&nbsp;</a></span>to_x()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -262,7 +543,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">double Grid::to_x </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>i</em>, </td>
         </tr>
         <tr>
@@ -274,7 +555,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
           <td class="paramname"><em>offsetAxis</em>&#160;</td>
         </tr>
         <tr>
@@ -303,8 +584,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a3e6e2b09c73bf2e2f1710f4baca80ec2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e6e2b09c73bf2e2f1710f4baca80ec2">&#9670;&nbsp;</a></span>to_y()</h2>
+<a id="a591f8df86fb8e8f7986919e108f478ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a591f8df86fb8e8f7986919e108f478ee">&#9670;&nbsp;</a></span>to_y()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -315,7 +596,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">double Grid::to_y </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>j</em>, </td>
         </tr>
         <tr>
@@ -327,7 +608,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
           <td class="paramname"><em>offsetAxis</em>&#160;</td>
         </tr>
         <tr>
@@ -356,8 +637,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a07ecb5a874d22f56f673f3b8b2b3526e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07ecb5a874d22f56f673f3b8b2b3526e">&#9670;&nbsp;</a></span>to_z()</h2>
+<a id="a1e3ed400719b829d8d23344e227e4474"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e3ed400719b829d8d23344e227e4474">&#9670;&nbsp;</a></span>to_z()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -368,7 +649,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">double Grid::to_z </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>k</em>, </td>
         </tr>
         <tr>
@@ -380,7 +661,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="Grid_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="MpiEnv_8hpp.html#ae3996976d8ffb3e58d88f58227473f8e">Axis</a>&#160;</td>
           <td class="paramname"><em>offsetAxis</em>&#160;</td>
         </tr>
         <tr>
@@ -422,7 +703,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="structGrid.html" title="Struct to hold grid dimensions and spacing information along each direction.">Grid</a> spacing in each direction (derived from physical sizes and number of grid points). </p>
+<p><a class="el" href="structGrid.html" title="Struct to hold grid dimensions and spacing information along each direction.">Grid</a> spacing in each direction (constant throughout the domain). </p>
 
 </div>
 </div>
@@ -454,47 +735,107 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad4c79bac71b59281996b784f6e538068"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4c79bac71b59281996b784f6e538068">&#9670;&nbsp;</a></span>Lx</h2>
+<a id="a6f37c8f735275a95c496ce0e9309c44a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f37c8f735275a95c496ce0e9309c44a">&#9670;&nbsp;</a></span>i_start</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double Grid::Lx</td>
+          <td class="memname">size_t Grid::i_start</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Physical size of the grid in each direction. </p>
+<p>Index-offset in each dimension of this local grid chunk in the global grid. </p>
 
 </div>
 </div>
-<a id="a60a2f837f0e629c85b16f120631d8324"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60a2f837f0e629c85b16f120631d8324">&#9670;&nbsp;</a></span>Ly</h2>
+<a id="a1db9deea8539aa4b9f193efd3d440172"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1db9deea8539aa4b9f193efd3d440172">&#9670;&nbsp;</a></span>j_start</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double Grid::Ly</td>
+          <td class="memname">size_t Grid::j_start</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ad8f3d3e5b45ccccad6936114dad717d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8f3d3e5b45ccccad6936114dad717d9">&#9670;&nbsp;</a></span>Lz</h2>
+<a id="ab4073ab5f9f45cffcf9ec3059e61c5d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4073ab5f9f45cffcf9ec3059e61c5d3">&#9670;&nbsp;</a></span>k_start</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double Grid::Lz</td>
+          <td class="memname">size_t Grid::k_start</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a730fde210b6d4dd0f38ad9e84b504851"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a730fde210b6d4dd0f38ad9e84b504851">&#9670;&nbsp;</a></span>Lx_glob</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Grid::Lx_glob</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Physical lengths of the global grid in each direction. </p>
+
+</div>
+</div>
+<a id="a781159ea5c1221fa762773382b2379be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a781159ea5c1221fa762773382b2379be">&#9670;&nbsp;</a></span>Ly_glob</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Grid::Ly_glob</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adfd015b3978a3dd58f1fe4daa0567eb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfd015b3978a3dd58f1fe4daa0567eb5">&#9670;&nbsp;</a></span>Lz_glob</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Grid::Lz_glob</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a78c04584375f91cfa978ea0c9f76c111"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78c04584375f91cfa978ea0c9f76c111">&#9670;&nbsp;</a></span>n_halo</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t Grid::n_halo</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Number of halo points along each direction. </p>
 
 </div>
 </div>
@@ -510,7 +851,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Number of grid points in each direction. </p>
+<p>Number of grid points in the local grid chunk in each direction (derived from global info and Cartesian topology). </p>
+
+</div>
+</div>
+<a id="a00c9b075375377e49b337f014dde527d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00c9b075375377e49b337f014dde527d">&#9670;&nbsp;</a></span>Nx_glob</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t Grid::Nx_glob</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Number of grid points in the global grid in each direction. </p>
 
 </div>
 </div>
@@ -522,6 +879,20 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">size_t Grid::Ny</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a513f0485d5d237374e53449b2c656d1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a513f0485d5d237374e53449b2c656d1a">&#9670;&nbsp;</a></span>Ny_glob</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t Grid::Ny_glob</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -542,8 +913,23 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a id="ad1c6b97e05c5dd3a7ae4c96d51b77c63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1c6b97e05c5dd3a7ae4c96d51b77c63">&#9670;&nbsp;</a></span>Nz_glob</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t Grid::Nz_glob</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
 <li>include/core/<a class="el" href="Grid_8hpp_source.html">Grid.hpp</a></li>
+<li>src/core/<a class="el" href="Grid_8cpp.html">Grid.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -14,11 +14,11 @@
  * @brief Handles all viscous step maniplation.
  * This class does not own data but regulates the workflow.
  */
-class ViscousStep
-{
+class ViscousStep {
     friend class ViscousStepTest;
 
     friend class ViscousStepRobustnessTest;
+
 public:
 
     /**
@@ -28,19 +28,30 @@ public:
      */
     ViscousStep(MpiEnv &mpi, SimulationData &simData);
 
+    /// Setup fields and linear system scratch variables.
+    void setup();
+
     /// Run viscous step.
     void run();
 
 private:
-    MpiEnv &mpi;
-    SimulationData& data_;
+    // --- Environment and helpers -------------------------------------------------------------------------------------
+    const MpiEnv &mpi;
+    HaloHandler haloHandler;
+    Derivatives derive;
 
-    VectorField g, gradP, dxxEta, dyyZeta, dzzU, xi;
+    // --- Phyisics data -----------------------------------------------------------------------------------------------
+    SimulationData &data_;
+    VectorField gradP, dxxEta, dyyZeta, dzzU, xi;
 
-    /// Compute the g term (necessary for the xi term).
-    void computeG();
+    // --- Linear system: O(N) memory overhead, O(1) time setup complexity ---------------------------------------------
+    std::unique_ptr<SchurSolver> solver_x, solver_y, solver_z; // solvers for each direction
+    TridiagMat matrix;                                         // scratch tridiagonal matrix for linear system solving
+    std::vector<double> rhs;                                   // scratch RHS vectors for linear system solving
+    std::vector<double> unknown_u, unknown_v, unknown_w;       // scratch solution vectors for linear system solving
 
-    /// Compute the xi term (necessary for the x-sweep).
+
+    /// Compute the xi term (necessary for the x-sweep), based on explicit inline g term computation.
     void computeXi();
 
     /// Solves the viscous step by ADI method (x-, y- and z-sweeps) and updates the velocity field.
@@ -61,7 +72,7 @@ private:
      * @param rhs the right-hand side vector to assemble boundary conditions into
      */
     void assembleLocalSystem(
-            const SimulationData &simData, const VectorField &eta, const VectorField &xi,
+            const VectorField &eta, const VectorField &xi,
             const Axis fieldComponent, const Axis derivativeDirection,
             const size_t iStart, const size_t jStart, const size_t kStart,
             TridiagMat &matrix, std::vector<double> &rhs

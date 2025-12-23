@@ -1,6 +1,7 @@
 <map id="ConfigFuncs::bcv_func" name="ConfigFuncs::bcv_func">
-<area shape="rect" id="node1" title=" " alt="" coords="465,5,632,32"/>
-<area shape="rect" id="node2" href="$namespaceInitializer.html#ab08ce6fc3e43c623779edfdfb7ea3855" title="Setup and initialize the SimulationData from input data." alt="" coords="291,5,417,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="692,5,859,32"/>
+<area shape="rect" id="node2" href="$namespaceInitializer.html#a0741ee296f266920808094cbb8475064" title="Setup and initialize the SimulationData from input data." alt="" coords="291,5,417,32"/>
+<area shape="rect" id="node5" href="$namespaceConfigFuncs.html#a48533f3f063ddfc4bad672565013f720" title=" " alt="" coords="465,31,644,57"/>
 <area shape="rect" id="node3" href="$classNSBSolver.html#ae4fa597e5550a289bcef3ee8a2b4b4f6" title=" " alt="" coords="108,5,243,32"/>
-<area shape="rect" id="node4" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,5,60,32"/>
+<area shape="rect" id="node4" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,60,32"/>
 </map>

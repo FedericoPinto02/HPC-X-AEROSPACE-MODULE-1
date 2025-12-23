@@ -1,0 +1,6 @@
+<map id="Grid::Grid" name="Grid::Grid">
+<area shape="rect" id="node1" title="Constructor to initialize the grid in a parallel environment. Automatically decomposes the global dom..." alt="" coords="5,56,89,83"/>
+<area shape="rect" id="node2" href="$classMpiEnv.html#af652bfae69249d7ae897d0827bae418d" title="Getter for the coordinates of the current process in the Cartesian topology." alt="" coords="153,5,273,32"/>
+<area shape="rect" id="node3" href="$structGrid.html#ac9b2a8eafa59fe957bd84b9d3f84df7f" title="Decompose the grid along a target dimension, identifying local information of the chunk owned by a pr..." alt="" coords="137,56,288,83"/>
+<area shape="rect" id="node4" href="$classMpiEnv.html#ac7e914837a093621d908ef6a61853fbd" title="Getter for the dimensions of the Cartesian grid." alt="" coords="158,107,267,133"/>
+</map>

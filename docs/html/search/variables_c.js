@@ -1,11 +1,23 @@
 var searchData=
 [
-  ['offset_5f_577',['offset_',['../classField.html#abd7bf36c0ce545b49efb908e8acc2e86',1,'Field']]],
-  ['offsetaxis_5f_578',['offsetAxis_',['../classField.html#a0bb33f143d9cda835c435a9d5318990c',1,'Field']]],
-  ['output_579',['output',['../structInputData.html#a9697ff089714fec5408b21c65c5667b5',1,'InputData']]],
-  ['output_5fdir_580',['OUTPUT_DIR',['../namespacedisplayError.html#ad324a409a17e5cdc683379132720483b',1,'displayError.OUTPUT_DIR()'],['../namespacerun__convergence__study.html#a1bee644f6290026d1e90abfd73e8c2ae',1,'run_convergence_study.OUTPUT_DIR()'],['../namespacerun__convergence__study__new.html#ab77fbf2e99a669ec0f881e50bc6d53d9',1,'run_convergence_study_new.OUTPUT_DIR()']]],
-  ['output_5ffreq_581',['OUTPUT_FREQ',['../namespacedisplayError.html#acf10bea86066407fadc0d19c31695870',1,'displayError']]],
-  ['outputfrequency_582',['outputFrequency',['../structOutputSettings.html#aeb51098ef9385deb264e1be45f307148',1,'OutputSettings']]],
-  ['outputfrequency_5f_583',['outputFrequency_',['../classVTKWriter.html#ab6a3ccc5dc1fc50e0b0ab5409557930e',1,'VTKWriter']]],
-  ['outputsettings_584',['outputSettings',['../classNSBSolver.html#ac3d1320907e6a704c227cf90bb712f70',1,'NSBSolver']]]
+  ['n_5fhalo_630',['n_halo',['../structGrid.html#a78c04584375f91cfa978ea0c9f76c111',1,'Grid']]],
+  ['nglobal_631',['nGlobal',['../classSchurSequentialSolver.html#a8416a46e164b21d0b816f49bc6ed8098',1,'SchurSequentialSolver']]],
+  ['nu_632',['nu',['../structPhysicsData.html#a776712a25983dca22178df8743ff1219',1,'PhysicsData::nu()'],['../structSimulationData.html#a601b6e3895425e7874d4bfb8ca556bf1',1,'SimulationData::nu()'],['../namespaceConfigFuncs.html#a8ff700f8421fdb31a56af0d63e594cb9',1,'ConfigFuncs::nu()']]],
+  ['num_5fdomains_633',['num_domains',['../classSchurSequentialSolver.html#a382c8a4b66aa664a629dd14a04a491de',1,'SchurSequentialSolver']]],
+  ['num_5finterfaces_634',['num_interfaces',['../classSchurSequentialSolver.html#aa198611f596766dfab4f4f6c97ee2891',1,'SchurSequentialSolver']]],
+  ['num_5fprobes_5fto_5fplot_635',['NUM_PROBES_TO_PLOT',['../namespaceplotProbe.html#a51fe400fd50423c0653b47e7b9be19f0',1,'plotProbe']]],
+  ['num_5fprobes_5ftotal_636',['NUM_PROBES_TOTAL',['../namespaceplotProbe.html#a355d7d4e09c7b5cc6def7e124a01a760',1,'plotProbe']]],
+  ['nx_637',['nx',['../structMeshData.html#a0bedc51a4a7f9c7aae65930fee656683',1,'MeshData']]],
+  ['nx_638',['Nx',['../structGrid.html#a7f51b9f4262231b3e89f1b9169f83e1c',1,'Grid']]],
+  ['nx_5f_639',['Nx_',['../classVTKWriter.html#a640d7ad387776a849b409fbcc965e2a6',1,'VTKWriter']]],
+  ['nx_5fglob_640',['Nx_glob',['../structGrid.html#a00c9b075375377e49b337f014dde527d',1,'Grid']]],
+  ['nx_5fvalues_5ffor_5fspatial_5fstudy_641',['NX_VALUES_FOR_SPATIAL_STUDY',['../namespacerun__convergence__study__new.html#a3530999db55e57edd6e8a367a305971f',1,'run_convergence_study_new']]],
+  ['ny_642',['Ny',['../structGrid.html#aedbe6591ce1565b3bdece8af225e5015',1,'Grid']]],
+  ['ny_643',['ny',['../structMeshData.html#ace54b629a4ac82ccf26f6a262936ad22',1,'MeshData']]],
+  ['ny_5f_644',['Ny_',['../classVTKWriter.html#ada7266bf668e39dd880f06fdc3466015',1,'VTKWriter']]],
+  ['ny_5fglob_645',['Ny_glob',['../structGrid.html#a513f0485d5d237374e53449b2c656d1a',1,'Grid']]],
+  ['nz_646',['Nz',['../structGrid.html#a5165f82a832d9b1c2bd2156c3b6439d6',1,'Grid']]],
+  ['nz_647',['nz',['../structMeshData.html#a2156a75e80d99ce6c19cd574ef44048d',1,'MeshData']]],
+  ['nz_5f_648',['Nz_',['../classVTKWriter.html#aea922966160213d9c9a9f313453ac537',1,'VTKWriter']]],
+  ['nz_5fglob_649',['Nz_glob',['../structGrid.html#ad1c6b97e05c5dd3a7ae4c96d51b77c63',1,'Grid']]]
 ];
