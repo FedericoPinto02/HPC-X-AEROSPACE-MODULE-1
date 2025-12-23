@@ -183,64 +183,89 @@ void Derivatives::computeDivergence(
 }
 
 
-void Derivatives::computeDxx(const VectorField &field, VectorField &dxx) const {
-    computeDxx(field(Axis::X), dxx(Axis::X));
-    computeDxx(field(Axis::Y), dxx(Axis::Y));
-    computeDxx(field(Axis::Z), dxx(Axis::Z));
+void Derivatives::computeDxx(const VectorField &field, VectorField &dxx, const Func &bcu, const Func &bcv, const Func &bcw, const double &time) const {
+    computeDxx(field(Axis::X), dxx(Axis::X), bcu, time, Axis::X);
+    computeDxx(field(Axis::Y), dxx(Axis::Y), bcv, time, Axis::Y);
+    computeDxx(field(Axis::Z), dxx(Axis::Z), bcw, time, Axis::Z);
 }
 
-void Derivatives::computeDyy(const VectorField &field, VectorField &dyy) const {
-    computeDyy(field(Axis::X), dyy(Axis::X));
-    computeDyy(field(Axis::Y), dyy(Axis::Y));
-    computeDyy(field(Axis::Z), dyy(Axis::Z));
+void Derivatives::computeDyy(const VectorField &field, VectorField &dyy, const Func &bcu, const Func &bcv, const Func &bcw, const double &time) const {
+    computeDyy(field(Axis::X), dyy(Axis::X), bcu, time, Axis::X);
+    computeDyy(field(Axis::Y), dyy(Axis::Y), bcv, time, Axis::Y);
+    computeDyy(field(Axis::Z), dyy(Axis::Z), bcw, time, Axis::Z);
 }
 
-void Derivatives::computeDzz(const VectorField &field, VectorField &dzz) const {
-    computeDzz(field(Axis::X), dzz(Axis::X));
-    computeDzz(field(Axis::Y), dzz(Axis::Y));
-    computeDzz(field(Axis::Z), dzz(Axis::Z));
+void Derivatives::computeDzz(const VectorField &field, VectorField &dzz, const Func &bcu, const Func &bcv, const Func &bcw, const double &time) const {
+    computeDzz(field(Axis::X), dzz(Axis::X), bcu, time, Axis::X);
+    computeDzz(field(Axis::Y), dzz(Axis::Y), bcv, time, Axis::Y);
+    computeDzz(field(Axis::Z), dzz(Axis::Z), bcw, time, Axis::Z);
 }
 
-void Derivatives::computeDxx(const Field &field, Field &dxx) const {
+void Derivatives::computeDxx(const Field &field, Field &dxx, const Func &bc, const double &time, const Axis axis) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / (grid.dx * grid.dx);
 
-    if (grid.Nx < 3) {
-        throw std::runtime_error("grid size Nx must be at least 3 to compute second derivative.");
-    }
 
-    for (long k = 0; k < grid.Nz; k++) {
-        for (long j = 0; j < grid.Ny; j++) {
-            for (long i = 0; i < grid.Nx; i++) {
+    for (long k = 0; k < grid.Nz; k++)
+    {
+        for (long j = 0; j < grid.Ny; j++)
+        {
+            for (long i = 0; i < grid.Nx; i++)
+            {
                 dxx(i, j, k) = (field(i + 1, j, k) + field(i - 1, j, k) - 2.0 * field(i, j, k)) * mul;
             }
         }
     }
-
-    if (grid.hasMinBoundary(Axis::X)) {
-        for (long k = 0; k < grid.Nz; k++) {
-            for (long j = 0; j < grid.Ny; j++) {
-                dxx(0, j, k) = 0.0;
+    
+    if (axis == Axis::X) {
+        if (grid.hasMinBoundary(Axis::X)) {
+            for (long k = 0; k < grid.Nz; k++) {
+                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
+                for (long j = 0; j < grid.Ny; j++) {
+                    double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
+                    dxx(0, j, k) =( 4.0 / 3.0 *  field(1, j, k) - 4.0 * field(0, j, k) 
+                                 + (8.0 / 3.0) *  bc(0.0, physical_y, physical_z, time)) * mul;
+                }
             }
         }
-    }
-    if (grid.hasMaxBoundary(Axis::X)) {
-        long i = (long) grid.Nx - 1;
-        for (long k = 0; k < grid.Nz; k++) {
-            for (long j = 0; j < grid.Ny; j++) {
-                dxx(i, j, k) = 0.0;
+
+        if (grid.hasMaxBoundary(Axis::X)) {
+            for (long k = 0; k < grid.Nz; k++) {
+                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
+                for (long j = 0; j < grid.Ny; j++) {
+                    double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
+                    dxx(grid.Nx - 1, j, k) = 0.0;
+                }
+            }
+        }
+    } else {
+        if (grid.hasMinBoundary(Axis::X)) {
+            for (long k = 0; k < grid.Nz; k++) {
+                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
+                for (long j = 0; j < grid.Ny; j++) {
+                    double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
+                    dxx(0, j, k) = 0.0;
+                }
+            }
+        }
+
+        if (grid.hasMaxBoundary(Axis::X)) {
+            for (long k = 0; k < grid.Nz; k++) {
+                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
+                for (long j = 0; j < grid.Ny; j++) {
+                    double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
+                    dxx(grid.Nx - 1, j, k) = (4.0 / 3.0 * field(grid.Nx - 2, j, k) 
+                                           - 4.0 *  field(grid.Nx - 1, j, k) 
+                                           + (8.0 / 3.0) *  bc((grid.Nx - 0.5) * grid.dx, physical_y, physical_z, time)) * mul;
+                }
             }
         }
     }
 }
 
-void Derivatives::computeDyy(const Field &field, Field &dyy) const {
+void Derivatives::computeDyy(const Field &field, Field &dyy, const Func &bc, const double &time, const Axis axis) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / (grid.dy * grid.dy);
-
-    if (grid.Ny < 3) {
-        throw std::runtime_error("grid size Ny must be at least 3 to compute second derivative.");
-    }
 
     for (long k = 0; k < grid.Nz; k++) {
         for (long j = 0; j < grid.Ny; j++) {
@@ -250,30 +275,56 @@ void Derivatives::computeDyy(const Field &field, Field &dyy) const {
         }
     }
 
-    if (grid.hasMinBoundary(Axis::Y)) {
-        for (long k = 0; k < grid.Nz; k++) {
-            for (long i = 0; i < grid.Nx; i++) {
-                dyy(i, 0, k) = 0.0;
+    if (axis == Axis::Y) {
+        if (grid.hasMinBoundary(Axis::Y)) {
+            for (long k = 0; k < grid.Nz; k++) {
+                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
+                for (long i = 0; i < grid.Nx; i++) {
+                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
+                    dyy(i, 0, k) = (4.0 / 3.0 *  field(i, 1, k) - 4.0 *  field(i, 0, k) 
+                                 + (8.0 / 3.0) *  bc(physical_x, 0.0, physical_z, time)) * mul;
+                }
             }
         }
-    }
-    if (grid.hasMaxBoundary(Axis::Y)) {
-        long j = (long) grid.Ny - 1;
-        for (long k = 0; k < grid.Nz; k++) {
-            for (long i = 0; i < grid.Nx; i++) {
-                dyy(i, j, k) = 0.0;
+
+        if (grid.hasMaxBoundary(Axis::Y)) {
+            for (long k = 0; k < grid.Nz; k++) {
+                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
+                for (long i = 0; i < grid.Nx; i++) {
+                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
+                    dyy(i, grid.Ny - 1, k) = 0.0;
+                }
+            }
+        }
+    } else {
+        if (grid.hasMinBoundary(Axis::Y)) {
+            for (long k = 0; k < grid.Nz; k++) {
+                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
+                for (long i = 0; i < grid.Nx; i++) {
+                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
+                    dyy(i, 0, k) = 0.0;
+                }
+            }
+        }
+
+        if (grid.hasMaxBoundary(Axis::Y)) {
+            for (long k = 0; k < grid.Nz; k++) {
+                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
+                for (long i = 0; i < grid.Nx; i++) {
+                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
+                    dyy(i, grid.Ny - 1, k) = (4.0 / 3.0 *  field(i, grid.Ny - 2, k) 
+                                           - 4.0 *  field(i, grid.Ny - 1, k) 
+                                           + (8.0 / 3.0) *  bc(physical_x, (grid.Ny - 0.5) * grid.dy, physical_z, time)) * mul;
+                }
             }
         }
     }
 }
 
-void Derivatives::computeDzz(const Field &field, Field &dzz) const {
+void Derivatives::computeDzz(const Field &field, Field &dzz, const Func &bc, const double &time, const Axis axis) const {
     const auto &grid = field.getGrid();
     const double mul = 1.0 / (grid.dz * grid.dz);
 
-    if (grid.Nz < 3) {
-        throw std::runtime_error("grid size Nz must be at least 3 to compute second derivative.");
-    }
 
     for (long k = 0; k < grid.Nz; k++) {
         for (long j = 0; j < grid.Ny; j++) {
@@ -283,18 +334,47 @@ void Derivatives::computeDzz(const Field &field, Field &dzz) const {
         }
     }
 
-    if (grid.hasMinBoundary(Axis::Z)) {
-        for (long j = 0; j < grid.Ny; j++) {
-            for (long i = 0; i < grid.Nx; i++) {
-                dzz(i, j, 0) = 0.0;
+    if (axis == Axis::Z) {
+        if (grid.hasMinBoundary(Axis::Z)) {
+            for (long j = 0; j < grid.Ny; j++) {
+                double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
+                for (long i = 0; i < grid.Nx; i++) {
+                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
+                    dzz(i, j, 0) = (4.0 / 3.0 * field(i, j, 1) - 4.0 * field(i, j, 0) 
+                                 + (8.0 / 3.0) *  bc(physical_x, physical_y, 0.0, time)) * mul;
+                }
             }
         }
-    }
-    if (grid.hasMaxBoundary(Axis::Z)) {
-        long k = (long) grid.Nz - 1;
-        for (long j = 0; j < grid.Ny; j++) {
-            for (long i = 0; i < grid.Nx; i++) {
-                dzz(i, j, k) = 0.0;
+
+        if (grid.hasMaxBoundary(Axis::Z)) {
+            for (long j = 0; j < grid.Ny; j++) {
+                double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
+                for (long i = 0; i < grid.Nx; i++) {
+                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
+                    dzz(i, j, grid.Nz - 1) = 0.0;
+                }
+            }
+        }
+    } else {
+        if (grid.hasMinBoundary(Axis::Z)) {
+            for (long j = 0; j < grid.Ny; j++) {
+                double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
+                for (long i = 0; i < grid.Nx; i++) {
+                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
+                    dzz(i, j, 0) = 0.0;
+                }
+            }
+        }
+
+        if (grid.hasMaxBoundary(Axis::Z)) {
+            for (long j = 0; j < grid.Ny; j++) {
+                double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
+                for (long i = 0; i < grid.Nx; i++) {
+                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
+                    dzz(i, j, grid.Nz - 1) = (4.0 / 3.0 *  field(i, j, grid.Nz - 2) 
+                                           - 4.0 *  field(i, j, grid.Nz - 1) 
+                                           + (8.0 / 3.0) *  bc(physical_x, physical_y, (grid.Nz - 0.5) * grid.dz, time)) * mul;
+                }
             }
         }
     }

@@ -61,7 +61,7 @@ add_library(NSBSolver
         src/io/logWriter.cpp
         # -- src/numerics/derivatives.cpp use this source file to compile a non-optimized version
         # src/numerics/derivatives.cpp
-        src/numerics/derivativesOpt.cpp
+        src/numerics/derivatives.cpp
         src/numerics/SchurSolver.cpp
         src/numerics/ThomasSolver.cpp
         src/simulation/initializer.cpp

@@ -41,9 +41,9 @@ void ViscousStep::computeXi() {
     haloHandler.exchange(data_.zeta);
     haloHandler.exchange(data_.u);
     derive.computeGradient(data_.predictor, gradP);
-    derive.computeDxx(data_.eta, dxxEta);
-    derive.computeDyy(data_.zeta, dyyZeta);
-    derive.computeDzz(data_.u, dzzU);
+    derive.computeDxx(data_.eta, dxxEta, data_.bcu, data_.bcv, data_.bcw, data_.currTime - data_.dt);
+    derive.computeDyy(data_.zeta, dyyZeta, data_.bcu, data_.bcv, data_.bcw, data_.currTime - data_.dt);
+    derive.computeDzz(data_.u, dzzU, data_.bcu, data_.bcv, data_.bcw, data_.currTime - data_.dt);
 
     // Constant ingredients
     const double nu_val = data_.nu;
@@ -447,11 +447,11 @@ void ViscousStep::assembleLocalSystem(
                 double eta_0 = eta_line_offset[0];
                 double eta_1 = eta_line_offset[1 * stride];
                 rhsC.front() = val_0
-                               + 4.0 / 3.0 * gamma * dCoef * eta_1
-                               - 4.0 * gamma * dCoef * eta_0
+                               - 4.0 / 3.0 * gamma * dCoef * eta_1
+                               + 4.0 * gamma * dCoef * eta_0
                                + 8.0 / 3.0 * gamma * dCoef * (
-                        bc(physical_x, physical_y, physical_z, data_.currTime - data_.dt) +
-                        bc(physical_x, physical_y, physical_z, data_.currTime)
+                        - bc(physical_x, physical_y, physical_z, data_.currTime - data_.dt) 
+                        + bc(physical_x, physical_y, physical_z, data_.currTime)
                 );
 
                 break;
@@ -524,11 +524,11 @@ void ViscousStep::assembleLocalSystem(
                 double eta_N = eta_line_offset[endI * stride];
                 double eta_Nm1 = eta_line_offset[(endI - 1) * stride];
                 rhsC.back() = val_N
-                              + 4.0 / 3.0 * gamma * dCoef * eta_Nm1
-                              - 4.0 * gamma * dCoef * eta_N
+                              - 4.0 / 3.0 * gamma * dCoef * eta_Nm1
+                              + 4.0 * gamma * dCoef * eta_N
                               + 8.0 / 3.0 * gamma * dCoef * (
-                                  bc(physical_x, physical_y, physical_z, data_.currTime - data_.dt) +
-                                  bc(physical_x, physical_y, physical_z, data_.currTime)
+                                  - bc(physical_x, physical_y, physical_z, data_.currTime - data_.dt) 
+                                  + bc(physical_x, physical_y, physical_z, data_.currTime)
                               );
             }
         }
