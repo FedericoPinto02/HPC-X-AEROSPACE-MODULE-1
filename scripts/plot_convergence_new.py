@@ -52,7 +52,7 @@ SIMULATIONS = [
     {"nx": 20, "file": "../output/n20simulation_output_0030.vtk"},
 ]
 
-DOMAIN_LENGTH_X = 6.0 
+DOMAIN_LENGTH_X = 1.0 
 DT = 0.001            
 
 # Field names in VTK
@@ -101,25 +101,30 @@ def compute_analytical_u_at_x_faces(points: np.ndarray, t: float, h: float) -> n
     x = points[:, 0] + h / 2.0 
     y = points[:, 1]
     z = points[:, 2]
-    return np.sin(x) * np.cos(t + y) * np.sin(z)
+    U_max = 5.0
+    L = 1.0
+    nu = 1.0
+    G = 100.0
+
+    return np.sin(t) * U_max / L * y - y / nu * G *(L - y) *0.5 * np.sin(t)
 
 def compute_analytical_v_at_y_faces(points: np.ndarray, t: float, h: float) -> np.ndarray:
     x = points[:, 0]
     y = points[:, 1] + h / 2.0  
     z = points[:, 2]
-    return np.cos(x) * np.sin(t + y) * np.sin(z)
+    return 0
 
 def compute_analytical_w_at_z_faces(points: np.ndarray, t: float, h: float) -> np.ndarray:
     x = points[:, 0]
     y = points[:, 1]
     z = points[:, 2] + h / 2.0  
-    return 2.0 * np.cos(x) * np.cos(t + y) * np.cos(z)
+    return 0
 
 def compute_analytical_p_at_centers(points: np.ndarray, t: float) -> np.ndarray:
     x = points[:, 0]
     y = points[:, 1]
     z = points[:, 2]
-    return (3.0 / RE) * np.cos(x) * np.cos(t + y) * np.cos(z)
+    return 10
 
 # --- 5. ERROR CALCULATION ---
 

@@ -6,11 +6,11 @@
         "dx": 0.005,
         "dy": 0.005,
         "dz": 0.005,
-        "input_for_manufactured_solution": false
+        "input_for_manufactured_solution": true
     },
     "time": {
-        "dt": 0.005,
-        "t_end": 6.0
+        "dt": 0.01,
+        "t_end": 1.0
     },
     "parallelization": {
         "schur_domains": 1
@@ -21,8 +21,8 @@
     "output": {
         "enabled": true,
         "dir": "../output",
-        "base_filename": "stokes_bifurcation",
-        "output_frequency": 20
+        "base_filename": "plane_couette",
+        "output_frequency": 1
     },
     "logging": {
         "log_to_file": false,
