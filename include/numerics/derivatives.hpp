@@ -83,40 +83,40 @@ public:
      * @param field the input vector field
      * @param dxx the output vector field to store the second derivative in x-direction
      */
-    void computeDxx(const VectorField &field, VectorField &dxx) const;
+    void computeDxx(const VectorField &field, VectorField &dxx, const Func &bcu, const Func &bcv, const Func &bcw, const double &time) const;
 
     /**
      * @brief Compute the second derivative of a vector field in the y-direction.
      * @param field the input vector field
      * @param dyy the output vector field to store the second derivative in y-direction
      */
-    void computeDyy(const VectorField &field, VectorField &dyy) const;
+    void computeDyy(const VectorField &field, VectorField &dyy, const Func &bcu, const Func &bcv, const Func &bcw, const double &time) const;
 
     /**
      * @brief Compute the second derivative of a vector field in the z-direction.
      * @param field the input vector field
      * @param dzz the output vector field to store the second derivative in z-direction
      */
-    void computeDzz(const VectorField &field, VectorField &dzz) const;
+    void computeDzz(const VectorField &field, VectorField &dzz, const Func &bcu, const Func &bcv, const Func &bcw, const double &time) const;
 
     /**
      * @brief Compute the second derivative of a scalar field in the x-direction.
      * @param field the input scalar field
      * @param dxx the output field to store the second derivative in x-direction
      */
-    void computeDxx(const Field &field, Field &dxx) const;
+    void computeDxx(const Field &field, Field &dxx, const Func &bc, const double &time, const Axis axis) const;
 
     /**
      * @brief Compute the second derivative of a scalar field in the y-direction.
      * @param field the input scalar field
      * @param dyy the output field to store the second derivative in y-direction
      */
-    void computeDyy(const Field &field, Field &dyy) const;
+    void computeDyy(const Field &field, Field &dyy, const Func &bc, const double &time, const Axis axis) const;
 
     /**
      * @brief Compute the second derivative of a scalar field in the z-direction.
      * @param field the input scalar field
      * @param dzz the output field to store the second derivative in z-direction
      */
-    void computeDzz(const Field &field, Field &dzz) const;
+    void computeDzz(const Field &field, Field &dzz, const Func &bc, const double &time, const Axis axis) const;
 };
