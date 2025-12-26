@@ -136,20 +136,37 @@ def calculate_l1_mean_error(field_numerical: np.ndarray, field_analytical: np.nd
     return np.mean(np.abs(field_numerical - field_analytical))
 
 # --- 6. PLOTTING FUNCTION (IMPROVED) ---
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+import os
 
 def plot_clean_convergence(x_values: list, error_data: dict, title_prefix: str, save_filename: str, x_label: str, expected_order: int, mode_label: str):
-    """
-    Generates a clean, high-contrast log-log plot.
-    """
+    # Configurazione stile MathText professionale
+    plt.rcParams.update({
+        "font.family": "serif",
+        "mathtext.fontset": "cm",
+        "font.size": 11,
+        "axes.labelsize": 12,
+        "legend.fontsize": 10,
+        "xtick.labelsize": 10,
+        "ytick.labelsize": 10,
+        "lines.linewidth": 0.8,
+        "lines.markersize": 5,
+        "axes.linewidth": 0.6,
+        "figure.autolayout": True
+    })
+
     x_arr = np.array(x_values)
     if len(x_arr) == 0:
         return
 
-    # Sort
+    # Ordina i valori x (dal più piccolo al più grande)
     sort_idx = np.argsort(x_arr)
     x_arr = x_arr[sort_idx]
 
-    # Prepare Data
     plottable_error_data = {}
     for label, errors in error_data.items():
         if len(errors) == len(x_arr):
@@ -158,55 +175,61 @@ def plot_clean_convergence(x_values: list, error_data: dict, title_prefix: str, 
     if not plottable_error_data:
         return
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(6, 4.5))
 
-    # UPDATED: Standard Tab10 Palette (Blue, Orange, Green, Red, Purple)
-    # Distinct and classic
-    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd'] 
-    markers = ['o', 's', '^', 'D', 'v'] 
-    
-    # Plot Data
+    colors = ['#E41A1C', '#377EB8', '#4DAF4A', '#984EA3', '#FF7F00', '#FFFF33', '#A65628']
+    markers = ['o', 's', '^', 'D', 'v', 'p', '*']
+
+    # Plot dei dati
     for i, (label, errors) in enumerate(plottable_error_data.items()):
-        ax.loglog(x_arr, errors, 
-                  marker=markers[i % len(markers)], 
-                  linestyle='-', 
+        ax.loglog(x_arr, errors,
+                  marker=markers[i % len(markers)],
+                  linestyle='-',
                   color=colors[i % len(colors)],
-                  label=label, alpha=0.9)
+                  label=label,
+                  alpha=0.9)
 
-    # Reference Lines
+    # Linee di Riferimento
     if len(x_arr) > 1:
-        x_ref = x_arr[-1]
-        err_ref = list(plottable_error_data.values())[0][-1]
+        # Ancoraggio al punto più coarse (ultimo elemento dell'array ordinato)
+        x_anchor = x_arr[-1]
+        
+        # Prende l'errore della prima serie disponibile a quel punto come ancora
+        y_anchor = list(plottable_error_data.values())[0][-1]
+        
+        # Estensione della linea su tutto il range
         x_line = np.geomspace(x_arr.min(), x_arr.max(), 100)
 
-        # Order N
-        C_order = err_ref / (x_ref**expected_order)
-        y_order = C_order * (x_line**expected_order)
-        # Fix: Use raw f-string (rf) to handle LaTeX backslashes correctly
-        ax.loglog(x_line, y_order, 'k--', linewidth=1.5, label=rf'Ideal Slope {expected_order}: $\mathcal{{O}}(x^{{{expected_order}}})$') 
+        # Calcolo pendenza ideale (Order N) partendo dall'ancora
+        # Formula: y = y_anchor * (x / x_anchor)^order
+        y_ideal = y_anchor * (x_line / x_anchor)**expected_order
+        ax.loglog(x_line, y_ideal, 'k--', linewidth=0.8,
+                  label=rf"Ideal $\mathcal{{O}}(x^{{{expected_order}}})$")
 
-        # Order 1 (if expected is not 1)
+        # Calcolo pendenza riferimento (Order 1) partendo dalla STESSA ancora
         if expected_order != 1:
-            C_1 = err_ref / (x_ref**1)
-            y_1 = C_1 * (x_line**1)
-            # Fix: Use raw string (r) to handle LaTeX backslashes correctly
-            ax.loglog(x_line, y_1, 'k:', linewidth=1.5, label=r'Reference Slope 1: $\mathcal{O}(x)$')
+            y_one = y_anchor * (x_line / x_anchor)**1
+            ax.loglog(x_line, y_one, 'k:', linewidth=0.8,
+                      label=r"Ref $\mathcal{O}(x)$")
 
-    # Grid - Crucial for Log-Log
-    ax.grid(True, which='major', linestyle='-', linewidth=0.7, color='gray', alpha=0.5)
-    ax.grid(True, which='minor', linestyle=':', linewidth=0.5, color='gray', alpha=0.3)
-    
-    # Title Logic
-    full_title = f"{title_prefix}\n{mode_label}"
-    ax.set_title(full_title)
-    
+    # Griglia e Assi
+    ax.grid(True, which='major', linestyle='-', linewidth=0.4, color='#bbbbbb')
+    ax.grid(True, which='minor', linestyle=':', linewidth=0.2, color='#dddddd')
+
+    # Etichette (x_label usata direttamente per evitare conflitti LaTeX)
     ax.set_xlabel(x_label)
-    ax.set_ylabel("RMS Error ($L_2$ Norm)")
-    ax.legend(loc='best', framealpha=0.9, edgecolor='gray')
+    ax.set_ylabel(r"$\|\epsilon\|_2$")
+    
+    # Nessun titolo impostato come richiesto
+    
+    ax.legend(loc='best', frameon=True, fancybox=False, edgecolor='black', framealpha=1)
 
-    print(f"Saving high-quality plot to {save_filename}...")
-    plt.tight_layout()
-    plt.savefig(save_filename, bbox_inches='tight')
+    # Salvataggio
+    base, ext = os.path.splitext(save_filename)
+    if ext.lower() not in ['.pdf', '.svg', '.eps']:
+        save_filename = base + ".pdf"
+    
+    plt.savefig(save_filename, format='pdf', bbox_inches='tight', dpi=300)
     plt.close(fig)
 
 # --- 7. MAIN LOOP ---
@@ -256,7 +279,7 @@ def run_analysis(custom_simulations=None):
     else:
         sorted_simulations = sorted(sims_to_analyze, key=lambda s: s['nx'])
     
-    print(f"{'Nx':>4} | {'h':>10} | {'L2_Err_U':>12} | {'L2_Err_V':>12} | {'L2_Err_W':>12} | {'L2_Err_P':>12} | {'L1_Err_P':>12}")
+    print(f"{'Nx':>4} | {'h':>10}| {'dt':>10} | {'L2_Err_U':>12} | {'L2_Err_V':>12} | {'L2_Err_W':>12} | {'L2_Err_P':>12} | {'L1_Err_P':>12}")
     print("-" * 95)
 
     for sim in sorted_simulations:
@@ -294,7 +317,7 @@ def run_analysis(custom_simulations=None):
         except Exception as e:
             print(f"Error {filepath}: {e}", file=sys.stderr); continue
 
-        print(f"{nx:>4} | {h:>10.4e} | {errors_u[-1]:>12.4e} | {errors_v[-1]:>12.4e} | {errors_w[-1]:>12.4e} | {errors_p[-1]:>12.4e} | {errors_p_l1[-1]:>12.4e}")
+        print(f"{nx:>4} | {h:>10.4e} | {dt:>10.4e} | {errors_u[-1]:>12.4e} | {errors_v[-1]:>12.4e} | {errors_w[-1]:>12.4e} | {errors_p[-1]:>12.4e} | {errors_p_l1[-1]:>12.4e}")
 
     print("-" * 95)
 
@@ -317,9 +340,9 @@ def run_analysis(custom_simulations=None):
     if not nx_values: return
 
     if study_mode == "TEMPORAL_ONLY":
-        x_plot = dt_values; x_lbl = r'Time Step $\Delta t$'
+        x_plot = dt_values; x_lbl = r' $\Delta t$'
     else:
-        x_plot = h_values; x_lbl = r'Grid Size $h$'
+        x_plot = h_values; x_lbl = r'$h$'
     
     # 1. Velocity
     plot_clean_convergence(x_plot, 
