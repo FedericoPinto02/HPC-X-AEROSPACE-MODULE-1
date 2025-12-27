@@ -1,8 +1,8 @@
 {
     "mesh": {
-        "nx": 64,
-        "ny": 64,
-        "nz": 64,
+        "nx": 32,
+        "ny": 32,
+        "nz": 32,
         "dx": 0.005,
         "dy": 0.005,
         "dz": 0.005,
@@ -10,7 +10,7 @@
     },
     "time": {
         "dt": 0.01,
-        "t_end": 1.0
+        "t_end": 0.1
     },
     "parallelization": {
         "schur_domains": 1
@@ -21,7 +21,7 @@
     "output": {
         "enabled": true,
         "dir": "../output",
-        "base_filename": "plane_couette",
+        "base_filename": "verify_parallel",
         "output_frequency": 1
     },
     "logging": {

@@ -33,7 +33,7 @@ T_END = 1.0           # Fixed physical end time for ALL simulations
 
 # --- RESOLUTION SETS ---
 # Set used when STUDY_MODE is SPATIAL_ONLY or SPACE_TIME_COUPLED
-NX_VALUES_FOR_SPATIAL_STUDY = [20,  30, 40,  50, 60, 70, 80, 90, 100] 
+NX_VALUES_FOR_SPATIAL_STUDY = [20,   40,  60,  80,  100] 
 
 # Set used when STUDY_MODE is TEMPORAL_ONLY
 # Multipliers relative to BASE_DT (e.g., 0.5 means dt = 0.0005)
