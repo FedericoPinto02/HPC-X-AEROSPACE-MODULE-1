@@ -11,8 +11,8 @@ namespace ConfigFuncs {
     
     // --- Geometry Definitions  ---
     constexpr double L_x = 1.0;
-    constexpr double U_max = 5.0;
-    constexpr double G = 100.0;
+    constexpr double U_max = 0.5;
+    constexpr double G = 10.0;
 
     // --- Brinkman Penalization Parameters ---
     constexpr double K_fluid = 1e15;    // High permeability (Fluid region)
@@ -62,7 +62,7 @@ namespace ConfigFuncs {
     inline double w_init_func(double x, double y, double z, double t = 0) {
         return bcw_func(x, y, z, t);
     }
-     inline double p_init_func(double, double, double, double) { return 10.0; }
+     inline double p_init_func(double, double, double, double) { return 1.0; }
 
     // Export permeability field
     inline double k_func(double x, double y, double z, double /*t*/ = 0) {

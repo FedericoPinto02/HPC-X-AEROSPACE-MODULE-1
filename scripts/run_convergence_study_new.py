@@ -28,8 +28,8 @@ STUDY_MODE = "SPACE_TIME_COUPLED"
 
 # --- BASELINE & RESOLUTION PARAMETERS ---
 BASE_NX = 20           # Reference resolution
-BASE_DT = 0.01        # Reference timestep
-T_END = 0.5           # Fixed physical end time for ALL simulations
+BASE_DT = 0.1        # Reference timestep
+T_END = 1.0           # Fixed physical end time for ALL simulations
 
 # --- RESOLUTION SETS ---
 # Set used when STUDY_MODE is SPATIAL_ONLY or SPACE_TIME_COUPLED

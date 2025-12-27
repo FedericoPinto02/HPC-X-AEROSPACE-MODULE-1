@@ -101,10 +101,10 @@ def compute_analytical_u_at_x_faces(points: np.ndarray, t: float, h: float) -> n
     x = points[:, 0] + h / 2.0 
     y = points[:, 1]
     z = points[:, 2]
-    U_max = 5.0
+    U_max = 0.5
     L = 1.0
     nu = 1.0
-    G = 100.0
+    G = 10.0
 
     return np.sin(t) * U_max / L * y - y / nu * G *(L - y) *0.5 * np.sin(t)
 
@@ -121,10 +121,17 @@ def compute_analytical_w_at_z_faces(points: np.ndarray, t: float, h: float) -> n
     return 0
 
 def compute_analytical_p_at_centers(points: np.ndarray, t: float) -> np.ndarray:
+    """
+    Analytical pressure for unsteady Couette–Poiseuille flow.
+    Only the pressure gradient is physically meaningful.
+    """
     x = points[:, 0]
-    y = points[:, 1]
-    z = points[:, 2]
-    return 10
+
+    G = 10.0      # Pressure gradient amplitude
+    p0 = 1.0      # Reference pressure (gauge)
+
+    return p0 - G * x * np.sin(t)
+
 
 # --- 5. ERROR CALCULATION ---
 
