@@ -231,9 +231,7 @@ void Derivatives::computeDxx(const Field &field, Field &dxx, const Func &bc, con
 
         if (grid.hasMaxBoundary(Axis::X)) {
             for (long k = 0; k < grid.Nz; k++) {
-                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long j = 0; j < grid.Ny; j++) {
-                    double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
                     dxx(grid.Nx - 1, j, k) = 0.0;
                 }
             }
@@ -241,9 +239,7 @@ void Derivatives::computeDxx(const Field &field, Field &dxx, const Func &bc, con
     } else {
         if (grid.hasMinBoundary(Axis::X)) {
             for (long k = 0; k < grid.Nz; k++) {
-                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long j = 0; j < grid.Ny; j++) {
-                    double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
                     dxx(0, j, k) = 0.0;
                 }
             }
@@ -289,9 +285,7 @@ void Derivatives::computeDyy(const Field &field, Field &dyy, const Func &bc, con
 
         if (grid.hasMaxBoundary(Axis::Y)) {
             for (long k = 0; k < grid.Nz; k++) {
-                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
-                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
                     dyy(i, grid.Ny - 1, k) = 0.0;
                 }
             }
@@ -299,9 +293,7 @@ void Derivatives::computeDyy(const Field &field, Field &dyy, const Func &bc, con
     } else {
         if (grid.hasMinBoundary(Axis::Y)) {
             for (long k = 0; k < grid.Nz; k++) {
-                double physical_z = grid.to_z(k, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
-                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
                     dyy(i, 0, k) = 0.0;
                 }
             }
@@ -348,9 +340,7 @@ void Derivatives::computeDzz(const Field &field, Field &dzz, const Func &bc, con
 
         if (grid.hasMaxBoundary(Axis::Z)) {
             for (long j = 0; j < grid.Ny; j++) {
-                double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
-                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
                     dzz(i, j, grid.Nz - 1) = 0.0;
                 }
             }
@@ -358,9 +348,7 @@ void Derivatives::computeDzz(const Field &field, Field &dzz, const Func &bc, con
     } else {
         if (grid.hasMinBoundary(Axis::Z)) {
             for (long j = 0; j < grid.Ny; j++) {
-                double physical_y = grid.to_y(j, field.getOffset(), field.getOffsetAxis());
                 for (long i = 0; i < grid.Nx; i++) {
-                    double physical_x = grid.to_x(i, field.getOffset(), field.getOffsetAxis());
                     dzz(i, j, 0) = 0.0;
                 }
             }
