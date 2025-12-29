@@ -2,7 +2,7 @@
 #include <vector>
 #include <cmath>
 
-#include "core/TridiagMat.hpp"
+#include "numerics/TridiagMat.hpp"
 
 // =============================================================================
 // Constructor Tests

@@ -8,7 +8,7 @@
 
 // Include the fixture
 #include "MpiEnvFixture.hpp"
-#include "core/TridiagMat.hpp"
+#include "numerics/TridiagMat.hpp"
 #include "numerics/SchurSolver.hpp"
 
 // --- Analytical Solution for u'' = -1, u(0)=0, u(1)=0 ---

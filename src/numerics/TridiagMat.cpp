@@ -1,4 +1,4 @@
-#include "core/TridiagMat.hpp"
+#include "numerics/TridiagMat.hpp"
 
 TridiagMat::TridiagMat(size_t n) {
     if (n < 2)

@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "core/MpiEnv.hpp"
-#include "core/TridiagMat.hpp"
+#include "TridiagMat.hpp"
 #include "numerics/ThomasSolver.hpp"
 
 /**

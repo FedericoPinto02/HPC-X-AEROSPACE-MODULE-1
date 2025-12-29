@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "core/HaloHandler.hpp"
-#include "core/TridiagMat.hpp"
+#include "numerics/TridiagMat.hpp"
 #include "numerics/derivatives.hpp"
 #include "simulation/initializer.hpp"
 #include "numerics/SchurSolver.hpp"

@@ -39,7 +39,7 @@ add_library(NSBSolver
         include/core/Grid.hpp
         include/core/HaloHandler.hpp
         include/core/MpiEnv.hpp
-        include/core/TridiagMat.hpp
+        include/numerics/TridiagMat.hpp
         include/io/inputReader.hpp
         include/io/VTKWriter.hpp
         include/io/logWriter.hpp
@@ -55,7 +55,7 @@ add_library(NSBSolver
         src/core/Grid.cpp
         src/core/HaloHandler.cpp
         src/core/MpiEnv.cpp
-        src/core/TridiagMat.cpp
+        src/numerics/TridiagMat.cpp
         src/io/inputReader.cpp
         src/io/VTKWriter.cpp
         src/io/logWriter.cpp
