@@ -6,6 +6,7 @@ import re
 import matplotlib.pyplot as plt
 import numpy as np
 import multiprocessing
+import csv
 
 # =============================================================================
 # CONFIGURATION
@@ -13,6 +14,7 @@ import multiprocessing
 EXECUTABLE  = "../build/main"
 CONFIG_PATH = "../data/config.json"
 OUTPUT_DIR  = "../output"
+RESULTS_DIR = "../results"
 
 # List of processor counts to test.
 # Ensure you don't exceed your physical core count.
@@ -51,7 +53,7 @@ def setup_config():
     with open(CONFIG_PATH, 'w') as f:
         json.dump(config, f, indent=4)
 
-    print(f"[SETUP] Grid: {GRID_SIZE}^3 | Steps: {NUM_STEPS} | I/O: Disabled")
+    print(f"\n[SETUP] Grid: {GRID_SIZE}^3 | Steps: {NUM_STEPS} | I/O: Disabled")
 
 def parse_output(stdout_str):
     """
@@ -112,7 +114,7 @@ def plot_results(results):
     plt.plot(procs, ideal_speedup, 'k--', label='Ideal Linear', alpha=0.5)
     plt.title(f"Strong Scaling (Grid {GRID_SIZE}^3)")
     plt.xlabel("Number of Processors")
-    plt.ylabel("Speedup (T1 / Tn)")
+    plt.ylabel(r"Speedup ($T_1 / T_p$)") # Enhanced Label
     plt.grid(True, which="both", ls="-", alpha=0.4)
     plt.legend()
     plt.xticks(procs)
@@ -129,14 +131,22 @@ def plot_results(results):
     plt.xticks(procs)
 
     plt.tight_layout()
-    plt_filename = "../results/strong_scalability_results.png"
-    plt.savefig(plt_filename)
-    print(f"\n[OUTPUT] Plot saved to '{plt_filename}'")
+
+    # Save in both formats
+    base_plot_name = os.path.join(RESULTS_DIR, "strong_scalability_results")
+    plt.savefig(f"{base_plot_name}.png")
+    plt.savefig(f"{base_plot_name}.eps", format='eps')
+
+    print(f"\n[OUTPUT] Plots saved to:")
+    print(f"  - {base_plot_name}.png")
+    print(f"  - {base_plot_name}.eps")
 
 def main():
     print("============================================================")
-    print(" SCALABILITY TEST SUITE")
+    print(" STRONG SCALABILITY TEST SUITE")
     print("============================================================")
+
+    print(f"[WARNING] Available CPU Cores: {MAX_CORES}")
 
     setup_config()
 
@@ -155,23 +165,41 @@ def main():
         print("No results collected.")
         sys.exit(1)
 
-    # Print Table
-    print("\n" + "="*75)
-    print(f"{'NP':<5} | {'Total Time (s)':<15} | {'Speedup':<10} | {'Efficiency (%)':<15} | {'Metric (s/step/cell)':<20}")
-    print("-" * 75)
-
+    # --- Print Table & Save CSV ---
     t_base = results[0]['metrics']['total_time']
+    csv_filename = os.path.join(RESULTS_DIR, "strong_scalability_results.csv")
 
-    for res in results:
-        np_val = res['np']
-        time = res['metrics']['total_time']
-        metric = res['metrics']['norm_metric']
+    print("\n" + "="*85)
+    print(f"{'NP':<5} | {'Total Time (s)':<15} | {'Speedup':<10} | {'Efficiency (%)':<15} | {'Metric (s/step/cell)':<20}")
+    print("-" * 85)
 
-        speedup = t_base / time
-        eff = (speedup / np_val) * 100.0
+    with open(csv_filename, 'w', newline='') as csvfile:
+        fieldnames = ['NP', 'Total Time (s)', 'Speedup', 'Efficiency (%)', 'Metric (s/step/cell)']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
 
-        print(f"{np_val:<5} | {time:<15.4f} | {speedup:<10.2f} | {eff:<15.1f} | {metric:<20.4e}")
-    print("="*75)
+        for res in results:
+            np_val = res['np']
+            time = res['metrics']['total_time']
+            metric = res['metrics']['norm_metric']
+
+            speedup = t_base / time
+            eff = (speedup / np_val) * 100.0
+
+            # 1. Print to Console
+            print(f"{np_val:<5} | {time:<15.4f} | {speedup:<10.2f} | {eff:<15.1f} | {metric:<20.4e}")
+
+            # 2. Write to CSV
+            writer.writerow({
+                'NP': np_val,
+                'Total Time (s)': time,
+                'Speedup': speedup,
+                'Efficiency (%)': eff,
+                'Metric (s/step/cell)': metric
+            })
+
+    print("="*85)
+    print(f"[OUTPUT] Data logged to '{csv_filename}'")
 
     plot_results(results)
 
