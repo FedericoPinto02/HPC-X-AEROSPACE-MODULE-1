@@ -392,22 +392,6 @@ TEST_F(DerivativesTest, Laplacian_Consistency_Check) {
 // === EXCEPTION HANDLING
 // ============================================================================
 
-// TEST_F(DerivativesTest, Throws_IfGridIsTooSmall) {
-//     auto tinyGrid = std::make_shared<Grid>(2, 2, 2, 1.0, 1.0, 1.0);
-//     Field field;
-//     field.setup(tinyGrid);
-//     Field result;
-//     result.setup(tinyGrid);
-
-//     // This test is disabled because the current implementation does not
-//     // throw an exception but rather does nothing when the grid is too small.
-//     // To enable this test, add a check (if Nx < 3 throw...) in derivatives.cpp.
-    
-//     // EXPECT_THROW(deriv.computeDxx(field, result, dummyBC, simTime, Axis::X), std::runtime_error);
-//     // EXPECT_THROW(deriv.computeDyy(field, result, dummyBC, simTime, Axis::Y), std::runtime_error);
-//     // EXPECT_THROW(deriv.computeDzz(field, result, dummyBC, simTime, Axis::Z), std::runtime_error);
-// }
-
 TEST_F(DerivativesTest, Throws_IfGridIsNegative) {
     EXPECT_THROW(std::make_shared<Grid>(10, 10, 10, -0.1, 1.0, 1.0), std::runtime_error);
 }
