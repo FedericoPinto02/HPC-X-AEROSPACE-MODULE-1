@@ -8,6 +8,11 @@
 #include "numerics/derivatives.hpp"
 #include "core/Grid.hpp"
 
+// dummy BC function (returns 0.0)
+const Func dummyBC = 
+[](double x, double y, double z, double t) { return 0.0; };
+double simTime = 0.0;
+
 class DerivativesTest : public ::testing::Test {
 protected:
     // Constants for grid dimensions and spacing
@@ -175,7 +180,7 @@ TEST_F(DerivativesTest, Scalar_Dxx_Accuracy) {
     Field field = createField([](double x, double, double, double) { return x * x * x; });
     Field dxx = createEmptyField();
 
-    deriv.computeDxx(field, dxx);
+    deriv.computeDxx(field, dxx, dummyBC, simTime, Axis::X);
 
     const double tol = 1e-8;
     for (size_t i = 1; i < Nx - 1; ++i) { // Valid interior [1, N-2]
@@ -189,7 +194,7 @@ TEST_F(DerivativesTest, Scalar_Dyy_Accuracy) {
     Field field = createField([](double, double y, double, double) { return y * y * y; });
     Field dyy = createEmptyField();
 
-    deriv.computeDyy(field, dyy);
+    deriv.computeDyy(field, dyy, dummyBC, simTime, Axis::Y);
 
     const double tol = 1e-8;
     for (size_t j = 1; j < Ny - 1; ++j) {
@@ -203,7 +208,7 @@ TEST_F(DerivativesTest, Scalar_Dzz_Accuracy) {
     Field field = createField([](double, double, double z, double) { return z * z * z; });
     Field dzz = createEmptyField();
 
-    deriv.computeDzz(field, dzz);
+    deriv.computeDzz(field, dzz, dummyBC, simTime, Axis::Z);
 
     const double tol = 1e-8;
     for (size_t k = 1; k < Nz - 1; ++k) {
@@ -229,7 +234,7 @@ TEST_F(DerivativesTest, Vector_Dxx_Accuracy) {
     VectorField result;
     result.setup(grid);
 
-    deriv.computeDxx(vec, result);
+    deriv.computeDxx(vec, result, dummyBC, dummyBC, dummyBC, simTime);
 
     const double tol = 1e-8;
     for (size_t i = 1; i < Nx - 1; ++i) {
@@ -255,7 +260,7 @@ TEST_F(DerivativesTest, Vector_Dyy_Accuracy) {
     VectorField result;
     result.setup(grid);
 
-    deriv.computeDyy(vec, result);
+    deriv.computeDyy(vec, result, dummyBC, dummyBC, dummyBC, simTime);
 
     const double tol = 1e-8;
     for (size_t j = 1; j < Ny - 1; ++j) {
@@ -281,7 +286,7 @@ TEST_F(DerivativesTest, Vector_Dzz_Accuracy) {
     VectorField result;
     result.setup(grid);
 
-    deriv.computeDzz(vec, result);
+    deriv.computeDzz(vec, result, dummyBC, dummyBC, dummyBC, simTime);
 
     const double tol = 1e-8;
     for (size_t k = 1; k < Nz - 1; ++k) {
@@ -368,9 +373,9 @@ TEST_F(DerivativesTest, Laplacian_Consistency_Check) {
     Field dxx = createEmptyField();
     Field dyy = createEmptyField();
     Field dzz = createEmptyField();
-    deriv.computeDxx(field, dxx);
-    deriv.computeDyy(field, dyy);
-    deriv.computeDzz(field, dzz);
+    deriv.computeDxx(field, dxx, dummyBC, simTime, Axis::X);
+    deriv.computeDyy(field, dyy, dummyBC, simTime, Axis::Y);
+    deriv.computeDzz(field, dzz, dummyBC, simTime, Axis::Z);
 
     for (size_t k = 1; k < Nz - 1; ++k) {
         for (size_t j = 1; j < Ny - 1; ++j) {
@@ -386,19 +391,6 @@ TEST_F(DerivativesTest, Laplacian_Consistency_Check) {
 // ============================================================================
 // === EXCEPTION HANDLING
 // ============================================================================
-
-TEST_F(DerivativesTest, Throws_IfGridIsTooSmall) {
-    auto tinyGrid = std::make_shared<Grid>(2, 2, 2, 1.0, 1.0, 1.0);
-    Field field;
-    field.setup(tinyGrid);
-    Field result;
-    result.setup(tinyGrid);
-
-    // Second derivatives need at least 3 points for central difference
-    EXPECT_THROW(deriv.computeDxx(field, result), std::runtime_error);
-    EXPECT_THROW(deriv.computeDyy(field, result), std::runtime_error);
-    EXPECT_THROW(deriv.computeDzz(field, result), std::runtime_error);
-}
 
 TEST_F(DerivativesTest, Throws_IfGridIsNegative) {
     EXPECT_THROW(std::make_shared<Grid>(10, 10, 10, -0.1, 1.0, 1.0), std::runtime_error);

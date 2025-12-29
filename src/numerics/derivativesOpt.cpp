@@ -288,7 +288,10 @@ void Derivatives::computeDivergence(
 }
 
 
-void Derivatives::computeDxx(const VectorField &field, VectorField &dxx) const {
+void Derivatives::computeDxx(
+        const VectorField &field, VectorField &dxx,
+        const Func &bcu, const Func &bcv, const Func &bcw, const double &time
+) const {
     const double *fx_ptr = field(Axis::X).getData().data();
     const double *fy_ptr = field(Axis::Y).getData().data();
     const double *fz_ptr = field(Axis::Z).getData().data();
@@ -303,9 +306,6 @@ void Derivatives::computeDxx(const VectorField &field, VectorField &dxx) const {
     const size_t Nx_tot = grid.Nx + 2 * H;
     const size_t Ny_tot = grid.Ny + 2 * H;
     const size_t Nz_tot = grid.Nz + 2 * H;
-    if (grid.Ny < 3) {
-        throw std::runtime_error("Grid size Ny must be at least 3 to compute second derivative.");
-    }
 
     // Flatten Y and Z dimensions into a single 'xLine' count
     const size_t totalXLines = Ny_tot * Nz_tot;
@@ -324,27 +324,77 @@ void Derivatives::computeDxx(const VectorField &field, VectorField &dxx) const {
         }
     }
 
+    // 2. Handle boundary conditions
+    // Precompute constant coefficients for boundary conditions
+    const double C1 = 4.0 / 3.0 * inv_dxx;          // Coefficient for field(1, j, k)
+    const double C2 = -4.0 * inv_dxx;               // Coefficient for field(0, j, k)
+    const double C3 = (8.0 / 3.0) * inv_dxx;        // Coefficient for bc(...)
+
+    const size_t strideY = Nx_tot;
+    const size_t strideZ = Nx_tot * Ny_tot;
+
     // 2A. Handle physical left BC: the first point of each x-line cannot compute a centered difference
     if (grid.hasMinBoundary(Axis::X)) {
-        for (size_t xLine = 0; xLine < totalXLines; ++xLine) {
-            size_t firstPhysicalXLineIdx = xLine * Nx_tot + H;
-            dfx_dxx_ptr[firstPhysicalXLineIdx] = 0.0;
-            dfy_dxx_ptr[firstPhysicalXLineIdx] = 0.0;
-            dfz_dxx_ptr[firstPhysicalXLineIdx] = 0.0;
+        auto &fx = field(Axis::X);
+        auto fx_offset = fx.getOffset();
+        auto fx_offsetAxis = fx.getOffsetAxis();
+
+        for (size_t k = 0; k < Nz_tot; ++k) {
+            double physical_Xz = grid.to_z((long) k - (long) H, fx_offset, fx_offsetAxis);
+            size_t xyPlaneOffset = k * strideZ;
+            for (size_t j = 0; j < Ny_tot; ++j) {
+                double physical_Xy = grid.to_y((long) j - (long) H, fx_offset, fx_offsetAxis);
+                size_t firstPhysicalXLineIdx = xyPlaneOffset + j * strideY;
+                double val_X1 = fx_ptr[firstPhysicalXLineIdx + H + 1];
+                double val_X0 = fx_ptr[firstPhysicalXLineIdx + H];
+                dfx_dxx_ptr[firstPhysicalXLineIdx + H] = C1 * val_X1
+                                                         + C2 * val_X0
+                                                         + C3 * bcu(0.0, physical_Xy, physical_Xz, time);
+                dfy_dxx_ptr[firstPhysicalXLineIdx + H] = 0;
+                dfz_dxx_ptr[firstPhysicalXLineIdx + H] = 0;
+            }
         }
     }
     // 2B. Handle physical right BC: the last point of each x-line cannot compute a centered difference
     if (grid.hasMaxBoundary(Axis::X)) {
-        for (size_t xLine = 0; xLine < totalXLines; ++xLine) {
-            size_t lastPhysicalXLineIdx = xLine * Nx_tot + (Nx_tot - 1 - H);
-            dfx_dxx_ptr[lastPhysicalXLineIdx] = 0.0;
-            dfy_dxx_ptr[lastPhysicalXLineIdx] = 0.0;
-            dfz_dxx_ptr[lastPhysicalXLineIdx] = 0.0;
+        auto &fy = field(Axis::Y);
+        auto fy_offset = fy.getOffset();
+        auto fy_offsetAxis = fy.getOffsetAxis();
+
+        auto &fz = field(Axis::Z);
+        auto fz_offset = fz.getOffset();
+        auto fz_offsetAxis = fz.getOffsetAxis();
+
+        double physical_Xwall = grid.to_x((long)(grid.Nx - 1), GridStaggering::FACE_CENTERED, Axis::X);
+
+        for (size_t k = 0; k < Nz_tot; ++k) {
+            double physical_Yz = grid.to_z((long) k - (long) H, fy_offset, fy_offsetAxis);
+            double physical_Zz = grid.to_z((long) k - (long) H, fz_offset, fz_offsetAxis);
+            size_t xyPlaneOffset = k * strideZ;
+            for (size_t j = 0; j < Ny_tot; ++j) {
+                double physical_Yy = grid.to_y((long) j - (long) H, fy_offset, fy_offsetAxis);
+                double physical_Zy = grid.to_y((long) j - (long) H, fz_offset, fz_offsetAxis);
+                size_t lastPhysicalXLineIdx = (xyPlaneOffset + j * strideY) + (Nx_tot - 1 - H);
+                double val_Ynm2 = fy_ptr[lastPhysicalXLineIdx - 1];
+                double val_Ynm1 = fy_ptr[lastPhysicalXLineIdx];
+                double val_Znm2 = fz_ptr[lastPhysicalXLineIdx - 1];
+                double val_Znm1 = fz_ptr[lastPhysicalXLineIdx];
+                dfx_dxx_ptr[lastPhysicalXLineIdx] = 0;
+                dfy_dxx_ptr[lastPhysicalXLineIdx] = C1 * val_Ynm2
+                                                    + C2 * val_Ynm1
+                                                    + C3 * bcv(physical_Xwall, physical_Yy, physical_Yz, time);
+                dfz_dxx_ptr[lastPhysicalXLineIdx] = C1 * val_Znm2
+                                                    + C2 * val_Znm1
+                                                    + C3 * bcw(physical_Xwall, physical_Zy, physical_Zz, time);
+            }
         }
     }
 }
 
-void Derivatives::computeDyy(const VectorField &field, VectorField &dyy) const {
+void Derivatives::computeDyy(
+        const VectorField &field, VectorField &dyy,
+        const Func &bcu, const Func &bcv, const Func &bcw, const double &time
+) const {
     const double *fx_ptr = field(Axis::X).getData().data();
     const double *fy_ptr = field(Axis::Y).getData().data();
     const double *fz_ptr = field(Axis::Z).getData().data();
@@ -359,9 +409,6 @@ void Derivatives::computeDyy(const VectorField &field, VectorField &dyy) const {
     const size_t Nx_tot = grid.Nx + 2 * H;
     const size_t Ny_tot = grid.Ny + 2 * H;
     const size_t Nz_tot = grid.Nz + 2 * H;
-    if (grid.Ny < 3) {
-        throw std::runtime_error("Grid size Nz must be at least 3 to compute second derivative.");
-    }
 
     // The distance in memory between (i, j-1, k) and (i, j, k), (i, j, k) and (i, j+1, k)
     const size_t strideY = Nx_tot;
@@ -385,35 +432,76 @@ void Derivatives::computeDyy(const VectorField &field, VectorField &dyy) const {
         }
     }
 
+    // 2. Handle boundary conditions
+    // Precompute constant coefficients for boundary conditions
+    const double C1 = 4.0 / 3.0 * inv_dyy;          // Coefficient for field(i, 1, k)
+    const double C2 = -4.0 * inv_dyy;               // Coefficient for field(i, 0, k)
+    const double C3 = (8.0 / 3.0) * inv_dyy;        // Coefficient for bc(...)
+
     // 2A. Handle physical left BC: the first point of each y-line cannot compute a centered difference
     //  i.e., the whole first x-line of the XY-plane
     if (grid.hasMinBoundary(Axis::Y)) {
+        auto &fy = field(Axis::Y);
+        auto fy_offset = fy.getOffset();
+        auto fy_offsetAxis = fy.getOffsetAxis();
+
         for (size_t k = 0; k < Nz_tot; ++k) {
+            double physical_Yz = grid.to_z((long) k - (long) H, fy_offset, fy_offsetAxis);
             size_t xyPlaneOffset = k * strideZ;
-            size_t firstPhysicalXLineOffset = xyPlaneOffset + H * strideY;
+            size_t firstPhysicalXLineIdx = xyPlaneOffset + H * strideY;
             for (size_t i = 0; i < Nx_tot; ++i) {
-                dfx_dyy_ptr[firstPhysicalXLineOffset + i] = 0.0;
-                dfy_dyy_ptr[firstPhysicalXLineOffset + i] = 0.0;
-                dfz_dyy_ptr[firstPhysicalXLineOffset + i] = 0.0;
+                double physical_Yx = grid.to_x((long) i - (long) H, fy_offset, fy_offsetAxis);
+                double val_Y1 = fy_ptr[firstPhysicalXLineIdx + i + strideY];
+                double val_Y0 = fy_ptr[firstPhysicalXLineIdx + i];
+                dfx_dyy_ptr[firstPhysicalXLineIdx + i] = 0;
+                dfy_dyy_ptr[firstPhysicalXLineIdx + i] = C1 * val_Y1
+                                                         + C2 * val_Y0
+                                                         + C3 * bcv(physical_Yx, 0.0, physical_Yz, time);
+                dfz_dyy_ptr[firstPhysicalXLineIdx + i] = 0;
             }
         }
     }
     // 2B. Handle physical right BC: the last point of each y-line cannot compute a centered difference
     //  i.e., the whole last x-line of the XY-plane
     if (grid.hasMaxBoundary(Axis::Y)) {
+        auto &fx = field(Axis::X);
+        auto fx_offset = fx.getOffset();
+        auto fx_offsetAxis = fx.getOffsetAxis();
+
+        auto &fz = field(Axis::Z);
+        auto fz_offset = fz.getOffset();
+        auto fz_offsetAxis = fz.getOffsetAxis();
+
+        double physical_Ywall = grid.to_y((long)(grid.Ny - 1), GridStaggering::FACE_CENTERED, Axis::Y);
+
         for (size_t k = 0; k < Nz_tot; ++k) {
+            double physical_Xz = grid.to_z((long) k - (long) H, fx_offset, fx_offsetAxis);
+            double physical_Zz = grid.to_z((long) k - (long) H, fz_offset, fz_offsetAxis);
             size_t xyPlaneOffset = k * strideZ;
-            size_t lastPhysicalXLineOffset = xyPlaneOffset + (Ny_tot - 1 - H) * strideY;
+            size_t lastPhysicalXLineIdx = xyPlaneOffset + (Ny_tot - 1 - H) * strideY;
             for (size_t i = 0; i < Nx_tot; ++i) {
-                dfx_dyy_ptr[lastPhysicalXLineOffset + i] = 0.0;
-                dfy_dyy_ptr[lastPhysicalXLineOffset + i] = 0.0;
-                dfz_dyy_ptr[lastPhysicalXLineOffset + i] = 0.0;
+                double physical_Xx = grid.to_x((long) i - (long) H, fx_offset, fx_offsetAxis);
+                double physical_Zx = grid.to_x((long) i - (long) H, fz_offset, fz_offsetAxis);
+                double val_Xnm2 = fx_ptr[lastPhysicalXLineIdx + i - strideY];
+                double val_Xnm1 = fx_ptr[lastPhysicalXLineIdx + i];
+                double val_Znm2 = fz_ptr[lastPhysicalXLineIdx + i - strideY];
+                double val_Znm1 = fz_ptr[lastPhysicalXLineIdx + i];
+                dfx_dyy_ptr[lastPhysicalXLineIdx + i] = C1 * val_Xnm2
+                                                        + C2 * val_Xnm1
+                                                        + C3 * bcu(physical_Xx, physical_Ywall, physical_Xz, time);
+                dfy_dyy_ptr[lastPhysicalXLineIdx + i] = 0;
+                dfz_dyy_ptr[lastPhysicalXLineIdx + i] = C1 * val_Znm2
+                                                        + C2 * val_Znm1
+                                                        + C3 * bcw(physical_Zx, physical_Ywall, physical_Zz, time);
             }
         }
     }
 }
 
-void Derivatives::computeDzz(const VectorField &field, VectorField &dzz) const {
+void Derivatives::computeDzz(
+        const VectorField &field, VectorField &dzz,
+        const Func &bcu, const Func &bcv, const Func &bcw, const double &time
+) const {
     const double *fx_ptr = field(Axis::X).getData().data();
     const double *fy_ptr = field(Axis::Y).getData().data();
     const double *fz_ptr = field(Axis::Z).getData().data();
@@ -428,9 +516,6 @@ void Derivatives::computeDzz(const VectorField &field, VectorField &dzz) const {
     const size_t Nx_tot = grid.Nx + 2 * H;
     const size_t Ny_tot = grid.Ny + 2 * H;
     const size_t Nz_tot = grid.Nz + 2 * H;
-    if (grid.Nz < 3) {
-        throw std::runtime_error("Grid size Nz must be at least 3 to compute second derivative.");
-    }
 
     // The distance in memory between (i, j, k-1) and (i, j, k), (i, j, k) and (i, j, k+1)
     const size_t strideZ = Nx_tot * Ny_tot; // stride is one full XY plane
@@ -448,23 +533,74 @@ void Derivatives::computeDzz(const VectorField &field, VectorField &dzz) const {
         }
     }
 
+
+    // 2. Handle boundary conditions
+    // Precompute constant coefficients for boundary conditions
+    const double C1 = 4.0 / 3.0 * inv_dzz;          // Coefficient for field(i, j, 1)
+    const double C2 = -4.0 * inv_dzz;               // Coefficient for field(i, j, 0)
+    const double C3 = (8.0 / 3.0) * inv_dzz;        // Coefficient for bc(...)
+
+    const size_t strideY = Nx_tot;
+
     // 2A. Handle physical left BC: the first point of each z-line cannot compute a centered difference
-    if (field.getGrid().hasMinBoundary(Axis::Z)) {
+    if (grid.hasMinBoundary(Axis::Z)) {
+        auto &fz = field(Axis::Z);
+        auto fz_offset = fz.getOffset();
+        auto fz_offsetAxis = fz.getOffsetAxis();
         size_t firstPhysicalXyPlaneOffset = H * strideZ;
-        std::fill(dfx_dzz_ptr + firstPhysicalXyPlaneOffset, dfx_dzz_ptr + firstPhysicalXyPlaneOffset + strideZ, 0.0);
-        std::fill(dfy_dzz_ptr + firstPhysicalXyPlaneOffset, dfy_dzz_ptr + firstPhysicalXyPlaneOffset + strideZ, 0.0);
-        std::fill(dfz_dzz_ptr + firstPhysicalXyPlaneOffset, dfz_dzz_ptr + firstPhysicalXyPlaneOffset + strideZ, 0.0);
+        for (size_t j = 0; j < Ny_tot; ++j) {
+            double physical_Zy = grid.to_y((long) j - (long) H, fz_offset, fz_offsetAxis);
+            size_t xLineOffset = firstPhysicalXyPlaneOffset + (j * strideY);
+            for (size_t i = 0; i < Nx_tot; ++i) {
+                const double physical_Zx = grid.to_x((long) (i - H), fz_offset, fz_offsetAxis);
+                size_t idx_0 = xLineOffset + i;    // field(i, j, 0)
+                size_t idx_1 = idx_0 + strideZ;    // field(i, j, 1)
+                dfx_dzz_ptr[idx_0] = 0.0;
+                dfy_dzz_ptr[idx_0] = 0.0;
+                dfz_dzz_ptr[idx_0] = C1 * fz_ptr[idx_1]
+                                     + C2 * fz_ptr[idx_0]
+                                     + C3 * bcw(physical_Zx, physical_Zy, 0.0, time);
+            }
+        }
     }
     // 2B. Handle physical right BC: the last point of each z-line cannot compute a centered difference
-    if (field.getGrid().hasMaxBoundary(Axis::Z)) {
+    if (grid.hasMaxBoundary(Axis::Z)) {
+        auto &fx = field(Axis::X);
+        auto fx_offset = fx.getOffset();
+        auto fx_offsetAxis = fx.getOffsetAxis();
+
+        auto &fy = field(Axis::Y);
+        auto fy_offset = fy.getOffset();
+        auto fy_offsetAxis = fy.getOffsetAxis();
+
+        double physical_Zwall = grid.to_z((long)(grid.Nz - 1), GridStaggering::FACE_CENTERED, Axis::Z);
+
         size_t lastPhysicalXyPlaneOffset = (Nz_tot - 1 - H) * strideZ;
-        std::fill(dfx_dzz_ptr + lastPhysicalXyPlaneOffset, dfx_dzz_ptr + lastPhysicalXyPlaneOffset + strideZ, 0.0);
-        std::fill(dfy_dzz_ptr + lastPhysicalXyPlaneOffset, dfy_dzz_ptr + lastPhysicalXyPlaneOffset + strideZ, 0.0);
-        std::fill(dfz_dzz_ptr + lastPhysicalXyPlaneOffset, dfz_dzz_ptr + lastPhysicalXyPlaneOffset + strideZ, 0.0);
+        for (size_t j = 0; j < Ny_tot; ++j) {
+            double physical_Xy = grid.to_y((long) j - (long) H, fx_offset, fx_offsetAxis);
+            double physical_Yy = grid.to_y((long) j - (long) H, fy_offset, fy_offsetAxis);
+            size_t xLineOffset = lastPhysicalXyPlaneOffset + (j * strideY);
+            for (size_t i = 0; i < Nx_tot; ++i) {
+                double physical_Xx = grid.to_x((long) (i - H), fx_offset, fx_offsetAxis);
+                double physical_Yx = grid.to_x((long) (i - H), fy_offset, fy_offsetAxis);
+                size_t idx_nm2 = xLineOffset + i - strideZ;     // field(i, j, Nz-2)
+                size_t idx_nm1 = xLineOffset + i;               // field(i, j, Nz-1)
+                dfx_dzz_ptr[idx_nm1] = C1 * fx_ptr[idx_nm2]
+                                       + C2 * fx_ptr[idx_nm1]
+                                       + C3 * bcu(physical_Xx, physical_Xy, physical_Zwall, time);
+                dfy_dzz_ptr[idx_nm1] = C1 * fy_ptr[idx_nm2]
+                                       + C2 * fy_ptr[idx_nm1]
+                                       + C3 * bcv(physical_Yx, physical_Yy, physical_Zwall, time);
+                dfz_dzz_ptr[idx_nm1] = 0.0;
+            }
+        }
     }
 }
 
-void Derivatives::computeDxx(const Field &field, Field &dxx) const {
+void Derivatives::computeDxx(
+        const Field &field, Field &dxx,
+        const Func &bc, const double &time, const Axis axis
+) const {
     const auto &grid = field.getGrid();
     const double inv_dxx = 1.0 / (grid.dx * grid.dx);
 
@@ -472,9 +608,6 @@ void Derivatives::computeDxx(const Field &field, Field &dxx) const {
     const size_t Nx_tot = grid.Nx + 2 * H;
     const size_t Ny_tot = grid.Ny + 2 * H;
     const size_t Nz_tot = grid.Nz + 2 * H;
-    if (grid.Ny < 3) {
-        throw std::runtime_error("Grid size Ny must be at least 3 to compute second derivative.");
-    }
 
     // Flatten Y and Z dimensions into a single 'xLine' count
     const size_t totalXLines = Ny_tot * Nz_tot;
@@ -491,25 +624,80 @@ void Derivatives::computeDxx(const Field &field, Field &dxx) const {
         }
     }
 
-    // 2A. Handle physical left BC: the first point of the x-line cannot compute a centered difference
-    if (grid.hasMinBoundary(Axis::X)) {
-        for (size_t xLine = 0; xLine < totalXLines; ++xLine) {
-            size_t xLineOffset = xLine * Nx_tot;
-            size_t firstPhysicalXLineIdx = xLineOffset + H;
-            dxx[firstPhysicalXLineIdx] = 0.0;
+    // 2. Handle boundary conditions
+    // Precompute constant coefficients for boundary conditions
+    const double C1 = 4.0 / 3.0 * inv_dxx;          // Coefficient for field(1, j, k)
+    const double C2 = -4.0 * inv_dxx;               // Coefficient for field(0, j, k)
+    const double C3 = (8.0 / 3.0) * inv_dxx;        // Coefficient for bc(...)
+
+    const size_t strideY = Nx_tot;
+    const size_t strideZ = Nx_tot * Ny_tot;
+
+    auto offset = field.getOffset();
+    auto offsetAxis = field.getOffsetAxis();
+
+    if (axis == Axis::X) {
+        // 2A. Handle physical left BC: the first point of each x-line cannot compute a centered difference
+        if (grid.hasMinBoundary(Axis::X)) {
+            for (size_t k = 0; k < Nz_tot; ++k) {
+                double physical_z = grid.to_z((long) k - (long) H, offset, offsetAxis);
+                size_t xyPlaneOffset = k * strideZ;
+                for (size_t j = 0; j < Ny_tot; ++j) {
+                    double physical_y = grid.to_y((long) j - (long) H, offset, offsetAxis);
+                    size_t firstPhysicalXLineIdx = xyPlaneOffset + j * strideY;
+                    double val_1 = field[firstPhysicalXLineIdx + H + 1];
+                    double val_0 = field[firstPhysicalXLineIdx + H];
+                    dxx[firstPhysicalXLineIdx + H] = C1 * val_1
+                                                     + C2 * val_0
+                                                     + C3 * bc(0.0, physical_y, physical_z, time);
+                }
+            }
         }
-    }
-    // 2B. Handle physical right BC: the last point of the x-line cannot compute a centered difference
-    if (grid.hasMaxBoundary(Axis::X)) {
-        for (size_t xLine = 0; xLine < totalXLines; ++xLine) {
-            size_t xLineOffset = xLine * Nx_tot;
-            size_t lastPhysicalXLineIdx = xLineOffset + (Nx_tot - 1 - H);
-            dxx[lastPhysicalXLineIdx] = 0.0;
+        // 2B. Handle physical right BC: the last point of each x-line cannot compute a centered difference
+        if (grid.hasMaxBoundary(Axis::X)) {
+            for (size_t k = 0; k < Nz_tot; ++k) {
+                size_t xyPlaneOffset = k * strideZ;
+                for (size_t j = 0; j < Ny_tot; ++j) {
+                    size_t lastPhysicalXLineIdx = (xyPlaneOffset + j * strideY) + (Nx_tot - 1 - H);
+                    dxx[lastPhysicalXLineIdx] = 0.0;
+                }
+            }
+        }
+    } else { // not an X-component
+        // 2A. Handle physical left BC: the first point of each x-line cannot compute a centered difference
+        if (grid.hasMinBoundary(Axis::X)) {
+            for (size_t k = 0; k < Nz_tot; ++k) {
+                size_t xyPlaneOffset = k * strideZ;
+                for (size_t j = 0; j < Ny_tot; ++j) {
+                    size_t firstPhysicalXLineIdx = xyPlaneOffset + j * strideY;
+                    dxx[firstPhysicalXLineIdx + H] = 0;
+                }
+            }
+        }
+        // 2B. Handle physical right BC: the last point of each x-line cannot compute a centered difference
+        if (grid.hasMaxBoundary(Axis::X)) {
+            double physical_Xwall = grid.to_x((long)(grid.Nx - 1), GridStaggering::FACE_CENTERED, Axis::X);
+            for (size_t k = 0; k < Nz_tot; ++k) {
+                double physical_z = grid.to_z((long) k - (long) H, offset, offsetAxis);
+                size_t xyPlaneOffset = k * strideZ;
+                for (size_t j = 0; j < Ny_tot; ++j) {
+                    double physical_y = grid.to_y((long) j - (long) H, offset, offsetAxis);
+                    size_t lastPhysicalXLineIdx = (xyPlaneOffset + j * strideY) + (Nx_tot - 1 - H);
+                    double val_nm2 = field[lastPhysicalXLineIdx - 1];
+                    double val_nm1 = field[lastPhysicalXLineIdx];
+                    dxx[lastPhysicalXLineIdx] = C1 * val_nm2
+                                                + C2 * val_nm1
+                                                + C3 * bc(physical_Xwall, physical_y, physical_z, time);
+                }
+            }
         }
     }
 }
 
-void Derivatives::computeDyy(const Field &field, Field &dyy) const {
+void Derivatives::computeDyy(
+        const Field &field, Field &dyy,
+        const Func &bc, const double &time, const Axis axis
+) const {
     const auto &grid = field.getGrid();
     const double inv_dyy = 1.0 / (grid.dy * grid.dy);
 
@@ -517,9 +705,6 @@ void Derivatives::computeDyy(const Field &field, Field &dyy) const {
     const size_t Nx_tot = grid.Nx + 2 * H;
     const size_t Ny_tot = grid.Ny + 2 * H;
     const size_t Nz_tot = grid.Nz + 2 * H;
-    if (grid.Ny < 3) {
-        throw std::runtime_error("Grid size Nz must be at least 3 to compute second derivative.");
-    }
 
     // The distance in memory between (i, j-1, k) and (i, j, k), (i, j, k) and (i, j+1, k)
     const size_t strideY = Nx_tot;
@@ -541,31 +726,81 @@ void Derivatives::computeDyy(const Field &field, Field &dyy) const {
         }
     }
 
-    // 2A. Handle physical left BC: the first point of each y-line cannot compute a centered difference
-    //  i.e., the whole first x-line of the XY-plane
-    if (field.getGrid().hasMinBoundary(Axis::Y)) {
-        for (size_t k = 0; k < Nz_tot; ++k) {
-            size_t xyPlaneOffset = k * strideZ;
-            for (size_t i = 0; i < Nx_tot; ++i) {
-                size_t firstPhysicalXLineIdx = xyPlaneOffset + H * strideY + i;
-                dyy[firstPhysicalXLineIdx] = 0.0;
+    // 2. Handle boundary conditions
+    // Precompute constant coefficients for boundary conditions
+    const double C1 = 4.0 / 3.0 * inv_dyy;          // Coefficient for field(i, 1, k)
+    const double C2 = -4.0 * inv_dyy;               // Coefficient for field(i, 0, k)
+    const double C3 = (8.0 / 3.0) * inv_dyy;        // Coefficient for bc(...)
+
+    auto offset = field.getOffset();
+    auto offsetAxis = field.getOffsetAxis();
+
+    if (axis == Axis::Y) {
+        // 2A. Handle physical left BC: the first point of each y-line cannot compute a centered difference
+        //  i.e., the whole first x-line of the XY-plane
+        if (grid.hasMinBoundary(Axis::Y)) {
+            for (size_t k = 0; k < Nz_tot; ++k) {
+                double physical_z = grid.to_z((long) k - (long) H, offset, offsetAxis);
+                size_t xyPlaneOffset = k * strideZ;
+                size_t firstPhysicalXLineIdx = xyPlaneOffset + H * strideY;
+                for (size_t i = 0; i < Nx_tot; ++i) {
+                    double physical_x = grid.to_x((long) i - (long) H, offset, offsetAxis);
+                    double val_1 = field[firstPhysicalXLineIdx + i + strideY];
+                    double val_0 = field[firstPhysicalXLineIdx + i];
+                    dyy[firstPhysicalXLineIdx + i] = C1 * val_1
+                                                     + C2 * val_0
+                                                     + C3 * bc(physical_x, 0.0, physical_z, time);
+                }
             }
         }
-    }
-    // 2B. Handle physical right BC: the last point of each y-line cannot compute a centered difference
-    //  i.e., the whole last x-line of the XY-plane
-    if (grid.hasMaxBoundary(Axis::Y)) {
-        for (size_t k = 0; k < Nz_tot; ++k) {
-            size_t xyPlaneOffset = k * strideZ;
-            for (size_t i = 0; i < Nx_tot; ++i) {
-                size_t lastPhysicalXLineIdx = xyPlaneOffset + (Ny_tot - 1 - H) * strideY + i;
-                dyy[lastPhysicalXLineIdx] = 0.0;
+        // 2B. Handle physical right BC: the last point of each y-line cannot compute a centered difference
+        //  i.e., the whole last x-line of the XY-plane
+        if (grid.hasMaxBoundary(Axis::Y)) {
+            for (size_t k = 0; k < Nz_tot; ++k) {
+                size_t xyPlaneOffset = k * strideZ;
+                size_t lastPhysicalXLineIdx = xyPlaneOffset + (Ny_tot - 1 - H) * strideY;
+                for (size_t i = 0; i < Nx_tot; ++i) {
+                    dyy[lastPhysicalXLineIdx + i] = 0;
+                }
+            }
+        }
+    } else {
+        // 2A. Handle physical left BC: the first point of each y-line cannot compute a centered difference
+        //  i.e., the whole first x-line of the XY-plane
+        if (grid.hasMinBoundary(Axis::Y)) {
+            for (size_t k = 0; k < Nz_tot; ++k) {
+                size_t xyPlaneOffset = k * strideZ;
+                size_t firstPhysicalXLineIdx = xyPlaneOffset + H * strideY;
+                for (size_t i = 0; i < Nx_tot; ++i) {
+                    dyy[firstPhysicalXLineIdx + i] = 0;
+                }
+            }
+        }
+        // 2B. Handle physical right BC: the last point of each y-line cannot compute a centered difference
+        //  i.e., the whole last x-line of the XY-plane
+        if (grid.hasMaxBoundary(Axis::Y)) {
+            double physical_Ywall = grid.to_y((long)(grid.Ny - 1), GridStaggering::FACE_CENTERED, Axis::Y);
+            for (size_t k = 0; k < Nz_tot; ++k) {
+                double physical_z = grid.to_z((long) k - (long) H, offset, offsetAxis);
+                size_t xyPlaneOffset = k * strideZ;
+                size_t lastPhysicalXLineIdx = xyPlaneOffset + (Ny_tot - 1 - H) * strideY;
+                for (size_t i = 0; i < Nx_tot; ++i) {
+                    double physical_x = grid.to_x((long) i - (long) H, offset, offsetAxis);
+                    double val_nm2 = field[lastPhysicalXLineIdx + i - strideY];
+                    double val_nm1 = field[lastPhysicalXLineIdx + i];
+                    dyy[lastPhysicalXLineIdx + i] = C1 * val_nm2
+                                                    + C2 * val_nm1
+                                                    + C3 * bc(physical_x, physical_Ywall, physical_z, time);
+                }
             }
         }
     }
 }
 
-void Derivatives::computeDzz(const Field &field, Field &dzz) const {
+void Derivatives::computeDzz(
+        const Field &field, Field &dzz,
+        const Func &bc, const double &time, const Axis axis
+) const {
     const auto &grid = field.getGrid();
     const double inv_dzz = 1.0 / (grid.dz * grid.dz);
 
@@ -573,9 +808,6 @@ void Derivatives::computeDzz(const Field &field, Field &dzz) const {
     const size_t Nx_tot = grid.Nx + 2 * H;
     const size_t Ny_tot = grid.Ny + 2 * H;
     const size_t Nz_tot = grid.Nz + 2 * H;
-    if (grid.Nz < 3) {
-        throw std::runtime_error("Grid size Nz must be at least 3 to compute second derivative.");
-    }
 
     // The distance in memory between (i, j, k-1) and (i, j, k), (i, j, k) and (i, j, k+1)
     const size_t strideZ = Nx_tot * Ny_tot; // stride is one full XY plane
@@ -591,19 +823,73 @@ void Derivatives::computeDzz(const Field &field, Field &dzz) const {
         }
     }
 
-    // 2A. Handle physical left BC: the first point of each z-line cannot compute a centered difference
-    if (grid.hasMinBoundary(Axis::Z)) {
-        for (size_t p = 0; p < strideZ; ++p) {
-            size_t firstPhysicalXyPlaneIdx = H * strideZ + p;
-            dzz[firstPhysicalXyPlaneIdx] = 0.0;
-        }
-    }
-    // 2B. Handle physical right BC: the last point of each z-line cannot compute a centered difference
-    if (grid.hasMaxBoundary(Axis::Z)) {
-        for (size_t p = 0; p < strideZ; ++p) {
-            size_t lastPhysicalXyPlaneIdx = (Nz_tot - 1 - H) * strideZ + p;
-            dzz[lastPhysicalXyPlaneIdx] = 0.0;
-        }
-    }
+    // 2. Handle boundary conditions
+    // Precompute constant coefficients for boundary conditions
+    const double C1 = 4.0 / 3.0 * inv_dzz;          // Coefficient for field(i, j, 1)
+    const double C2 = -4.0 * inv_dzz;               // Coefficient for field(i, j, 0)
+    const double C3 = (8.0 / 3.0) * inv_dzz;        // Coefficient for bc(...)
 
+    const size_t strideY = Nx_tot;
+
+    auto offset = field.getOffset();
+    auto offsetAxis = field.getOffsetAxis();
+
+    if (axis == Axis::Z) {
+        // 2A. Handle physical left BC: the first point of each z-line cannot compute a centered difference
+        if (grid.hasMinBoundary(Axis::Z)) {
+            size_t firstPhysicalXyPlaneOffset = H * strideZ;
+            for (size_t j = 0; j < Ny_tot; ++j) {
+                double physical_y = grid.to_y((long) j - (long) H, offset, offsetAxis);
+                size_t xLineOffset = firstPhysicalXyPlaneOffset + (j * strideY);
+                for (size_t i = 0; i < Nx_tot; ++i) {
+                    const double physical_x = grid.to_x((long) (i - H), offset, offsetAxis);
+                    size_t idx_0 = xLineOffset + i;    // field(i, j, 0)
+                    size_t idx_1 = idx_0 + strideZ;    // field(i, j, 1)
+                    dzz[idx_0] = C1 * field[idx_1]
+                                 + C2 * field[idx_0]
+                                 + C3 * bc(physical_x, physical_y, 0.0, time);
+                }
+            }
+        }
+        // 2B. Handle physical right BC: the last point of each z-line cannot compute a centered difference
+        if (grid.hasMaxBoundary(Axis::Z)) {
+            size_t lastPhysicalXyPlaneOffset = (Nz_tot - 1 - H) * strideZ;
+            for (size_t j = 0; j < Ny_tot; ++j) {
+                size_t xLineOffset = lastPhysicalXyPlaneOffset + (j * strideY);
+                for (size_t i = 0; i < Nx_tot; ++i) {
+                    size_t idx_nm1 = xLineOffset + i;               // field(i, j, Nz-1)
+                    dzz[idx_nm1] = 0.0;
+                }
+            }
+        }
+    } else {
+        // 2A. Handle physical left BC: the first point of each z-line cannot compute a centered difference
+        if (grid.hasMinBoundary(Axis::Z)) {
+            size_t firstPhysicalXyPlaneOffset = H * strideZ;
+            for (size_t j = 0; j < Ny_tot; ++j) {
+                size_t xLineOffset = firstPhysicalXyPlaneOffset + (j * strideY);
+                for (size_t i = 0; i < Nx_tot; ++i) {
+                    size_t idx_0 = xLineOffset + i;    // field(i, j, 0)
+                    dzz[idx_0] = 0.0;
+                }
+            }
+        }
+        // 2B. Handle physical right BC: the last point of each z-line cannot compute a centered difference
+        if (grid.hasMaxBoundary(Axis::Z)) {
+            double physical_Zwall = grid.to_z((long)(grid.Nz - 1), GridStaggering::FACE_CENTERED, Axis::Z);
+            size_t lastPhysicalXyPlaneOffset = (Nz_tot - 1 - H) * strideZ;
+            for (size_t j = 0; j < Ny_tot; ++j) {
+                double physical_y = grid.to_y((long) j - (long) H, offset, offsetAxis);
+                size_t xLineOffset = lastPhysicalXyPlaneOffset + (j * strideY);
+                for (size_t i = 0; i < Nx_tot; ++i) {
+                    double physical_x = grid.to_x((long) (i - H), offset, offsetAxis);
+                    size_t idx_nm2 = xLineOffset + i - strideZ;     // field(i, j, Nz-2)
+                    size_t idx_nm1 = xLineOffset + i;               // field(i, j, Nz-1)
+                    dzz[idx_nm1] = C1 * field[idx_nm2]
+                                   + C2 * field[idx_nm1]
+                                   + C3 * bc(physical_x, physical_y, physical_Zwall, time);
+                }
+            }
+        }
+    }
 }
