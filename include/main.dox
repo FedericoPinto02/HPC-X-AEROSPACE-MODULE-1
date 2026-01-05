@@ -3,18 +3,35 @@
  *
  * <center><h1>Welcome to the NSB Solver project</h1></center>
  *
- * The **NSB Solver** project is a high-performance C++ library
- * dedicated to fluid simulation, particularly the solution of the
- * **Navier-Stokes-Brinkman Equations**.
+* ## Overview
+ * The **NSB Solver** is a high-performance C++ library designed for the numerical 
+ * solution of the **Navier-Stokes-Brinkman Equations** in 3D.
  *
- * It is developed as part of the HPSC for Aerospace Engineering course and aims to provide an efficient
- * and parallelizable solution for three-dimensional grid fluid dynamics problem.
+ * This project is developed as part of the HPSC for Aerospace Engineering course and focuses on 
+ * providing an efficient, parallelizable solution for three-dimensional grid fluid dynamics problems.
+ *
+* ## Getting Started
+ * To compile and run the project, you can use the provided scripts:
+ * * @code{.bash}
+ * # Compile the project
+ * ./build.sh
+ *
+ * # Run a simulation (example with 4 processes)
+ * mpirun -n 4 ./main
+ * @endcode
+ *
+ * ## Project Structure
+ * The library is organized into specialized modules:
+ * - **Core**: Management of the MPI environment, Grid decomposition, and Fields allocation.
+ * - **Simulation**: Solvers for the Viscous and Pressure steps.
+ * - **Numerics**: Mathematical kernels including Derivatives, Thomas and Schur solver and Tridiagonal matrix structures.
+ * - **IO**: Manages JSON Configuration parsing, logging and VTK data export for post-processing.
  *
  * ---
  *
  * ## 🔗 Navigation
- *
- * Use the menus above to explore the sections:
+ * Use the menus above or the links below to explore the documentation:
+ * * Check the [Namespaces](namespaces.html) for a list of logical modules.
  * * Go to [Class List](annotated.html) to see all classes and structs.
  * * Check the [Files](files.html) for the complete list of headers.
  */
