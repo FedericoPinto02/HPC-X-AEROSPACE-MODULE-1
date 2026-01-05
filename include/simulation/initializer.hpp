@@ -8,7 +8,16 @@
 #include "io/inputReader.hpp"
 #include "simulation/SimulationContext.hpp"
 
-/// Namespace containing functions to initialize simulation data and fields.
+/**
+ * @namespace Initializer
+ * @brief Provides static methods to initialize the simulation environment, grids, and fields.
+ * * This namespace acts as the bridge between the configuration layer and the execution layer.
+ * It is responsible for:
+ * - Allocating the global and local MPI grids.
+ * - Calculating time-step parameters.
+ * - Mapping analytical functions (initial conditions) onto the discrete grid.
+ * - Setting up physical properties.
+ */
 namespace Initializer {
 
     /**

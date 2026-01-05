@@ -2,6 +2,12 @@
 
 #include <cmath> // For std::sin, std::cos
 
+/**
+ * @namespace ConfigFuncs
+ * @brief Contains analytical functions for initial conditions, boundary conditions, and forcing terms.
+ * * These functions define a "Manufactured Solution" used to validate the numerical accuracy 
+ * of the solver. The default setup represents a divergence-free velocity field.
+ */
 namespace ConfigFuncs {
 
     // Physical parameters

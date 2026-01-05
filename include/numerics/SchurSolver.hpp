@@ -8,6 +8,7 @@
 #include "numerics/ThomasSolver.hpp"
 
 /**
+ * @class SchurSolver
  * @brief Class implementing the Schur Complement Method for solving distributed tridiagonal systems.
  *
  * The local system on each MPI process includes two interface points (left and right),

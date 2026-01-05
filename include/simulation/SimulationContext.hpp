@@ -9,66 +9,65 @@
 #include "core/Fields.hpp"
 
 /**
- * @brief Structure holding configuration parameters for outputting simulation results.
+ * @brief Configuration parameters for outputting simulation results (VTK).
  */
 struct OutputSettings {
-    std::string dir;
-    std::string baseFilename;
-    bool enabled;
-    size_t outputFrequency;
+    std::string dir;            ///< Output directory
+    std::string baseFilename;   ///< Base name for VTK files
+    bool enabled;               ///< Enable/disable output
+    size_t outputFrequency;     ///< Frequency of saving results
 };
 
 /**
- * @brief Structure holding configuration parameters for simulation logging (console and file).
+ * @brief Configuration parameters for simulation logging.
  */
 struct LoggingSettings {
-    bool logToFile;
-    bool logToConsole;
-    std::string dir;
-    std::string filename;
-    size_t loggingFrequency;
+    bool logToFile;             ///< Enable logging to file
+    bool logToConsole;          ///< Enable logging to console
+    std::string dir;            ///< Log directory
+    std::string filename;       ///< Log filename
+    size_t loggingFrequency;    ///< Frequency of log updates
 };
 
-
 /**
- * @brief Central structure containing all transient data, fields, and physical properties of the running simulation.
+ * @brief Central structure containing all fields and physical properties of the simulation.
  */
 struct SimulationData {
     // Grid
-    GridPtr grid;
+    GridPtr grid;               ///< Pointer to the simulation grid
 
     // Time integration settings
-    double dt;
-    double currTime;
-    double totalSimTime;
-    size_t currStep;
-    size_t totalSteps;
+    double dt;                  ///< Time step size
+    double currTime;            ///< Current simulation time
+    double totalSimTime;        ///< Total time of the simulation
+    size_t currStep;            ///< Current step index
+    size_t totalSteps;          ///< Total number of steps
 
     // Velocity fields
-    VectorField eta;
-    VectorField zeta;
-    VectorField u;
+    VectorField eta;            ///< Intermediate velocity field eta
+    VectorField zeta;           ///< Intermediate velocity field zeta
+    VectorField u;              ///< Final velocity field
 
     // Pressure field
-    Field p;
-    Field predictor;
+    Field p;                    ///< Pressure field
+    Field predictor;            ///< Pressure predictor field
 
     // Boundary conditions
-    Func bcu;
-    Func bcv;
-    Func bcw;
+    Func bcu;                   ///< BC function for u-velocity
+    Func bcv;                   ///< BC function for v-velocity
+    Func bcw;                   ///< BC function for w-velocity
 
-    // Kinematic viscosity of the fluid
-    double nu;
+    // Physical properties
+    double nu;                  ///< Kinematic viscosity
 
-    // Inverse of the permeability (solid: very low; fluid: very high) of the (porous) medium
-    //  (=> solid: very high; fluid: very low)
-    //  (prefer multiplication with inv_k over division by k)
+    /** * @brief Inverse of the permeability (solid: high; fluid: low).
+     * Multiplication with inv_k is preferred over division by k.
+     */
     VectorField inv_k;
 
-    // Body force acting on the medium
-    VectorField f;
-    Func fx;
-    Func fy;
-    Func fz;
+    // Body forces
+    VectorField f;              ///< Total force field
+    Func fx;                    ///< Force function in x-direction
+    Func fy;                    ///< Force function in y-direction
+    Func fz;                    ///< Force function in z-direction
 };

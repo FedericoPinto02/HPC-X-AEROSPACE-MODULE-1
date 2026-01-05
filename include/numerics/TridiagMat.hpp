@@ -4,12 +4,15 @@
 #include <stdexcept>
 #include <vector>
 
-///Class representing a tridiagonal matrix and providing access to its elements.
+/**
+ * @class TridiagMat
+ * @brief Class representing a tridiagonal matrix and providing access to its elements.
+ */
 class TridiagMat {
 private:
-    std::vector<double> diag;
-    std::vector<double> subdiag;
-    std::vector<double> supdiag;
+    std::vector<double> diag;     ///< Main diagonal elements
+    std::vector<double> subdiag;  ///< Sub-diagonal elements
+    std::vector<double> supdiag;  ///< Super-diagonal elements
 
 public:
     /**

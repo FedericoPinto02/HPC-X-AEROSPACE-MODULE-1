@@ -13,7 +13,11 @@
 #include "simulation/SimulationContext.hpp"
 
 /**
- * @brief Class responsible for solving the Navier-Stokes-Brinkman equations.
+ * @class NSBSolver
+ * @brief Main controller for solving the Navier-Stokes-Brinkman equations.
+ * * This class manages the initialization, execution of the time-loop, 
+ * and orchestration of the numerical steps (viscous and pressure), 
+ * as well as logging and data output.
  */
 class NSBSolver
 {
@@ -32,16 +36,16 @@ public:
     void solve();
 
 private:
-    MpiEnv &mpi;
+    MpiEnv &mpi;                                        ///< Reference to the MPI environment
 
-    std::string configFile;
-    InputData input;
-    SimulationData simData;
-    OutputSettings outputSettings;
-    LoggingSettings loggingSettings;
+    std::string configFile;                             ///< Path to the configuration file
+    InputData input;                                    ///< Parsed input parameters
+    SimulationData simData;                             ///< Global simulation state and fields
+    OutputSettings outputSettings;                      ///< VTK output configuration
+    LoggingSettings loggingSettings;                    ///< Logger configuration
 
-    std::unique_ptr<ViscousStep> viscousStep;
-    std::unique_ptr<PressureStep> pressureStep;
-    std::unique_ptr<VTKWriter> vtkWriter;
-    std::unique_ptr<LogWriter> logger;
+    std::unique_ptr<ViscousStep> viscousStep;           ///< Solver for the viscous step
+    std::unique_ptr<PressureStep> pressureStep;         ///< Solver for the pressure step
+    std::unique_ptr<VTKWriter> vtkWriter;               ///< VTK data exporter
+    std::unique_ptr<LogWriter> logger;                  ///< Simulation logger
 };

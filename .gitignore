@@ -1,6 +1,7 @@
 build/
 output/
 results/
+docs/
 
 # Ignore editor configuration files
 .vscode/

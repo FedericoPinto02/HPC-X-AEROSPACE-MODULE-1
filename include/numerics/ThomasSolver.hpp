@@ -4,7 +4,10 @@
 #include <stdexcept>
 #include <cmath>
 
-/// Efficient Thomas algorithm solver for tridiagonal systems.
+/**
+ * @class ThomasSolver
+ * @brief An efficient, specialized solver for tridiagonal linear systems.
+ */
 class ThomasSolver {
 private:
     /// Small epsilon to avoid division by zero.
@@ -14,7 +17,11 @@ private:
     std::vector<double> c_prime_;
 
 public:
-    /// Constructor with optional pre-allocation of scratch space.
+    /**
+     * @brief Constructs the solver with optional pre-allocation of the workspace.
+     * @param size The expected size of the system (N). Pre-allocating prevents 
+     * initial reallocations during the first solve.
+     */
     explicit ThomasSolver(size_t size = 0) {
         if (size > 0) { c_prime_.resize(size); }
     }
