@@ -1,122 +1,148 @@
-
-```markdown
-# HPC-X-AEROSPACE-MODULE-1: NSBSolver (Navier–Stokes–Brinkman Solver)
-
-**High-Performance Scientific Computing in Aerospace – Politecnico di Milano** **Group ID:** 1  
-**Academic Year:** 2025-2026
-
-NSBSolver is a high-performance parallel Computational Fluid Dynamics (CFD) solver designed to simulate **incompressible Stokes–Brinkman equations**. It is specifically engineered to serve as a computational kernel for topology optimization in thermal management applications for Advanced Air Mobility.
-
-The solver features a highly optimized C++ architecture employing a **Direction Splitting** algorithm and a custom **Domain Decomposition** strategy based on the **Schur Complement method**, enabling efficient execution on distributed memory clusters via MPI.
+# NSBSolver  
+### HPC-X-Aerospace – Module 1  
+**High-Performance Scientific Computing in Aerospace**  
+Politecnico di Milano — Academic Year **2025–2026**  
+**Group ID:** 1  
 
 ---
 
-## 👥 Contributors
+## Overview
 
-This project was developed by Group 1 under the supervision of **Prof. Franco Auteri**:
+**NSBSolver** is a high-performance parallel **Computational Fluid Dynamics (CFD)** solver for the simulation of **incompressible Stokes–Brinkman equations**.  
+It is designed as a computational kernel for **topology optimization** problems in **thermal management** for **Advanced Air Mobility (AAM)** applications.
 
-* **Ettore Cirillo**
-* **Mattia Gotti**
-* **Giulio Martella**
-* **Michele Milani**
-* **Stefano Pedretti**
-* **Daniele Piano**
-* **Federico Pinto**
+The solver is written in modern **C++17** and targets **distributed-memory HPC systems**, leveraging **MPI** parallelism, **direction splitting**, and a **Schur-complement-based domain decomposition** strategy.
 
 ---
 
-## 🚀 Key Features & Capabilities
+## Contributors
 
-### Core Physics & Numerics
-* **Governing Equations**: Incompressible Stokes–Brinkman equations.
-* **Methodology**: Fixed-grid strategy inspired by the Immersed Boundary Method (IBM), utilizing porosity penalization to define solid boundaries.
-* **Discretization**:
-    * **Space**: Second-order asymmetric Marker-And-Cell (MAC) finite difference stencil.
-    * **Time**: Unconditionally stable Crank-Nicolson scheme with Direction Splitting (Douglas scheme).
-* **Linear Algebra**:
-    * Custom **Thomas Algorithm (TDMA)** solver for tridiagonal systems.
-    * **Schur Complement Method** for parallel domain decomposition, decoupling internal nodes from shared interfaces.
+Developed by **Group 1** under the supervision of **Prof. Franco Auteri**:
 
-### High-Performance Computing (HPC)
-* **Parallelism**: Distributed memory parallelization using **MPI** with Cartesian topology and overlapping domain decomposition.
-* **Optimization**:
-    * Persistent memory management to minimize allocation overhead.
-    * Structure of Arrays (SoA) layout for vector fields to maximize cache locality.
-    * Non-blocking communication for halo exchanges.
-* **Performance**: Validated strictly linear scaling for low core counts ($S_4 \approx 3.3$) and computational efficiency of $\approx 0.48 \, \mu s$ per cell-step.
+- Ettore Cirillo  
+- Mattia Gotti  
+- Giulio Martella  
+- Michele Milani  
+- Stefano Pedretti  
+- Daniele Piano  
+- Federico Pinto  
 
 ---
 
-## ⚠️ Limitations & Future Work
+## Features
 
-While the solver meets strict performance targets, current limitations include:
-* **Convective Term**: The non-linear convective term is currently neglected to simplify the implementation, though the architecture supports its inclusion.
-* **Boundary Conditions**: Currently supports Dirichlet (velocity) and Neumann (pressure). Periodic boundary conditions are not yet fully implemented.
-* **Memory Layout**: Fields are currently stored as separate objects. Future optimization could involve aggregating all fields into a single contiguous memory block to reduce TLB misses.
-* **IO Overhead**: Parallel I/O is currently serialized (master rank writes), which may become a bottleneck at very large scales.
+### Physics & Numerical Methods
+- **Equations**: Incompressible Stokes–Brinkman
+- **Geometry handling**: Fixed-grid approach inspired by the Immersed Boundary Method (IBM) using porosity penalization
+- **Spatial discretization**:  
+  - Second-order asymmetric **MAC finite-difference** stencil
+- **Temporal discretization**:  
+  - **Crank–Nicolson** scheme  
+  - **Douglas direction splitting** (unconditionally stable)
+
+### Linear Solvers & Algorithms
+- Custom **TDMA (Thomas algorithm)** for tridiagonal systems
+- **Schur complement method** for parallel domain decomposition
+- Explicit decoupling of interior nodes and inter-subdomain interfaces
 
 ---
 
-## 🛠️ Quick Start
+## High-Performance Computing
+
+- **Parallel model**: MPI with Cartesian topology
+- **Domain decomposition**: Overlapping subdomains
+- **Memory optimization**:
+  - Persistent allocation strategy
+  - Structure-of-Arrays (SoA) layout for vector fields
+- **Communication**:
+  - Non-blocking halo exchanges
+- **Performance**:
+  - Near-linear strong scaling for low core counts  
+  - Measured speed: ≈ **0.48 μs per cell-step**  
+  - Speedup at 4 cores: **S₄ ≈ 3.3**
+
+---
+
+## Limitations & Future Work
+
+Current limitations include:
+
+- **Convective term**: Not yet included (architecture already supports extension)
+- **Boundary conditions**:
+  - Supported: Dirichlet (velocity), Neumann (pressure)
+  - Missing: Fully periodic BCs
+- **Memory layout**:
+  - Fields stored as separate objects  
+  - Future improvement: single contiguous memory block to reduce TLB misses
+- **I/O**:
+  - Output currently serialized on master rank  
+  - Parallel I/O planned for large-scale runs
+
+---
+
+## Getting Started
 
 ### Prerequisites
-* **C++ Compiler**: C++17 compliant (GCC, Clang) with OpenMPI support.
-* **CMake**: Version 3.10 or higher.
-* **MPI**: A working MPI implementation (e.g., OpenMPI, MPICH).
 
-### Building and Running
-Use the provided helper scripts to compile and run the simulation:
+- **C++ compiler**: C++17 compliant (GCC / Clang)
+- **MPI**: OpenMPI or MPICH
+- **CMake**: ≥ 3.10
+
+### Build & Run
 
 ```bash
-# 1. Build the project
+# Build the solver
 ./build.sh
 
-# 2. Run the simulation
-# Ensure data/config.json is configured properly before running
+# Configure input parameters
+# Edit data/config.json as needed
+
+# Run the simulation
 ./run.sh
 
-# 3. Run Tests
-# Executes unit tests for derivatives, linear solvers, and physics steps
+# Run unit tests
 ./test.sh
-
 ```
 
 ---
 
-## 📂 Project Structure
-
-The codebase follows a modular architecture separating physics, numerics, and system management:
+## Project Structure
 
 ```text
 .
-├── data/                       # Configuration
-│   ├── config.json             # Runtime parameters (grid, time, physics)
-│   └── configFunctions.hpp     # Compile-time analytical functions (BCs, Initial Conditions)
+├── data/                       # Runtime configuration
+│   ├── config.json             # Grid, time, physics parameters
+│   └── configFunctions.hpp     # Analytical BCs and initial conditions
 ├── include/
-│   ├── core/                   # MPI Wrappers, Grid topology, Distributed Fields
-│   ├── io/                     # VTK Visualization, JSON Parsing, Logging
-│   ├── numerics/               # Finite Differences, Tridiagonal & Schur Solvers
-│   └── simulation/             # Simulation Data, Time Stepper, Physics Steps
-├── src/                        # Source implementation
-├── tests/                      # Unit testing suite
-└── output/                     # VTK simulation results
-
+│   ├── core/                   # MPI wrappers, grids, distributed fields
+│   ├── io/                     # VTK output, JSON parsing, logging
+│   ├── numerics/               # FD stencils, TDMA & Schur solvers
+│   └── simulation/             # Time stepping and physics operators
+├── src/                        # Source files
+├── tests/                      # Unit tests
+└── output/                     # VTK results
 ```
 
 ---
 
-## 📊 Validation & Results
+## Validation
 
-The solver has been rigorously validated:
+The solver has been validated through:
 
-1. **MMS (Method of Manufactured Solutions)**: Confirmed second-order accuracy in space () and time ().
-2. **Laminar Flow Benchmarks**:
-* **Couette-Poiseuille Flow**: Validated against analytical profiles.
-* **Hagen-Poiseuille (Pipe) Flow**: Tested Brinkman penalization for circular geometries.
+1. **Method of Manufactured Solutions (MMS)**  
+   - Verified second-order accuracy in space and time
 
+2. **Canonical Laminar Flows**
+   - Couette–Poiseuille flow
+   - Hagen–Poiseuille flow with Brinkman penalization for circular geometries
 
-3. **Scalability**: Demonstrated near-linear strong scalability up to 4 cores and robust weak scaling on distributed grids.
+3. **Scalability Tests**
+   - Near-linear strong scaling up to 4 MPI ranks
+   - Robust weak scaling on distributed grids
 
-```
+---
 
-```
+## License & Usage
+
+This code was developed for **academic and research purposes** within the  
+*HPC-X-Aerospace* course at Politecnico di Milano.
