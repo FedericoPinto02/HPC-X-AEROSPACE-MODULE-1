@@ -144,4 +144,4 @@ The solver has been validated through:
 ## License & Usage
 
 This code was developed for **academic and research purposes** within the  
-*HPC-X-Aerospace* course at Politecnico di Milano.
+*High-Performance Scientific Computing in Aerospace* course at Politecnico di Milano.
