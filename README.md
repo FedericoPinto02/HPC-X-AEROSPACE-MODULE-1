@@ -1,6 +1,5 @@
 # NSBSolver  
-### HPC-X-Aerospace – Module 1  
-**High-Performance Scientific Computing in Aerospace**  
+### **High-Performance Scientific Computing in Aerospace**  
 Politecnico di Milano — Academic Year **2025–2026**  
 **Group ID:** 1  
 
